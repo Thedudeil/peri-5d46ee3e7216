@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head>
+
 <meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#8FA98B">
@@ -114,6 +115,7 @@ nav button.on{color:var(--sage);font-weight:700}
 
  <!-- INSIGHTS -->
  <section id="v-insights" class="view hide">
+  <div id="tipBox" class="card hide" style="display:flex;gap:8px;align-items:flex-start;padding:10px 12px"><div style="flex:1;font-size:14px" id="tipTxt"></div><button id="tipX" aria-label="Dismiss" style="border:0;background:none;font-size:18px;color:var(--mute);padding:0 4px">×</button></div>
   <h1>Your patterns</h1>
   <div class="stats" id="statBox"></div>
   <div class="card"><div class="tabs2"><button class="btn alt" data-r="7">7 days</button><button class="btn alt" data-r="30">30 days</button></div>
@@ -135,6 +137,14 @@ nav button.on{color:var(--sage);font-weight:700}
   <div class="sum" id="sumBody"></div>
  </section>
 
+ <!-- COMFORT -->
+ <section id="v-comfort" class="view hide">
+  <h1>Comfort picks</h1>
+  <p class="muted">Everyday comfort products other women often mention, grouped by symptom. No supplements or medicine.</p>
+  <div id="shopList"></div>
+  <p class="affdisc">Affiliate links: as an Amazon Associate we earn from qualifying purchases, at no extra cost to you. Not medical advice; talk to your doctor about symptoms.</p>
+ </section>
+
  <!-- SETTINGS -->
  <section id="v-settings" class="view hide">
   <h1>Settings & data</h1>
@@ -143,13 +153,11 @@ nav button.on{color:var(--sage);font-weight:700}
    <button class="btn alt block" id="impBtn">Import backup (CSV)</button><input type="file" id="impFile" accept=".csv,text/csv" class="hide"></div>
   <div class="card"><h3>Try it out</h3><button class="btn alt block" id="demoBtn">Load 60 days of demo data</button>
    <button class="btn rose block" id="clearBtn">Clear all data</button></div>
-  <div class="card"><h3>Shop: comfort &amp; reading</h3><div id="shopList"></div>
-   <p class="affdisc">As an Amazon Associate we earn from qualifying purchases. Not medical advice.</p></div>
   <div class="card"><h3>About</h3><div class="disc">This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.</div>
    <button class="btn ghost block" id="reOnb">View welcome screen</button></div>
  </section>
 </div>
-<nav><button data-v="today" class="on"><b>✎</b>Check-in</button><button data-v="insights"><b>◔</b>Insights</button><button data-v="summary"><b>▤</b>Doctor summary</button><button data-v="settings"><b>⚙</b>Settings</button></nav>
+<nav><button data-v="today" class="on"><b>✎</b>Check-in</button><button data-v="insights"><b>◔</b>Insights</button><button data-v="summary"><b>▤</b>Doctor summary</button><button data-v="comfort"><b>♡</b>Comfort</button><button data-v="settings"><b>⚙</b>Settings</button></nav>
 </div>
 
 <script>
@@ -157,13 +165,12 @@ nav button.on{color:var(--sage);font-weight:700}
 const AFFTAG='YOURTAG-20'; // <-- swap in your Amazon Associates tag here (one place)
 const PROD=[
  {a:"B00EINBSEW",n:"Coop Home Goods Original Adjustable Pillow",w:"Breathable, adjustable-fill pillow that many hot sleepers like.",g:"cool",k:["hot","sweat"]},
- {a:"B0DGWZN1BH",n:"Bedsure Cooling Sheets (Queen)",w:"Cool-to-touch, breathable sheet set for warm nights.",g:"cool",k:["hot","sweat"]},
  {a:"B09NBPQ672",n:"JISULIFE Portable Neck Fan",w:"Hands-free, quiet breeze for when a hot flash hits on the go.",g:"cool",k:["hot","sweat"]},
- {a:"B096RY8MZP",n:"Ekouaer Lightweight Pajama Set",w:"Soft, light sleepwear for warmer nights.",g:"cool",k:["sweat","hot"]},
+ {a:"B0C45VXSD8",n:"Ekouaer Silk Satin Pajama Set",w:"Smooth, light satin sleepwear for warmer nights.",g:"cool",k:["sweat","hot"]},
  {a:"B07PRG2CQY",n:"Manta Sleep Mask",w:"Full-blackout mask with no pressure on the eyes.",g:"sleep",k:["sleep","fatigue"]},
  {a:"B00HD0ELFK",n:"Yogasleep Dohm Classic White Noise Machine",w:"Real-fan sound that masks noise; a long-time favorite.",g:"sleep",k:["sleep"]},
  {a:"B075F9ST7G",n:"YnM Weighted Blanket (15 lb, Queen)",w:"Gentle, even weight many people find calming at bedtime.",g:"sleep",k:["sleep","anx"]},
- {a:"B005NZ66KU",n:"Sunbeam XL Heating Pad",w:"Large 12x24 pad with 6 settings and auto shut-off.",g:"ache",k:["joint","head"]},
+ {a:"B0B32R3BB3",n:"Sunbeam XL Heating Pad",w:"Large 12x24 pad with 6 settings and auto shut-off.",g:"ache",k:["joint","head"]},
  {a:"B09G3KYR28",n:"The Five Minute Journal",w:"A short daily prompt to unwind and reflect.",g:"calm",k:["anx","mood","irrit","fog"]},
  {a:"B07W731WSH",n:"Gaiam Premium Yoga Mat",w:"For gentle stretching or a few calm minutes at home.",g:"calm",k:["anx","joint","irrit","mood"]},
  {a:"0806540664",n:"The Menopause Manifesto, Dr. Jen Gunter",w:"Evidence-based guide by an OB/GYN.",g:"book",k:["fog","fatigue","mood"]},
@@ -173,7 +180,7 @@ const affItem=p=>`<div class="aff"><div><a href="${affURL(p.a)}" target="_blank"
 function renderHelp(topKeys){let picks=[];for(let r=0;r<4;r++)topKeys.forEach(k=>{const p=PROD.filter(p=>p.k.includes(k)&&!picks.includes(p))[0];if(p)picks.push(p)});
  if(!picks.length)picks=PROD.filter(p=>p.g=="book");picks=picks.slice(0,4);
  $("helpList").innerHTML=picks.map(affItem).join("")}
-function renderShop(){const G=[["cool","Hot flashes & night sweats"],["sleep","Sleep"],["ache","Aches"],["calm","Stress & calm"],["book","Reading"]];
+function renderShop(){const G=[["cool","Hot flashes & night sweats"],["sleep","Sleep trouble & fatigue"],["ache","Joint pain & headaches"],["calm","Anxiety, mood & irritability"],["book","Reading: brain fog & understanding perimenopause"]];
  $("shopList").innerHTML=G.map(([g,t])=>`<h4 style="margin:10px 0 2px">${t}</h4>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
 const SYM=[["hot","Hot flashes"],["sweat","Night sweats"],["sleep","Sleep trouble"],["fatigue","Fatigue / low energy"],["fog","Brain fog"],["anx","Anxiety"],["mood","Low mood"],["irrit","Irritability"],["head","Headache"],["joint","Joint / muscle pain"],
 ["palp","Heart palpitations"],["bloat","Bloating"],["breast","Breast tenderness"],["dry","Vaginal dryness"],["libido","Low libido"],["bladder","Bladder urgency"],["skin","Dry skin / itching"],["dizzy","Dizziness"]];
@@ -209,7 +216,7 @@ $("reOnb").onclick=()=>{S.onb=false;persist();$("agree").checked=false;$("start"
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
 function show(v){document.querySelectorAll(".view").forEach(s=>s.classList.add("hide"));$("v-"+v).classList.remove("hide");
  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
- ({today:renderToday,insights:renderInsights,summary:renderSummary,settings:renderShop})[v]();scrollTo(0,0)}
+ ({today:renderToday,insights:renderInsights,summary:renderSummary,comfort:renderShop,settings:()=>{}})[v]();scrollTo(0,0)}
 
 // ---------- check-in
 function renderToday(){
@@ -235,7 +242,14 @@ $("notes").oninput=e=>{entry(cur).notes=e.target.value;persist()};
 $("moreSym").onclick=()=>{showAll=!showAll;renderToday()};
 $("prevD").onclick=()=>{cur=addD(cur,-1);renderToday()};
 $("nextD").onclick=()=>{if(cur<today()){cur=addD(cur,1);renderToday()}};
-$("saveBtn").onclick=()=>{const e=entry(cur);e.saved=true;persist();const st=streak();toast(st>1?`Saved ✓ ${st}-day streak!`:"Saved ✓ Nice start!");show("insights")};
+const TIPW={hot:"for hot flashes",sweat:"for night sweats",sleep:"for sleep",fatigue:"for rest",fog:"for brain fog",anx:"for unwinding",mood:"for low days",irrit:"for unwinding",head:"for headaches",joint:"for aches"};
+function maybeTip(e){$("tipBox").classList.add("hide");if(cur!==today()||S.tipDay===today())return;
+ const sev=SYM.map(x=>x[0]).filter(k=>e.s&&e.s[k]===3);let p=null,k0=null;for(const k of sev){p=PROD.find(q=>q.k[0]===k)||PROD.find(q=>q.k.includes(k));if(p){k0=k;break}}if(!p)return;
+ S.tipDay=today();persist();
+ $("tipTxt").innerHTML=`Rough day. Many women find this helps ${TIPW[k0]||""}: <a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener">${p.n}</a> <span class="afftag">Affiliate link</span>`;
+ $("tipBox").classList.remove("hide")}
+$("tipX").onclick=()=>$("tipBox").classList.add("hide");
+$("saveBtn").onclick=()=>{const e=entry(cur);e.saved=true;persist();const st=streak();toast(st>1?`Saved ✓ ${st}-day streak!`:"Saved ✓ Nice start!");show("insights");maybeTip(e)};
 
 function streak(){let d=today(),n=0;if(!S.e[d])d=addD(d,-1);while(S.e[d]){n++;d=addD(d,-1)}return n}
 function days(n,end){const out=[];let d=end||today();for(let i=0;i<n;i++){out.unshift(d);d=addD(d,-1)}return out}
