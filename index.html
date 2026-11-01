@@ -585,6 +585,7 @@ function renderSummary(){
  ${pats.length?`<div class="lbl">${t("myPats")}</div><ul style="margin:0;padding-inline-start:18px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
  ${notes?`<div class="lbl">${t("notes")}</div><ul style="margin:0;padding-inline-start:18px">${notes}</ul>`:""}
  <div class="lbl">${t("sumCnt")}</div>${(()=>{const c=cntStats(E);return c.hn||c.sn?`<p style="margin:0">${c.hn?t("sumHF",{a:r1(c.ha),n:c.hn,t:c.ht}):""}${c.hn&&c.sn?"<br>":""}${c.sn?t("sumSl",{a:r1(c.sa),n:c.sn}):""}</p>`:`<p class="muted" style="margin:0">${t("noCnt")}</p>`})()}
+ ${v6Sum(E,ds)}
  <div class="lbl">${t("qs")}</div><div class="qwrap">${qHTML(true)}</div>
  <p class="muted" style="margin-top:12px;font-size:11px">${t("footer")}</p>`
  :`<p class="muted">${t("noMonth")}</p>`;
@@ -621,6 +622,7 @@ function renderLetter(){
  <p>${t("L_ss",{s:r1(avg(E.map(e=>e.s.sleep||0))),t:sv.length?r1(avg(sv)):"–"})}</p>
  ${pats.length?`<p style="margin-bottom:4px">${t("L_pats")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
  ${(()=>{const c=cntStats(E);return (c.hn?`<p>${t("L_cnt",{a:r1(c.ha),n:c.hn})}</p>`:"")+(c.sn?`<p>${t("L_slh",{a:r1(c.sa),n:c.sn})}</p>`:"")})()}
+ ${v6Let(E,ds)}
  <div class="qwrap">${qHTML(false)}</div>
  <p>${t("L_ask")}</p><p>${t("L_note")}</p>
  <p>${t("L_close")}<br>${me?esc(me):"<span style='display:inline-block;width:180px;border-bottom:1px solid #c9d2c6;height:20px'></span>"}</p>
@@ -683,9 +685,9 @@ $("icsBtn").onclick=()=>{const [h,mi]=(S.remT||$("remTime").value||"20:30").spli
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.download="peri-tracker-reminder.ics";document.body.appendChild(a);a.click();a.remove()};
 
 // ---------- CSV
-const COLS=["date",...SYMK,"stress","bleeding","triggers","meds","notes","hot_flash_count","sleep_hours"];
+const COLS=["date",...SYMK,"stress","bleeding","triggers","meds","notes","hot_flash_count","sleep_hours","exercise_type","exercise_minutes","treatment_started","mrs_items"];
 const q=v=>{v=String(v??"");return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-$("expCsv").onclick=()=>{const ds=Object.keys(S.e).sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d];return[d,...SYMK.map(k=>e.s[k]??""),e.st??"",e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes,e.hf??"",e.hs??""].map(q).join(",")})].join("\n");
+$("expCsv").onclick=()=>{const ds=[...new Set([...Object.keys(S.e),...(S.hrt||[]).map(h=>h.d),...(S.mrs||[]).map(m=>m.d)])].sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d]||{s:{},bleed:"none",trig:[],meds:[],notes:""};return[d,...SYMK.map(k=>e.s[k]??""),e.st??"",e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes,e.hf??"",e.hs??"",e.ex?e.ex.t:"",e.ex&&e.ex.m?e.ex.m:"",(S.hrt||[]).filter(h=>h.d===d).map(h=>h.x+(h.dose?" | "+h.dose:"")).join(";"),(S.mrs||[]).filter(m=>m.d===d).map(m=>m.a.join(" ")).join("")].map(q).join(",")})].join("\n");
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="peri-tracker-backup-"+today()+".csv";document.body.appendChild(a);a.click();a.remove();toast(t("backupDl"))};
 function parseCSV(x){const rows=[];let r=[],f="",i=0,qd=false;for(;i<x.length;i++){const c=x[i];if(qd){if(c=='"'){if(x[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&x[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
 $("impBtn").onclick=()=>$("impFile").click();
@@ -693,8 +695,11 @@ $("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then
  rows.forEach(r=>{if(!/^\d{4}-\d\d-\d\d$/.test(r[0]))return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:o.bleeding||"none",trig:o.triggers?o.triggers.split(";"):[],meds:o.meds?o.meds.split(";"):[],notes:o.notes||""};
   if(o.hot_flash_count!=null&&o.hot_flash_count!==""&&!isNaN(+o.hot_flash_count))e.hf=Math.max(0,Math.min(99,Math.round(+o.hot_flash_count)));
   if(o.sleep_hours!=null&&o.sleep_hours!==""&&!isNaN(+o.sleep_hours))e.hs=Math.max(0,Math.min(14,Math.round(+o.sleep_hours*2)/2));
+  if(o.exercise_type&&["none","walk","strength","yoga","cardio"].includes(o.exercise_type))e.ex={t:o.exercise_type,m:+o.exercise_minutes>0?Math.min(600,Math.round(+o.exercise_minutes)):null};
+  if(o.treatment_started){S.hrt=S.hrt||[];o.treatment_started.split(";").forEach((x,j)=>{const [nm,ds]=x.split(" | ");if(nm&&!S.hrt.some(h=>h.d===o.date&&h.x===nm))S.hrt.push({id:o.date+j+Math.random().toString(36).slice(2,6),d:o.date,x:nm.slice(0,80),dose:(ds||"").slice(0,40)})})}
+  if(o.mrs_items){const a=o.mrs_items.trim().split(/\s+/).map(Number);if(a.length===11&&a.every(v=>v>=0&&v<=4&&Number.isInteger(v))){S.mrs=(S.mrs||[]).filter(m=>m.d.slice(0,7)!==o.date.slice(0,7));S.mrs.push({d:o.date,a})}}
   if(o.stress!=null&&o.stress!=="")e.st=Math.max(0,Math.min(3,+o.stress||0));
-  SYMK.forEach(k=>{if(o[k]!=null&&o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(!S.meds.includes(m))S.meds.push(m)});S.e[o.date]=e;n++});
+  SYMK.forEach(k=>{if(o[k]!=null&&o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(!S.meds.includes(m))S.meds.push(m)});if(!Object.keys(e.s).length&&e.bleed==="none"&&!e.notes&&e.hf==null&&e.hs==null&&!e.ex&&e.st==null&&!e.trig.length&&!e.meds.length)return;S.e[o.date]=e;n++});
  persist();toast(t("imported",{n}));ev.target.value=""})};
 
 // ---------- demo / clear
@@ -709,8 +714,140 @@ $("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm(t("demoMix")))ret
   if(rnd()<.12&&i!==0&&i%3===0)continue;
   S.e[d]={s,hf:Math.max(0,Math.round(s.hot*2.2+rnd()*2-.5)),hs:Math.max(3.5,Math.min(9,Math.round((7.6-s.sleep*.9+rnd()*.8-.4)*2)/2)),st:c((str?2.3:.7)+rnd()-.5),bleed,trig:tg,meds:rnd()<.8?["Magnesium"]:[],notes:i==12?(LANG==="he"?"התעוררתי 3 פעמים מהזעות":"Woke up 3x with sweats"):i==4?(LANG==="he"?"הרגשתי הרבה יותר רגועה אחרי הליכה":"Felt much calmer after a walk"):""}}
  for(let i=0;i<9;i++)S.e[addD(today(),-i)]=S.e[addD(today(),-i)]||S.e[addD(today(),-i-14)];
+ {let sd=11;const rr=()=>(sd=(sd*16807)%2147483647)/2147483647,TY=["walk","walk","yoga","strength","cardio"];Object.keys(S.e).forEach(d=>{const e=S.e[d];if(e.trig.includes("exercise"))e.ex={t:TY[Math.floor(rr()*5)],m:[10,20,30,30,45][Math.floor(rr()*5)]};else if(rr()<.5)e.ex={t:"none",m:0}});
+  const hd=addD(today(),-29);S.hrt=(S.hrt||[]).filter(h=>!h.demo);S.hrt.push({id:"demo1",demo:1,d:hd,x:LANG==="he"?"מדבקת אסטרדיול":"Estradiol patch",dose:"50 mcg"});
+  const mo=k=>addD(today(),-k);S.mrs=[{d:mo(58),a:[3,1,3,2,2,2,3,2,1,2,2]},{d:mo(28),a:[3,1,3,2,1,2,2,2,1,2,2]},{d:today(),a:[2,0,2,1,1,1,2,2,1,1,2]}]}
  persist();toast(t("demoOk"));show("insights")};
 $("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){S={onb:true,e:{},meds:["Magnesium","Vitamin D"],lang:S.lang,remOn:S.remOn,remT:S.remT,dr:S.dr,me:S.me};persist();toast(t("cleared"));show("today")}};
+
+// ---------- v6: movement, breathing, treatment/HRT, MRS
+Object.assign(I18N.en,{moveT:"Movement today",exNone:"None",exWalk:"Walk",exStrength:"Strength",exYoga:"Yoga / stretch",exCardio:"Cardio",exMin:"Minutes",rtBtn:"Gentle 5–10 min routines",
+rtT:"Gentle routines",rtNote:"Go at your own pace and stop if anything hurts or feels wrong. If you have a health condition or are new to exercise, check with your doctor first. Educational, not medical advice.",rtDone:"I did this today",rtLogged:"Added to today's movement",
+hfNow:"Hot flash now? Breathe with me",brT:"Slow breathing",brIn:"Breathe in",brOut:"Breathe out",brLog:"Also add 1 to today's hot-flash count",brStart:"Start (2 min)",brStop:"Stop",brDone:"Done. Well done for pausing.",brSub:"In for 4, out for 6. Shoulders soft. About 2 minutes.",brLeft:"{s}s left",brLogged:"Hot flash added to today",
+hrtT:"Treatment / HRT",hrtSub:"Log when you start something new (e.g. HRT, a supplement, a prescription). Insights will compare 4 weeks before and after.",hrtStart:"Start date",hrtType:"What (e.g. estradiol patch)",hrtDose:"Dose (optional)",hrtAdd:"Add treatment",hrtNone:"No treatments logged yet.",hrtDel:"Remove this treatment?",hrtNeedType:"Please write what the treatment is",
+hwT:"Is it working?",hwSub:"4 weeks before vs the first 4 weeks after you started {x} ({d}).",hwNeed:"Not enough data yet. This needs at least 7 logged days in the 4 weeks before and 7 in the 4 weeks after {x} ({d}). So far: {b} before, {a} after.",hwNo:"Log a treatment in Settings → Treatment / HRT to see a before/after comparison here.",hwCol:"",hwBefore:"Before",hwAfter:"After",hwLoad:"Overall symptom load",hwHF:"Hot flashes a day",hwSleep:"Sleep trouble (0–3)",hwMood:"Low mood (0–3)",hwNote:"This is a simple before/after average, not proof that the treatment caused the change. Many things shift over time. Discuss it with your doctor before changing anything.",
+mrsT:"Monthly self-check (MRS)",mrsSub:"The Menopause Rating Scale: 11 questions, about 2 minutes, once a month. A self-check to track change, not a diagnosis.",mrsGo:"Take this month's self-check",mrsAgain:"Retake this month's check",mrsDue:"This month's check is not done yet.",mrsDoneM:"Done this month: score {s} of 44.",mrsQ:"Over the past few weeks, how much has each of these bothered you?",mrsSave:"Save self-check",mrsNeed:"Please answer all 11 questions",mrsSaved:"Self-check saved",
+mrsLv:["None","Mild","Moderate","Severe","Very severe"],mrsItems:["Hot flushes, sweating","Heart discomfort (racing, skipping, tightness)","Sleep problems","Depressive mood (down, sad, close to tears)","Irritability (nervous, aggressive)","Anxiety (restless, panicky)","Physical and mental exhaustion (less able to do things, poor memory, concentration)","Sexual problems (less desire, activity or satisfaction)","Bladder problems (passing urine, leaking)","Vaginal dryness (dryness, burning, pain with sex)","Joint and muscle discomfort"],
+mrsTot:"Total",mrsSom:"Body",mrsPsy:"Mood & mind",mrsUro:"Bladder & vaginal",mrsTrend:"Score over time (lower = fewer complaints)",mrsNoData:"No self-checks yet.",mrsNote:"Self-check only, not a diagnosis. Scores go from 0 to 44. Share changes with your doctor.",
+mvT:"Movement and how you feel",mvNeed:"Not enough data yet to compare. This needs at least 5 days with movement and 5 without in the last 90 days. So far: {m} with, {n} without.",mvSub:"Averages on days you moved ({m} days) vs days you didn't ({n} days), last 90 days.",mvMove:"Moved",mvRest:"Didn't",mvNote:"A pattern in your own data, not proof of cause. Days you move may differ in other ways too.",
+sumMove:"Movement",sumMoveL:"Moved on {m} of {n} logged days, about {a} min on those days.",sumMoveTypes:"Types: {x}",sumNoMove:"No movement logged.",sumHrt:"Treatments / HRT",sumMrs:"Monthly self-check (MRS)",sumMrsL:"{d}: total {s}/44 (body {a}, mood & mind {b}, bladder & vaginal {c})",
+L_move:"I logged movement (walking, strength, yoga or cardio) on {m} of {n} days, about {a} minutes on those days.",L_hrt:"Treatments I have logged:",L_hrtItem:"{x}{dose}, started {d}",L_hw:"In the 4 weeks before vs after starting {x}, my average symptom load was {b} vs {a} and hot flashes a day {hb} vs {ha}.",L_mrs:"My Menopause Rating Scale self-check scores (0–44, self-reported):"});
+Object.assign(I18N.he,{moveT:"תנועה היום",exNone:"בלי",exWalk:"הליכה",exStrength:"כוח",exYoga:"יוגה / מתיחות",exCardio:"אירובי",exMin:"דקות",rtBtn:"שגרות עדינות של 5–10 דקות",
+rtT:"שגרות עדינות",rtNote:"בקצב שלך, ועצרי אם משהו כואב או מרגיש לא נכון. אם יש לך מצב רפואי או שאת חדשה בפעילות גופנית, התייעצי קודם עם הרופא/ה. מידע כללי, לא ייעוץ רפואי.",rtDone:"עשיתי את זה היום",rtLogged:"נוסף לתנועה של היום",
+hfNow:"גל חום עכשיו? בואי ננשום",brT:"נשימה איטית",brIn:"שאיפה",brOut:"נשיפה",brLog:"להוסיף גם 1 לספירת גלי החום של היום",brStart:"התחלה (2 דק׳)",brStop:"עצירה",brDone:"סיימת. כל הכבוד שעצרת לרגע.",brSub:"שאיפה ל-4, נשיפה ל-6. כתפיים רפויות. בערך 2 דקות.",brLeft:"נותרו {s} שנ׳",brLogged:"גל חום נוסף להיום",
+hrtT:"טיפול / הורמונים",hrtSub:"רשמי מתי התחלת משהו חדש (למשל טיפול הורמונלי, תוסף, מרשם). התובנות ישוו 4 שבועות לפני ואחרי.",hrtStart:"תאריך התחלה",hrtType:"מה (למשל מדבקת אסטרדיול)",hrtDose:"מינון (לא חובה)",hrtAdd:"הוספת טיפול",hrtNone:"עדיין לא נרשמו טיפולים.",hrtDel:"למחוק את הטיפול הזה?",hrtNeedType:"נא לכתוב מהו הטיפול",
+hwT:"האם זה עוזר?",hwSub:"4 שבועות לפני מול 4 השבועות הראשונים אחרי שהתחלת {x} ({d}).",hwNeed:"עדיין אין מספיק נתונים. צריך לפחות 7 ימים רשומים ב-4 השבועות שלפני ו-7 ב-4 השבועות שאחרי {x} ({d}). עד עכשיו: {b} לפני, {a} אחרי.",hwNo:"רשמי טיפול בהגדרות ← טיפול / הורמונים כדי לראות כאן השוואה של לפני ואחרי.",hwCol:"",hwBefore:"לפני",hwAfter:"אחרי",hwLoad:"עומס תסמינים כללי",hwHF:"גלי חום ביום",hwSleep:"קשיי שינה (0–3)",hwMood:"מצב רוח ירוד (0–3)",hwNote:"זו השוואת ממוצעים פשוטה של לפני ואחרי, לא הוכחה שהטיפול גרם לשינוי. הרבה דברים משתנים עם הזמן. שוחחי עם הרופא/ה לפני שמשנים משהו.",
+mrsT:"בדיקה עצמית חודשית (MRS)",mrsSub:"סולם דירוג גיל המעבר: 11 שאלות, כ-2 דקות, פעם בחודש. בדיקה עצמית למעקב אחרי שינוי, לא אבחנה.",mrsGo:"לבדיקה העצמית של החודש",mrsAgain:"לעשות שוב את בדיקת החודש",mrsDue:"הבדיקה של החודש עוד לא נעשתה.",mrsDoneM:"נעשתה החודש: ציון {s} מתוך 44.",mrsQ:"בשבועות האחרונים, כמה הפריע לך כל אחד מאלה?",mrsSave:"שמירת הבדיקה",mrsNeed:"נא לענות על כל 11 השאלות",mrsSaved:"הבדיקה נשמרה",
+mrsLv:["בכלל לא","קל","בינוני","חמור","חמור מאוד"],mrsItems:["גלי חום, הזעה","אי נוחות בלב (דופק מהיר, דילוגים, לחץ)","בעיות שינה","מצב רוח דיכאוני (ירוד, עצוב, על סף בכי)","עצבנות (מתח, תוקפנות)","חרדה (חוסר מנוחה, בהלה)","תשישות גופנית ונפשית (פחות כוח, זיכרון וריכוז חלשים)","בעיות מיניות (פחות חשק, פעילות או סיפוק)","בעיות בשלפוחית (במתן שתן, דליפה)","יובש בנרתיק (יובש, צריבה, כאב ביחסים)","אי נוחות במפרקים ובשרירים"],
+mrsTot:"סה״כ",mrsSom:"גוף",mrsPsy:"מצב רוח ונפש",mrsUro:"שלפוחית ונרתיק",mrsTrend:"הציון לאורך זמן (נמוך יותר = פחות תלונות)",mrsNoData:"עדיין אין בדיקות עצמיות.",mrsNote:"בדיקה עצמית בלבד, לא אבחנה. הציון בין 0 ל-44. שתפי שינויים עם הרופא/ה.",
+mvT:"תנועה ואיך את מרגישה",mvNeed:"עדיין אין מספיק נתונים להשוואה. צריך לפחות 5 ימים עם תנועה ו-5 בלי ב-90 הימים האחרונים. עד עכשיו: {m} עם, {n} בלי.",mvSub:"ממוצעים בימים שזזת ({m} ימים) מול ימים שלא ({n} ימים), 90 הימים האחרונים.",mvMove:"עם תנועה",mvRest:"בלי",mvNote:"דפוס בנתונים שלך, לא הוכחה לסיבה. ימים עם תנועה יכולים להיות שונים גם בדברים אחרים.",
+sumMove:"תנועה",sumMoveL:"תנועה ב-{m} מתוך {n} ימים רשומים, בערך {a} דק׳ בימים האלה.",sumMoveTypes:"סוגים: {x}",sumNoMove:"לא נרשמה תנועה.",sumHrt:"טיפולים / הורמונים",sumMrs:"בדיקה עצמית חודשית (MRS)",sumMrsL:"{d}: סה״כ {s}/44 (גוף {a}, מצב רוח ונפש {b}, שלפוחית ונרתיק {c})",
+L_move:"רשמתי תנועה (הליכה, כוח, יוגה או אירובי) ב-{m} מתוך {n} ימים, בערך {a} דקות בימים האלה.",L_hrt:"טיפולים שרשמתי:",L_hrtItem:"{x}{dose}, התחלה {d}",L_hw:"ב-4 השבועות שלפני מול אחרי התחלת {x}, עומס התסמינים הממוצע שלי היה {b} מול {a}, וגלי חום ביום {hb} מול {ha}.",L_mrs:"ציוני הבדיקה העצמית שלי בסולם דירוג גיל המעבר (0–44, דיווח עצמי):"});
+const RT={en:[["Gentle stretch","8 min",["Neck: slowly tilt ear to shoulder, 3 breaths each side.","Shoulder rolls: 10 backwards, 10 forwards.","Cat–cow on hands and knees (or seated): 8 slow rounds.","Seated forward fold: sit tall, hinge forward, hold 5 breaths.","Chest opener: hands clasped behind you, lift gently, 5 breaths.","Calf stretch against a wall: 30 seconds each leg."]],
+["Strength basics","10 min",["Sit-to-stand from a chair: 10 times, slow.","Wall push-ups: 10 times.","Glute bridge on the floor: 10 times, pause at the top.","Calf raises holding a chair: 15 times.","Rest 1 minute, then repeat the whole round once more."]],
+["Balance","6 min",["Stand next to a chair or counter for support.","Stand on one foot for 20–30 seconds, then switch. 2 rounds.","Heel-to-toe walk: 10 steps forward, 10 back.","Side leg lifts: 10 each side, standing tall.","Finish with 3 slow breaths."]],
+["Calm breathing","5 min",["Sit or lie down comfortably.","Breathe in through your nose for 4.","Breathe out slowly through your mouth for 6.","Repeat for about 5 minutes. If you feel dizzy, breathe normally.","End by noticing your feet, hands and shoulders."]]],
+he:[["מתיחות עדינות","8 דק׳",["צוואר: הטי לאט אוזן לכתף, 3 נשימות לכל צד.","גלגולי כתפיים: 10 אחורה, 10 קדימה.","חתול–פרה על ארבע (או בישיבה): 8 סבבים איטיים.","כפיפה קדימה בישיבה: שבי זקופה, התכופפי קדימה, 5 נשימות.","פתיחת חזה: ידיים שלובות מאחור, הרימי בעדינות, 5 נשימות.","מתיחת שוקיים מול קיר: 30 שניות לכל רגל."]],
+["כוח בסיסי","10 דק׳",["קימה מכיסא וישיבה: 10 פעמים, לאט.","שכיבות סמיכה מול קיר: 10 פעמים.","גשר אגן על הרצפה: 10 פעמים, עצירה למעלה.","עלייה על קצות האצבעות עם אחיזה בכיסא: 15 פעמים.","מנוחה של דקה, ואז עוד סבב אחד."]],
+["שיווי משקל","6 דק׳",["עמדי ליד כיסא או שיש לתמיכה.","עמידה על רגל אחת 20–30 שניות, ואז החלפה. 2 סבבים.","הליכת עקב-בוהן: 10 צעדים קדימה, 10 אחורה.","הרמת רגל לצד: 10 לכל צד, בעמידה זקופה.","סיום ב-3 נשימות איטיות."]],
+["נשימה מרגיעה","5 דק׳",["שבי או שכבי בנוחות.","שאיפה דרך האף ל-4.","נשיפה איטית דרך הפה ל-6.","חזרה במשך כ-5 דקות. אם יש סחרחורת, נשמי רגיל.","סיום בתשומת לב לכפות הרגליים, הידיים והכתפיים."]]]};
+const RT_T=["yoga","strength","yoga","yoga"],RT_M=[8,10,6,5];
+const EXK=["none","walk","strength","yoga","cardio"],EXN=k=>t("ex"+k[0].toUpperCase()+k.slice(1)),EXMIN=[5,10,15,20,30,45,60];
+const moved=e=>!!e&&((e.ex&&e.ex.t&&e.ex.t!=="none")||(e.trig||[]).includes("exercise"));
+const restDay=e=>!!e&&!moved(e);
+(function(){const st=document.createElement("style");st.textContent=`.sheet h4{margin:12px 0 4px}.sheet ol{padding-inline-start:20px;margin:4px 0}.sheet li{margin:3px 0;font-size:14px}
+.br{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0}.br .c{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#dfe7dc,#6f8a6e);transform:scale(.55);transition:transform 4s ease-in-out;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:600;text-align:center}
+.mrsq{padding:8px 0;border-bottom:1px solid #eef1ec}.mrsq p{margin:0 0 6px;font-size:14px}.mrsq .seg button{font-size:11px;padding:6px 2px}
+.cmp{width:100%;border-collapse:collapse;font-size:13.5px}.cmp td,.cmp th{padding:6px 4px;border-bottom:1px solid #eef1ec;text-align:center}.cmp td:first-child,.cmp th:first-child{text-align:start}
+.hrtl{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #eef1ec;font-size:14px}.hrtl button{border:0;background:none;color:var(--mute);font-size:18px}
+.hfnow{background:var(--roseL);color:var(--ink);border:0;margin-top:10px}`;document.head.appendChild(st)})();
+// --- HTML injection
+(function(){const ins=(sel,pos,html)=>document.querySelector(sel).insertAdjacentHTML(pos,html);
+ ins("#cntRow","afterend",`<button class="btn block hfnow" id="hfNow" data-t="hfNow"></button>`);
+ $("cntRow").closest(".card").insertAdjacentHTML("afterend",`<div class="card"><h3 data-t="moveT"></h3><div class="chips" id="exT"></div><div id="exMW" style="margin-top:8px"><small class="muted" data-t="exMin"></small><div class="chips" id="exM" style="margin-top:4px"></div></div><button class="btn ghost block" id="rtBtn" data-t="rtBtn" style="padding:8px;margin-top:6px"></button></div>`);
+ $("corr").closest(".card").insertAdjacentHTML("afterend",`<div class="card"><h3 data-t="hwT"></h3><div id="hwBox"></div></div><div class="card"><h3 data-t="mvT"></h3><div id="mvBox"></div></div><div class="card"><h3 data-t="mrsT"></h3><p class="muted" style="margin-top:0" data-t="mrsSub"></p><div id="mrsBox"></div><button class="btn block" id="mrsBtn"></button><p class="muted" data-t="mrsNote"></p></div>`);
+ $("instBtn").closest(".card").insertAdjacentHTML("beforebegin",`<div class="card"><h3 data-t="hrtT"></h3><p class="muted" style="margin-top:0" data-t="hrtSub"></p><div id="hrtList"></div>
+  <label class="muted" for="hrtD" data-t="hrtStart"></label><input type="date" id="hrtD"><input type="text" id="hrtX" data-p="hrtType" style="margin-top:6px"><input type="text" id="hrtDo" data-p="hrtDose" style="margin-top:6px"><button class="btn alt block" id="hrtAdd" data-t="hrtAdd"></button></div>`);
+ document.body.insertAdjacentHTML("beforeend",`<div id="sheet" class="modal hide"><div class="box sheet"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 id="shT" style="margin:0"></h2><button id="shX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><div id="shB"></div></div></div>`);
+})();
+function openSheet(title,html){$("shT").textContent=title;$("shB").innerHTML=html;$("sheet").classList.remove("hide")}
+function closeSheet(){brStop();$("sheet").classList.add("hide")}
+$("shX").onclick=closeSheet;$("sheet").onclick=ev=>{if(ev.target.id==="sheet")closeSheet()};
+// --- movement on Today
+function renderMove(){const e=S.e[cur]||{},x=e.ex||{};
+ $("exT").innerHTML=EXK.map(k=>`<button class="chip ${x.t===k?"on":""}" data-k="${k}">${EXN(k)}</button>`).join("");
+ $("exMW").classList.toggle("hide",!x.t||x.t==="none");
+ $("exM").innerHTML=EXMIN.map(m=>`<button class="chip ${x.m===m?"on":""}" data-m="${m}">${m}</button>`).join("")}
+const _rToday=renderToday;renderToday=function(){_rToday();renderMove()};
+$("exT").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.ex=e.ex&&e.ex.t===k?undefined:{t:k,m:k==="none"?0:(e.ex&&e.ex.m)||null};if(!e.ex)delete e.ex;persist();renderToday()};
+$("exM").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur);if(!e.ex)return;e.ex.m=e.ex.m===+b.dataset.m?null:+b.dataset.m;persist();renderToday()};
+$("rtBtn").onclick=()=>{const R=RT[LANG]||RT.en;openSheet(t("rtT"),`<div class="disc" style="font-size:13px">${t("rtNote")}</div>`+R.map((r,i)=>`<h4>${r[0]} <span class="muted">· ${r[1]}</span></h4><ol>${r[2].map(s=>`<li>${s}</li>`).join("")}</ol><button class="btn alt block rtDo" data-i="${i}" style="padding:8px">${t("rtDone")}</button>`).join(""))};
+$("shB").addEventListener("click",ev=>{const b=ev.target.closest(".rtDo");if(!b)return;const i=+b.dataset.i,e=entry(cur);const m=((e.ex&&e.ex.t!=="none"&&e.ex.m)||0)+RT_M[i];e.ex={t:e.ex&&e.ex.t&&e.ex.t!=="none"?e.ex.t:RT_T[i],m};persist();toast(t("rtLogged"));renderToday()});
+// --- breathing
+let brT=null,brEnd=0;
+function brStop(){clearInterval(brT);brT=null}
+$("hfNow").onclick=()=>{openSheet(t("brT"),`<p class="muted" style="margin:4px 0 0">${t("brSub")}</p><div class="br"><div class="c" id="brC">${t("brIn")}</div><b id="brL"></b></div>
+ <label style="display:flex;gap:8px;align-items:center;margin:6px 0"><input type="checkbox" id="brLog" checked style="width:20px;height:20px"><span>${t("brLog")}</span></label><button class="btn block" id="brGo">${t("brStart")}</button>`);
+ $("brGo").onclick=()=>{if(brT){brStop();closeSheet();return}
+  if($("brLog").checked){const e=entry(today());e.hf=Math.min(99,(e.hf||0)+1);persist();toast(t("brLogged"));if(cur===today())renderToday()}
+  $("brLog").disabled=true;$("brGo").textContent=t("brStop");$("brGo").className="btn alt block";brEnd=Date.now()+120000;let ph=-1;
+  const tick=()=>{const left=Math.max(0,Math.ceil((brEnd-Date.now())/1000)),c=$("brC");if(!c){brStop();return}
+   if(left<=0){brStop();c.style.transition="transform 1s";c.style.transform="scale(.7)";c.textContent="✓";$("brL").textContent=t("brDone");$("brGo").textContent="OK";$("brGo").onclick=closeSheet;return}
+   const pos=(120-left)%10,np=pos<4?0:1;if(np!==ph){ph=np;c.style.transition=`transform ${np?6:4}s ease-in-out`;c.style.transform=np?"scale(.55)":"scale(1)"}
+   c.textContent=np?`${t("brOut")} ${10-pos}`:`${t("brIn")} ${4-pos}`;$("brL").textContent=t("brLeft",{s:left})};
+  tick();brT=setInterval(tick,1000)}};
+// --- treatments
+function renderHrt(){const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if(!$("hrtD").value)$("hrtD").value=today();
+ $("hrtList").innerHTML=H.length?H.map(h=>`<div class="hrtl"><span><b>${esc(h.x)}</b>${h.dose?" · "+esc(h.dose):""}<br><small class="muted">${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}</small></span><button data-id="${h.id}" aria-label="Remove">×</button></div>`).join(""):`<p class="muted">${t("hrtNone")}</p>`}
+$("hrtAdd").onclick=()=>{const x=$("hrtX").value.trim(),d=$("hrtD").value||today();if(!x){toast(t("hrtNeedType"));return}
+ (S.hrt=S.hrt||[]).push({id:Date.now().toString(36),d,x:x.slice(0,80),dose:$("hrtDo").value.trim().slice(0,40)});persist();$("hrtX").value="";$("hrtDo").value="";renderHrt()};
+$("hrtList").onclick=ev=>{const b=ev.target.closest("button");if(!b||!confirm(t("hrtDel")))return;S.hrt=(S.hrt||[]).filter(h=>h.id!==b.dataset.id);persist();renderHrt()};
+const _rSet=renderInstStat;renderInstStat=function(){_rSet();renderHrt()};
+function hrtWork(h){const b=[],a=[];for(let i=1;i<=28;i++){const x=addD(h.d,-i);if(S.e[x])b.push(S.e[x])}for(let i=0;i<28;i++){const x=addD(h.d,i);if(x<=today()&&S.e[x])a.push(S.e[x])}
+ const hf=E=>{const z=E.filter(e=>e.hf!=null);return z.length?avg(z.map(e=>e.hf)):null};
+ return{b,a,ok:b.length>=7&&a.length>=7,lb:avg(b.map(load_)),la:avg(a.map(load_)),hb:hf(b),ha:hf(a),sb:avg(b.map(e=>e.s.sleep||0)),sa:avg(a.map(e=>e.s.sleep||0)),mb:avg(b.map(e=>e.s.mood||0)),ma:avg(a.map(e=>e.s.mood||0))}}
+const cmpT=(c1,c2,rows)=>`<table class="cmp"><tr><th></th><th>${c1}</th><th>${c2}</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]==null?"–":r1(r[1])}</td><td>${r[2]==null?"–":r1(r[2])}</td></tr>`).join("")}</table>`;
+// --- MRS
+const MRS_G=[[0,1,2,10],[3,4,5,6],[7,8,9]];
+const mrsSc=a=>({s:a.reduce((x,y)=>x+y,0),g:MRS_G.map(g=>g.reduce((x,i)=>x+a[i],0))});
+function mrsList(){return (S.mrs||[]).slice().sort((a,b)=>a.d<b.d?-1:1)}
+let mrsA=[];
+$("v-insights").addEventListener("click",ev=>{if(ev.target.id==="mrsBtn"){const m=mrsList().find(x=>x.d.slice(0,7)===today().slice(0,7));mrsA=m?m.a.slice():Array(11).fill(null);renderMrsForm()}});
+function renderMrsForm(){const lv=L().mrsLv;openSheet(t("mrsT"),`<p class="muted" style="margin:4px 0">${t("mrsQ")}</p><p class="muted" style="margin:0 0 6px;font-size:12px">${lv.map((x,i)=>i+" = "+x).join(" · ")}</p>`+
+ L().mrsItems.map((q,i)=>`<div class="mrsq"><p>${i+1}. ${q}</p><div class="seg" data-i="${i}">${[0,1,2,3,4].map(v=>`<button data-v="${v}" class="${mrsA[i]===v?"on":""}" aria-label="${lv[v]}">${v}</button>`).join("")}</div></div>`).join("")+
+ `<button class="btn block" id="mrsSave" style="margin-top:10px">${t("mrsSave")}</button><p class="muted" style="font-size:12px">${t("mrsNote")}</p>`)}
+$("shB").addEventListener("click",ev=>{const b=ev.target.closest(".mrsq .seg button");if(b){mrsA[+b.parentNode.dataset.i]=+b.dataset.v;b.parentNode.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));return}
+ if(ev.target.id==="mrsSave"){if(mrsA.some(v=>v==null)){toast(t("mrsNeed"));return}const mo=today().slice(0,7);S.mrs=(S.mrs||[]).filter(x=>x.d.slice(0,7)!==mo);S.mrs.push({d:today(),a:mrsA.slice()});persist();toast(t("mrsSaved"));closeSheet();renderInsights()}});
+function mrsChart(M){if(M.length<2)return"";const W=300,H=90,mx=44,n=M.length,px=i=>20+i*(W-40)/(n-1),py=v=>10+(1-v/mx)*(H-30);
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" direction="ltr"><polyline fill="none" stroke="#6f8a6e" stroke-width="2.5" points="${M.map((m,i)=>px(i)+","+py(mrsSc(m.a).s)).join(" ")}"/>${M.map((m,i)=>`<circle cx="${px(i)}" cy="${py(mrsSc(m.a).s)}" r="4" fill="#c98b8b"/><text x="${px(i)}" y="${py(mrsSc(m.a).s)-8}" font-size="10" text-anchor="middle" fill="#3c4a3b">${mrsSc(m.a).s}</text><text x="${px(i)}" y="${H-4}" font-size="9" text-anchor="middle" fill="#7a8679">${new Date(m.d+"T12:00:00").toLocaleDateString(LOC(),{month:"short"})}</text>`).join("")}</svg>`}
+// --- insights additions
+function mvStats(ds){const M=ds.filter(d=>moved(S.e[d])).map(d=>S.e[d]),N=ds.filter(d=>restDay(S.e[d])).map(d=>S.e[d]);const hf=E=>{const z=E.filter(e=>e.hf!=null);return z.length?avg(z.map(e=>e.hf)):null};
+ return{M,N,ok:M.length>=5&&N.length>=5,rows:[[t("hwSleep"),avg(M.map(e=>e.s.sleep||0)),avg(N.map(e=>e.s.sleep||0))],[t("hwMood"),avg(M.map(e=>e.s.mood||0)),avg(N.map(e=>e.s.mood||0))],[t("hwHF"),hf(M),hf(N)]]}}
+const _rIns=renderInsights;renderInsights=function(){_rIns();
+ const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),h=H[H.length-1];
+ if(!h)$("hwBox").innerHTML=`<p class="muted">${t("hwNo")}</p>`;else{const w=hrtWork(h),nm=esc(h.x),dd=fmt(h.d,{day:"numeric",month:"short"});
+  $("hwBox").innerHTML=w.ok?`<p class="muted" style="margin-top:0">${t("hwSub",{x:nm,d:dd})}</p>`+cmpT(t("hwBefore")+` (${w.b.length})`,t("hwAfter")+` (${w.a.length})`,[[t("hwLoad"),w.lb,w.la],[t("hwHF"),w.hb,w.ha],[t("hwSleep"),w.sb,w.sa],[t("hwMood"),w.mb,w.ma]])+`<p class="muted" style="font-size:12px">${t("hwNote")}</p>`
+   :`<p class="muted">${t("hwNeed",{x:nm,d:dd,b:w.b.length,a:w.a.length})}</p>`}
+ const mv=mvStats(days(90).filter(d=>S.e[d]));
+ $("mvBox").innerHTML=mv.ok?`<p class="muted" style="margin-top:0">${t("mvSub",{m:mv.M.length,n:mv.N.length})}</p>`+cmpT(t("mvMove"),t("mvRest"),mv.rows)+`<p class="muted" style="font-size:12px">${t("mvNote")}</p>`:`<p class="muted">${t("mvNeed",{m:mv.M.length,n:mv.N.length})}</p>`;
+ const M=mrsList(),last=M[M.length-1],thisM=last&&last.d.slice(0,7)===today().slice(0,7);
+ $("mrsBox").innerHTML=(M.length?`<p style="margin:0 0 4px">${thisM?t("mrsDoneM",{s:mrsSc(last.a).s}):t("mrsDue")}</p>`+(M.length>1?`<small class="muted">${t("mrsTrend")}</small>`+mrsChart(M.slice(-6)):"")+
+  `<table class="cmp" style="margin-top:6px"><tr><th></th><th>${t("mrsTot")}</th><th>${t("mrsSom")}</th><th>${t("mrsPsy")}</th><th>${t("mrsUro")}</th></tr>${M.slice(-3).reverse().map(m=>{const s=mrsSc(m.a);return`<tr><td>${fmt(m.d,{day:"numeric",month:"short"})}</td><td><b>${s.s}</b></td><td>${s.g[0]}</td><td>${s.g[1]}</td><td>${s.g[2]}</td></tr>`}).join("")}</table>`:`<p class="muted">${t("mrsNoData")} ${t("mrsDue")}</p>`);
+ $("mrsBtn").textContent=thisM?t("mrsAgain"):t("mrsGo")};
+// --- summary / letter blocks
+function v6Move(E){const M=E.filter(moved),mins=M.map(e=>e.ex&&e.ex.m).filter(x=>x>0),ty={};M.forEach(e=>{const k=e.ex&&e.ex.t&&e.ex.t!=="none"?e.ex.t:"other";ty[k]=(ty[k]||0)+1});return{M,a:mins.length?Math.round(avg(mins)):"–",ty}}
+function v6Sum(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),mo=ds[0]?ds[0].slice(0,7):"",Mr=mrsList().filter(m=>m.d.slice(0,7)<=mo).slice(-3);
+ const tys=Object.entries(mv.ty).map(([k,n])=>`${k==="other"?TN("exercise"):EXN(k)}: ${n}`).join(" · ");
+ return `<div class="lbl">${t("sumMove")}</div><p style="margin:0">${mv.M.length?t("sumMoveL",{m:mv.M.length,n:E.length,a:mv.a})+(tys?"<br>"+t("sumMoveTypes",{x:tys}):""):t("sumNoMove")}</p>`+
+ (H.length?`<div class="lbl">${t("sumHrt")}</div><p style="margin:0">${H.map(h=>`${esc(h.x)}${h.dose?" ("+esc(h.dose)+")":""} · ${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}`).join("<br>")}</p>`:"")+
+ (Mr.length?`<div class="lbl">${t("sumMrs")}</div><p style="margin:0">${Mr.map(m=>{const s=mrsSc(m.a);return t("sumMrsL",{d:fmt(m.d,{day:"numeric",month:"short"}),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}).join("<br>")}</p>`:"")}
+function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),df=d=>new Date(d+"T12:00:00").toLocaleDateString(t("L_dateFmt"),{day:"numeric",month:"long",year:"numeric"});
+ const Mr=mrsList().filter(m=>m.d>=ds[0]);let o="";
+ if(mv.M.length)o+=`<p>${t("L_move",{m:mv.M.length,n:E.length,a:mv.a})}</p>`;
+ if(H.length){o+=`<p style="margin-bottom:4px">${t("L_hrt")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${H.map(h=>`<li>${t("L_hrtItem",{x:esc(h.x),dose:h.dose?" ("+esc(h.dose)+")":"",d:df(h.d)})}</li>`).join("")}</ul>`;
+  const w=hrtWork(H[H.length-1]);if(w.ok)o+=`<p>${t("L_hw",{x:esc(H[H.length-1].x),b:r1(w.lb),a:r1(w.la),hb:w.hb==null?"–":r1(w.hb),ha:w.ha==null?"–":r1(w.ha)})}</p>`}
+ if(Mr.length)o+=`<p style="margin-bottom:4px">${t("L_mrs")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${Mr.map(m=>{const s=mrsSc(m.a);return`<li>${t("sumMrsL",{d:df(m.d),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}</li>`}).join("")}</ul>`;
+ return o}
 
 boot();
 </script>
