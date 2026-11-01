@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en"><head>
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#8FA98B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Peri Tracker">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6f8a6e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Peri Tracker">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%236f8a6e'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%23fbf7f0'%3E%E2%9D%80%3C/text%3E%3C/svg%3E">
+<title>Perimenopause Tracker</title>
+<style>
+:root{--sage:#6f8a6e;--sageL:#dfe7dc;--rose:#c98b8b;--roseL:#f3e2df;--cream:#fbf7f0;--ink:#3c4a3b;--mute:#7a8679}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;margin:0 0 8px}
+h1{font-size:26px}h2{font-size:21px}h3{font-size:16px;color:var(--sage);margin-top:4px}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 96px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card{background:#fff;border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 1px 3px rgba(60,74,59,.08)}
+.muted{color:var(--mute);font-size:13px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-size:15px;font-weight:600;background:var(--sage);color:#fff;cursor:pointer}
+.btn.alt{background:var(--sageL);color:var(--ink)}.btn.rose{background:var(--rose)}.btn.ghost{background:transparent;color:var(--sage);border:1.5px solid var(--sage)}
+.btn.block{width:100%;margin-top:8px}
+.sym{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eee}
+.sym:last-child{border:0}.sym span{font-size:14px;flex:1}
+.seg{display:flex;gap:5px}
+.seg button{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose);background:#fff;color:var(--rose);font-weight:700;font-size:15px}
+.seg button.on[data-v="0"]{background:var(--sageL);border-color:var(--sage);color:var(--ink)}
+.seg button.on[data-v="1"]{background:var(--roseL);color:var(--ink)}
+.seg button.on[data-v="2"]{background:#dcaaa6;color:#fff}
+.seg button.on[data-v="3"]{background:var(--rose);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid var(--sage);background:#fff;color:var(--sage);border-radius:20px;padding:7px 12px;font-size:13.5px}
+.chip.on{background:var(--sage);color:#fff}
+textarea,input[type=text],select{width:100%;border:1.5px solid var(--sageL);border-radius:10px;padding:10px;font:inherit;background:#fffdf9;color:var(--ink)}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid var(--sageL);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;border:0;background:none;padding:9px 0 10px;font-size:11.5px;color:var(--mute)}
+nav button b{display:block;font-size:20px;font-weight:400}
+nav button.on{color:var(--sage);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--sageL);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px;font-family:Georgia,serif}
+.stat small{font-size:11.5px;color:var(--mute)}
+.ins{background:var(--roseL);border-left:4px solid var(--rose);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:14px}
+.ins.g{background:var(--sageL);border-color:var(--sage)}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13.5px}
+.bar span{width:120px;flex:none}.bar i{height:12px;background:var(--rose);border-radius:6px;display:block}
+.bar em{font-style:normal;color:var(--mute);font-size:12.5px}
+.tabs2{display:flex;gap:6px;margin-bottom:8px}
+.disc{background:var(--roseL);border-left:4px solid var(--rose);border-radius:10px;padding:12px;font-size:13.5px}
+.hide{display:none!important}
+.saved{position:fixed;left:50%;top:16px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;z-index:9;opacity:0;transition:.3s}
+.saved.show{opacity:1}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal div{aspect-ratio:1;border-radius:6px;font-size:10px;padding:2px;color:var(--mute);background:#fff;border:1px solid #eee}
+.cal .l1{background:var(--roseL)}.cal .l2{background:#dcaaa6;color:#fff}.cal .l3{background:var(--rose);color:#fff}.cal .bl{box-shadow:inset 0 -4px 0 #a33}
+.datebar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.datebar button{background:var(--sageL);border:0;border-radius:10px;width:40px;height:40px;font-size:18px;color:var(--ink)}
+/* summary */
+.sum{background:#fff;border-radius:12px;padding:16px;font-size:13px}
+.sum table{width:100%;border-collapse:collapse;margin:6px 0}
+.sum th{background:var(--sage);color:#fff;text-align:left;padding:5px;font-size:12px}
+.sum td{border-bottom:1px solid #e6ebe4;padding:5px;font-size:12.5px}
+.sum .hd{border-bottom:3px solid var(--sage);display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}
+.lbl{font-size:13px;font-weight:600;margin:12px 0 6px}
+@media print{
+ @page{margin:12mm}
+ body{background:#fff}
+ nav,.noprint,.saved{display:none!important}
+ .wrap{padding:0;max-width:none}
+ .view:not(#v-summary){display:none!important}
+ .sum{box-shadow:none;padding:0}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.aff{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid #eef0ea}.aff:first-of-type{border-top:0}.aff a{color:#3c4a3b;font-weight:600;text-decoration:none}.aff p{margin:2px 0;font-size:13px;color:#667}.afftag{display:inline-block;font-size:10px;background:#f3ead9;color:#7a5b20;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:600}.affdisc{font-size:11px;color:#889;margin-top:8px}</style></head>
+<body>
+<div id="toast" class="saved">Saved ✓</div>
+
+<!-- ONBOARDING -->
+<div id="onb" class="wrap hide">
+ <div style="text-align:center;padding:26px 0 8px"><div style="font-size:44px;color:var(--sage)">❀</div>
+ <h1>Perimenopause Tracker</h1><p class="muted">A 30-second daily check-in that shows your patterns and builds a summary for your doctor.</p></div>
+ <div class="card"><h3>How it works</h3>
+ <p>1. Each day, tap 0–3 for how strong each symptom was (0 none, 1 mild, 2 moderate, 3 severe).<br>2. Watch your trends, top symptoms and patterns build up.<br>3. Tap <b>Doctor summary</b> before an appointment to print or save a one-page monthly report.</p></div>
+ <div class="card"><h3>Your privacy</h3><p>Everything stays on this phone, in this browser. Nothing is uploaded or sent anywhere. Use <b>Export backup</b> in Settings to keep a copy.</p></div>
+ <div class="disc"><b>Important: not medical advice.</b> This app is an organizing tool to help you record symptoms and prepare for conversations with your own doctor. It is not medical advice and does not diagnose, treat, or recommend any treatment, including HRT. Patterns it shows are simple averages, not proof of cause. Always consult a qualified healthcare provider before starting, stopping, or changing any medication or supplement. If you have bleeding after menopause, chest pain, or thoughts of self-harm, contact a doctor or emergency services right away.</div>
+ <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 2px"><input type="checkbox" id="agree" style="width:22px;height:22px;flex:none"><span>I understand this is a tracking tool, not medical advice.</span></label>
+ <button class="btn block" id="start" disabled>Get started</button>
+</div>
+
+<div id="app" class="hide">
+<div class="wrap">
+ <!-- TODAY -->
+ <section id="v-today" class="view">
+  <div class="top"><h1>Check-in</h1><span class="muted" id="streakTop"></span></div>
+  <div class="datebar"><button id="prevD" aria-label="Previous day">‹</button><b id="dLabel"></b><button id="nextD" aria-label="Next day">›</button></div>
+  <div class="card"><h3>Symptoms <span class="muted">(0 none · 3 severe)</span></h3><div id="symList"></div>
+   <button class="btn ghost block" id="moreSym" style="padding:8px">Show more symptoms</button></div>
+  <div class="card"><h3>Bleeding</h3><div class="chips" id="bleedC"></div></div>
+  <div class="card"><h3>Possible triggers today</h3><div class="chips" id="trigC"></div></div>
+  <div class="card"><h3>Meds / supplements taken</h3><div class="chips" id="medC"></div>
+   <div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="newMed" placeholder="Add one (e.g. Magnesium)"><button class="btn alt" id="addMed">Add</button></div></div>
+  <div class="card"><h3>Notes <span class="muted">(optional)</span></h3><textarea id="notes" rows="2" placeholder="Anything worth remembering?"></textarea></div>
+  <button class="btn block" id="saveBtn">Save today</button>
+ </section>
+
+ <!-- INSIGHTS -->
+ <section id="v-insights" class="view hide">
+  <h1>Your patterns</h1>
+  <div class="stats" id="statBox"></div>
+  <div class="card"><div class="tabs2"><button class="btn alt" data-r="7">7 days</button><button class="btn alt" data-r="30">30 days</button></div>
+   <select id="chartSym"></select><div id="chart" style="margin-top:8px"></div></div>
+  <div class="card"><h3>Top symptoms (last 30 days)</h3><div id="topSym"></div></div>
+  <div class="card"><h3>Patterns worth noticing</h3><div id="corr"></div>
+   <p class="muted">These are simple averages from your own entries, not medical conclusions. Worth discussing with your doctor.</p></div>
+  <div class="card"><h3>Cycle</h3><div id="cycle"></div></div>
+  <div class="card"><h3>Last 5 weeks at a glance</h3><div class="cal" id="cal"></div><p class="muted">Darker = higher total symptom load · red line = bleeding</p></div>
+  <div class="card" id="helpCard"><h3>Helpful for you</h3><p class="muted" style="margin-top:0">Comfort picks for your top symptoms this month.</p><div id="helpList"></div>
+   <p class="affdisc">As an Amazon Associate we earn from qualifying purchases. Not medical advice.</p></div>
+ </section>
+
+ <!-- SUMMARY -->
+ <section id="v-summary" class="view hide">
+  <div class="noprint"><h1>Doctor summary</h1>
+   <div style="display:flex;gap:6px"><select id="sumMonth"></select><button class="btn" id="printBtn">Print / PDF</button></div>
+   <p class="muted">On iPhone: Print → pinch-out the preview → Share to save as PDF or send. On Android: Print → Save as PDF.</p></div>
+  <div class="sum" id="sumBody"></div>
+ </section>
+
+ <!-- SETTINGS -->
+ <section id="v-settings" class="view hide">
+  <h1>Settings & data</h1>
+  <div class="card"><h3>Backup</h3><p class="muted">Your data lives only on this phone. Export a CSV now and then to keep it safe.</p>
+   <button class="btn block" id="expCsv">Export backup (CSV)</button>
+   <button class="btn alt block" id="impBtn">Import backup (CSV)</button><input type="file" id="impFile" accept=".csv,text/csv" class="hide"></div>
+  <div class="card"><h3>Try it out</h3><button class="btn alt block" id="demoBtn">Load 60 days of demo data</button>
+   <button class="btn rose block" id="clearBtn">Clear all data</button></div>
+  <div class="card"><h3>Shop: comfort &amp; reading</h3><div id="shopList"></div>
+   <p class="affdisc">As an Amazon Associate we earn from qualifying purchases. Not medical advice.</p></div>
+  <div class="card"><h3>About</h3><div class="disc">This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.</div>
+   <button class="btn ghost block" id="reOnb">View welcome screen</button></div>
+ </section>
+</div>
+<nav><button data-v="today" class="on"><b>✎</b>Check-in</button><button data-v="insights"><b>◔</b>Insights</button><button data-v="summary"><b>▤</b>Doctor summary</button><button data-v="settings"><b>⚙</b>Settings</button></nav>
+</div>
+
+<script>
+"use strict";
+const AFFTAG='YOURTAG-20'; // <-- swap in your Amazon Associates tag here (one place)
+const PROD=[
+ {a:"B00EINBSEW",n:"Coop Home Goods Original Adjustable Pillow",w:"Breathable, adjustable-fill pillow that many hot sleepers like.",g:"cool",k:["hot","sweat"]},
+ {a:"B0DGWZN1BH",n:"Bedsure Cooling Sheets (Queen)",w:"Cool-to-touch, breathable sheet set for warm nights.",g:"cool",k:["hot","sweat"]},
+ {a:"B09NBPQ672",n:"JISULIFE Portable Neck Fan",w:"Hands-free, quiet breeze for when a hot flash hits on the go.",g:"cool",k:["hot","sweat"]},
+ {a:"B096RY8MZP",n:"Ekouaer Lightweight Pajama Set",w:"Soft, light sleepwear for warmer nights.",g:"cool",k:["sweat","hot"]},
+ {a:"B07PRG2CQY",n:"Manta Sleep Mask",w:"Full-blackout mask with no pressure on the eyes.",g:"sleep",k:["sleep","fatigue"]},
+ {a:"B00HD0ELFK",n:"Yogasleep Dohm Classic White Noise Machine",w:"Real-fan sound that masks noise; a long-time favorite.",g:"sleep",k:["sleep"]},
+ {a:"B075F9ST7G",n:"YnM Weighted Blanket (15 lb, Queen)",w:"Gentle, even weight many people find calming at bedtime.",g:"sleep",k:["sleep","anx"]},
+ {a:"B005NZ66KU",n:"Sunbeam XL Heating Pad",w:"Large 12x24 pad with 6 settings and auto shut-off.",g:"ache",k:["joint","head"]},
+ {a:"B09G3KYR28",n:"The Five Minute Journal",w:"A short daily prompt to unwind and reflect.",g:"calm",k:["anx","mood","irrit","fog"]},
+ {a:"B07W731WSH",n:"Gaiam Premium Yoga Mat",w:"For gentle stretching or a few calm minutes at home.",g:"calm",k:["anx","joint","irrit","mood"]},
+ {a:"0806540664",n:"The Menopause Manifesto, Dr. Jen Gunter",w:"Evidence-based guide by an OB/GYN.",g:"book",k:["fog","fatigue","mood"]},
+ {a:"059379625X",n:"The New Menopause, Dr. Mary Claire Haver",w:"Practical guide by an OB/GYN to perimenopause and beyond.",g:"book",k:["fog","fatigue","dry","libido"]}];
+const affURL=a=>`https://www.amazon.com/dp/${a}?tag=${encodeURIComponent(AFFTAG)}`;
+const affItem=p=>`<div class="aff"><div><a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener">${p.n}</a><span class="afftag">Affiliate link</span><p>${p.w}</p></div></div>`;
+function renderHelp(topKeys){let picks=[];for(let r=0;r<4;r++)topKeys.forEach(k=>{const p=PROD.filter(p=>p.k.includes(k)&&!picks.includes(p))[0];if(p)picks.push(p)});
+ if(!picks.length)picks=PROD.filter(p=>p.g=="book");picks=picks.slice(0,4);
+ $("helpList").innerHTML=picks.map(affItem).join("")}
+function renderShop(){const G=[["cool","Hot flashes & night sweats"],["sleep","Sleep"],["ache","Aches"],["calm","Stress & calm"],["book","Reading"]];
+ $("shopList").innerHTML=G.map(([g,t])=>`<h4 style="margin:10px 0 2px">${t}</h4>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
+const SYM=[["hot","Hot flashes"],["sweat","Night sweats"],["sleep","Sleep trouble"],["fatigue","Fatigue / low energy"],["fog","Brain fog"],["anx","Anxiety"],["mood","Low mood"],["irrit","Irritability"],["head","Headache"],["joint","Joint / muscle pain"],
+["palp","Heart palpitations"],["bloat","Bloating"],["breast","Breast tenderness"],["dry","Vaginal dryness"],["libido","Low libido"],["bladder","Bladder urgency"],["skin","Dry skin / itching"],["dizzy","Dizziness"]];
+const CORE=10;
+const TRIG=[["caffeine","Caffeine"],["alcohol","Alcohol"],["stress","Stress"],["poorsleep","Poor sleep"],["spicy","Spicy food"],["sugar","Sugar"],["exercise","Exercise"]];
+const BLEED=[["none","None"],["spot","Spotting"],["light","Light"],["medium","Medium"],["heavy","Heavy"]];
+const KEY="periTracker.v1";
+let S=load(); let cur=today(); let showAll=false; let range=7;
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{onb:false,e:{},meds:["Magnesium","Vitamin D"]}}catch(x){return{onb:false,e:{},meds:["Magnesium","Vitamin D"]}}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function today(){return iso(new Date())}
+function addD(s,n){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)}
+function fmt(s,o){return new Date(s+"T12:00:00").toLocaleDateString(undefined,o||{weekday:"short",month:"short",day:"numeric"})}
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1600)}
+function entry(d){return S.e[d]||(S.e[d]={s:{},bleed:"none",trig:[],meds:[],notes:""})}
+const isBleed=e=>e&&["light","medium","heavy"].includes(e.bleed);
+const load_=e=>e?SYM.reduce((a,[k])=>a+(e.s[k]||0),0):0;
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+const r1=x=>(Math.round(x*10)/10).toFixed(1);
+
+// ---------- onboarding
+function boot(){
+ if(!S.onb){$("onb").classList.remove("hide");$("app").classList.add("hide")}else{$("onb").classList.add("hide");$("app").classList.remove("hide");renderToday()}
+}
+$("agree").onchange=e=>$("start").disabled=!e.target.checked;
+$("start").onclick=()=>{S.onb=true;persist();boot()};
+$("reOnb").onclick=()=>{S.onb=false;persist();$("agree").checked=false;$("start").disabled=true;boot();scrollTo(0,0)};
+
+// ---------- nav
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+function show(v){document.querySelectorAll(".view").forEach(s=>s.classList.add("hide"));$("v-"+v).classList.remove("hide");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+ ({today:renderToday,insights:renderInsights,summary:renderSummary,settings:renderShop})[v]();scrollTo(0,0)}
+
+// ---------- check-in
+function renderToday(){
+ const e=S.e[cur]||{s:{},bleed:"none",trig:[],meds:[],notes:""};
+ $("dLabel").textContent=cur===today()?"Today · "+fmt(cur,{month:"short",day:"numeric"}):fmt(cur);
+ $("nextD").disabled=cur>=today();$("nextD").style.opacity=cur>=today()?.3:1;
+ const list=showAll?SYM:SYM.slice(0,CORE);
+ $("symList").innerHTML=list.map(([k,n])=>`<div class="sym"><span>${n}</span><div class="seg" data-k="${k}">${[0,1,2,3].map(v=>`<button data-v="${v}" class="${(e.s[k]??-1)===v?"on":""}">${v}</button>`).join("")}</div></div>`).join("");
+ $("moreSym").textContent=showAll?"Show fewer symptoms":"Show more symptoms ("+(SYM.length-CORE)+")";
+ $("bleedC").innerHTML=BLEED.map(([k,n])=>`<button class="chip ${e.bleed===k?"on":""}" data-k="${k}">${n}</button>`).join("");
+ $("trigC").innerHTML=TRIG.map(([k,n])=>`<button class="chip ${e.trig.includes(k)?"on":""}" data-k="${k}">${n}</button>`).join("");
+ $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||'<span class="muted">None added yet</span>';
+ $("notes").value=e.notes||"";
+ $("streakTop").textContent="🔥 "+streak()+" day streak";
+ $("saveBtn").textContent=S.e[cur]?"Update entry":"Save check-in";
+}
+$("symList").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const k=b.parentNode.dataset.k,e=entry(cur);e.s[k]=+b.dataset.v;persist();renderToday()};
+$("bleedC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;entry(cur).bleed=b.dataset.k;persist();renderToday()};
+$("trigC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.trig=e.trig.includes(k)?e.trig.filter(x=>x!==k):[...e.trig,k];persist();renderToday()};
+$("medC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.meds=e.meds.includes(k)?e.meds.filter(x=>x!==k):[...e.meds,k];persist();renderToday()};
+$("addMed").onclick=()=>{const v=$("newMed").value.trim();if(v&&!S.meds.includes(v)){S.meds.push(v);persist()}$("newMed").value="";renderToday()};
+$("notes").oninput=e=>{entry(cur).notes=e.target.value;persist()};
+$("moreSym").onclick=()=>{showAll=!showAll;renderToday()};
+$("prevD").onclick=()=>{cur=addD(cur,-1);renderToday()};
+$("nextD").onclick=()=>{if(cur<today()){cur=addD(cur,1);renderToday()}};
+$("saveBtn").onclick=()=>{const e=entry(cur);e.saved=true;persist();const st=streak();toast(st>1?`Saved ✓ ${st}-day streak!`:"Saved ✓ Nice start!");show("insights")};
+
+function streak(){let d=today(),n=0;if(!S.e[d])d=addD(d,-1);while(S.e[d]){n++;d=addD(d,-1)}return n}
+function days(n,end){const out=[];let d=end||today();for(let i=0;i<n;i++){out.unshift(d);d=addD(d,-1)}return out}
+
+// ---------- insights
+function renderInsights(){
+ const last30=days(30).filter(d=>S.e[d]);
+ const prev30=days(30,addD(today(),-30)).filter(d=>S.e[d]);
+ const l30=avg(last30.map(d=>load_(S.e[d]))),p30=avg(prev30.map(d=>load_(S.e[d])));
+ $("statBox").innerHTML=`<div class="stat"><b>${streak()}</b><small>day streak</small></div><div class="stat"><b>${last30.length}</b><small>days logged (30d)</small></div><div class="stat"><b>${Object.keys(S.e).length}</b><small>total entries</small></div>`;
+ if(!$("chartSym").options.length){$("chartSym").innerHTML='<option value="_all">Overall symptom load</option>'+SYM.map(([k,n])=>`<option value="${k}">${n}</option>`).join("")}
+ drawChart();
+ // top
+ const tops=SYM.map(([k,n])=>[n,avg(last30.map(d=>S.e[d].s[k]||0)),last30.filter(d=>(S.e[d].s[k]||0)>0).length]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ $("topSym").innerHTML=tops.length?tops.map(([n,a,c])=>`<div class="bar"><span>${n}</span><i style="width:${Math.max(4,a/3*100)}px"></i><em>avg ${r1(a)} · ${c} days</em></div>`).join(""):'<p class="muted">Log a few days to see your top symptoms.</p>';
+ try{renderHelp(SYM.map(([k])=>[k,avg(last30.map(d=>S.e[d].s[k]||0))]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]))}catch(x){}
+ // correlations
+ const ins=[];
+ if(last30.length>=7&&prev30.length>=7){const ch=(l30-p30)/(p30||1);
+  if(ch<-.1)ins.push(["g",`Your overall symptom load is <b>${Math.round(-ch*100)}% lower</b> than the 30 days before. Whatever you're doing, it's worth noting.`]);
+  else if(ch>.1)ins.push(["",`Your overall symptom load is <b>${Math.round(ch*100)}% higher</b> than the 30 days before. Could be worth mentioning at your next appointment.`])}
+ ins.push(...correlations(90));
+ const st=streak();if(st>=3)ins.push(["g",`${st} days in a row. Steady logging is what makes these patterns reliable. 🌿`]);
+ $("corr").innerHTML=ins.length?ins.map(([c,t])=>`<div class="ins ${c}">${t}</div>`).join(""):'<p class="muted">Patterns appear after about 2 weeks of check-ins, once there are enough days to compare.</p>';
+ // cycle
+ const cy=cycles();
+ $("cycle").innerHTML=cy.starts.length?`<p>Last period started <b>${fmt(cy.starts[cy.starts.length-1])}</b> (${Math.round((new Date(today())-new Date(cy.starts[cy.starts.length-1]))/864e5)} days ago).</p>`+
+  (cy.lens.length?`<p>Recent cycle lengths: <b>${cy.lens.slice(-6).join(", ")}</b> days (average ${Math.round(avg(cy.lens))}). ${Math.max(...cy.lens)-Math.min(...cy.lens)>=7?"Your cycle length has varied by a week or more, which is common in perimenopause and useful to share with your doctor.":""}</p>`:"<p class='muted'>Log another period start to see cycle length.</p>"):"<p class='muted'>Tap a bleeding level on the check-in and cycle lengths will appear here.</p>";
+ // calendar
+ const cd=days(35);let h="";cd.slice(0,7).forEach(d=>h+=`<div style="background:none;border:0;text-align:center">${fmt(d,{weekday:"narrow"})}</div>`);
+ cd.forEach(k=>{const e=S.e[k];const L=e?load_(e):0;const c=e?(L>=14?"l3":L>=8?"l2":L>0?"l1":""):"";h+=`<div class="${c} ${isBleed(e)?"bl":""}">${+k.slice(8)}</div>`});
+ $("cal").innerHTML=h;
+}
+document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{range=+b.dataset.r;drawChart()});
+$("chartSym").onchange=drawChart;
+function drawChart(){
+ document.querySelectorAll("[data-r]").forEach(b=>{b.className="btn "+(+b.dataset.r===range?"":"alt")});
+ const k=$("chartSym").value||"_all",ds=days(range),W=340,H=150,P=24;
+ const vals=ds.map(d=>S.e[d]?(k==="_all"?load_(S.e[d]):(S.e[d].s[k]||0)):null);
+ const max=k==="_all"?Math.max(6,...vals.filter(v=>v!=null)):3;
+ const x=i=>P+i*(W-P-6)/(ds.length-1),y=v=>H-18-(v/max)*(H-30);
+ let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="trend chart">`;
+ for(let t=0;t<=3;t++){const v=max*t/3;g+=`<line x1="${P}" x2="${W-6}" y1="${y(v)}" y2="${y(v)}" stroke="#e6ebe4"/><text x="2" y="${y(v)+4}" font-size="9" fill="#7a8679">${Math.round(v)}</text>`}
+ // bleed markers
+ ds.forEach((d,i)=>{if(isBleed(S.e[d]))g+=`<rect x="${x(i)-3}" y="${H-14}" width="6" height="5" rx="2" fill="#a33"/>`});
+ let path="",pen=false;vals.forEach((v,i)=>{if(v==null){pen=false;return}path+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1);pen=true});
+ g+=`<path d="${path}" fill="none" stroke="#c98b8b" stroke-width="2.5" stroke-linejoin="round"/>`;
+ if(range<=7)vals.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#6f8a6e"/>`});
+ const step=range<=7?1:7;ds.forEach((d,i)=>{if(i%step===0||i===ds.length-1)g+=`<text x="${x(i)}" y="${H-1}" font-size="9" fill="#7a8679" text-anchor="middle">${fmt(d,range<=7?{weekday:"narrow"}:{month:"numeric",day:"numeric"})}</text>`});
+ g+="</svg>";
+ const n=vals.filter(v=>v!=null).length;
+ $("chart").innerHTML=n?g+`<p class="muted">Average ${r1(avg(vals.filter(v=>v!=null)))} over ${n} logged day${n>1?"s":""}. Red marks = bleeding days.</p>`:'<p class="muted">No entries in this period yet.</p>';
+}
+function correlations(n){
+ const ds=days(n).filter(d=>S.e[d]),out=[];
+ const test=(label,cond,sym,symName)=>{const a=[],b=[];ds.forEach(d=>{const c=cond(d);if(c==null)return;(c?a:b).push(S.e[d].s[sym]||0)});
+  if(a.length>=4&&b.length>=4&&Math.abs(avg(a)-avg(b))>=0.5)out.push([avg(a)>avg(b)?"":"g",`${label}, your <b>${symName.toLowerCase()}</b> averaged <b>${r1(avg(a))}</b> vs ${r1(avg(b))} on other days (${a.length} vs ${b.length} days).`,Math.abs(avg(a)-avg(b))])};
+ const prevPoor=d=>{const p=S.e[addD(d,-1)];return p?((p.s.sleep||0)>=2||p.trig.includes("poorsleep")):null};
+ test("On days after poor sleep",prevPoor,"hot","Hot flashes");
+ test("On days after poor sleep",prevPoor,"fog","Brain fog");
+ test("On days after poor sleep",prevPoor,"mood","Low mood");
+ [["caffeine","hot"],["alcohol","sweat"],["alcohol","sleep"],["stress","anx"],["stress","head"],["spicy","hot"],["exercise","mood"],["exercise","sleep"]].forEach(([t,s])=>{
+  const tn=TRIG.find(x=>x[0]===t)[1].toLowerCase(),sn=SYM.find(x=>x[0]===s)[1];test(`On days you logged ${tn}`,d=>S.e[d].trig.includes(t),s,sn)});
+ S.meds.forEach(m=>{if(ds.filter(d=>S.e[d].meds.includes(m)).length>=4)test(`On days you took ${esc(m)}`,d=>S.e[d].meds.includes(m),"sleep","Sleep trouble")});
+ return out.sort((a,b)=>b[2]-a[2]).slice(0,5).map(x=>[x[0],x[1]]);
+}
+function cycles(){const ks=Object.keys(S.e).sort(),starts=[];ks.forEach(d=>{if(isBleed(S.e[d])&&!isBleed(S.e[addD(d,-1)])&&!isBleed(S.e[addD(d,-2)]))starts.push(d)});
+ const lens=[];for(let i=1;i<starts.length;i++)lens.push(Math.round((new Date(starts[i])-new Date(starts[i-1]))/864e5));return{starts,lens}}
+
+// ---------- summary
+function renderSummary(){
+ const sel=$("sumMonth"),ms=[...new Set([today().slice(0,7),...Object.keys(S.e).map(d=>d.slice(0,7))])].sort().reverse();
+ const cnt=m=>Object.keys(S.e).filter(d=>d.startsWith(m)).length;
+ const keep=sel.value&&ms.includes(sel.value)?sel.value:(cnt(ms[0])>=7||!ms[1]?ms[0]:ms[1]);
+ sel.innerHTML=ms.map(m=>`<option value="${m}">${new Date(m+"-15T12:00:00").toLocaleDateString(undefined,{month:"long",year:"numeric"})}</option>`).join("");sel.value=keep;
+ const mon=keep,ds=Object.keys(S.e).filter(d=>d.startsWith(mon)).sort(),E=ds.map(d=>S.e[d]);
+ const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(undefined,{month:"long",year:"numeric"});
+ const rows=SYM.map(([k,n])=>{const v=E.map(e=>e.s[k]||0);return[n,avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
+ const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${S.e[d].bleed})`);
+ const cy=cycles(),trc=TRIG.map(([k,n])=>[n,E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const notes=ds.filter(d=>S.e[d].notes).slice(-6).map(d=>`<li><b>${fmt(d,{month:"short",day:"numeric"})}:</b> ${esc(S.e[d].notes)}</li>`).join("");
+ const pats=correlations(60).slice(0,3);
+ // weekly bars svg
+ const wk=[0,1,2,3,4].map(w=>{const sub=ds.filter(d=>Math.floor((+d.slice(8)-1)/7)===w);return sub.length?avg(sub.map(d=>load_(S.e[d]))):null});
+ const mx=Math.max(1,...wk.filter(v=>v!=null));
+ let svg=`<svg viewBox="0 0 300 90" width="100%" style="max-width:420px">`;wk.forEach((v,i)=>{if(v==null)return;const h=v/mx*60;svg+=`<rect x="${10+i*58}" y="${70-h}" width="40" height="${h}" rx="4" fill="#c98b8b"/><text x="${30+i*58}" y="${66-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(v)}</text><text x="${30+i*58}" y="84" font-size="10" text-anchor="middle" fill="#7a8679">Wk ${i+1}</text>`});svg+="</svg>";
+ $("sumBody").innerHTML=ds.length?`
+ <div class="hd"><h2 style="margin:0">Monthly Symptom Summary</h2><b>${mName}</b></div>
+ <p style="margin:2px 0">Days logged: <b>${ds.length}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Average daily symptom load: <b>${r1(avg(E.map(load_)))}</b></p>
+ <div class="lbl">Symptoms, most to least intense</div>
+ <table><tr><th>Symptom</th><th>Avg</th><th>Days present</th><th>Days ≥ moderate</th><th>Worst</th></tr>
+ ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r1(r[1])}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("")}</table>
+ <div class="lbl">Overall symptom load by week</div>${svg}
+ <div class="lbl">Bleeding & cycle</div>
+ <p style="margin:0">${bleedDays.length?"Bleeding/spotting on day(s): "+bleedDays.join(", "):"No bleeding logged this month."}${cy.lens.length?`<br>Recent cycle lengths: ${cy.lens.slice(-6).join(", ")} days.`:""}</p>
+ <div class="lbl">Triggers logged · Meds/supplements taken</div>
+ <p style="margin:0">${trc.map(t=>`${t[0]}: ${t[1]}d`).join(" · ")||"None"}<br>${mc.map(t=>`${esc(t[0])}: ${t[1]}d`).join(" · ")||"None logged"}</p>
+ ${pats.length?`<div class="lbl">Patterns I noticed (my own averages, not a diagnosis)</div><ul style="margin:0;padding-left:18px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
+ ${notes?`<div class="lbl">Notes</div><ul style="margin:0;padding-left:18px">${notes}</ul>`:""}
+ <div class="lbl">Questions for my doctor</div>
+ <div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div>
+ <p class="muted" style="margin-top:12px;font-size:11px">Self-reported tracking summary made with Perimenopause Tracker. An organizing tool, not medical advice.</p>`
+ :`<p class="muted">No entries for this month yet. Log a few check-ins, or load demo data in Settings to preview.</p>`;
+}
+$("sumMonth").onchange=renderSummary;
+$("printBtn").onclick=()=>window.print();
+
+// ---------- CSV
+const COLS=["date",...SYM.map(s=>s[0]),"bleeding","triggers","meds","notes"];
+const q=v=>{v=String(v??"");return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+$("expCsv").onclick=()=>{const ds=Object.keys(S.e).sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d];return[d,...SYM.map(([k])=>e.s[k]??""),e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes].map(q).join(",")})].join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="peri-tracker-backup-"+today()+".csv";document.body.appendChild(a);a.click();a.remove();toast("Backup downloaded")};
+function parseCSV(t){const rows=[];let r=[],f="",i=0,qd=false;for(;i<t.length;i++){const c=t[i];if(qd){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&t[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
+$("impBtn").onclick=()=>$("impFile").click();
+$("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then(t=>{const rows=parseCSV(t),h=rows.shift();if(!h||h[0]!=="date"){alert("That doesn't look like a Peri Tracker backup.");return}let n=0;
+ rows.forEach(r=>{if(!/^\d{4}-\d\d-\d\d$/.test(r[0]))return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:o.bleeding||"none",trig:o.triggers?o.triggers.split(";"):[],meds:o.meds?o.meds.split(";"):[],notes:o.notes||""};
+  SYM.forEach(([k])=>{if(o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(!S.meds.includes(m))S.meds.push(m)});S.e[o.date]=e;n++});
+ persist();toast(`Imported ${n} days`);ev.target.value=""})};
+
+// ---------- demo / clear
+$("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm("Demo data will be mixed with your entries. Continue?"))return;
+ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;const per=[-55,-29,-3];
+ for(let i=59;i>=0;i--){const d=addD(today(),-i);const poor=rnd()<.3,caf=rnd()<.5,alc=rnd()<.18,str=rnd()<.3,ex=rnd()<.35,spicy=rnd()<.15;const prevPoor=S.e[addD(d,-1)]?.trig.includes("poorsleep");
+  const c=v=>Math.max(0,Math.min(3,Math.round(v)));const imp=i<30?-.3:0;
+  const s={hot:c(1+(prevPoor?1:0)+(caf?.5:0)+(spicy?.6:0)+imp+rnd()-.5),sweat:c(.8+(alc?1.2:0)+rnd()-.5),sleep:c((poor?2.4:.8)+(alc?.6:0)-(ex?.4:0)+rnd()*.6-.3),fatigue:c(1+(poor?1:0)+rnd()-.5),fog:c(.7+(prevPoor?1:0)+rnd()-.5),
+   anx:c(.6+(str?1.4:0)+rnd()-.5),mood:c(.8+(ex?-.6:0)+(poor?.6:0)+rnd()-.5),irrit:c(.6+(str?.8:0)+rnd()-.5),head:c(.3+(str?.8:0)+rnd()-.5),joint:c(1.1+rnd()-.5),libido:c(1.3+rnd()-.5)};
+  const t=[];if(caf)t.push("caffeine");if(alc)t.push("alcohol");if(str)t.push("stress");if(poor)t.push("poorsleep");if(ex)t.push("exercise");if(spicy)t.push("spicy");
+  let bleed="none";per.forEach((p,j)=>{const o=-i-p+(j==1?3:0);if(o>=0&&o<5)bleed=["medium","heavy","medium","light","spot"][o]});
+  if(rnd()<.12&&i!==0&&i%3===0)continue;
+  S.e[d]={s,bleed,trig:t,meds:rnd()<.8?["Magnesium"]:[],notes:i==12?"Woke up 3x with sweats":i==4?"Felt much calmer after a walk":""}}
+ for(let i=0;i<9;i++)S.e[addD(today(),-i)]=S.e[addD(today(),-i)]||S.e[addD(today(),-i-14)];
+ persist();toast("Demo data loaded");show("insights")};
+$("clearBtn").onclick=()=>{if(confirm("Delete ALL your entries from this phone? This can't be undone. (Export a backup first if you want to keep them.)")){S={onb:true,e:{},meds:["Magnesium","Vitamin D"]};persist();toast("All data cleared");show("today")}};
+
+boot();
+</script>
+<script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
+</body></html>
