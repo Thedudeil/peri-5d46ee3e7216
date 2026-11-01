@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en"><head>
-
+<html lang="en" dir="ltr"><head>
+<meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#8FA98B">
@@ -8,7 +8,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Peri Tracker">
 <link rel="apple-touch-icon" href="icon-180.png">
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#6f8a6e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -81,88 +80,242 @@ nav button.on{color:var(--sage);font-weight:700}
  .sum{box-shadow:none;padding:0}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
-.aff{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid #eef0ea}.aff:first-of-type{border-top:0}.aff a{color:#3c4a3b;font-weight:600;text-decoration:none}.aff p{margin:2px 0;font-size:13px;color:#667}.afftag{display:inline-block;font-size:10px;background:#f3ead9;color:#7a5b20;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:600}.affdisc{font-size:11px;color:#889;margin-top:8px}</style></head>
+.aff{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid #eef0ea}.aff:first-of-type{border-top:0}.aff a{color:#3c4a3b;font-weight:600;text-decoration:none}.aff p{margin:2px 0;font-size:13px;color:#667}.afftag{display:inline-block;font-size:10px;background:#f3ead9;color:#7a5b20;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:600}.affdisc{font-size:11px;color:#889;margin-top:8px}
+.info{width:20px;height:20px;border-radius:50%;border:1.3px solid var(--sage);background:#fff;color:var(--sage);font:italic 700 12px Georgia,serif;padding:0;margin-inline-start:6px;vertical-align:1px;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(40,50,40,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.modal .box{background:#fff;border-radius:18px 18px 0 0;max-width:560px;width:100%;padding:18px 18px calc(18px + env(safe-area-inset-bottom));max-height:80vh;overflow:auto}
+.modal .src{font-size:12px;color:var(--mute);margin-top:10px}.modal .src a{color:var(--sage)}
+.langsw{display:flex;gap:6px}.langsw button{flex:1}
+.tipw{background:var(--sageL);border-radius:14px;padding:12px 14px;margin:12px 0;font-size:14px}.tipw b{display:block;color:var(--sage);font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.letter{font-family:Georgia,"Times New Roman",serif;font-size:14px;line-height:1.6}.letter p{margin:0 0 10px}.letter table{font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+.row2{display:flex;gap:6px;margin:6px 0}.row2>*{flex:1}
+input[type=time]{border:1.5px solid var(--sageL);border-radius:10px;padding:9px;font:inherit;background:#fffdf9;color:var(--ink)}
+[dir=rtl] .afftag{margin-left:0;margin-right:4px}
+[dir=rtl] .ins,[dir=rtl] .disc{border-left:0;border-right:4px solid var(--rose)}[dir=rtl] .ins.g{border-right-color:var(--sage)}
+[dir=rtl] .sum th{text-align:right}[dir=rtl] .bar i{transform-origin:right}
+@media print{.modal{display:none!important}}
+</style></head>
 <body>
-<div id="toast" class="saved">Saved ✓</div>
+<div id="toast" class="saved"></div>
+<div id="modal" class="modal hide"><div class="box"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 id="mT" style="margin:0"></h2><button id="mX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><p id="mB" style="margin:10px 0 0"></p><p class="muted" id="mN" style="margin-top:10px"></p><div class="src" id="mS"></div></div></div>
 
 <!-- ONBOARDING -->
 <div id="onb" class="wrap hide">
- <div style="text-align:center;padding:26px 0 8px"><div style="font-size:44px;color:var(--sage)">❀</div>
- <h1>Perimenopause Tracker</h1><p class="muted">A 30-second daily check-in that shows your patterns and builds a summary for your doctor.</p></div>
- <div class="card"><h3>How it works</h3>
- <p>1. Each day, tap 0–3 for how strong each symptom was (0 none, 1 mild, 2 moderate, 3 severe).<br>2. Watch your trends, top symptoms and patterns build up.<br>3. Tap <b>Doctor summary</b> before an appointment to print or save a one-page monthly report.</p></div>
- <div class="card"><h3>Your privacy</h3><p>Everything stays on this phone, in this browser. Nothing is uploaded or sent anywhere. Use <b>Export backup</b> in Settings to keep a copy.</p></div>
- <div class="disc"><b>Important: not medical advice.</b> This app is an organizing tool to help you record symptoms and prepare for conversations with your own doctor. It is not medical advice and does not diagnose, treat, or recommend any treatment, including HRT. Patterns it shows are simple averages, not proof of cause. Always consult a qualified healthcare provider before starting, stopping, or changing any medication or supplement. If you have bleeding after menopause, chest pain, or thoughts of self-harm, contact a doctor or emergency services right away.</div>
- <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 2px"><input type="checkbox" id="agree" style="width:22px;height:22px;flex:none"><span>I understand this is a tracking tool, not medical advice.</span></label>
- <button class="btn block" id="start" disabled>Get started</button>
+ <div class="langsw noprint" style="max-width:200px;margin:0 0 0 auto"><button class="btn alt" data-lang="en">English</button><button class="btn alt" data-lang="he">עברית</button></div>
+ <div style="text-align:center;padding:18px 0 8px"><div style="font-size:44px;color:var(--sage)">❀</div>
+ <h1 data-t="appName"></h1><p class="muted" data-t="tagline"></p></div>
+ <div class="card"><h3 data-t="howT"></h3><p data-h="howB"></p></div>
+ <div class="card"><h3 data-t="privT"></h3><p data-h="privB"></p></div>
+ <div class="disc" data-h="discFull"></div>
+ <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 2px"><input type="checkbox" id="agree" style="width:22px;height:22px;flex:none"><span data-t="agree"></span></label>
+ <button class="btn block" id="start" disabled data-t="start"></button>
 </div>
 
 <div id="app" class="hide">
 <div class="wrap">
  <!-- TODAY -->
  <section id="v-today" class="view">
-  <div class="top"><h1>Check-in</h1><span class="muted" id="streakTop"></span></div>
+  <div class="top"><h1 data-t="checkin"></h1><span class="muted" id="streakTop"></span></div>
   <div class="datebar"><button id="prevD" aria-label="Previous day">‹</button><b id="dLabel"></b><button id="nextD" aria-label="Next day">›</button></div>
-  <div class="card"><h3>Symptoms <span class="muted">(0 none · 3 severe)</span></h3><div id="symList"></div>
-   <button class="btn ghost block" id="moreSym" style="padding:8px">Show more symptoms</button></div>
-  <div class="card"><h3>Bleeding</h3><div class="chips" id="bleedC"></div></div>
-  <div class="card"><h3>Possible triggers today</h3><div class="chips" id="trigC"></div></div>
-  <div class="card"><h3>Meds / supplements taken</h3><div class="chips" id="medC"></div>
-   <div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="newMed" placeholder="Add one (e.g. Magnesium)"><button class="btn alt" id="addMed">Add</button></div></div>
-  <div class="card"><h3>Notes <span class="muted">(optional)</span></h3><textarea id="notes" rows="2" placeholder="Anything worth remembering?"></textarea></div>
-  <button class="btn block" id="saveBtn">Save today</button>
+  <div class="card"><h3><span data-t="symptoms"></span> <span class="muted" data-t="scale"></span></h3><div id="symList"></div>
+   <button class="btn ghost block" id="moreSym" style="padding:8px"></button></div>
+  <div class="card"><h3><span data-t="stressT"></span> <span class="muted" data-t="scale"></span></h3><div id="stressRow"></div></div>
+  <div class="card"><h3 data-t="bleeding"></h3><div class="chips" id="bleedC"></div></div>
+  <div class="card"><h3 data-t="triggers"></h3><div class="chips" id="trigC"></div></div>
+  <div class="card"><h3 data-t="meds"></h3><div class="chips" id="medC"></div>
+   <div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="newMed" data-p="addMedPh"><button class="btn alt" id="addMed" data-t="add"></button></div></div>
+  <div class="card"><h3><span data-t="notes"></span> <span class="muted" data-t="optional"></span></h3><textarea id="notes" rows="2" data-p="notesPh"></textarea></div>
+  <button class="btn block" id="saveBtn"></button>
  </section>
 
  <!-- INSIGHTS -->
  <section id="v-insights" class="view hide">
   <div id="tipBox" class="card hide" style="display:flex;gap:8px;align-items:flex-start;padding:10px 12px"><div style="flex:1;font-size:14px" id="tipTxt"></div><button id="tipX" aria-label="Dismiss" style="border:0;background:none;font-size:18px;color:var(--mute);padding:0 4px">×</button></div>
-  <h1>Your patterns</h1>
+  <h1 data-t="patterns"></h1>
   <div class="stats" id="statBox"></div>
-  <div class="card"><div class="tabs2"><button class="btn alt" data-r="7">7 days</button><button class="btn alt" data-r="30">30 days</button></div>
+  <div class="tipw" id="weekTip"></div>
+  <div class="card"><div class="tabs2"><button class="btn alt" data-r="7" data-t="d7"></button><button class="btn alt" data-r="30" data-t="d30"></button></div>
    <select id="chartSym"></select><div id="chart" style="margin-top:8px"></div></div>
-  <div class="card"><h3>Top symptoms (last 30 days)</h3><div id="topSym"></div></div>
-  <div class="card"><h3>Patterns worth noticing</h3><div id="corr"></div>
-   <p class="muted">These are simple averages from your own entries, not medical conclusions. Worth discussing with your doctor.</p></div>
-  <div class="card"><h3>Cycle</h3><div id="cycle"></div></div>
-  <div class="card"><h3>Last 5 weeks at a glance</h3><div class="cal" id="cal"></div><p class="muted">Darker = higher total symptom load · red line = bleeding</p></div>
-  <div class="card" id="helpCard"><h3>Helpful for you</h3><p class="muted" style="margin-top:0">Comfort picks for your top symptoms this month.</p><div id="helpList"></div>
-   <p class="affdisc">As an Amazon Associate we earn from qualifying purchases. Not medical advice.</p></div>
+  <div class="card"><h3 data-t="topT"></h3><div id="topSym"></div></div>
+  <div class="card"><h3 data-t="patT"></h3><div id="corr"></div>
+   <p class="muted" data-t="patNote"></p></div>
+  <div class="card"><h3 data-t="cycleT"></h3><div id="cycle"></div></div>
+  <div class="card"><h3 data-t="calT"></h3><div class="cal" id="cal"></div><p class="muted" data-t="calNote"></p></div>
+  <div class="card" id="helpCard"><h3 data-t="helpT"></h3><p class="muted" style="margin-top:0" data-t="helpSub"></p><div id="helpList"></div>
+   <p class="affdisc" data-t="affShort"></p></div>
  </section>
 
  <!-- SUMMARY -->
  <section id="v-summary" class="view hide">
-  <div class="noprint"><h1>Doctor summary</h1>
-   <div style="display:flex;gap:6px"><select id="sumMonth"></select><button class="btn" id="printBtn">Print / PDF</button></div>
-   <p class="muted">On iPhone: Print → pinch-out the preview → Share to save as PDF or send. On Android: Print → Save as PDF.</p></div>
+  <div class="noprint"><h1 data-t="docT"></h1>
+   <div class="tabs2"><button class="btn" id="modeSum" data-t="modeSum"></button><button class="btn alt" id="modeLet" data-t="modeLet"></button></div>
+   <div id="sumCtl" style="display:flex;gap:6px"><select id="sumMonth"></select><button class="btn" id="printBtn" data-t="print"></button></div>
+   <div id="letCtl" class="hide">
+    <div class="row2"><input type="text" id="drName" data-p="drPh"><input type="text" id="myName" data-p="mePh"></div>
+    <div style="display:flex;gap:6px"><select id="letRange"><option value="1" data-t="r1"></option><option value="3" data-t="r3"></option><option value="6" data-t="r6"></option><option value="0" data-t="rAll"></option></select><button class="btn" id="printBtn2" data-t="print"></button></div>
+   </div>
+   <p class="muted" data-t="printHelp"></p></div>
   <div class="sum" id="sumBody"></div>
  </section>
 
  <!-- COMFORT -->
  <section id="v-comfort" class="view hide">
-  <h1>Comfort picks</h1>
-  <p class="muted">Everyday comfort products other women often mention, grouped by symptom. No supplements or medicine.</p>
+  <h1 data-t="comfortT"></h1>
+  <p class="muted" data-t="comfortSub"></p>
   <div id="shopList"></div>
-  <p class="affdisc">Affiliate links: as an Amazon Associate we earn from qualifying purchases, at no extra cost to you. Not medical advice; talk to your doctor about symptoms.</p>
+  <p class="affdisc" data-t="affLong"></p>
  </section>
 
  <!-- SETTINGS -->
  <section id="v-settings" class="view hide">
-  <h1>Settings & data</h1>
-  <div class="card"><h3>Backup</h3><p class="muted">Your data lives only on this phone. Export a CSV now and then to keep it safe.</p>
-   <button class="btn block" id="expCsv">Export backup (CSV)</button>
-   <button class="btn alt block" id="impBtn">Import backup (CSV)</button><input type="file" id="impFile" accept=".csv,text/csv" class="hide"></div>
-  <div class="card"><h3>Try it out</h3><button class="btn alt block" id="demoBtn">Load 60 days of demo data</button>
-   <button class="btn rose block" id="clearBtn">Clear all data</button></div>
-  <div class="card"><h3>About</h3><div class="disc">This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.</div>
-   <button class="btn ghost block" id="reOnb">View welcome screen</button></div>
+  <h1 data-t="setT"></h1>
+  <div class="card"><h3 data-t="langT"></h3><div class="langsw"><button class="btn alt" data-lang="en">English</button><button class="btn alt" data-lang="he">עברית</button></div></div>
+  <div class="card"><h3 data-t="remT"></h3>
+   <div style="display:flex;gap:8px;align-items:center"><label for="remTime" data-t="remAt"></label><input type="time" id="remTime" value="20:30"></div>
+   <button class="btn block" id="remOn"></button>
+   <p class="muted" id="remStatus"></p>
+   <div class="ins g" style="font-size:13px" data-h="remHonest"></div>
+   <button class="btn alt block" id="icsBtn" data-t="ics"></button>
+   <p class="muted" data-t="icsNote"></p></div>
+  <div class="card"><h3 data-t="backupT"></h3><p class="muted" data-t="backupSub"></p>
+   <button class="btn block" id="expCsv" data-t="exp"></button>
+   <button class="btn alt block" id="impBtn" data-t="imp"></button><input type="file" id="impFile" accept=".csv,text/csv" class="hide"></div>
+  <div class="card"><h3 data-t="tryT"></h3><button class="btn alt block" id="demoBtn" data-t="demo"></button>
+   <button class="btn rose block" id="clearBtn" data-t="clear"></button></div>
+  <div class="card"><h3 data-t="aboutT"></h3><div class="disc" data-t="discShort"></div>
+   <button class="btn ghost block" id="reOnb" data-t="reOnb"></button></div>
  </section>
 </div>
-<nav><button data-v="today" class="on"><b>✎</b>Check-in</button><button data-v="insights"><b>◔</b>Insights</button><button data-v="summary"><b>▤</b>Doctor summary</button><button data-v="comfort"><b>♡</b>Comfort</button><button data-v="settings"><b>⚙</b>Settings</button></nav>
+<nav><button data-v="today" class="on"><b>✎</b><span data-t="nToday"></span></button><button data-v="insights"><b>◔</b><span data-t="nIns"></span></button><button data-v="summary"><b>▤</b><span data-t="nDoc"></span></button><button data-v="comfort"><b>♡</b><span data-t="nComfort"></span></button><button data-v="settings"><b>⚙</b><span data-t="nSet"></span></button></nav>
 </div>
-
 <script>
+const I18N={en:{
+appName:"Perimenopause Tracker",tagline:"A 30-second daily check-in that shows your patterns and builds a summary for your doctor.",
+howT:"How it works",howB:"1. Each day, tap 0–3 for how strong each symptom was (0 none, 1 mild, 2 moderate, 3 severe). Tap <b>i</b> to learn why a symptom can happen.<br>2. Watch your trends, top symptoms and patterns build up.<br>3. Before an appointment, open <b>Doctor summary</b> to print a monthly report or a letter to your doctor.",
+privT:"Your privacy",privB:"Everything stays on this phone, in this browser. Nothing is uploaded or sent anywhere. Use <b>Export backup</b> in Settings to keep a copy.",
+discFull:"<b>Important: not medical advice.</b> This app is an organizing tool to help you record symptoms and prepare for conversations with your own doctor. It is not medical advice and does not diagnose, treat, or recommend any treatment, including HRT. Patterns it shows are simple averages, not proof of cause. Always consult a qualified healthcare provider before starting, stopping, or changing any medication or supplement. If you have bleeding after menopause, chest pain, or thoughts of self-harm, contact a doctor or emergency services right away.",
+agree:"I understand this is a tracking tool, not medical advice.",start:"Get started",
+checkin:"Check-in",symptoms:"Symptoms",scale:"(0 none · 3 severe)",stressT:"Stress level today",bleeding:"Bleeding",triggers:"Possible triggers today",meds:"Meds / supplements taken",addMedPh:"Add one (e.g. Magnesium)",add:"Add",notes:"Notes",optional:"(optional)",notesPh:"Anything worth remembering?",
+showMore:"Show more symptoms ({n})",showFewer:"Show fewer symptoms",saveNew:"Save check-in",update:"Update entry",today:"Today",streak:"🔥 {n} day streak",noMeds:"None added yet",
+saved:"Saved ✓",savedStreak:"Saved ✓ {n}-day streak!",savedFirst:"Saved ✓ Nice start!",
+patterns:"Your patterns",d7:"7 days",d30:"30 days",topT:"Top symptoms (last 30 days)",patT:"Patterns worth noticing",patNote:"These are simple averages from your own entries, not medical conclusions. Worth discussing with your doctor.",
+cycleT:"Cycle",calT:"Last 5 weeks at a glance",calNote:"Darker = higher total symptom load · red line = bleeding",helpT:"Helpful for you",helpSub:"Comfort picks for your top symptoms this month.",
+affShort:"As an Amazon Associate we earn from qualifying purchases. Not medical advice.",affLink:"Affiliate link",
+stStreak:"day streak",stLogged:"days logged (30d)",stTotal:"total entries",overall:"Overall symptom load",
+chartAvg:"Average {a} over {n} logged day(s). Red marks = bleeding days.",noPeriod:"No entries in this period yet.",avgDays:"avg {a} · {n} days",logFew:"Log a few days to see your top symptoms.",
+lower:"Your overall symptom load is <b>{p}% lower</b> than the 30 days before. Whatever you're doing, it's worth noting.",higher:"Your overall symptom load is <b>{p}% higher</b> than the 30 days before. Could be worth mentioning at your next appointment.",
+streakIns:"{n} days in a row. Steady logging is what makes these patterns reliable. 🌿",patWait:"Patterns appear after about 2 weeks of check-ins, once there are enough days to compare.",
+corr:"{label}, your <b>{s}</b> averaged <b>{a}</b> vs {b} on other days ({na} vs {nb} days).",afterPoor:"On days after poor sleep",onTrig:"On days you logged {t}",onMed:"On days you took {m}",highStress:"On higher-stress days",
+lastPer:"Last period started <b>{d}</b> ({n} days ago).",cycLens:"Recent cycle lengths: <b>{l}</b> days (average {a}).",cycVar:"Your cycle length has varied by a week or more, which is common in perimenopause and useful to share with your doctor.",cycMore:"Log another period start to see cycle length.",cycNone:"Tap a bleeding level on the check-in and cycle lengths will appear here.",
+tipRough:"Rough day. Many women find this helps {w}:",
+weekTipT:"This week's tip",
+docT:"Doctor summary",modeSum:"Monthly summary",modeLet:"Letter to my doctor",print:"Print / PDF",drPh:"Doctor's name (optional)",mePh:"Your name (optional)",r1:"Last month",r3:"Last 3 months",r6:"Last 6 months",rAll:"All my entries",
+printHelp:"On iPhone: Print → pinch-out the preview → Share to save as PDF or send. On Android: Print → Save as PDF.",
+sumTitle:"Monthly Symptom Summary",sumLine:"Days logged: <b>{n}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Average daily symptom load: <b>{a}</b>",sumMost:"Symptoms, most to least intense",thSym:"Symptom",thAvg:"Avg",thDays:"Days present",thMod:"Days ≥ moderate",thWorst:"Worst",byWeek:"Overall symptom load by week",wk:"Wk {n}",bleedCyc:"Bleeding & cycle",bleedOn:"Bleeding/spotting on day(s): ",noBleed:"No bleeding logged this month.",recentLens:"Recent cycle lengths: {l} days.",trigMeds:"Triggers logged · Meds/supplements taken",none:"None",noneLogged:"None logged",stressAvg:"Average stress: {a} / 3",
+myPats:"Patterns I noticed (my own averages, not a diagnosis)",qs:"Questions for my doctor",footer:"Self-reported tracking summary made with Perimenopause Tracker. An organizing tool, not medical advice.",noMonth:"No entries for this month yet. Log a few check-ins, or load demo data in Settings to preview.",
+L_dear:"Dear {d},",L_dearNo:"Dear Doctor,",L_intro:"I have been tracking my symptoms every day to help us make the most of my appointment. Below is a short summary of {n} days of records from {a} to {b}. I rated each symptom from 0 (none) to 3 (severe).",
+L_freq:"The symptoms I have had most often are:",L_item:"<b>{s}</b>: on {p}% of logged days, usually {sev}",
+L_chart:"How my overall symptom load has changed:",L_tbl:"Period",L_load:"Avg load",L_sleep:"Sleep trouble",L_stress:"Stress",L_days:"Days",
+L_cyc:"My cycle: I logged {n} period start(s). Cycle lengths were {l} days (shortest {mn}, longest {mx}, a difference of {d} days).",L_cycOne:"My cycle: I logged one period start, on {d}, so there is no cycle length yet.",L_cycNone:"My cycle: I did not log any bleeding in this period.",L_cycLast:"My last period started on {d}.",
+L_ss:"Alongside this, my sleep trouble averaged {s} out of 3 and my stress averaged {t} out of 3.",L_pats:"A few patterns in my own records (simple averages, not proof of cause):",
+L_ask:"I would be grateful if we could talk about these symptoms and what options might be suitable for me.",L_note:"These are my own day-to-day records, not a diagnosis. I am happy to share more detail.",L_close:"Kind regards,",L_noData:"There are no entries in this period yet. Log a few check-ins, or load demo data in Settings to preview.",L_dateFmt:"en-GB",
+sev:["none","mild","moderate","severe"],
+comfortT:"Comfort picks",comfortSub:"Everyday comfort products other women often mention, grouped by symptom. No supplements or medicine.",affLong:"Affiliate links: as an Amazon Associate we earn from qualifying purchases, at no extra cost to you. Not medical advice; talk to your doctor about symptoms.",
+gCool:"Hot flashes & night sweats",gSleep:"Sleep trouble & fatigue",gAche:"Joint pain & headaches",gCalm:"Anxiety, mood & irritability",gBook:"Reading: brain fog & understanding perimenopause",
+setT:"Settings & data",langT:"Language",remT:"Daily reminder",remAt:"Remind me at",remOnB:"Turn on reminder",remOffB:"Turn off reminder",remStOn:"On: a gentle nudge at {t}, skipped on days you've already checked in.",remStOff:"Off.",remDenied:"Notifications are blocked for this site. You can allow them in your browser settings, or use the calendar reminder below.",remUnsup:"This browser doesn't support web notifications. Use the calendar reminder below instead.",
+remHonest:"<b>Honest note:</b> web app reminders only arrive reliably while the app or browser is open or running in the background. On iPhone they need iOS 16.4 or later and the app added to your Home Screen. For a reminder that always arrives, add it to your calendar.",
+ics:"Add daily reminder to my calendar",icsNote:"Downloads a calendar file with a repeating daily reminder. Open it to add it to your phone's calendar.",
+nTitle:"Time for your check-in 🌿",nBody:"30 seconds to log how today went. Your future self (and your doctor) will thank you.",icsTitle:"Perimenopause Tracker check-in",icsDesc:"30 seconds to log how today went.",
+backupT:"Backup",backupSub:"Your data lives only on this phone. Export a CSV now and then to keep it safe.",exp:"Export backup (CSV)",imp:"Import backup (CSV)",tryT:"Try it out",demo:"Load 60 days of demo data",clear:"Clear all data",aboutT:"About",
+discShort:"This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.",reOnb:"View welcome screen",
+nToday:"Check-in",nIns:"Insights",nDoc:"Doctor summary",nComfort:"Comfort",nSet:"Settings",
+backupDl:"Backup downloaded",imported:"Imported {n} days",badCsv:"That doesn't look like a Peri Tracker backup.",demoMix:"Demo data will be mixed with your entries. Continue?",demoOk:"Demo data loaded",clearQ:"Delete ALL your entries from this phone? This can't be undone. (Export a backup first if you want to keep them.)",cleared:"All data cleared",
+whyT:"Why this can happen",explNote:"General education only, not a diagnosis or treatment advice. If a symptom worries you, talk to your doctor.",srcL:"Sources:"
+},he:{
+appName:"מעקב גיל המעבר",tagline:"צ'ק-אין יומי של 30 שניות שמראה לך דפוסים ומכין סיכום לרופא או לרופאה.",
+howT:"איך זה עובד",howB:"1. בכל יום מסמנים 0–3 לכל תסמין (0 בכלל לא, 1 קל, 2 בינוני, 3 חזק). לחיצה על <b>i</b> מסבירה למה התסמין יכול להופיע.<br>2. עם הזמן נבנים מגמות, התסמינים הבולטים ודפוסים.<br>3. לפני תור, נכנסים ל<b>סיכום לרופא</b> ומדפיסים סיכום חודשי או מכתב לרופא.",
+privT:"הפרטיות שלך",privB:"הכל נשמר בטלפון הזה, בדפדפן הזה. שום דבר לא עולה לשרת ולא נשלח לשום מקום. אפשר לשמור עותק דרך <b>ייצוא גיבוי</b> בהגדרות.",
+discFull:"<b>חשוב: זה לא ייעוץ רפואי.</b> האפליקציה היא כלי לתיעוד תסמינים ולהכנה לשיחה עם הרופא או הרופאה שלך. היא לא מחליפה ייעוץ רפואי, לא מאבחנת, לא מטפלת ולא ממליצה על טיפול כלשהו, כולל טיפול הורמונלי. הדפוסים שהיא מציגה הם ממוצעים פשוטים ולא הוכחה לסיבה. לפני שמתחילים, מפסיקים או משנים תרופה או תוסף, תמיד כדאי להתייעץ עם איש מקצוע. אם יש דימום אחרי גיל המעבר, כאב בחזה או מחשבות על פגיעה עצמית, יש לפנות מיד לרופא או למוקד חירום.",
+agree:"הבנתי שזה כלי מעקב ולא ייעוץ רפואי.",start:"בואי נתחיל",
+checkin:"צ'ק-אין",symptoms:"תסמינים",scale:"(0 בכלל לא · 3 חזק)",stressT:"רמת הסטרס היום",bleeding:"דימום",triggers:"גורמים אפשריים היום",meds:"תרופות / תוספים שלקחתי",addMedPh:"הוסיפי (למשל מגנזיום)",add:"הוספה",notes:"הערות",optional:"(לא חובה)",notesPh:"משהו ששווה לזכור?",
+showMore:"עוד תסמינים ({n})",showFewer:"פחות תסמינים",saveNew:"שמירת הצ'ק-אין",update:"עדכון הרישום",today:"היום",streak:"🔥 {n} ימים ברצף",noMeds:"עוד לא נוסף כלום",
+saved:"נשמר ✓",savedStreak:"נשמר ✓ {n} ימים ברצף!",savedFirst:"נשמר ✓ התחלה יפה!",
+patterns:"הדפוסים שלך",d7:"7 ימים",d30:"30 יום",topT:"התסמינים הבולטים (30 הימים האחרונים)",patT:"דפוסים ששווה לשים לב אליהם",patNote:"אלה ממוצעים פשוטים מהרישומים שלך, לא מסקנות רפואיות. כדאי לדבר עליהם עם הרופא.",
+cycleT:"מחזור",calT:"5 השבועות האחרונים במבט אחד",calNote:"כהה יותר = עומס תסמינים גבוה יותר · קו אדום = דימום",helpT:"יכול לעזור לך",helpSub:"מוצרי נוחות שמתאימים לתסמינים הבולטים שלך החודש.",
+affShort:"כשותפים של אמזון אנחנו מרוויחים מרכישות מתאימות. לא ייעוץ רפואי.",affLink:"קישור שותפים",
+stStreak:"ימים ברצף",stLogged:"ימים מתועדים (30 יום)",stTotal:"סך הרישומים",overall:"עומס תסמינים כולל",
+chartAvg:"ממוצע {a} ב-{n} ימים מתועדים. סימון אדום = ימי דימום.",noPeriod:"אין עדיין רישומים בתקופה הזו.",avgDays:"ממוצע {a} · {n} ימים",logFew:"אחרי כמה ימי תיעוד יופיעו כאן התסמינים הבולטים.",
+lower:"עומס התסמינים הכולל שלך <b>נמוך ב-{p}%</b> לעומת 30 הימים שלפני. מה שאת עושה, שווה לרשום.",higher:"עומס התסמינים הכולל שלך <b>גבוה ב-{p}%</b> לעומת 30 הימים שלפני. אולי כדאי להזכיר את זה בתור הבא.",
+streakIns:"{n} ימים ברצף. תיעוד קבוע הוא מה שהופך את הדפוסים לאמינים. 🌿",patWait:"דפוסים מופיעים אחרי בערך שבועיים של צ'ק-אין, כשיש מספיק ימים להשוואה.",
+corr:"{label}, <b>{s}</b> היו בממוצע <b>{a}</b> לעומת {b} בימים אחרים ({na} לעומת {nb} ימים).",afterPoor:"בימים שאחרי לילה גרוע",onTrig:"בימים שסימנת {t}",onMed:"בימים שלקחת {m}",highStress:"בימים עם יותר סטרס",
+lastPer:"הווסת האחרונה התחילה ב-<b>{d}</b> (לפני {n} ימים).",cycLens:"אורכי מחזור אחרונים: <b>{l}</b> ימים (ממוצע {a}).",cycVar:"אורך המחזור שלך השתנה בשבוע או יותר. זה נפוץ בגיל המעבר וכדאי לשתף עם הרופא.",cycMore:"סמני תחילת וסת נוספת כדי לראות את אורך המחזור.",cycNone:"סמני רמת דימום בצ'ק-אין, ואורכי המחזור יופיעו כאן.",
+tipRough:"יום לא קל. הרבה נשים מספרות שזה עוזר {w}:",
+weekTipT:"הטיפ של השבוע",
+docT:"סיכום לרופא",modeSum:"סיכום חודשי",modeLet:"מכתב לרופא",print:"הדפסה / PDF",drPh:"שם הרופא/ה (לא חובה)",mePh:"השם שלך (לא חובה)",r1:"החודש האחרון",r3:"3 החודשים האחרונים",r6:"6 החודשים האחרונים",rAll:"כל הרישומים",
+printHelp:"באייפון: הדפסה ← הגדלת התצוגה בשתי אצבעות ← שיתוף, כדי לשמור כ-PDF או לשלוח. באנדרואיד: הדפסה ← שמירה כ-PDF.",
+sumTitle:"סיכום תסמינים חודשי",sumLine:"ימים מתועדים: <b>{n}</b> · סולם: 0 בכלל לא, 1 קל, 2 בינוני, 3 חזק · עומס תסמינים יומי ממוצע: <b>{a}</b>",sumMost:"תסמינים, מהחזק לחלש",thSym:"תסמין",thAvg:"ממוצע",thDays:"ימים עם התסמין",thMod:"ימים בינוני ומעלה",thWorst:"הכי חזק",byWeek:"עומס תסמינים כולל לפי שבוע",wk:"שבוע {n}",bleedCyc:"דימום ומחזור",bleedOn:"דימום/הכתמה בימים: ",noBleed:"לא תועד דימום החודש.",recentLens:"אורכי מחזור אחרונים: {l} ימים.",trigMeds:"גורמים שתועדו · תרופות/תוספים",none:"אין",noneLogged:"לא תועד",stressAvg:"סטרס ממוצע: {a} מתוך 3",
+myPats:"דפוסים ששמתי לב אליהם (ממוצעים שלי, לא אבחנה)",qs:"שאלות לרופא",footer:"סיכום מעקב בדיווח עצמי, נוצר באפליקציית מעקב גיל המעבר. כלי לארגון מידע, לא ייעוץ רפואי.",noMonth:"אין עדיין רישומים בחודש הזה. אפשר לעשות כמה צ'ק-אינים, או לטעון נתוני דוגמה בהגדרות כדי לראות איך זה נראה.",
+L_dear:"לכבוד {d}, שלום רב,",L_dearNo:"לכבוד הרופא/ה, שלום רב,",L_intro:"אני עוקבת אחרי התסמינים שלי מדי יום, כדי שנוכל להפיק את המרב מהפגישה. ריכזתי כאן סיכום קצר של {n} ימי תיעוד, מ-{a} עד {b}. דירגתי כל תסמין מ-0 (בכלל לא) עד 3 (חזק).",
+L_freq:"התסמינים שהופיעו אצלי הכי הרבה:",L_item:"<b>{s}</b>: ב-{p}% מהימים המתועדים, בדרך כלל ברמה {sev}",
+L_chart:"איך עומס התסמינים הכולל השתנה:",L_tbl:"תקופה",L_load:"עומס ממוצע",L_sleep:"קשיי שינה",L_stress:"סטרס",L_days:"ימים",
+L_cyc:"המחזור שלי: תיעדתי {n} התחלות וסת. אורכי המחזור היו {l} ימים (הקצר ביותר {mn}, הארוך ביותר {mx}, הפרש של {d} ימים).",L_cycOne:"המחזור שלי: תיעדתי התחלת וסת אחת, ב-{d}, ולכן אין עדיין אורך מחזור.",L_cycNone:"המחזור שלי: לא תיעדתי דימום בתקופה הזו.",L_cycLast:"הווסת האחרונה שלי התחילה ב-{d}.",
+L_ss:"במקביל, קשיי השינה שלי היו בממוצע {s} מתוך 3, והסטרס בממוצע {t} מתוך 3.",L_pats:"כמה דפוסים מהתיעוד שלי (ממוצעים פשוטים, לא הוכחה לסיבה):",
+L_ask:"אשמח אם נוכל לדבר על התסמינים האלה ועל האפשרויות שעשויות להתאים לי.",L_note:"זה תיעוד אישי שלי מיום ליום, לא אבחנה. אשמח לפרט עוד.",L_close:"בתודה ובברכה,",L_noData:"אין עדיין רישומים בתקופה הזו. אפשר לעשות כמה צ'ק-אינים, או לטעון נתוני דוגמה בהגדרות.",L_dateFmt:"he-IL",
+sev:["ללא","קלה","בינונית","חזקה"],
+comfortT:"מוצרי נוחות",comfortSub:"מוצרי נוחות יומיומיים שנשים מזכירות לא פעם, לפי תסמין. בלי תוספים ובלי תרופות.",affLong:"קישורי שותפים: כשותפים של אמזון אנחנו מרוויחים מרכישות מתאימות, בלי עלות נוספת לך. לא ייעוץ רפואי; על תסמינים כדאי לדבר עם הרופא.",
+gCool:"גלי חום והזעות לילה",gSleep:"קשיי שינה ועייפות",gAche:"כאבי מפרקים וכאבי ראש",gCalm:"חרדה, מצב רוח ועצבנות",gBook:"קריאה: ערפל מוחי והבנת גיל המעבר",
+setT:"הגדרות ונתונים",langT:"שפה",remT:"תזכורת יומית",remAt:"להזכיר לי ב-",remOnB:"הפעלת תזכורת",remOffB:"כיבוי התזכורת",remStOn:"פעילה: תזכורת עדינה ב-{t}, ולא בימים שכבר עשית צ'ק-אין.",remStOff:"כבויה.",remDenied:"ההתראות חסומות באתר הזה. אפשר לאשר אותן בהגדרות הדפדפן, או להשתמש בתזכורת ביומן למטה.",remUnsup:"הדפדפן הזה לא תומך בהתראות. אפשר להשתמש בתזכורת ביומן למטה.",
+remHonest:"<b>בכנות:</b> תזכורות של אפליקציית רשת מגיעות באופן אמין רק כשהאפליקציה או הדפדפן פתוחים או פועלים ברקע. באייפון צריך iOS 16.4 ומעלה, ושהאפליקציה תהיה מותקנת במסך הבית. לתזכורת שתמיד מגיעה, עדיף להוסיף אותה ליומן.",
+ics:"הוספת תזכורת יומית ליומן",icsNote:"יורד קובץ יומן עם תזכורת שחוזרת כל יום. פותחים אותו כדי להוסיף ליומן בטלפון.",
+nTitle:"הגיע הזמן לצ'ק-אין 🌿",nBody:"30 שניות לתעד איך עבר היום. את (והרופא שלך) תודי לעצמך אחר כך.",icsTitle:"צ'ק-אין במעקב גיל המעבר",icsDesc:"30 שניות לתעד איך עבר היום.",
+backupT:"גיבוי",backupSub:"הנתונים שלך נשמרים רק בטלפון הזה. מדי פעם כדאי לייצא קובץ CSV לשמירה.",exp:"ייצוא גיבוי (CSV)",imp:"ייבוא גיבוי (CSV)",tryT:"לנסות",demo:"טעינת 60 ימים של נתוני דוגמה",clear:"מחיקת כל הנתונים",aboutT:"אודות",
+discShort:"האפליקציה היא כלי לארגון מידע ולא ייעוץ רפואי. היא לא מאבחנת, לא מטפלת ולא ממליצה על טיפול. תמיד כדאי להתייעץ עם איש מקצוע.",reOnb:"למסך הפתיחה",
+nToday:"צ'ק-אין",nIns:"תובנות",nDoc:"סיכום לרופא",nComfort:"נוחות",nSet:"הגדרות",
+backupDl:"הגיבוי ירד",imported:"יובאו {n} ימים",badCsv:"זה לא נראה כמו קובץ גיבוי של האפליקציה.",demoMix:"נתוני הדוגמה יתערבבו ברישומים שלך. להמשיך?",demoOk:"נתוני הדוגמה נטענו",clearQ:"למחוק את כל הרישומים מהטלפון? אי אפשר לבטל את זה. (אם רוצים לשמור, כדאי לייצא גיבוי קודם.)",cleared:"כל הנתונים נמחקו",
+whyT:"למה זה יכול לקרות",explNote:"מידע כללי בלבד, לא אבחנה ולא המלצה לטיפול. אם תסמין מדאיג אותך, כדאי לדבר עם הרופא.",srcL:"מקורות:"
+}};
+const SYMN={en:{hot:"Hot flashes",sweat:"Night sweats",sleep:"Sleep trouble",fatigue:"Fatigue / low energy",fog:"Brain fog",anx:"Anxiety",mood:"Low mood",irrit:"Irritability",head:"Headache",joint:"Joint / muscle pain",palp:"Heart palpitations",bloat:"Bloating",breast:"Breast tenderness",dry:"Vaginal dryness",libido:"Low libido",bladder:"Bladder urgency",skin:"Dry skin / itching",dizzy:"Dizziness",stress:"Stress"},
+he:{hot:"גלי חום",sweat:"הזעות לילה",sleep:"קשיי שינה",fatigue:"עייפות / חוסר אנרגיה",fog:"ערפל מוחי",anx:"חרדה",mood:"מצב רוח ירוד",irrit:"עצבנות",head:"כאב ראש",joint:"כאבי מפרקים / שרירים",palp:"דפיקות לב",bloat:"נפיחות בבטן",breast:"רגישות בשדיים",dry:"יובש בנרתיק",libido:"ירידה בחשק המיני",bladder:"דחיפות במתן שתן",skin:"יובש בעור / גירוד",dizzy:"סחרחורת",stress:"סטרס"}};
+const TRIGN={en:{caffeine:"Caffeine",alcohol:"Alcohol",stress:"Stress",poorsleep:"Poor sleep",spicy:"Spicy food",sugar:"Sugar",exercise:"Exercise"},he:{caffeine:"קפאין",alcohol:"אלכוהול",stress:"סטרס",poorsleep:"לילה גרוע",spicy:"אוכל חריף",sugar:"סוכר",exercise:"פעילות גופנית"}};
+const BLEEDN={en:{none:"None",spot:"Spotting",light:"Light",medium:"Medium",heavy:"Heavy"},he:{none:"אין",spot:"הכתמה",light:"קל",medium:"בינוני",heavy:"כבד"}};
+const TIPWN={en:{hot:"for hot flashes",sweat:"for night sweats",sleep:"for sleep",fatigue:"for rest",fog:"for brain fog",anx:"for unwinding",mood:"for low days",irrit:"for unwinding",head:"for headaches",joint:"for aches"},he:{hot:"עם גלי חום",sweat:"עם הזעות לילה",sleep:"עם השינה",fatigue:"למנוחה",fog:"עם ערפל מוחי",anx:"להירגע",mood:"בימים קשים",irrit:"להירגע",head:"עם כאבי ראש",joint:"עם כאבים"}};
+const SRC={nhs:["NHS: Menopause symptoms","https://www.nhs.uk/conditions/menopause/symptoms/"],nhsP:["NHS: Perimenopause","https://www.nhs.uk/conditions/menopause/"],tms:["The Menopause Society: Menopause topics","https://menopause.org/patient-education/menopause-topics"],nice:["NICE guideline NG23: Menopause","https://www.nice.org.uk/guidance/ng23"]};
+const EXPL={
+hot:{s:["nhs","tms"],en:"Hot flashes are sudden waves of heat, often in the face, neck and chest, sometimes with sweating or a racing heart. As estrogen levels rise and fall, the brain's temperature control centre becomes more sensitive to small changes, and the body reacts by flushing and sweating to cool down.",he:"גלי חום הם תחושת חום פתאומית, בדרך כלל בפנים, בצוואר ובחזה, ולפעמים עם הזעה או דופק מהיר. כשרמות האסטרוגן עולות ויורדות, מרכז ויסות החום במוח נעשה רגיש יותר לשינויים קטנים, והגוף מגיב בהסמקה ובהזעה כדי להתקרר."},
+sweat:{s:["nhs","tms"],en:"Night sweats are hot flashes that happen during sleep. They come from the same hormone-related changes in temperature control, and they often wake you up or disturb sleep.",he:"הזעות לילה הן גלי חום שמגיעים בזמן השינה. הן נובעות מאותם שינויים הורמונליים בוויסות החום, ולעתים קרובות מעירות או פוגעות בשינה."},
+sleep:{s:["nhs","nice"],en:"Sleep often becomes lighter or more broken in perimenopause. Night sweats, changing hormone levels, anxiety and needing the toilet at night can all play a part.",he:"השינה נעשית לא פעם קלה יותר או מקוטעת בגיל המעבר. הזעות לילה, שינויים ברמות ההורמונים, חרדה וצורך לקום לשירותים בלילה יכולים כולם לתרום לכך."},
+fatigue:{s:["nhs"],en:"Feeling tired or low on energy is common, often linked to broken sleep and night sweats. Tiredness has many possible causes, such as low iron or thyroid changes, so it's worth mentioning to your doctor.",he:"עייפות וחוסר אנרגיה נפוצים מאוד, ולרוב קשורים לשינה מקוטעת ולהזעות לילה. לעייפות יש הרבה סיבות אפשריות, כמו ברזל נמוך או שינויים בבלוטת התריס, ולכן כדאי להזכיר אותה לרופא."},
+fog:{s:["nhs","tms"],en:"Many women notice forgetfulness or trouble concentrating. Changing estrogen levels, poor sleep and stress are thought to contribute. For most women it improves with time.",he:"הרבה נשים שמות לב לשכחה או לקושי להתרכז. ההערכה היא ששינויים ברמות האסטרוגן, שינה לא טובה וסטרס תורמים לכך. אצל רוב הנשים זה משתפר עם הזמן."},
+anx:{s:["nhs","nice"],en:"Feeling anxious or on edge can appear or increase in perimenopause, even if you've never had anxiety before. Hormone changes, disrupted sleep and life pressures may all contribute.",he:"חרדה או תחושת דריכות יכולות להופיע או להתגבר בגיל המעבר, גם אצל מי שלא חוותה חרדה קודם. שינויים הורמונליים, שינה מופרעת ולחצים בחיים יכולים כולם לתרום לכך."},
+mood:{s:["nhs","nice"],en:"Low mood and mood swings are common. Fluctuating hormones can affect mood, and poor sleep makes everything harder. If low mood lasts, or you have thoughts of harming yourself, seek help right away.",he:"מצב רוח ירוד ותנודות במצב הרוח נפוצים. תנודות הורמונליות יכולות להשפיע על מצב הרוח, ושינה גרועה מקשה על הכל. אם מצב הרוח הירוד נמשך, או אם יש מחשבות על פגיעה עצמית, חשוב לפנות לעזרה מיד."},
+irrit:{s:["nhs"],en:"Feeling short-tempered or easily annoyed is a commonly reported symptom, often tied to hormone swings, tiredness and stress.",he:"עצבנות או סבלנות קצרה הם תסמין שנשים מדווחות עליו הרבה, ולרוב הוא קשור לתנודות הורמונליות, לעייפות ולסטרס."},
+head:{s:["nhs","tms"],en:"Some women get more headaches, or find migraines change pattern, as hormone levels fluctuate. Headaches that used to come with periods may become less predictable.",he:"חלק מהנשים סובלות מיותר כאבי ראש, או שדפוס המיגרנות משתנה, כשרמות ההורמונים משתנות. כאבי ראש שהיו מגיעים עם הווסת יכולים להפוך לפחות צפויים."},
+joint:{s:["nhs","tms"],en:"Aches and stiffness in joints and muscles are common. Estrogen plays a role in joints and connective tissue, so falling levels may contribute.",he:"כאבים ונוקשות במפרקים ובשרירים נפוצים. לאסטרוגן יש תפקיד במפרקים וברקמות החיבור, ולכן ירידה ברמתו יכולה לתרום לכך."},
+palp:{s:["nhs","tms"],en:"A pounding or fluttering heartbeat can happen, sometimes during hot flashes. It's usually harmless, but palpitations should always be checked by a doctor, and urgently if you also have chest pain, fainting or breathlessness.",he:"דפיקות לב או תחושת רפרוף בלב יכולות להופיע, לפעמים בזמן גל חום. בדרך כלל זה לא מסוכן, אבל תמיד כדאי שרופא יבדוק דפיקות לב, ובדחיפות אם יש גם כאב בחזה, עילפון או קוצר נשימה."},
+bloat:{s:["tms"],en:"Many women report bloating and changes in digestion. Hormone shifts can affect fluid balance and how the gut works.",he:"הרבה נשים מדווחות על נפיחות ושינויים בעיכול. שינויים הורמונליים יכולים להשפיע על מאזן הנוזלים ועל פעילות המעיים."},
+breast:{s:["nhsP"],en:"Breast tenderness can come and go as hormone levels swing, similar to how it can feel before a period. Any new lump or change should be checked by a doctor.",he:"רגישות בשדיים יכולה לבוא וללכת עם התנודות ברמות ההורמונים, בדומה לתחושה לפני וסת. כל גוש או שינוי חדש צריך להיבדק אצל רופא."},
+dry:{s:["nhs","nice","tms"],en:"Lower estrogen can make the tissues of the vagina and vulva thinner and drier, which can cause discomfort or pain during sex. It's very common, often not talked about, and worth raising with your doctor.",he:"ירידה באסטרוגן יכולה לגרום לרקמות הנרתיק והפות להיות דקות ויבשות יותר, מה שעלול לגרום לאי-נוחות או לכאב ביחסי מין. זה נפוץ מאוד, לא מדברים על זה מספיק, ושווה להעלות את זה מול הרופא."},
+libido:{s:["nhs","nice"],en:"A change in sex drive is common. Hormone changes, tiredness, mood and vaginal dryness can all affect it.",he:"שינוי בחשק המיני נפוץ. שינויים הורמונליים, עייפות, מצב הרוח ויובש בנרתיק יכולים כולם להשפיע עליו."},
+bladder:{s:["nhs","tms"],en:"Lower estrogen also affects the bladder and urethra, which can bring a more urgent need to pee, more frequent trips, or more urine infections.",he:"הירידה באסטרוגן משפיעה גם על שלפוחית השתן ועל השופכה, ויכולה לגרום לדחיפות במתן שתן, ליותר ביקורים בשירותים או ליותר דלקות בדרכי השתן."},
+skin:{s:["nhs","tms"],en:"Estrogen helps skin hold moisture and collagen, so as levels fall skin may become drier, thinner or itchy.",he:"האסטרוגן עוזר לעור לשמור על לחות ועל קולגן, ולכן כשהרמה יורדת העור יכול להיעשות יבש, דק או מגרד יותר."},
+dizzy:{s:["tms"],en:"Some women report dizziness or feeling light-headed, sometimes with hot flashes or after poor sleep. Dizziness has many possible causes, so mention it to your doctor.",he:"חלק מהנשים מדווחות על סחרחורת או תחושת ריחוף, לפעמים עם גלי חום או אחרי לילה גרוע. לסחרחורת יש הרבה סיבות אפשריות, ולכן כדאי לספר עליה לרופא."},
+stress:{s:["nhs","nice"],en:"Stress isn't a symptom of perimenopause, but it often comes along at this stage of life, and it can make hot flashes, sleep and mood feel worse. Tracking it helps you and your doctor see the whole picture.",he:"סטרס הוא לא תסמין של גיל המעבר, אבל הוא מגיע איתו לא פעם בשלב הזה של החיים, ויכול להחמיר את גלי החום, את השינה ואת מצב הרוח. מעקב אחריו עוזר לך ולרופא לראות את התמונה המלאה."}};
+const TIPS=[
+["Bring your records","Before an appointment, write your top 3 questions at the bottom of your summary. Short visits go further when you lead with what matters most to you.","להביא את התיעוד","לפני תור, כתבי בתחתית הסיכום את 3 השאלות הכי חשובות לך. בפגישה קצרה מספיקים יותר כשמתחילים ממה שהכי חשוב."],
+["Layer up","Dressing in light layers makes it easier to cool down quickly when a hot flash starts.","שכבות","לבוש בשכבות דקות מאפשר להתקרר מהר כשגל חום מתחיל."],
+["A cooler bedroom","Many women sleep better in a cool, dark, quiet bedroom. A fan or a window open a little can help.","חדר שינה קריר","הרבה נשים ישנות טוב יותר בחדר קריר, חשוך ושקט. מאוורר או חלון פתוח קצת יכולים לעזור."],
+["Notice your triggers","Some women find caffeine, alcohol or spicy food set off hot flashes. Your Patterns card shows whether that's true for you.","לשים לב לטריגרים","יש נשים שמגלות שקפאין, אלכוהול או אוכל חריף מעוררים אצלן גלי חום. כרטיס הדפוסים יראה לך אם זה נכון אצלך."],
+["Keep moving","Regular movement you enjoy, like walking, swimming or dancing, is good for mood, sleep, bones and heart.","להמשיך לזוז","תנועה קבועה שאת נהנית ממנה, כמו הליכה, שחייה או ריקוד, טובה למצב הרוח, לשינה, לעצמות וללב."],
+["Strength matters","Muscle and bone strength matter more from midlife. Simple resistance exercises a couple of times a week can help.","כוח זה חשוב","כוח שרירים ועצמות חשוב יותר מאמצע החיים. כמה תרגילי כוח פשוטים פעמיים בשבוע יכולים לעזור."],
+["Say it plainly","It's OK to tell your doctor exactly how symptoms affect your work, sleep or relationships. That context helps them help you.","להגיד את זה ישר","זה בסדר לספר לרופא בדיוק איך התסמינים משפיעים על העבודה, השינה או הזוגיות. ההקשר הזה עוזר לו לעזור לך."],
+["You can ask for more time","If you have a lot to discuss, ask whether you can book a longer appointment or a follow-up.","מותר לבקש עוד זמן","אם יש הרבה על מה לדבר, אפשר לשאול אם ניתן לקבוע תור ארוך יותר או תור המשך."],
+["Talk about it","Sharing what you're going through with a partner or friend can make a hard week lighter. You're far from alone.","לדבר על זה","לשתף בן זוג או חברה במה שעובר עלייך יכול להקל על שבוע קשה. את ממש לא לבד."],
+["Wind down","A short, regular wind-down routine, such as dimming lights and putting the phone away, can make it easier to fall asleep.","להאט לקראת השינה","שגרה קצרה וקבועה לפני השינה, כמו לעמעם אורות ולהניח את הטלפון בצד, יכולה להקל על ההירדמות."],
+["Keep a small water bottle near","Having cool water close by can help when you feel a flush coming on, day or night.","בקבוק מים קרוב","מים קרים בהישג יד יכולים לעזור כשמרגישים גל חום מתקרב, ביום או בלילה."],
+["Check in, even on good days","Logging good days matters as much as bad ones. It shows your doctor what 'normal' looks like for you.","צ'ק-אין גם בימים טובים","תיעוד של ימים טובים חשוב בדיוק כמו של ימים קשים. הוא מראה לרופא איך נראה 'רגיל' אצלך."]];
+const PRODW={he:{B00EINBSEW:"כרית מתכווננת ומאווררת שהרבה ישנים חמים אוהבים.",B09NBPQ672:"מאוורר צוואר שקט, בלי ידיים, לגל חום מחוץ לבית.",B0C45VXSD8:"פיג'מת סאטן קלה וחלקה ללילות חמים.",B07PRG2CQY:"מסכת שינה שמחשיכה לגמרי, בלי לחץ על העיניים.",B00HD0ELFK:"מכשיר רעש לבן עם מאוורר אמיתי שמסתיר רעשים, ותיק ואהוב.",B075F9ST7G:"משקל עדין ואחיד שהרבה אנשים מרגישים שמרגיע לפני השינה.",B0B32R3BB3:"כרית חימום גדולה עם 6 דרגות וכיבוי אוטומטי.",B09G3KYR28:"שאלה קצרה ביום כדי להירגע ולעשות חשבון נפש.",B07W731WSH:"למתיחות עדינות או לכמה דקות רגועות בבית.","0806540664":"מדריך מבוסס מחקר מאת רופאת נשים (באנגלית).","059379625X":"מדריך מעשי לגיל המעבר מאת רופאת נשים (באנגלית)."}};
 "use strict";
-const AFFTAG='moneymaker0bd-20'; // <-- swap in your Amazon Associates tag here (one place)
+const AFFTAG='moneymaker0bd-20'; // <-- Amazon Associates tag (one place)
 const PROD=[
  {a:"B00EINBSEW",n:"Coop Home Goods Original Adjustable Pillow",w:"Breathable, adjustable-fill pillow that many hot sleepers like.",g:"cool",k:["hot","sweat"]},
  {a:"B09NBPQ672",n:"JISULIFE Portable Neck Fan",w:"Hands-free, quiet breeze for when a hot flash hits on the go.",g:"cool",k:["hot","sweat"]},
@@ -175,65 +328,90 @@ const PROD=[
  {a:"B07W731WSH",n:"Gaiam Premium Yoga Mat",w:"For gentle stretching or a few calm minutes at home.",g:"calm",k:["anx","joint","irrit","mood"]},
  {a:"0806540664",n:"The Menopause Manifesto, Dr. Jen Gunter",w:"Evidence-based guide by an OB/GYN.",g:"book",k:["fog","fatigue","mood"]},
  {a:"059379625X",n:"The New Menopause, Dr. Mary Claire Haver",w:"Practical guide by an OB/GYN to perimenopause and beyond.",g:"book",k:["fog","fatigue","dry","libido"]}];
-const affURL=a=>`https://www.amazon.com/dp/${a}?tag=${encodeURIComponent(AFFTAG)}`;
-const affItem=p=>`<div class="aff"><div><a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener">${p.n}</a><span class="afftag">Affiliate link</span><p>${p.w}</p></div></div>`;
-function renderHelp(topKeys){let picks=[];for(let r=0;r<4;r++)topKeys.forEach(k=>{const p=PROD.filter(p=>p.k.includes(k)&&!picks.includes(p))[0];if(p)picks.push(p)});
- if(!picks.length)picks=PROD.filter(p=>p.g=="book");picks=picks.slice(0,4);
- $("helpList").innerHTML=picks.map(affItem).join("")}
-function renderShop(){const G=[["cool","Hot flashes & night sweats"],["sleep","Sleep trouble & fatigue"],["ache","Joint pain & headaches"],["calm","Anxiety, mood & irritability"],["book","Reading: brain fog & understanding perimenopause"]];
- $("shopList").innerHTML=G.map(([g,t])=>`<h4 style="margin:10px 0 2px">${t}</h4>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
-const SYM=[["hot","Hot flashes"],["sweat","Night sweats"],["sleep","Sleep trouble"],["fatigue","Fatigue / low energy"],["fog","Brain fog"],["anx","Anxiety"],["mood","Low mood"],["irrit","Irritability"],["head","Headache"],["joint","Joint / muscle pain"],
-["palp","Heart palpitations"],["bloat","Bloating"],["breast","Breast tenderness"],["dry","Vaginal dryness"],["libido","Low libido"],["bladder","Bladder urgency"],["skin","Dry skin / itching"],["dizzy","Dizziness"]];
-const CORE=10;
-const TRIG=[["caffeine","Caffeine"],["alcohol","Alcohol"],["stress","Stress"],["poorsleep","Poor sleep"],["spicy","Spicy food"],["sugar","Sugar"],["exercise","Exercise"]];
-const BLEED=[["none","None"],["spot","Spotting"],["light","Light"],["medium","Medium"],["heavy","Heavy"]];
+const SYMK=["hot","sweat","sleep","fatigue","fog","anx","mood","irrit","head","joint","palp","bloat","breast","dry","libido","bladder","skin","dizzy"];
+const CORE=10,TRIGK=["caffeine","alcohol","stress","poorsleep","spicy","sugar","exercise"],BLEEDK=["none","spot","light","medium","heavy"];
 const KEY="periTracker.v1";
-let S=load(); let cur=today(); let showAll=false; let range=7;
+let S=load(); let cur=today(); let showAll=false; let range=7; let sumMode="sum";
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||{onb:false,e:{},meds:["Magnesium","Vitamin D"]}}catch(x){return{onb:false,e:{},meds:["Magnesium","Vitamin D"]}}}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
+let LANG=S.lang||((navigator.language||"en").toLowerCase().startsWith("he")||(navigator.language||"").toLowerCase().startsWith("iw")?"he":"en");
+const L=()=>I18N[LANG];
+function t(k,o){let s=L()[k]??I18N.en[k]??k;if(o)for(const x in o)s=s.split("{"+x+"}").join(o[x]);return s}
+const SN=k=>SYMN[LANG][k],TN=k=>TRIGN[LANG][k],BN=k=>BLEEDN[LANG][k];
+const LOC=()=>LANG==="he"?"he-IL":"en-US";
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function today(){return iso(new Date())}
 function addD(s,n){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)}
-function fmt(s,o){return new Date(s+"T12:00:00").toLocaleDateString(undefined,o||{weekday:"short",month:"short",day:"numeric"})}
+function fmt(s,o){return new Date(s+"T12:00:00").toLocaleDateString(LOC(),o||{weekday:"short",month:"short",day:"numeric"})}
 const $=id=>document.getElementById(id);
-const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1600)}
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(m){const e=$("toast");e.textContent=m;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1600)}
 function entry(d){return S.e[d]||(S.e[d]={s:{},bleed:"none",trig:[],meds:[],notes:""})}
 const isBleed=e=>e&&["light","medium","heavy"].includes(e.bleed);
-const load_=e=>e?SYM.reduce((a,[k])=>a+(e.s[k]||0),0):0;
+const load_=e=>e?SYMK.reduce((a,k)=>a+(e.s[k]||0),0):0;
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
 const r1=x=>(Math.round(x*10)/10).toFixed(1);
+const stressOf=e=>e.st!=null?e.st:(e.trig.includes("stress")?2:null);
+
+// ---------- affiliate
+const affURL=a=>`https://www.amazon.com/dp/${a}?tag=${encodeURIComponent(AFFTAG)}`;
+const pw=p=>(PRODW[LANG]&&PRODW[LANG][p.a])||p.w;
+const affItem=p=>`<div class="aff"><div><a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener" dir="ltr">${p.n}</a><span class="afftag">${t("affLink")}</span><p>${pw(p)}</p></div></div>`;
+function renderHelp(topKeys){let picks=[];for(let r=0;r<4;r++)topKeys.forEach(k=>{const p=PROD.filter(p=>p.k.includes(k)&&!picks.includes(p))[0];if(p)picks.push(p)});
+ if(!picks.length)picks=PROD.filter(p=>p.g=="book");picks=picks.slice(0,4);
+ $("helpList").innerHTML=picks.map(affItem).join("")}
+function renderShop(){const G=[["cool","gCool"],["sleep","gSleep"],["ache","gAche"],["calm","gCalm"],["book","gBook"]];
+ $("shopList").innerHTML=G.map(([g,k])=>`<h4 style="margin:10px 0 2px">${t(k)}</h4>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
+
+// ---------- language
+function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==="he"?"rtl":"ltr";document.title=t("appName");
+ document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));
+ document.querySelectorAll("[data-h]").forEach(e=>e.innerHTML=t(e.dataset.h));
+ document.querySelectorAll("[data-p]").forEach(e=>e.placeholder=t(e.dataset.p));
+ document.querySelectorAll("[data-lang]").forEach(b=>b.className="btn "+(b.dataset.lang===LANG?"":"alt"));
+ $("prevD").textContent=LANG==="he"?"›":"‹";$("nextD").textContent=LANG==="he"?"‹":"›";
+ $("chartSym").innerHTML="";renderReminder()}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;S.lang=LANG;persist();applyLang();const v=document.querySelector("nav button.on");if(!$("app").classList.contains("hide"))show(v?v.dataset.v:"today",true)});
+
+// ---------- explanations
+function explain(k){const x=EXPL[k];if(!x)return;$("mT").textContent=SN(k);$("mB").innerHTML=`<b>${t("whyT")}</b><br>`+x[LANG];$("mN").textContent=t("explNote");
+ $("mS").innerHTML=t("srcL")+" "+x.s.map(s=>`<a href="${SRC[s][1]}" target="_blank" rel="noopener" dir="ltr">${SRC[s][0]}</a>`).join(" · ");$("modal").classList.remove("hide")}
+$("mX").onclick=()=>$("modal").classList.add("hide");$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.add("hide")};
+const infoBtn=k=>`<button class="info" data-x="${k}" aria-label="${esc(t("whyT"))}">i</button>`;
 
 // ---------- onboarding
-function boot(){
- if(!S.onb){$("onb").classList.remove("hide");$("app").classList.add("hide")}else{$("onb").classList.add("hide");$("app").classList.remove("hide");renderToday()}
-}
+function boot(){applyLang();
+ if(!S.onb){$("onb").classList.remove("hide");$("app").classList.add("hide")}else{$("onb").classList.add("hide");$("app").classList.remove("hide");renderToday();checkReminderNow()}}
 $("agree").onchange=e=>$("start").disabled=!e.target.checked;
 $("start").onclick=()=>{S.onb=true;persist();boot()};
 $("reOnb").onclick=()=>{S.onb=false;persist();$("agree").checked=false;$("start").disabled=true;boot();scrollTo(0,0)};
 
 // ---------- nav
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
-function show(v){document.querySelectorAll(".view").forEach(s=>s.classList.add("hide"));$("v-"+v).classList.remove("hide");
+function show(v,keep){document.querySelectorAll(".view").forEach(s=>s.classList.add("hide"));$("v-"+v).classList.remove("hide");
  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
- ({today:renderToday,insights:renderInsights,summary:renderSummary,comfort:renderShop,settings:()=>{}})[v]();scrollTo(0,0)}
+ ({today:renderToday,insights:renderInsights,summary:renderSummary,comfort:renderShop,settings:renderReminder})[v]();if(!keep)scrollTo(0,0)}
 
 // ---------- check-in
+const seg=(k,val)=>`<div class="seg" data-k="${k}">${[0,1,2,3].map(v=>`<button data-v="${v}" class="${(val??-1)===v?"on":""}">${v}</button>`).join("")}</div>`;
 function renderToday(){
  const e=S.e[cur]||{s:{},bleed:"none",trig:[],meds:[],notes:""};
- $("dLabel").textContent=cur===today()?"Today · "+fmt(cur,{month:"short",day:"numeric"}):fmt(cur);
+ $("dLabel").textContent=cur===today()?t("today")+" · "+fmt(cur,{month:"short",day:"numeric"}):fmt(cur);
  $("nextD").disabled=cur>=today();$("nextD").style.opacity=cur>=today()?.3:1;
- const list=showAll?SYM:SYM.slice(0,CORE);
- $("symList").innerHTML=list.map(([k,n])=>`<div class="sym"><span>${n}</span><div class="seg" data-k="${k}">${[0,1,2,3].map(v=>`<button data-v="${v}" class="${(e.s[k]??-1)===v?"on":""}">${v}</button>`).join("")}</div></div>`).join("");
- $("moreSym").textContent=showAll?"Show fewer symptoms":"Show more symptoms ("+(SYM.length-CORE)+")";
- $("bleedC").innerHTML=BLEED.map(([k,n])=>`<button class="chip ${e.bleed===k?"on":""}" data-k="${k}">${n}</button>`).join("");
- $("trigC").innerHTML=TRIG.map(([k,n])=>`<button class="chip ${e.trig.includes(k)?"on":""}" data-k="${k}">${n}</button>`).join("");
- $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||'<span class="muted">None added yet</span>';
+ const list=showAll?SYMK:SYMK.slice(0,CORE);
+ $("symList").innerHTML=list.map(k=>`<div class="sym"><span>${SN(k)}${infoBtn(k)}</span>${seg(k,e.s[k])}</div>`).join("");
+ $("stressRow").innerHTML=`<div class="sym"><span>${SN("stress")}${infoBtn("stress")}</span>${seg("_st",e.st)}</div>`;
+ $("moreSym").textContent=showAll?t("showFewer"):t("showMore",{n:SYMK.length-CORE});
+ $("bleedC").innerHTML=BLEEDK.map(k=>`<button class="chip ${e.bleed===k?"on":""}" data-k="${k}">${BN(k)}</button>`).join("");
+ $("trigC").innerHTML=TRIGK.filter(k=>k!=="stress").map(k=>`<button class="chip ${e.trig.includes(k)?"on":""}" data-k="${k}">${TN(k)}</button>`).join("");
+ $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||`<span class="muted">${t("noMeds")}</span>`;
  $("notes").value=e.notes||"";
- $("streakTop").textContent="🔥 "+streak()+" day streak";
- $("saveBtn").textContent=S.e[cur]?"Update entry":"Save check-in";
+ $("streakTop").textContent=t("streak",{n:streak()});
+ $("saveBtn").textContent=S.e[cur]?t("update"):t("saveNew");
 }
-$("symList").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const k=b.parentNode.dataset.k,e=entry(cur);e.s[k]=+b.dataset.v;persist();renderToday()};
+function segClick(ev,fn){const i=ev.target.closest(".info");if(i){explain(i.dataset.x);return}const b=ev.target.closest(".seg button");if(!b)return;fn(b.parentNode.dataset.k,+b.dataset.v);persist();renderToday()}
+$("symList").onclick=ev=>segClick(ev,(k,v)=>entry(cur).s[k]=v);
+$("stressRow").onclick=ev=>segClick(ev,(k,v)=>entry(cur).st=v);
 $("bleedC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;entry(cur).bleed=b.dataset.k;persist();renderToday()};
 $("trigC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.trig=e.trig.includes(k)?e.trig.filter(x=>x!==k):[...e.trig,k];persist();renderToday()};
 $("medC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.meds=e.meds.includes(k)?e.meds.filter(x=>x!==k):[...e.meds,k];persist();renderToday()};
@@ -242,147 +420,212 @@ $("notes").oninput=e=>{entry(cur).notes=e.target.value;persist()};
 $("moreSym").onclick=()=>{showAll=!showAll;renderToday()};
 $("prevD").onclick=()=>{cur=addD(cur,-1);renderToday()};
 $("nextD").onclick=()=>{if(cur<today()){cur=addD(cur,1);renderToday()}};
-const TIPW={hot:"for hot flashes",sweat:"for night sweats",sleep:"for sleep",fatigue:"for rest",fog:"for brain fog",anx:"for unwinding",mood:"for low days",irrit:"for unwinding",head:"for headaches",joint:"for aches"};
 function maybeTip(e){$("tipBox").classList.add("hide");if(cur!==today()||S.tipDay===today())return;
- const sev=SYM.map(x=>x[0]).filter(k=>e.s&&e.s[k]===3);let p=null,k0=null;for(const k of sev){p=PROD.find(q=>q.k[0]===k)||PROD.find(q=>q.k.includes(k));if(p){k0=k;break}}if(!p)return;
+ const sev=SYMK.filter(k=>e.s&&e.s[k]===3);let p=null,k0=null;for(const k of sev){p=PROD.find(q=>q.k[0]===k)||PROD.find(q=>q.k.includes(k));if(p){k0=k;break}}if(!p)return;
  S.tipDay=today();persist();
- $("tipTxt").innerHTML=`Rough day. Many women find this helps ${TIPW[k0]||""}: <a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener">${p.n}</a> <span class="afftag">Affiliate link</span>`;
+ $("tipTxt").innerHTML=`${t("tipRough",{w:TIPWN[LANG][k0]||""})} <a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener" dir="ltr">${p.n}</a> <span class="afftag">${t("affLink")}</span>`;
  $("tipBox").classList.remove("hide")}
 $("tipX").onclick=()=>$("tipBox").classList.add("hide");
-$("saveBtn").onclick=()=>{const e=entry(cur);e.saved=true;persist();const st=streak();toast(st>1?`Saved ✓ ${st}-day streak!`:"Saved ✓ Nice start!");show("insights");maybeTip(e)};
+$("saveBtn").onclick=()=>{const e=entry(cur);e.saved=true;persist();const st=streak();toast(st>1?t("savedStreak",{n:st}):t("savedFirst"));show("insights");maybeTip(e)};
 
 function streak(){let d=today(),n=0;if(!S.e[d])d=addD(d,-1);while(S.e[d]){n++;d=addD(d,-1)}return n}
 function days(n,end){const out=[];let d=end||today();for(let i=0;i<n;i++){out.unshift(d);d=addD(d,-1)}return out}
+
+// ---------- weekly tip
+function weekTip(){const wk=Math.floor((new Date(today()+"T12:00:00")-new Date("2024-01-01T12:00:00"))/(7*864e5));const x=TIPS[((wk%TIPS.length)+TIPS.length)%TIPS.length];
+ const o=LANG==="he"?2:0;$("weekTip").innerHTML=`<b>${t("weekTipT")} · ${x[o]}</b>${x[o+1]}`}
 
 // ---------- insights
 function renderInsights(){
  const last30=days(30).filter(d=>S.e[d]);
  const prev30=days(30,addD(today(),-30)).filter(d=>S.e[d]);
  const l30=avg(last30.map(d=>load_(S.e[d]))),p30=avg(prev30.map(d=>load_(S.e[d])));
- $("statBox").innerHTML=`<div class="stat"><b>${streak()}</b><small>day streak</small></div><div class="stat"><b>${last30.length}</b><small>days logged (30d)</small></div><div class="stat"><b>${Object.keys(S.e).length}</b><small>total entries</small></div>`;
- if(!$("chartSym").options.length){$("chartSym").innerHTML='<option value="_all">Overall symptom load</option>'+SYM.map(([k,n])=>`<option value="${k}">${n}</option>`).join("")}
+ $("statBox").innerHTML=`<div class="stat"><b>${streak()}</b><small>${t("stStreak")}</small></div><div class="stat"><b>${last30.length}</b><small>${t("stLogged")}</small></div><div class="stat"><b>${Object.keys(S.e).length}</b><small>${t("stTotal")}</small></div>`;
+ weekTip();
+ if(!$("chartSym").options.length){$("chartSym").innerHTML=`<option value="_all">${t("overall")}</option><option value="_st">${SN("stress")}</option>`+SYMK.map(k=>`<option value="${k}">${SN(k)}</option>`).join("")}
  drawChart();
- // top
- const tops=SYM.map(([k,n])=>[n,avg(last30.map(d=>S.e[d].s[k]||0)),last30.filter(d=>(S.e[d].s[k]||0)>0).length]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5);
- $("topSym").innerHTML=tops.length?tops.map(([n,a,c])=>`<div class="bar"><span>${n}</span><i style="width:${Math.max(4,a/3*100)}px"></i><em>avg ${r1(a)} · ${c} days</em></div>`).join(""):'<p class="muted">Log a few days to see your top symptoms.</p>';
- try{renderHelp(SYM.map(([k])=>[k,avg(last30.map(d=>S.e[d].s[k]||0))]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]))}catch(x){}
- // correlations
+ const tops=SYMK.map(k=>[k,avg(last30.map(d=>S.e[d].s[k]||0)),last30.filter(d=>(S.e[d].s[k]||0)>0).length]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ $("topSym").innerHTML=tops.length?tops.map(([k,a,c])=>`<div class="bar"><span>${SN(k)}${infoBtn(k)}</span><i style="width:${Math.max(4,a/3*100)}px"></i><em>${t("avgDays",{a:r1(a),n:c})}</em></div>`).join(""):`<p class="muted">${t("logFew")}</p>`;
+ try{renderHelp(SYMK.map(k=>[k,avg(last30.map(d=>S.e[d].s[k]||0))]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]))}catch(x){}
  const ins=[];
  if(last30.length>=7&&prev30.length>=7){const ch=(l30-p30)/(p30||1);
-  if(ch<-.1)ins.push(["g",`Your overall symptom load is <b>${Math.round(-ch*100)}% lower</b> than the 30 days before. Whatever you're doing, it's worth noting.`]);
-  else if(ch>.1)ins.push(["",`Your overall symptom load is <b>${Math.round(ch*100)}% higher</b> than the 30 days before. Could be worth mentioning at your next appointment.`])}
+  if(ch<-.1)ins.push(["g",t("lower",{p:Math.round(-ch*100)})]);else if(ch>.1)ins.push(["",t("higher",{p:Math.round(ch*100)})])}
  ins.push(...correlations(90));
- const st=streak();if(st>=3)ins.push(["g",`${st} days in a row. Steady logging is what makes these patterns reliable. 🌿`]);
- $("corr").innerHTML=ins.length?ins.map(([c,t])=>`<div class="ins ${c}">${t}</div>`).join(""):'<p class="muted">Patterns appear after about 2 weeks of check-ins, once there are enough days to compare.</p>';
- // cycle
+ const st=streak();if(st>=3)ins.push(["g",t("streakIns",{n:st})]);
+ $("corr").innerHTML=ins.length?ins.map(([c,x])=>`<div class="ins ${c}">${x}</div>`).join(""):`<p class="muted">${t("patWait")}</p>`;
  const cy=cycles();
- $("cycle").innerHTML=cy.starts.length?`<p>Last period started <b>${fmt(cy.starts[cy.starts.length-1])}</b> (${Math.round((new Date(today())-new Date(cy.starts[cy.starts.length-1]))/864e5)} days ago).</p>`+
-  (cy.lens.length?`<p>Recent cycle lengths: <b>${cy.lens.slice(-6).join(", ")}</b> days (average ${Math.round(avg(cy.lens))}). ${Math.max(...cy.lens)-Math.min(...cy.lens)>=7?"Your cycle length has varied by a week or more, which is common in perimenopause and useful to share with your doctor.":""}</p>`:"<p class='muted'>Log another period start to see cycle length.</p>"):"<p class='muted'>Tap a bleeding level on the check-in and cycle lengths will appear here.</p>";
- // calendar
+ $("cycle").innerHTML=cy.starts.length?`<p>${t("lastPer",{d:fmt(cy.starts[cy.starts.length-1]),n:Math.round((new Date(today())-new Date(cy.starts[cy.starts.length-1]))/864e5)})}</p>`+
+  (cy.lens.length?`<p>${t("cycLens",{l:cy.lens.slice(-6).join(", "),a:Math.round(avg(cy.lens))})} ${Math.max(...cy.lens)-Math.min(...cy.lens)>=7?t("cycVar"):""}</p>`:`<p class='muted'>${t("cycMore")}</p>`):`<p class='muted'>${t("cycNone")}</p>`;
  const cd=days(35);let h="";cd.slice(0,7).forEach(d=>h+=`<div style="background:none;border:0;text-align:center">${fmt(d,{weekday:"narrow"})}</div>`);
- cd.forEach(k=>{const e=S.e[k];const L=e?load_(e):0;const c=e?(L>=14?"l3":L>=8?"l2":L>0?"l1":""):"";h+=`<div class="${c} ${isBleed(e)?"bl":""}">${+k.slice(8)}</div>`});
+ cd.forEach(k=>{const e=S.e[k];const Lv=e?load_(e):0;const c=e?(Lv>=14?"l3":Lv>=8?"l2":Lv>0?"l1":""):"";h+=`<div class="${c} ${isBleed(e)?"bl":""}">${+k.slice(8)}</div>`});
  $("cal").innerHTML=h;
 }
+$("topSym").onclick=ev=>{const i=ev.target.closest(".info");if(i)explain(i.dataset.x)};
 document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{range=+b.dataset.r;drawChart()});
 $("chartSym").onchange=drawChart;
 function drawChart(){
  document.querySelectorAll("[data-r]").forEach(b=>{b.className="btn "+(+b.dataset.r===range?"":"alt")});
  const k=$("chartSym").value||"_all",ds=days(range),W=340,H=150,P=24;
- const vals=ds.map(d=>S.e[d]?(k==="_all"?load_(S.e[d]):(S.e[d].s[k]||0)):null);
+ const vals=ds.map(d=>{const e=S.e[d];if(!e)return null;if(k==="_all")return load_(e);if(k==="_st")return stressOf(e);return e.s[k]||0});
  const max=k==="_all"?Math.max(6,...vals.filter(v=>v!=null)):3;
  const x=i=>P+i*(W-P-6)/(ds.length-1),y=v=>H-18-(v/max)*(H-30);
- let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="trend chart">`;
- for(let t=0;t<=3;t++){const v=max*t/3;g+=`<line x1="${P}" x2="${W-6}" y1="${y(v)}" y2="${y(v)}" stroke="#e6ebe4"/><text x="2" y="${y(v)+4}" font-size="9" fill="#7a8679">${Math.round(v)}</text>`}
- // bleed markers
+ let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="trend chart" direction="ltr">`;
+ for(let s=0;s<=3;s++){const v=max*s/3;g+=`<line x1="${P}" x2="${W-6}" y1="${y(v)}" y2="${y(v)}" stroke="#e6ebe4"/><text x="2" y="${y(v)+4}" font-size="9" fill="#7a8679">${Math.round(v)}</text>`}
  ds.forEach((d,i)=>{if(isBleed(S.e[d]))g+=`<rect x="${x(i)-3}" y="${H-14}" width="6" height="5" rx="2" fill="#a33"/>`});
  let path="",pen=false;vals.forEach((v,i)=>{if(v==null){pen=false;return}path+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1);pen=true});
  g+=`<path d="${path}" fill="none" stroke="#c98b8b" stroke-width="2.5" stroke-linejoin="round"/>`;
  if(range<=7)vals.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#6f8a6e"/>`});
  const step=range<=7?1:7;ds.forEach((d,i)=>{if(i%step===0||i===ds.length-1)g+=`<text x="${x(i)}" y="${H-1}" font-size="9" fill="#7a8679" text-anchor="middle">${fmt(d,range<=7?{weekday:"narrow"}:{month:"numeric",day:"numeric"})}</text>`});
  g+="</svg>";
- const n=vals.filter(v=>v!=null).length;
- $("chart").innerHTML=n?g+`<p class="muted">Average ${r1(avg(vals.filter(v=>v!=null)))} over ${n} logged day${n>1?"s":""}. Red marks = bleeding days.</p>`:'<p class="muted">No entries in this period yet.</p>';
+ const vv=vals.filter(v=>v!=null),n=vv.length;
+ $("chart").innerHTML=n?g+`<p class="muted">${t("chartAvg",{a:r1(avg(vv)),n})}</p>`:`<p class="muted">${t("noPeriod")}</p>`;
 }
-function correlations(n){
- const ds=days(n).filter(d=>S.e[d]),out=[];
- const test=(label,cond,sym,symName)=>{const a=[],b=[];ds.forEach(d=>{const c=cond(d);if(c==null)return;(c?a:b).push(S.e[d].s[sym]||0)});
-  if(a.length>=4&&b.length>=4&&Math.abs(avg(a)-avg(b))>=0.5)out.push([avg(a)>avg(b)?"":"g",`${label}, your <b>${symName.toLowerCase()}</b> averaged <b>${r1(avg(a))}</b> vs ${r1(avg(b))} on other days (${a.length} vs ${b.length} days).`,Math.abs(avg(a)-avg(b))])};
+function correlations(n,dsIn){
+ const ds=(dsIn||days(n)).filter(d=>S.e[d]),out=[];
+ const test=(label,cond,sym)=>{const a=[],b=[];ds.forEach(d=>{const c=cond(d);if(c==null)return;(c?a:b).push(S.e[d].s[sym]||0)});
+  if(a.length>=4&&b.length>=4&&Math.abs(avg(a)-avg(b))>=0.5)out.push([avg(a)>avg(b)?"":"g",t("corr",{label,s:SN(sym).toLowerCase(),a:r1(avg(a)),b:r1(avg(b)),na:a.length,nb:b.length}),Math.abs(avg(a)-avg(b))])};
  const prevPoor=d=>{const p=S.e[addD(d,-1)];return p?((p.s.sleep||0)>=2||p.trig.includes("poorsleep")):null};
- test("On days after poor sleep",prevPoor,"hot","Hot flashes");
- test("On days after poor sleep",prevPoor,"fog","Brain fog");
- test("On days after poor sleep",prevPoor,"mood","Low mood");
- [["caffeine","hot"],["alcohol","sweat"],["alcohol","sleep"],["stress","anx"],["stress","head"],["spicy","hot"],["exercise","mood"],["exercise","sleep"]].forEach(([t,s])=>{
-  const tn=TRIG.find(x=>x[0]===t)[1].toLowerCase(),sn=SYM.find(x=>x[0]===s)[1];test(`On days you logged ${tn}`,d=>S.e[d].trig.includes(t),s,sn)});
- S.meds.forEach(m=>{if(ds.filter(d=>S.e[d].meds.includes(m)).length>=4)test(`On days you took ${esc(m)}`,d=>S.e[d].meds.includes(m),"sleep","Sleep trouble")});
+ ["hot","fog","mood"].forEach(s=>test(t("afterPoor"),prevPoor,s));
+ const hiSt=d=>{const v=stressOf(S.e[d]);return v==null?null:v>=2};
+ ["anx","head","sleep","hot"].forEach(s=>test(t("highStress"),hiSt,s));
+ [["caffeine","hot"],["alcohol","sweat"],["alcohol","sleep"],["spicy","hot"],["exercise","mood"],["exercise","sleep"]].forEach(([tr,s])=>test(t("onTrig",{t:TN(tr).toLowerCase()}),d=>S.e[d].trig.includes(tr),s));
+ S.meds.forEach(m=>{if(ds.filter(d=>S.e[d].meds.includes(m)).length>=4)test(t("onMed",{m:esc(m)}),d=>S.e[d].meds.includes(m),"sleep")});
  return out.sort((a,b)=>b[2]-a[2]).slice(0,5).map(x=>[x[0],x[1]]);
 }
 function cycles(){const ks=Object.keys(S.e).sort(),starts=[];ks.forEach(d=>{if(isBleed(S.e[d])&&!isBleed(S.e[addD(d,-1)])&&!isBleed(S.e[addD(d,-2)]))starts.push(d)});
  const lens=[];for(let i=1;i<starts.length;i++)lens.push(Math.round((new Date(starts[i])-new Date(starts[i-1]))/864e5));return{starts,lens}}
 
-// ---------- summary
+// ---------- summary + letter
+$("modeSum").onclick=()=>{sumMode="sum";renderSummary()};$("modeLet").onclick=()=>{sumMode="let";renderSummary()};
+$("drName").oninput=e=>{S.dr=e.target.value;persist();renderLetter()};$("myName").oninput=e=>{S.me=e.target.value;persist();renderLetter()};
+$("letRange").onchange=e=>{S.lr=e.target.value;persist();renderLetter()};
 function renderSummary(){
+ $("modeSum").className="btn "+(sumMode==="sum"?"":"alt");$("modeLet").className="btn "+(sumMode==="let"?"":"alt");
+ $("sumCtl").classList.toggle("hide",sumMode!=="sum");$("letCtl").classList.toggle("hide",sumMode!=="let");
+ if(sumMode==="let"){$("drName").value=S.dr||"";$("myName").value=S.me||"";$("letRange").value=S.lr||"3";renderLetter();return}
  const sel=$("sumMonth"),ms=[...new Set([today().slice(0,7),...Object.keys(S.e).map(d=>d.slice(0,7))])].sort().reverse();
  const cnt=m=>Object.keys(S.e).filter(d=>d.startsWith(m)).length;
  const keep=sel.value&&ms.includes(sel.value)?sel.value:(cnt(ms[0])>=7||!ms[1]?ms[0]:ms[1]);
- sel.innerHTML=ms.map(m=>`<option value="${m}">${new Date(m+"-15T12:00:00").toLocaleDateString(undefined,{month:"long",year:"numeric"})}</option>`).join("");sel.value=keep;
+ sel.innerHTML=ms.map(m=>`<option value="${m}">${new Date(m+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"})}</option>`).join("");sel.value=keep;
  const mon=keep,ds=Object.keys(S.e).filter(d=>d.startsWith(mon)).sort(),E=ds.map(d=>S.e[d]);
- const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(undefined,{month:"long",year:"numeric"});
- const rows=SYM.map(([k,n])=>{const v=E.map(e=>e.s[k]||0);return[n,avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
- const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${S.e[d].bleed})`);
- const cy=cycles(),trc=TRIG.map(([k,n])=>[n,E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"});
+ const rows=SYMK.map(k=>{const v=E.map(e=>e.s[k]||0);return[SN(k),avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
+ const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${BN(S.e[d].bleed)})`);
+ const cy=cycles(),trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const stv=E.map(stressOf).filter(v=>v!=null);
  const notes=ds.filter(d=>S.e[d].notes).slice(-6).map(d=>`<li><b>${fmt(d,{month:"short",day:"numeric"})}:</b> ${esc(S.e[d].notes)}</li>`).join("");
  const pats=correlations(60).slice(0,3);
- // weekly bars svg
  const wk=[0,1,2,3,4].map(w=>{const sub=ds.filter(d=>Math.floor((+d.slice(8)-1)/7)===w);return sub.length?avg(sub.map(d=>load_(S.e[d]))):null});
  const mx=Math.max(1,...wk.filter(v=>v!=null));
- let svg=`<svg viewBox="0 0 300 90" width="100%" style="max-width:420px">`;wk.forEach((v,i)=>{if(v==null)return;const h=v/mx*60;svg+=`<rect x="${10+i*58}" y="${70-h}" width="40" height="${h}" rx="4" fill="#c98b8b"/><text x="${30+i*58}" y="${66-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(v)}</text><text x="${30+i*58}" y="84" font-size="10" text-anchor="middle" fill="#7a8679">Wk ${i+1}</text>`});svg+="</svg>";
+ let svg=`<svg viewBox="0 0 300 90" width="100%" style="max-width:420px" direction="ltr">`;wk.forEach((v,i)=>{if(v==null)return;const h=v/mx*60;svg+=`<rect x="${10+i*58}" y="${70-h}" width="40" height="${h}" rx="4" fill="#c98b8b"/><text x="${30+i*58}" y="${66-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(v)}</text><text x="${30+i*58}" y="84" font-size="10" text-anchor="middle" fill="#7a8679">${t("wk",{n:i+1})}</text>`});svg+="</svg>";
  $("sumBody").innerHTML=ds.length?`
- <div class="hd"><h2 style="margin:0">Monthly Symptom Summary</h2><b>${mName}</b></div>
- <p style="margin:2px 0">Days logged: <b>${ds.length}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Average daily symptom load: <b>${r1(avg(E.map(load_)))}</b></p>
- <div class="lbl">Symptoms, most to least intense</div>
- <table><tr><th>Symptom</th><th>Avg</th><th>Days present</th><th>Days ≥ moderate</th><th>Worst</th></tr>
+ <div class="hd"><h2 style="margin:0">${t("sumTitle")}</h2><b>${mName}</b></div>
+ <p style="margin:2px 0">${t("sumLine",{n:ds.length,a:r1(avg(E.map(load_)))})}${stv.length?" · "+t("stressAvg",{a:r1(avg(stv))}):""}</p>
+ <div class="lbl">${t("sumMost")}</div>
+ <table><tr><th>${t("thSym")}</th><th>${t("thAvg")}</th><th>${t("thDays")}</th><th>${t("thMod")}</th><th>${t("thWorst")}</th></tr>
  ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r1(r[1])}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("")}</table>
- <div class="lbl">Overall symptom load by week</div>${svg}
- <div class="lbl">Bleeding & cycle</div>
- <p style="margin:0">${bleedDays.length?"Bleeding/spotting on day(s): "+bleedDays.join(", "):"No bleeding logged this month."}${cy.lens.length?`<br>Recent cycle lengths: ${cy.lens.slice(-6).join(", ")} days.`:""}</p>
- <div class="lbl">Triggers logged · Meds/supplements taken</div>
- <p style="margin:0">${trc.map(t=>`${t[0]}: ${t[1]}d`).join(" · ")||"None"}<br>${mc.map(t=>`${esc(t[0])}: ${t[1]}d`).join(" · ")||"None logged"}</p>
- ${pats.length?`<div class="lbl">Patterns I noticed (my own averages, not a diagnosis)</div><ul style="margin:0;padding-left:18px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
- ${notes?`<div class="lbl">Notes</div><ul style="margin:0;padding-left:18px">${notes}</ul>`:""}
- <div class="lbl">Questions for my doctor</div>
+ <div class="lbl">${t("byWeek")}</div>${svg}
+ <div class="lbl">${t("bleedCyc")}</div>
+ <p style="margin:0">${bleedDays.length?t("bleedOn")+bleedDays.join(", "):t("noBleed")}${cy.lens.length?"<br>"+t("recentLens",{l:cy.lens.slice(-6).join(", ")}):""}</p>
+ <div class="lbl">${t("trigMeds")}</div>
+ <p style="margin:0">${trc.map(x=>`${x[0]}: ${x[1]}`).join(" · ")||t("none")}<br>${mc.map(x=>`${esc(x[0])}: ${x[1]}`).join(" · ")||t("noneLogged")}</p>
+ ${pats.length?`<div class="lbl">${t("myPats")}</div><ul style="margin:0;padding-inline-start:18px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
+ ${notes?`<div class="lbl">${t("notes")}</div><ul style="margin:0;padding-inline-start:18px">${notes}</ul>`:""}
+ <div class="lbl">${t("qs")}</div>
  <div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div>
- <p class="muted" style="margin-top:12px;font-size:11px">Self-reported tracking summary made with Perimenopause Tracker. An organizing tool, not medical advice.</p>`
- :`<p class="muted">No entries for this month yet. Log a few check-ins, or load demo data in Settings to preview.</p>`;
+ <p class="muted" style="margin-top:12px;font-size:11px">${t("footer")}</p>`
+ :`<p class="muted">${t("noMonth")}</p>`;
+}
+function renderLetter(){
+ const m=+(S.lr||3),all=Object.keys(S.e).sort();
+ const from=m?addD(today(),-(m*30)+1):(all[0]||today());
+ const ds=all.filter(d=>d>=from&&d<=today()),E=ds.map(d=>S.e[d]);
+ const df=d=>new Date(d+"T12:00:00").toLocaleDateString(t("L_dateFmt"),{day:"numeric",month:"long",year:"numeric"});
+ if(!ds.length){$("sumBody").innerHTML=`<p class="muted">${t("L_noData")}</p>`;return}
+ const dr=(S.dr||"").trim(),me=(S.me||"").trim();
+ const median=a=>{const s=[...a].sort((x,y)=>x-y);return s[Math.floor((s.length-1)/2)]};
+ const freq=SYMK.map(k=>{const nz=E.map(e=>e.s[k]||0).filter(v=>v>0);return[k,nz.length,nz.length?median(nz):0]}).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,6);
+ // periods: weeks if <=1 month, else calendar months
+ let per=[];
+ if(m===1){for(let i=0;i<5;i++){const a=addD(from,i*7),b=i===4?today():addD(from,i*7+6);if(a>today())break;per.push([fmt(a,{day:"numeric",month:"short"}),ds.filter(d=>d>=a&&d<=b)])}}
+ else{[...new Set(ds.map(d=>d.slice(0,7)))].forEach(mo=>per.push([new Date(mo+"-15T12:00:00").toLocaleDateString(LOC(),{month:"short",year:"2-digit"}),ds.filter(d=>d.startsWith(mo))]))}
+ per=per.filter(p=>p[1].length).map(([lab,dd])=>{const ee=dd.map(d=>S.e[d]),sv=ee.map(stressOf).filter(v=>v!=null);return{lab,n:dd.length,load:avg(ee.map(load_)),sleep:avg(ee.map(e=>e.s.sleep||0)),st:sv.length?avg(sv):null}});
+ const mx=Math.max(1,...per.map(p=>p.load)),bw=Math.min(52,300/per.length-8);
+ let svg=`<svg viewBox="0 0 320 100" width="100%" style="max-width:460px" direction="ltr">`;per.forEach((p,i)=>{const cx=10+(i+.5)*(300/per.length),h=p.load/mx*62;svg+=`<rect x="${cx-bw/2}" y="${78-h}" width="${bw}" height="${h}" rx="4" fill="#c98b8b"/><text x="${cx}" y="${74-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(p.load)}</text><text x="${cx}" y="94" font-size="9.5" text-anchor="middle" fill="#7a8679">${esc(p.lab)}</text>`});svg+="</svg>";
+ const cy=cycles(),stIn=cy.starts.filter(d=>d>=from),lens=[];for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from)lens.push(cy.lens[i-1]);
+ let cyc;if(lens.length){const mn=Math.min(...lens),mxx=Math.max(...lens);cyc=t("L_cyc",{n:stIn.length,l:lens.join(", "),mn,mx:mxx,d:mxx-mn})}else if(stIn.length)cyc=t("L_cycOne",{d:df(stIn[0])});else cyc=t("L_cycNone");
+ if(stIn.length>1)cyc+=" "+t("L_cycLast",{d:df(stIn[stIn.length-1])});
+ const sv=E.map(stressOf).filter(v=>v!=null);
+ const pats=correlations(0,ds).slice(0,3);
+ $("sumBody").innerHTML=`<div class="letter">
+ <p style="text-align:end">${df(today())}</p>
+ <p>${dr?t("L_dear",{d:esc(dr)}):t("L_dearNo")}</p>
+ <p>${t("L_intro",{n:ds.length,a:df(ds[0]),b:df(ds[ds.length-1])})}</p>
+ <p style="margin-bottom:4px">${t("L_freq")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${freq.map(([k,c,md])=>`<li>${t("L_item",{s:SN(k),p:Math.round(c/ds.length*100),sev:L().sev[md]})}</li>`).join("")}</ul>
+ <p style="margin-bottom:2px">${t("L_chart")}</p>${svg}
+ <table class="sum" style="padding:0;margin:4px 0 12px"><tr><th>${t("L_tbl")}</th><th>${t("L_days")}</th><th>${t("L_load")}</th><th>${t("L_sleep")} (0–3)</th><th>${t("L_stress")} (0–3)</th></tr>${per.map(p=>`<tr><td>${esc(p.lab)}</td><td>${p.n}</td><td>${r1(p.load)}</td><td>${r1(p.sleep)}</td><td>${p.st==null?"–":r1(p.st)}</td></tr>`).join("")}</table>
+ <p>${cyc}</p>
+ <p>${t("L_ss",{s:r1(avg(E.map(e=>e.s.sleep||0))),t:sv.length?r1(avg(sv)):"–"})}</p>
+ ${pats.length?`<p style="margin-bottom:4px">${t("L_pats")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
+ <p>${t("L_ask")}</p><p>${t("L_note")}</p>
+ <p>${t("L_close")}<br>${me?esc(me):"<span style='display:inline-block;width:180px;border-bottom:1px solid #c9d2c6;height:20px'></span>"}</p>
+ <p class="muted" style="margin-top:14px;font-size:11px;font-family:-apple-system,Segoe UI,Roboto,sans-serif">${t("footer")}</p></div>`;
 }
 $("sumMonth").onchange=renderSummary;
-$("printBtn").onclick=()=>window.print();
+$("printBtn").onclick=$("printBtn2").onclick=()=>window.print();
+
+// ---------- reminder
+const notifOK=()=>"Notification" in window&&"serviceWorker" in navigator;
+function renderReminder(){if(!$("remOn"))return;$("remTime").value=S.remT||"20:30";
+ $("remOn").textContent=S.remOn?t("remOffB"):t("remOnB");$("remOn").className="btn block "+(S.remOn?"alt":"");
+ let st=S.remOn?t("remStOn",{t:S.remT||"20:30"}):t("remStOff");
+ if(!notifOK())st=t("remUnsup");else if(Notification.permission==="denied")st=t("remDenied");$("remStatus").textContent=st}
+$("remTime").onchange=e=>{S.remT=e.target.value||"20:30";persist();renderReminder();scheduleReminder()};
+$("remOn").onclick=async()=>{if(S.remOn){S.remOn=false;persist();renderReminder();return}
+ if(!notifOK()){renderReminder();return}
+ let p=Notification.permission;try{if(p==="default")p=await Notification.requestPermission()}catch(x){}
+ if(p==="granted"){S.remOn=true;S.remT=$("remTime").value||"20:30";persist();scheduleReminder()}renderReminder()};
+let remTimer=null;
+function remDue(){const [h,mi]=(S.remT||"20:30").split(":").map(Number),d=new Date();d.setHours(h,mi,0,0);return d}
+async function fireReminder(){if(!S.remOn||S.e[today()]||S.remLast===today())return;if(!notifOK()||Notification.permission!=="granted")return;
+ S.remLast=today();persist();
+ try{const reg=await navigator.serviceWorker.ready;await reg.showNotification(t("nTitle"),{body:t("nBody"),tag:"peri-daily",icon:"icon-192.png",badge:"icon-192.png",lang:LANG,dir:LANG==="he"?"rtl":"ltr"})}catch(x){try{new Notification(t("nTitle"),{body:t("nBody")})}catch(y){}}}
+function checkReminderNow(){if(S.remOn&&new Date()>=remDue())fireReminder();scheduleReminder()}
+function scheduleReminder(){clearTimeout(remTimer);if(!S.remOn)return;let d=remDue();if(d<=new Date())d.setDate(d.getDate()+1);remTimer=setTimeout(()=>{fireReminder();scheduleReminder()},Math.min(d-new Date(),2147483000))}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.onb)checkReminderNow()});
+$("icsBtn").onclick=()=>{const [h,mi]=(S.remT||$("remTime").value||"20:30").split(":"),d=today().replace(/-/g,""),hm=h.padStart(2,"0")+mi.padStart(2,"0")+"00";
+ const url=location.href.split("#")[0].split("?")[0];
+ const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Peri Tracker//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:peri-daily-"+Date.now()+"@peri-tracker","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z",
+  "DTSTART:"+d+"T"+hm,"DURATION:PT5M","RRULE:FREQ=DAILY","SUMMARY:"+t("icsTitle"),"DESCRIPTION:"+t("icsDesc")+"\\n"+url,"URL:"+url,"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+t("icsTitle"),"TRIGGER:PT0M","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.download="peri-tracker-reminder.ics";document.body.appendChild(a);a.click();a.remove()};
 
 // ---------- CSV
-const COLS=["date",...SYM.map(s=>s[0]),"bleeding","triggers","meds","notes"];
+const COLS=["date",...SYMK,"stress","bleeding","triggers","meds","notes"];
 const q=v=>{v=String(v??"");return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-$("expCsv").onclick=()=>{const ds=Object.keys(S.e).sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d];return[d,...SYM.map(([k])=>e.s[k]??""),e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes].map(q).join(",")})].join("\n");
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="peri-tracker-backup-"+today()+".csv";document.body.appendChild(a);a.click();a.remove();toast("Backup downloaded")};
-function parseCSV(t){const rows=[];let r=[],f="",i=0,qd=false;for(;i<t.length;i++){const c=t[i];if(qd){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&t[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
+$("expCsv").onclick=()=>{const ds=Object.keys(S.e).sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d];return[d,...SYMK.map(k=>e.s[k]??""),e.st??"",e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes].map(q).join(",")})].join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="peri-tracker-backup-"+today()+".csv";document.body.appendChild(a);a.click();a.remove();toast(t("backupDl"))};
+function parseCSV(x){const rows=[];let r=[],f="",i=0,qd=false;for(;i<x.length;i++){const c=x[i];if(qd){if(c=='"'){if(x[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&x[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
 $("impBtn").onclick=()=>$("impFile").click();
-$("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then(t=>{const rows=parseCSV(t),h=rows.shift();if(!h||h[0]!=="date"){alert("That doesn't look like a Peri Tracker backup.");return}let n=0;
+$("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then(x=>{const rows=parseCSV(x),h=rows.shift();if(!h||h[0]!=="date"){alert(t("badCsv"));return}let n=0;
  rows.forEach(r=>{if(!/^\d{4}-\d\d-\d\d$/.test(r[0]))return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:o.bleeding||"none",trig:o.triggers?o.triggers.split(";"):[],meds:o.meds?o.meds.split(";"):[],notes:o.notes||""};
-  SYM.forEach(([k])=>{if(o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(!S.meds.includes(m))S.meds.push(m)});S.e[o.date]=e;n++});
- persist();toast(`Imported ${n} days`);ev.target.value=""})};
+  if(o.stress!=null&&o.stress!=="")e.st=Math.max(0,Math.min(3,+o.stress||0));
+  SYMK.forEach(k=>{if(o[k]!=null&&o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(!S.meds.includes(m))S.meds.push(m)});S.e[o.date]=e;n++});
+ persist();toast(t("imported",{n}));ev.target.value=""})};
 
 // ---------- demo / clear
-$("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm("Demo data will be mixed with your entries. Continue?"))return;
+$("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm(t("demoMix")))return;
  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;const per=[-55,-29,-3];
  for(let i=59;i>=0;i--){const d=addD(today(),-i);const poor=rnd()<.3,caf=rnd()<.5,alc=rnd()<.18,str=rnd()<.3,ex=rnd()<.35,spicy=rnd()<.15;const prevPoor=S.e[addD(d,-1)]?.trig.includes("poorsleep");
   const c=v=>Math.max(0,Math.min(3,Math.round(v)));const imp=i<30?-.3:0;
   const s={hot:c(1+(prevPoor?1:0)+(caf?.5:0)+(spicy?.6:0)+imp+rnd()-.5),sweat:c(.8+(alc?1.2:0)+rnd()-.5),sleep:c((poor?2.4:.8)+(alc?.6:0)-(ex?.4:0)+rnd()*.6-.3),fatigue:c(1+(poor?1:0)+rnd()-.5),fog:c(.7+(prevPoor?1:0)+rnd()-.5),
    anx:c(.6+(str?1.4:0)+rnd()-.5),mood:c(.8+(ex?-.6:0)+(poor?.6:0)+rnd()-.5),irrit:c(.6+(str?.8:0)+rnd()-.5),head:c(.3+(str?.8:0)+rnd()-.5),joint:c(1.1+rnd()-.5),libido:c(1.3+rnd()-.5)};
-  const t=[];if(caf)t.push("caffeine");if(alc)t.push("alcohol");if(str)t.push("stress");if(poor)t.push("poorsleep");if(ex)t.push("exercise");if(spicy)t.push("spicy");
+  const tg=[];if(caf)tg.push("caffeine");if(alc)tg.push("alcohol");if(poor)tg.push("poorsleep");if(ex)tg.push("exercise");if(spicy)tg.push("spicy");
   let bleed="none";per.forEach((p,j)=>{const o=-i-p+(j==1?3:0);if(o>=0&&o<5)bleed=["medium","heavy","medium","light","spot"][o]});
   if(rnd()<.12&&i!==0&&i%3===0)continue;
-  S.e[d]={s,bleed,trig:t,meds:rnd()<.8?["Magnesium"]:[],notes:i==12?"Woke up 3x with sweats":i==4?"Felt much calmer after a walk":""}}
+  S.e[d]={s,st:c((str?2.3:.7)+rnd()-.5),bleed,trig:tg,meds:rnd()<.8?["Magnesium"]:[],notes:i==12?(LANG==="he"?"התעוררתי 3 פעמים מהזעות":"Woke up 3x with sweats"):i==4?(LANG==="he"?"הרגשתי הרבה יותר רגועה אחרי הליכה":"Felt much calmer after a walk"):""}}
  for(let i=0;i<9;i++)S.e[addD(today(),-i)]=S.e[addD(today(),-i)]||S.e[addD(today(),-i-14)];
- persist();toast("Demo data loaded");show("insights")};
-$("clearBtn").onclick=()=>{if(confirm("Delete ALL your entries from this phone? This can't be undone. (Export a backup first if you want to keep them.)")){S={onb:true,e:{},meds:["Magnesium","Vitamin D"]};persist();toast("All data cleared");show("today")}};
+ persist();toast(t("demoOk"));show("insights")};
+$("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){S={onb:true,e:{},meds:["Magnesium","Vitamin D"],lang:S.lang,remOn:S.remOn,remT:S.remT,dr:S.dr,me:S.me};persist();toast(t("cleared"));show("today")}};
 
 boot();
 </script>
