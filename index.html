@@ -796,7 +796,7 @@ $("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm(t("demoMix")))ret
   const hd=addD(today(),-29);S.hrt=(S.hrt||[]).filter(h=>!h.demo);S.hrt.push({id:"demo1",demo:1,d:hd,x:LANG==="he"?"מדבקת אסטרדיול":"Estradiol patch",dose:"50 mcg"});
   const mo=k=>addD(today(),-k);S.mrs=[{d:mo(58),a:[3,1,3,2,2,2,3,2,1,2,2]},{d:mo(28),a:[3,1,3,2,1,2,2,2,1,2,2]},{d:today(),a:[2,0,2,1,1,1,2,2,1,1,2]}]}
  persist();toast(t("demoOk"));show("insights")};
-$("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){S={onb:true,e:{},meds:["Magnesium","Vitamin D"],lang:S.lang,plus:S.plus,trialStart:S.preDemo?S.preDemo.trialStart||undefined:S.trialStart,remOn:S.remOn,remT:S.remT,dr:S.dr,me:S.me};persist();toast(t("cleared"));show("today")}};
+$("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){S={onb:true,e:{},meds:["Magnesium","Vitamin D"],lang:S.lang,plus:S.plus,remOn:S.remOn,remT:S.remT,dr:S.dr,me:S.me};persist();toast(t("cleared"));show("today")}};
 
 // ---------- v6: movement, breathing, treatment/HRT, MRS
 Object.assign(I18N.en,{moveT:"Movement today",exNone:"None",exWalk:"Walk",exStrength:"Strength",exYoga:"Yoga / stretch",exCardio:"Cardio",exMin:"Minutes",rtBtn:"Gentle 5–10 min routines",
@@ -929,35 +929,34 @@ function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.
  if(Mr.length)o+=`<p style="margin-bottom:4px">${t("L_mrs")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${Mr.map(m=>{const s=mrsSc(m.a);return`<li>${t("sumMrsL",{d:df(m.d),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}</li>`}).join("")}</ul>`;
  return o}
 
-// ---------- v10: free trial + Prime Traker Plus
+// ---------- v13: Prime Traker Plus. The 14-day free trial is run by Whop (card required, auto-bills unless cancelled).
+// No trial clock is kept on the phone, so reinstalling cannot reset it. Plus unlocks only with a PRIME-XXXX-XXXX code
+// delivered by Whop for an active membership/trial. TODO(Avi): Whop links + code delivery before launch.
 // TODO(Avi): replace with the real Whop checkout links before launch.
 const PAYWALL_ENABLED=false; // false = everything free, no trial chip or upsell (current live behaviour)
 const WHOP_CHECKOUT_URL="https://whop.com/TODO-prime-traker-plus";
-const PLUS_PRICE={m:"$4.99",y:"$29"};
+const PLUS_PRICE={m:"$5.99",y:"$29",ym:"$2.42"};
 const CODE_ABC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function codeCheck(body){let h=2166136261;for(const ch of "prime-plus|"+body){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return CODE_ABC[h%32]+CODE_ABC[(h>>>5)%32]}
 function validCode(raw){const c=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(!/^PRIME[A-Z0-9]{8}$/.test(c))return false;const b=c.slice(5,11),k=c.slice(11);if([...b+k].some(x=>!CODE_ABC.includes(x)))return false;return codeCheck(b)===k}
-function trialTick(){if(!S.demo&&!S.trialStart&&Object.keys(S.e||{}).length){S.trialStart=today();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}}
-const _persist=persist;persist=function(){trialTick();_persist()};
-function trialDay(){if(!S.trialStart)return 0;return Math.round((new Date(today())-new Date(S.trialStart))/864e5)+1}
-function trialLeft(){return S.trialStart?Math.max(0,8-trialDay()):7}
 function isPlus(){return !!(S.plus||S.demo)}
-function hasAccess(){return !PAYWALL_ENABLED||isPlus()||!S.trialStart||trialDay()<=7}
+function hasAccess(){return !PAYWALL_ENABLED||isPlus()}
 Object.assign(I18N.en,{trialChip:"Free trial: {n} days left",trialChip1:"Free trial: last day",trialNote:"Your free week is almost over. Everything you’ve logged stays yours, always. Plus keeps your patterns, doctor summary and insights going.",
- upT:"Your patterns are just starting to show",upSub:"Your free week has ended. Check-ins, counters, the breathing button and Comfort stay free, and your data is never locked or deleted. Plus brings back the rest:",
+ upT:"Your patterns are just starting to show",upSub:"Start your 14-day free trial. Card required; cancel anytime before it ends and you won’t be charged. Check-ins, counters, the breathing button and Comfort stay free, and your data is never locked or deleted. Plus unlocks the rest:",
  upL1:"Patterns, triggers and trends",upL2:"“Is it working?” for your treatment",upL3:"Doctor summary and letter",upL4:"Movement insight, MRS trend and CSV export",upL5:"Gentle movement routines",
- upM:"{p} / month",upY:"{p} / year",upYs:"Save over 50%",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
- plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusTrial:"Free trial: {n} days left. Everything is unlocked.",plusOff:"Free plan. Your data is safe; Plus unlocks insights and the doctor summary.",plusNoStart:"Your 7-day free trial starts with your first check-in.",plusSee:"See Plus",lockedTap:"Part of Plus"});
+ upM:"{p} / month",upY:"{p} / year",upYs:"{m}/mo, save 60%",upTry:"Start 14-day free trial",upFine:"Card required. Cancel anytime before the 14 days end and you won’t be charged. After the trial it renews automatically until you cancel.",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
+ plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusOff:"Free plan. Your data is safe; Plus unlocks insights and the doctor summary.",plusNoStart:"Start a 14-day free trial on Whop, then enter the code you receive.",plusSee:"See Plus",lockedTap:"Part of Plus"});
 Object.assign(I18N.he,{trialChip:"תקופת ניסיון: עוד {n} ימים",trialChip1:"תקופת ניסיון: יום אחרון",trialNote:"השבוע החינמי שלך כמעט נגמר. כל מה שרשמת נשאר שלך, תמיד. עם Plus הדפוסים, הסיכום לרופא והתובנות ממשיכים.",
- upT:"הדפוסים שלך רק מתחילים להתגלות",upSub:"השבוע החינמי הסתיים. הצ'ק-אין, המונים, כפתור הנשימה ודברים קטנים שעוזרים נשארים בחינם, והנתונים שלך אף פעם לא ננעלים או נמחקים. עם Plus מקבלים בחזרה את השאר:",
+ upT:"הדפוסים שלך רק מתחילים להתגלות",upSub:"התחילי 14 ימי ניסיון בחינם. נדרש כרטיס; אפשר לבטל לפני הסיום בלי חיוב. הצ'ק-אין, המונים, כפתור הנשימה ודברים קטנים שעוזרים נשארים בחינם, והנתונים שלך אף פעם לא ננעלים או נמחקים. עם Plus מקבלים בחזרה את השאר:",
  upL1:"דפוסים, טריגרים ומגמות",upL2:"״זה עובד?״ עבור הטיפול שלך",upL3:"סיכום ומכתב לרופא",upL4:"תובנת תנועה, מגמת MRS וייצוא CSV",upL5:"שגרות תנועה עדינות",
- upM:"{p} לחודש",upY:"{p} לשנה",upYs:"חיסכון של יותר מ-50%",upCode:"יש לי קוד",upLater:"אולי אחר כך",codeT:"הזיני את הקוד",codePh:"PRIME-XXXX-XXXX",codeGo:"פתיחה",codeBad:"הקוד לא נראה נכון. כדאי לבדוק את האותיות ולנסות שוב.",codeOk:"ברוכה הבאה ל-Plus. הכול פתוח.",
- plusT:"Prime Traker Plus",plusOn:"Plus פעיל בטלפון הזה. תודה!",plusDemo:"מצב הדגמה: הכול פתוח.",plusTrial:"תקופת ניסיון: עוד {n} ימים. הכול פתוח.",plusOff:"תוכנית חינמית. הנתונים שלך בטוחים; Plus פותח את התובנות והסיכום לרופא.",plusNoStart:"תקופת הניסיון של 7 ימים מתחילה בצ'ק-אין הראשון.",plusSee:"מה יש ב-Plus",lockedTap:"חלק מ-Plus"});
+ upM:"{p} לחודש",upY:"{p} לשנה",upYs:"{m} לחודש, חיסכון של 60%",upTry:"התחילי 14 ימי ניסיון בחינם",upFine:"נדרש כרטיס. אפשר לבטל לפני תום 14 הימים בלי חיוב. לאחר מכן המנוי מתחדש אוטומטית עד לביטול.",upCode:"יש לי קוד",upLater:"אולי אחר כך",codeT:"הזיני את הקוד",codePh:"PRIME-XXXX-XXXX",codeGo:"פתיחה",codeBad:"הקוד לא נראה נכון. כדאי לבדוק את האותיות ולנסות שוב.",codeOk:"ברוכה הבאה ל-Plus. הכול פתוח.",
+ plusT:"Prime Traker Plus",plusOn:"Plus פעיל בטלפון הזה. תודה!",plusDemo:"מצב הדגמה: הכול פתוח.",plusOff:"תוכנית חינמית. הנתונים שלך בטוחים; Plus פותח את התובנות והסיכום לרופא.",plusNoStart:"התחילי 14 ימי ניסיון ב-Whop והזיני את הקוד שתקבלי.",plusSee:"מה יש ב-Plus",lockedTap:"חלק מ-Plus"});
 const ICK='<svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--sage)"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px;color:var(--ochre)"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
 <h2>${t("upT")}</h2><p class="muted" style="font-size:14px">${t("upSub")}</p><ul class="upl">${["upL1","upL2","upL3","upL4","upL5"].map(k=>`<li>${ICK}<span>${t(k)}</span></li>`).join("")}</ul>
-<a class="btn block upbuy" href="${WHOP_CHECKOUT_URL}?plan=yearly" target="_blank" rel="noopener">${t("upY",{p:PLUS_PRICE.y})} <small>· ${t("upYs")}</small></a>
-<a class="btn alt block upbuy" href="${WHOP_CHECKOUT_URL}?plan=monthly" target="_blank" rel="noopener">${t("upM",{p:PLUS_PRICE.m})}</a>
+<a class="btn block upbuy" href="${WHOP_CHECKOUT_URL}?plan=yearly" target="_blank" rel="noopener">${t("upTry")}: ${t("upY",{p:PLUS_PRICE.y})} <small>· ${t("upYs",{m:PLUS_PRICE.ym})}</small></a>
+<a class="btn alt block upbuy" href="${WHOP_CHECKOUT_URL}?plan=monthly" target="_blank" rel="noopener">${t("upTry")}: ${t("upM",{p:PLUS_PRICE.m})}</a>
+<p class="muted" style="font-size:13px">${t("upFine")}</p>
 <button class="btn ghost block upcode">${t("upCode")}</button></div>`}
 function bindUp(root){root.querySelectorAll(".upcode").forEach(b=>b.onclick=openCode)}
 function openCode(){openSheet(t("codeT"),`<input type="text" id="codeIn" autocomplete="off" autocapitalize="characters" placeholder="${t("codePh")}" style="text-transform:uppercase;letter-spacing:.08em"><p id="codeMsg" class="muted"></p><button class="btn block" id="codeGo">${t("codeGo")}</button>`);
@@ -966,24 +965,22 @@ function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
 function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet()}
-function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn").forEach(x=>x.remove());if(!PAYWALL_ENABLED||isPlus()||!S.trialStart||trialDay()>7)return;
- const n=trialLeft();const h=v.querySelector("h1");const top=(h&&(h.closest(".top")||(getComputedStyle(h.parentElement).display==="flex"?h.parentElement:h)))||v.firstElementChild;
- top.insertAdjacentHTML("afterend",`<button class="chip trialc">${n<=1?t("trialChip1"):t("trialChip",{n})}</button>`+(trialDay()>=6?`<div class="tipw trialn">${t("trialNote")}</div>`:""));v.querySelector(".trialc").onclick=openUp}
+function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn").forEach(x=>x.remove());}
 function renderPlusSet(){let c=$("plusCard");const st=$("v-settings");if(!st)return;if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){st.querySelector(".card").insertAdjacentHTML("beforebegin",`<div class="card" id="plusCard"></div>`);c=$("plusCard")}
- const msg=S.plus?t("plusOn"):S.demo?t("plusDemo"):!S.trialStart?t("plusNoStart"):trialDay()<=7?t("plusTrial",{n:trialLeft()}):t("plusOff");
+ const msg=S.plus?t("plusOn"):S.demo?t("plusDemo"):t("plusNoStart");
  c.innerHTML=`<h3>${t("plusT")}</h3><p style="margin:0 0 6px">${msg}</p>`+(isPlus()?"":`<div class="row2"><button class="btn" id="plusSee">${t("plusSee")}</button><button class="btn ghost" id="plusCode">${t("upCode")}</button></div>`);
  if(!isPlus()){$("plusSee").onclick=openUp;$("plusCode").onclick=openCode}}
-const _show=show;show=function(v,k){trialTick();_show(v,k);gateAll()};
+const _show=show;show=function(v,k){_show(v,k);gateAll()};
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
 const _exp=$("expCsv").onclick;$("expCsv").onclick=e=>hasAccess()?_exp(e):openUp();
 const _rt=$("rtBtn").onclick;$("rtBtn").onclick=e=>hasAccess()?_rt(e):openUp();
-const _demo=$("demoBtn").onclick;$("demoBtn").onclick=e=>{const snap=S.demo?S.preDemo:JSON.parse(JSON.stringify({e:S.e,hrt:S.hrt||[],mrs:S.mrs||[],trialStart:S.trialStart||null}));const n0=JSON.stringify(S.e);S.demo=true;_demo(e);if(JSON.stringify(S.e)!==n0){S.preDemo=snap;persist();gateAll();renderDemoCtl()}else if(!S.preDemo){delete S.demo}};
-function removeDemo(){const p=S.preDemo||{e:{},hrt:[],mrs:[],trialStart:null};S.e=p.e;S.hrt=p.hrt;S.mrs=p.mrs;if(p.trialStart)S.trialStart=p.trialStart;else delete S.trialStart;delete S.demo;delete S.preDemo;persist();toast(t("demoGone"));renderDemoCtl();gateAll()}
+const _demo=$("demoBtn").onclick;$("demoBtn").onclick=e=>{const snap=S.demo?S.preDemo:JSON.parse(JSON.stringify({e:S.e,hrt:S.hrt||[],mrs:S.mrs||[]}));const n0=JSON.stringify(S.e);S.demo=true;_demo(e);if(JSON.stringify(S.e)!==n0){S.preDemo=snap;persist();gateAll();renderDemoCtl()}else if(!S.preDemo){delete S.demo}};
+function removeDemo(){const p=S.preDemo||{e:{},hrt:[],mrs:[]};S.e=p.e;S.hrt=p.hrt;S.mrs=p.mrs;delete S.demo;delete S.preDemo;persist();toast(t("demoGone"));renderDemoCtl();gateAll()}
 function renderDemoCtl(){const b=$("demoBtn");if(!b)return;let r=$("demoRm");if(S.demo){if(!r){b.insertAdjacentHTML("afterend",'<button class="btn ghost block" id="demoRm"></button>');r=$("demoRm");r.onclick=removeDemo}r.textContent=t("demoRm")}else if(r)r.remove()}
 Object.assign(I18N.en,{demoRm:"Remove demo data (keep my own entries)",demoGone:"Demo data removed. Your own entries are back."});
 Object.assign(I18N.he,{demoRm:"הסרת נתוני ההדגמה (הרישומים שלי נשמרים)",demoGone:"נתוני ההדגמה הוסרו. הרישומים שלך חזרו."});
 if(!HEBREW_ENABLED)document.querySelectorAll(".langsw").forEach(x=>{const c=x.closest(".card");(c&&c.querySelector(".langsw")===x&&c.children.length<=2?c:x).remove()});
-const _boot=boot;boot=function(){renderDemoCtl();trialTick();_boot();gateAll()};
+const _boot=boot;boot=function(){renderDemoCtl();_boot();gateAll()};
 const _al=applyLang;applyLang=function(){_al();if(typeof gateAll==="function"&&$("v-today"))gateAll()};
 document.head.insertAdjacentHTML("beforeend",`<style>
 .lockv .card:not(.upg):not(#helpCard),.lockv #weekTip,.lockv #sumBody,.lockv #sumCtl,.lockv #letCtl,.lockv .tabs2{filter:blur(5px) saturate(.8);opacity:.75;pointer-events:none;user-select:none}
