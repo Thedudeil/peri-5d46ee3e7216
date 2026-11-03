@@ -1,5 +1,6 @@
-const C='peri-v21',SUB=['/nights/','/strong/'],A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','privacy.html','health-data.html','terms.html','accessibility.html','fonts/fraunces-latin.woff2','fonts/caveat-latin.woff2','fonts/nunito-latin.woff2'];
-self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)));self.skipWaiting()});
+const C='peri-v22',SUB=['/nights/','/strong/'],A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','privacy.html','health-data.html','terms.html','accessibility.html','fonts/fraunces-latin.woff2','fonts/caveat-latin.woff2','fonts/nunito-latin.woff2'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)))});
+self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('peri-')&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;{const p=new URL(e.request.url).pathname;if(SUB.some(x=>p.startsWith(x)))return}e.respondWith(fetch(e.request).then(r=>{const cp=r.clone();caches.open(C).then(c=>c.put(e.request,cp));return r}).catch(()=>caches.match(e.request,{ignoreSearch:true})))});
 self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(l=>{for(const c of l){if('focus' in c)return c.focus()}return clients.openWindow('./')}))});

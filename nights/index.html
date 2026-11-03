@@ -189,5 +189,19 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.
 $("exp").onclick=()=>{const ds=[...new Set([...Object.keys(S.n),...Object.keys(S.s),...Object.keys(S.r).map(k=>addD(k,1))])].sort(),yn=x=>x===true?"yes":x===false?"no":"";const rows=[["morning_of","sleep_quality_1to5","wakings","sweats_0to3","tags","caffeine_after_2pm","alcohol","cool_room","screens_off","stress_1to5","sweat_episodes"],...ds.map(d=>{const e=S.n[d]||{t:[]},r=S.r[addD(d,-1)],x=S.s[d]||[];return[d,e.q??"",e.w??"",e.h??"",e.t.join(";"),r?yn(r.caf):"",r?yn(r.alc):"",r?yn(r.cool):"",r?yn(r.scr):"",r&&r.st!=null?r.st:"",x.map(o=>hl(o.hr).replace(" ","")+" "+SEV[o.sev-1].toLowerCase()).join(";")]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(v=>{v=String(v??"");if(/^[=+\-@\t\r]/.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(",")).join("\n")],{type:"text/csv"}));a.download="prime-nights.csv";a.click()};
 $("wipe").onclick=()=>{if(confirm("Delete every night saved on this phone? This can't be undone.")){S={n:{},r:{},s:{}};save();load();render();toast("Deleted")}};
 load();render();
-if("serviceWorker"in navigator&&location.protocol!=="file:")navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});
-</script></body></html>
+
+</script><script data-sw="./sw.js">/* update banner */(function(){if(!("serviceWorker"in navigator)||location.protocol==="file:")return;var SW=document.currentScript.dataset.sw,want=false,done=false,reg=null;
+function T(){var he=(document.documentElement.lang||"").indexOf("he")===0;return he?{m:"גרסה חדשה זמינה",b:"רענון",x:"סגירה"}:{m:"New version available",b:"Refresh",x:"Dismiss"}}
+function busy(){var a=document.activeElement;return !!(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"||a.tagName==="SELECT"||a.isContentEditable))}
+function show(){if(document.getElementById("upd-bar"))return;var t=T(),d=document.createElement("div");d.id="upd-bar";d.setAttribute("role","status");d.setAttribute("aria-live","polite");
+d.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:9999;display:flex;gap:10px;align-items:center;max-width:calc(100% - 24px);padding:10px 12px 10px 16px;border-radius:16px;background:var(--card,#fff8f2);color:var(--ink,#3c4a3b);border:1px solid var(--line,#e6dccf);box-shadow:0 6px 24px rgba(0,0,0,.15);font:inherit;font-size:15px";
+var s=document.createElement("span");s.textContent=t.m;var b=document.createElement("button");b.type="button";b.id="upd-go";b.textContent=t.b;b.style.cssText="min-height:44px;padding:0 16px;border:0;border-radius:12px;background:var(--sage,var(--olive,#6f8a6e));color:#fff;font:inherit;font-weight:700;cursor:pointer";
+var x=document.createElement("button");x.type="button";x.setAttribute("aria-label",t.x);x.textContent="×";x.style.cssText="min-width:44px;min-height:44px;border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer";
+b.onclick=function(){if(reg&&reg.waiting){want=true;reg.waiting.postMessage({type:"SKIP_WAITING"})}else{want=true;go()}};x.onclick=function(){d.remove()};d.append(s,b,x);document.body.appendChild(d)}
+function go(){if(done)return;try{if(sessionStorage.getItem("upd-r")&&Date.now()-sessionStorage.getItem("upd-r")<10000)return;sessionStorage.setItem("upd-r",Date.now())}catch(e){}done=true;location.reload()}
+var had=!!navigator.serviceWorker.controller;
+navigator.serviceWorker.addEventListener("controllerchange",function(){if(!had){had=true;return}if(want&&!busy())go();else show()});
+function track(w){if(!w)return;var f=function(){if(w.state==="installed"&&navigator.serviceWorker.controller)show()};f();w.addEventListener("statechange",f)}
+addEventListener("load",function(){navigator.serviceWorker.register(SW,SW.indexOf("./")===0?{scope:"./"}:undefined).then(function(r){reg=r;window.__swReg=r;if(r.waiting&&navigator.serviceWorker.controller)show();track(r.installing);r.addEventListener("updatefound",function(){track(r.installing)})}).catch(function(){})});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&reg)reg.update().catch(function(){})})})();</script>
+</body></html>
