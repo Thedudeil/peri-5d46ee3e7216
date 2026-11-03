@@ -1,0 +1,123 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Prime Nights · sleep & hot-flash diary</title><meta name="theme-color" content="#fbeee6"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="description" content="A gentle morning log for sleep and night sweats. Stays on your phone.">
+<style>
+@font-face{font-family:Caveat;font-weight:500 700;font-display:swap;src:url(fonts/caveat-latin.woff2) format('woff2')}
+@font-face{font-family:Fraunces;font-weight:400 700;font-display:swap;src:url(fonts/fraunces-latin.woff2) format('woff2')}
+@font-face{font-family:Nunito;font-weight:400 800;font-display:swap;src:url(fonts/nunito-latin.woff2) format('woff2')}
+:root{--olive:#5f6f34;--oliveL:#eef0dc;--blush:#e8a99a;--roseL:#f8e0d6;--ochre:#d99a3d;--cream:#fbeee6;--ink:#4a3328;--mute:#6b5244;--line:#ecd6c8;--card:#fff8f2;--night:#5b5470}
+*{box-sizing:border-box}html,body{margin:0;background:var(--cream);color:var(--ink);font:15.5px/1.5 Nunito,system-ui,sans-serif}
+main{max-width:520px;margin:0 auto;padding:16px 16px 96px}
+h1,h2{font-family:Fraunces,Georgia,serif;margin:6px 0 10px}h1{font-size:27px}h2{font-size:20px}
+h3{font-family:Caveat,cursive;font-size:24px;color:var(--olive);margin:4px 0 6px;font-weight:700}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px 26px 20px 24px;padding:8px 18px 16px;margin:0 0 14px;box-shadow:3px 4px 0 rgba(217,154,61,.12)}
+.muted{color:var(--mute);font-size:13.5px}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-5px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}#q{flex-wrap:nowrap}#q button{flex:1;min-width:0;padding:0 2px;font-size:14px}.seg button{min-width:46px;height:46px;padding:0 10px;border:2px solid var(--blush);background:var(--card);color:var(--ink);border-radius:50% 45% 55% 50%/50% 55% 45% 50%;font:700 15px Nunito,sans-serif;cursor:pointer}
+.seg.wide button{border-radius:18px 22px 16px 20px;flex:1}
+.seg button.on{background:var(--blush);color:var(--ink);border-color:#c97c6a}.seg button.on.ok{background:var(--olive);border-color:var(--olive)}.seg button.on.mid{background:#fbe3c2;color:var(--ink);border-color:var(--ochre)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px 18px 22px 16px;padding:9px 13px;font:600 14px Nunito,sans-serif;min-height:44px;cursor:pointer}.chip.on{background:var(--olive);border-color:var(--olive);color:#fff}
+.btn{display:block;width:100%;border:0;border-radius:18px 22px 16px 20px;padding:13px;font:800 16px Nunito,sans-serif;background:#9c4a36;color:#fff;cursor:pointer;box-shadow:2px 3px 0 rgba(74,51,40,.15)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);box-shadow:none;margin-top:8px}
+.datebar{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}.datebar button{width:44px;height:44px;border-radius:50%;border:0;background:var(--roseL);font-size:22px;color:var(--ink);cursor:pointer}.datebar button:disabled{opacity:.35}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);border-radius:20px 20px 0 0}
+nav button{flex:1;min-width:0;white-space:nowrap;border:0;background:none;padding:10px 0 9px;font:700 11.5px Nunito,sans-serif;letter-spacing:-.1px;color:var(--mute);cursor:pointer}nav button.on{color:#9c4a36}nav .ic{display:block;margin:0 auto 2px}
+.hide{display:none!important}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1}
+.bars{display:flex;align-items:flex-end;gap:3px;height:120px;border-bottom:2px dashed var(--line);padding-top:6px}
+.bars div{flex:1;border-radius:6px 6px 2px 2px;min-height:3px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--mute);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:var(--roseL);border-radius:16px 20px 14px 18px;padding:10px;text-align:center}.stat b{display:block;font:700 22px Fraunces,serif}.stat small{color:var(--mute)}
+.pat{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1.5px dashed var(--line)}.pat:last-child{border:0}
+.meter{height:10px;background:var(--oliveL);border-radius:6px;overflow:hidden;margin-top:4px}.meter span{display:block;height:100%;background:var(--ochre)}
+.disc{background:#fbe7c8;border-inline-start:4px solid var(--ochre);border-radius:16px 20px 14px 18px;padding:10px 14px;font-size:13.5px;margin:0 0 14px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:16px;font-weight:700;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+.moon{color:var(--night)}
+</style></head><body><main>
+<section id="v-log">
+ <div style="display:flex;align-items:center;gap:10px"><svg class="ic moon" style="width:34px;height:34px" viewBox="0 0 24 24"><path d="M19.5 14.6A8 8 0 0 1 9.3 4.3a8.2 8.2 0 1 0 10.2 10.3z"/><path d="M16.6 4.2l.5 1.4 1.4.4-1.4.5-.5 1.4-.4-1.4-1.4-.5 1.4-.4z"/></svg><h1>How was your night?</h1></div>
+ <p class="muted" style="margin-top:-6px">A 30-second morning log. Tags are about the evening before.</p>
+ <div class="datebar"><button id="prev" aria-label="Previous night">‹</button><b id="dlab"></b><button id="next" aria-label="Next night">›</button></div>
+ <div class="card"><h3>Sleep quality</h3><div class="seg wide" id="q"></div></div>
+ <div class="card"><h3>Times I woke up</h3><div class="seg" id="w"></div></div>
+ <div class="card"><h3>Night sweats / hot flashes <span class="muted" style="font-family:Nunito;font-size:13px">0 none · 3 severe</span></h3><div class="seg" id="h"></div></div>
+ <div class="card"><h3>Last evening <span class="muted" style="font-family:Nunito;font-size:13px">optional</span></h3><div class="chips" id="t"></div></div>
+ <button class="btn" id="save">Save my night</button>
+</section>
+<section id="v-nights" class="hide">
+ <h1>My nights</h1>
+ <div class="tabs"><button class="chip on" data-r="7">7 days</button><button class="chip" data-r="30">30 days</button></div>
+ <div class="card"><div class="stats" id="stats"></div></div>
+ <div class="card"><h3>Sleep quality</h3><div class="bars" id="bq"></div>
+  <div class="legend"><span><i style="background:var(--olive)"></i>good (4–5)</span><span><i style="background:var(--ochre)"></i>okay (3)</span><span><i style="background:var(--blush)"></i>rough (1–2)</span><span><i style="background:var(--line)"></i>not logged</span></div></div>
+ <div class="card"><h3>Night sweats</h3><div class="bars" id="bh" style="height:80px"></div></div>
+</section>
+<section id="v-before" class="hide">
+ <h1>Before rough nights</h1>
+ <div class="disc">These are your own averages, not a diagnosis or medical advice. A pattern here only means two things showed up together in your log. Worth bringing to your doctor if something stands out.</div>
+ <div class="card"><p class="muted" style="margin-top:6px">A “rough night” is sleep quality 1–2, or sweats of 2–3. Nights where sweats weren’t logged count by sleep quality only.</p><div id="pats"></div></div>
+</section>
+<section id="v-me" class="hide">
+ <h1>Privacy & settings</h1>
+ <div class="card"><h3>Your nights stay with you</h3><p>Everything you log is saved only in this browser on this phone. There’s no account, no sign-up and no server: we never see it, and nothing is sold or shared. Clearing your browser data or uninstalling deletes it, so export a backup now and then.</p></div>
+ <div class="card"><h3>Backup</h3><button class="btn" id="exp">Export my nights (CSV)</button><button class="btn ghost" id="wipe">Delete everything on this phone</button></div>
+ <div class="disc">Prime Nights is a diary to help you notice patterns. It isn’t medical advice and can’t diagnose anything. For worrying or sudden symptoms, talk to a doctor.</div>
+ <div class="card"><h3>Help & legal</h3><p><a href="privacy.html" style="color:#9c4a36">Privacy Policy</a> · <a href="terms.html" style="color:#9c4a36">Terms of Use</a> · <a href="mailto:support@primetraker.com" style="color:#9c4a36">support@primetraker.com</a></p></div>
+ <p class="muted" style="text-align:center">Prime Nights · a companion to Prime Traker · Money Maker Productions Ltd</p>
+</section>
+</main>
+<nav>
+ <button data-v="log" class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg>Log</button>
+ <button data-v="nights"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19c3-.3 3.5-6 6-6.2S13 16 15.5 15 18 8 20 7"/><path d="M3.5 21h17"/></svg>My nights</button>
+ <button data-v="before"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/></svg>Before rough nights</button>
+ <button data-v="me"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.2 8.3-7 10-3.8-1.7-7-5-7-10V6z"/></svg>Privacy</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+const KEY="primeNights.v1",$=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+if(!S||typeof S!=="object"||!S.n||typeof S.n!=="object")S={n:{}}; // PN-005
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}; // PN-006
+const iso=d=>{const z=new Date(d);z.setMinutes(z.getMinutes()-z.getTimezoneOffset());return z.toISOString().slice(0,10)};
+const today=()=>iso(new Date()),addD=(d,n)=>{const x=new Date(d+"T12:00:00");x.setDate(x.getDate()+n);return iso(x)};
+const fmt=d=>new Date(d+"T12:00:00").toLocaleDateString("en",{weekday:"short",month:"short",day:"numeric"});
+const Q=["Rough","Poor","Okay","Good","Great"],W=["0","1","2","3","4","5+"],TAGS={caffeine:"Caffeine",alcohol:"Alcohol",stress:"Stress",late:"Late meal",warm:"Warm room"};
+let cur=today(),draft;
+function load(){const e=S.n[cur];draft=e?JSON.parse(JSON.stringify(e)):{q:null,w:null,h:null,t:[]}}
+function seg(id,vals,key,cls){$(id).innerHTML=vals.map((v,i)=>{const val=key==="q"?i+1:i;const on=draft[key]===val;const c=key==="q"?(val>=4?"ok":val===3?"mid":""):"";return `<button class="${on?"on "+c:""}" aria-pressed="${on}" data-v="${val}">${v}</button>`}).join("");
+ $(id).querySelectorAll("button").forEach(b=>b.onclick=()=>{draft[key]=+b.dataset.v;render()})}
+function render(){const sh=d=>new Date(d+"T12:00:00").toLocaleDateString("en",{month:"short",day:"numeric"});$("dlab").textContent=(cur===today()?"Last night · ":"")+"Night of "+sh(addD(cur,-1))+" → "+sh(cur); /* PN-007 */$("next").disabled=cur>=today();
+ seg("q",Q,"q");seg("w",W,"w");seg("h",["0","1","2","3"],"h");
+ $("t").innerHTML=Object.entries(TAGS).map(([k,v])=>`<button class="chip ${draft.t.includes(k)?"on":""}" aria-pressed="${draft.t.includes(k)}" data-k="${k}">${v}</button>`).join("");
+ $("t").querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=b.dataset.k;draft.t=draft.t.includes(k)?draft.t.filter(x=>x!==k):[...draft.t,k];render()});
+ $("save").textContent=S.n[cur]?"Update this night":"Save my night"}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
+// PN-004: unanswered wakings/sweats stay null (not 0). PN-006: report failed writes; don't drop unsaved picks.
+function commit(){const prev=S.n[cur];S.n[cur]={q:draft.q,w:draft.w??null,h:draft.h??null,t:[...draft.t]};if(!save()){if(prev)S.n[cur]=prev;else delete S.n[cur];toast("Couldn't save. Your phone storage may be full or blocked.");return false}return true}
+const dirty=()=>{const e=S.n[cur]||{q:null,w:null,h:null,t:[]};return JSON.stringify([draft.q,draft.w??null,draft.h??null,[...draft.t].sort()])!==JSON.stringify([e.q,e.w??null,e.h??null,[...e.t].sort()])};
+$("save").onclick=()=>{if(draft.q==null){toast("Pick a sleep quality first");return}if(commit()){toast("Saved. Be gentle with yourself today.");render()}};
+function go(n){if(dirty()){if(draft.q!=null){if(!commit())return;toast("Saved that night for you")}else if(!confirm("You haven't saved this night. Leave without saving?"))return}cur=addD(cur,n);load();render()}
+$("prev").onclick=()=>go(-1);$("next").onclick=()=>{if(cur<today())go(1)};
+let R=7;const rough=e=>e.q<=2||(e.h!=null&&e.h>=2);
+function nights(){const ds=[];for(let i=R-1;i>=0;i--)ds.push(addD(today(),-i));
+ const L=ds.map(d=>S.n[d]).filter(Boolean),avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):"–";
+ $("stats").innerHTML=`<div class="stat"><b>${L.length}/${R}</b><small>nights logged</small></div><div class="stat"><b>${avg(L.map(e=>e.q))}</b><small>avg quality /5</small></div><div class="stat"><b>${L.filter(rough).length}</b><small>rough nights</small></div>`;
+ $("bq").innerHTML=ds.map(d=>{const e=S.n[d];return e?`<div title="${fmt(d)}: ${Q[e.q-1]}" style="height:${e.q*20}%;background:${e.q>=4?"var(--olive)":e.q===3?"var(--ochre)":"var(--blush)"}"></div>`:`<div title="${fmt(d)}: not logged" style="height:4%;background:var(--line)"></div>`}).join("");
+ $("bh").innerHTML=ds.map(d=>{const e=S.n[d];const ok=e&&e.h!=null;return `<div title="${fmt(d)}${ok?"":": not logged"}" style="height:${ok?Math.max(4,e.h*33):4}%;background:${ok?"var(--night)":"var(--line)"}"></div>`}).join("")}
+document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{R=+b.dataset.r;document.querySelectorAll("[data-r]").forEach(x=>x.classList.toggle("on",x===b));nights()});
+function before(){const L=Object.values(S.n),MIN=3;
+ if(L.length<7){$("pats").innerHTML=`<p>Log at least 7 nights and patterns will start to show here. You have ${L.length} so far.</p>`;return}
+ const base=L.filter(rough).length/L.length;let out=[];
+ for(const[k,v]of Object.entries(TAGS)){const w=L.filter(e=>e.t.includes(k)),wo=L.filter(e=>!e.t.includes(k));
+  if(w.length<MIN||wo.length<MIN){out.push(`<div class="pat"><span>${v}</span><span class="muted">needs at least 3 nights with and 3 without (now ${w.length} with, ${wo.length} without)</span></div>`);continue}
+  const a=w.filter(rough).length/w.length,b=wo.filter(rough).length/wo.length;
+  out.push({k:v,a,b,n:w.length,m:wo.length})}
+ const rows=out.filter(o=>typeof o==="object").sort((x,y)=>(y.a-y.b)-(x.a-x.b)),pct=x=>Math.round(x*100)+"%";
+ $("pats").innerHTML=`<p>Overall, ${pct(base)} of your ${L.length} logged nights were rough.</p>`+rows.map(o=>`<div class="pat" style="display:block"><b>${o.k}</b> <span class="muted">· ${o.n} nights with, ${o.m} without</span><div class="muted">Rough after ${o.k.toLowerCase()}: ${pct(o.a)} · without: ${pct(o.b)}</div><div class="meter"><span style="width:${pct(o.a)}"></span></div></div>`).join("")+out.filter(o=>typeof o==="string").join("")+`<p class="muted">Small numbers can mislead. The more nights you log, the more these mean.</p>`}
+function show(v){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));if(v==="nights")nights();if(v==="before")before();scrollTo(0,0)}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+$("exp").onclick=()=>{const rows=[["morning_of","sleep_quality_1to5","wakings","sweats_0to3","tags"],...Object.keys(S.n).sort().map(d=>{const e=S.n[d];return[d,e.q,e.w??"",e.h??"",e.t.join(";")]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(",")).join("\n")],{type:"text/csv"}));a.download="prime-nights.csv";a.click()};
+$("wipe").onclick=()=>{if(confirm("Delete every night saved on this phone? This can't be undone.")){S={n:{}};save();load();render();toast("Deleted")}};
+load();render();
+if("serviceWorker"in navigator&&location.protocol!=="file:")navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});
+</script></body></html>

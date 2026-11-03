@@ -990,7 +990,11 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.
 const _exp=$("expCsv").onclick;$("expCsv").onclick=e=>hasAccess()?_exp(e):openUp();
 const _rt=$("rtBtn").onclick;$("rtBtn").onclick=e=>hasAccess()?_rt(e):openUp();
 // PT-004: remember exactly what demo wrote; removal deletes only untouched demo entries and restores any real entry it replaced.
-const _demo=$("demoBtn").onclick;$("demoBtn").onclick=e=>{const J=x=>JSON.stringify(x);const before={e:JSON.parse(J(S.e)),hrt:J(S.hrt||[]),mrs:J(S.mrs||[])};const n0=J(S.e);_demo(e);if(J(S.e)===n0)return;
+// PT-008: never mix demo data into a real diary.
+function hasRealData(){const J=x=>JSON.stringify(x),D=S.demoTag||{e:{},hrt:[],mrs:[]};
+ if(Object.keys(S.e||{}).some(d=>{const x=S.e[d];if(D.e&&d in D.e&&D.e[d]===J(x))return false;return x&&x.saved}))return true;
+ return (S.hrt||[]).some(h=>!(D.hrt||[]).includes(J(h)))||(S.mrs||[]).some(m=>!(D.mrs||[]).includes(J(m)))}
+const _demo=$("demoBtn").onclick;$("demoBtn").onclick=e=>{if(hasRealData()){toast("Demo data is only available on an empty diary, so your own entries stay clean.");return}const J=x=>JSON.stringify(x);const before={e:JSON.parse(J(S.e)),hrt:J(S.hrt||[]),mrs:J(S.mrs||[])};const n0=J(S.e);_demo(e);if(J(S.e)===n0)return;
  const D=S.demoTag||{e:{},prev:{},hrt:[],mrs:[]};
  Object.keys(S.e).forEach(d=>{const now=J(S.e[d]);if(now!==J(before.e[d])){if(before.e[d]&&!(d in D.prev)&&!(d in D.e))D.prev[d]=before.e[d];D.e[d]=now}});
  const bh=JSON.parse(before.hrt).map(J),bm=JSON.parse(before.mrs).map(J);(S.hrt||[]).forEach(h=>{if(!bh.includes(J(h)))D.hrt.push(J(h))});(S.mrs||[]).forEach(m=>{if(!bm.includes(J(m)))D.mrs.push(J(m))});
