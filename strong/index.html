@@ -1,0 +1,167 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Prime Strong · strength & bone-health habits</title><meta name="theme-color" content="#fbeee6"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="description" content="A gentle daily log for strength sessions, protein, calcium and vitamin D. Stays on your phone.">
+<style>
+@font-face{font-family:Caveat;font-weight:500 700;font-display:swap;src:url(fonts/caveat-latin.woff2) format('woff2')}
+@font-face{font-family:Fraunces;font-weight:400 700;font-display:swap;src:url(fonts/fraunces-latin.woff2) format('woff2')}
+@font-face{font-family:Nunito;font-weight:400 800;font-display:swap;src:url(fonts/nunito-latin.woff2) format('woff2')}
+:root{--olive:#5f6f34;--oliveL:#eef0dc;--blush:#e8a99a;--roseL:#f8e0d6;--ochre:#d99a3d;--cream:#fbeee6;--ink:#4a3328;--mute:#6b5244;--line:#ecd6c8;--card:#fff8f2;--night:#5b5470}
+*{box-sizing:border-box}html,body{margin:0;background:var(--cream);color:var(--ink);font:15.5px/1.5 Nunito,system-ui,sans-serif}
+main{max-width:520px;margin:0 auto;padding:16px 16px 96px}
+h1,h2{font-family:Fraunces,Georgia,serif;margin:6px 0 10px}h1{font-size:27px}h2{font-size:20px}
+h2.h3{font-family:Caveat,cursive;font-size:24px;color:var(--olive);margin:4px 0 6px;font-weight:700}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px 26px 20px 24px;padding:8px 18px 16px;margin:0 0 14px;box-shadow:3px 4px 0 rgba(217,154,61,.12)}
+.muted{color:var(--mute);font-size:13.5px}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-5px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}#q{flex-wrap:nowrap}#q button{flex:1;min-width:0;padding:0 2px;font-size:14px}.seg button{min-width:46px;height:46px;padding:0 10px;border:2px solid var(--blush);background:var(--card);color:var(--ink);border-radius:50% 45% 55% 50%/50% 55% 45% 50%;font:700 15px Nunito,sans-serif;cursor:pointer}
+.seg.wide button{border-radius:18px 22px 16px 20px;flex:1}
+.seg button.on{background:var(--blush);color:var(--ink);border-color:#c97c6a}.seg button.on.ok{background:var(--olive);border-color:var(--olive);color:#fff}.seg button.on.mid{background:#fbe3c2;color:var(--ink);border-color:var(--ochre)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px 18px 22px 16px;padding:9px 13px;font:600 14px Nunito,sans-serif;min-height:44px;cursor:pointer}.chip.on{background:var(--olive);border-color:var(--olive);color:#fff}
+.btn{display:block;width:100%;border:0;border-radius:18px 22px 16px 20px;padding:13px;font:800 16px Nunito,sans-serif;background:#9c4a36;color:#fff;cursor:pointer;box-shadow:2px 3px 0 rgba(74,51,40,.15)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);box-shadow:none;margin-top:8px}
+.datebar{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}.datebar button{width:44px;height:44px;border-radius:50%;border:0;background:var(--roseL);font-size:22px;color:var(--ink);cursor:pointer}.datebar button:disabled{opacity:.35}
+nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);border-radius:20px 20px 0 0}
+nav button{flex:1;min-width:0;white-space:nowrap;border:0;background:none;padding:10px 0 9px;font:700 11.5px Nunito,sans-serif;letter-spacing:-.1px;color:var(--mute);cursor:pointer}nav button.on{color:#9c4a36}nav .ic{display:block;margin:0 auto 2px}
+.hide{display:none!important}.sr{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0!important;margin:0!important;padding:0!important}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1}
+.bars{display:flex;align-items:flex-end;gap:3px;height:120px;border-bottom:2px dashed var(--line);padding-top:6px}
+.bars div{flex:1;border-radius:6px 6px 2px 2px;min-height:3px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--mute);margin-top:6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:var(--roseL);border-radius:16px 20px 14px 18px;padding:10px;text-align:center}.stat b{display:block;font:700 22px Fraunces,serif}.stat small{color:var(--mute)}
+.pat{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1.5px dashed var(--line)}.pat:last-child{border:0}
+.meter{height:10px;background:var(--oliveL);border-radius:6px;overflow:hidden;margin-top:4px}.meter span{display:block;height:100%;background:var(--ochre)}
+.disc{background:#fbe7c8;border-inline-start:4px solid var(--ochre);border-radius:16px 20px 14px 18px;padding:10px 14px;font-size:13.5px;margin:0 0 14px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:16px;font-weight:700;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+.mark{color:#9c4a36}.wk{display:flex;gap:6px;margin:8px 0}.wk div{flex:1;text-align:center;font-size:12px;color:var(--mute)}.wk span{display:block;height:34px;border-radius:12px 14px 10px 12px;border:2px solid var(--line);margin-bottom:3px}.wk span.on{background:var(--olive);border-color:var(--olive)}.wk span.walk{background:#fbe3c2;border-color:var(--ochre)}ol.moves li{margin:0 0 10px}label.fl{display:block;font-weight:700;margin:6px 0 4px}input[type=number]{width:110px;height:46px;border:2px solid var(--blush);border-radius:16px;background:var(--card);color:var(--ink);font:700 16px Nunito,sans-serif;padding:0 12px}.sub{font-family:Nunito;font-size:13px}.hl{display:flex;gap:10px;align-items:center}
+</style></head><body><main>
+<section id="v-log">
+ <div class="hl"><svg class="ic mark" style="width:34px;height:34px" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12.2c3-.4 7.6-.4 11 0"/><rect x="3.5" y="8" width="3" height="8" rx="1.4"/><rect x="17.5" y="7.8" width="3" height="8.4" rx="1.5"/></svg><h1>How did you move today?</h1></div>
+ <p class="muted" style="margin-top:-6px">A one-minute check-in. Saves as you tap. Skip anything you like; blanks stay blank.</p>
+ <div class="datebar"><button id="prev" aria-label="Previous day">‹</button><b id="dlab" aria-live="polite"></b><button id="next" aria-label="Next day">›</button></div>
+ <div class="card"><h2 class="h3" id="l-s">Strength session</h2><div class="seg wide" id="s" role="group" aria-labelledby="l-s"></div>
+  <div id="sx" class="hide"><p class="fl" id="l-ty">What kind? <span class="muted sub">pick any</span></p><div class="chips" id="ty" role="group" aria-labelledby="l-ty"></div>
+  <label class="fl" for="m">Minutes <span class="muted sub">optional</span></label><input type="number" id="m" min="0" max="600" inputmode="numeric" step="1"></div></div>
+ <div class="card"><h2 class="h3" id="l-p">Protein servings <span class="muted sub">palm-sized portions</span></h2><div class="seg" id="p" role="group" aria-labelledby="l-p"></div></div>
+ <div class="card"><h2 class="h3" id="l-c">Calcium-rich servings <span class="muted sub">dairy, fortified, greens…</span></h2><div class="seg" id="c" role="group" aria-labelledby="l-c"></div></div>
+ <div class="card"><h2 class="h3" id="l-v">Vitamin D taken</h2><div class="seg wide" id="v" role="group" aria-labelledby="l-v"></div></div>
+ <div class="card"><h2 class="h3" id="l-e">Energy <span class="muted sub">optional · 1 low, 5 great</span></h2><div class="seg" id="e" role="group" aria-labelledby="l-e"></div></div>
+ <div class="card"><h2 class="h3" id="l-j">Joint aches <span class="muted sub">optional · 0 none, 3 a lot</span></h2><div class="seg" id="j" role="group" aria-labelledby="l-j"></div></div>
+ <button class="btn" id="save">Save my day</button>
+</section>
+<section id="v-week" class="hide">
+ <h1>My week</h1>
+ <div class="card"><h2 class="h3">Strength sessions</h2><p id="wsum" style="font:700 20px Fraunces,serif;margin:4px 0"></p><div class="wk" id="wk"></div><div class="meter"><span id="wmeter"></span></div>
+  <p class="muted" id="streak"></p></div>
+ <div class="card"><h2 class="h3" id="l-g">My weekly goal</h2><div class="seg" id="g" role="group" aria-labelledby="l-g"></div><p class="muted">Sessions a week. Weeks run Monday to Sunday. Pick what feels doable for you.</p></div>
+ <div class="card"><h2 class="h3">This week so far</h2><div class="stats" id="wstats"></div></div>
+</section>
+<section id="v-trends" class="hide">
+ <h1>30-day trends</h1>
+ <div class="card"><div class="stats" id="tstats"></div></div>
+ <div class="card"><h2 class="h3">Strength minutes</h2><div class="bars" id="bm"></div>
+  <div class="legend"><span><i style="background:var(--olive)"></i>session</span><span><i style="background:var(--ochre)"></i>session, no minutes</span><span><i style="background:var(--line)"></i>none or not logged</span></div></div>
+ <div class="card"><h2 class="h3">Protein servings</h2><div class="bars" id="bp" style="height:80px"></div></div>
+ <div class="card"><h2 class="h3">Calcium-rich servings</h2><div class="bars" id="bc" style="height:80px"></div><p class="muted">Each bar is one day, oldest on the left. Empty days weren’t logged.</p></div>
+</section>
+<section id="v-moves" class="hide">
+ <h1>Simple starter moves</h1>
+ <div class="disc"><b>Check with your doctor first.</b> This is general, educational information, not an exercise plan or medical advice. If you have osteoporosis, joint problems, a heart condition or recent surgery, ask your doctor or a physiotherapist what’s right for you. Stop if anything hurts.</div>
+ <div class="card"><ol class="moves">
+  <li><b>Sit-to-stand.</b> From a sturdy chair, stand up and sit back down slowly, hands across your chest or on the armrests. Try 5–10.</li>
+  <li><b>Wall push-up.</b> Hands on a wall at shoulder height, bend your elbows to bring your chest toward the wall, then push back. Try 5–10.</li>
+  <li><b>Heel raises.</b> Holding a counter for balance, rise onto your toes and lower slowly. Try 10.</li>
+  <li><b>Glute bridge.</b> Lying on your back with knees bent, lift your hips, pause, and lower. Try 5–10.</li>
+  <li><b>Standing side leg lift.</b> Holding a chair, lift one leg out to the side and lower slowly. Try 5–10 each side.</li>
+ </ol><p class="muted">Move slowly and keep breathing. Doing a little, regularly, is a good place to start.</p></div>
+</section>
+<section id="v-me" class="hide">
+ <h1>Privacy & settings</h1>
+ <div class="card"><h2 class="h3">Your log stays with you</h2><p>Everything you log is saved only in this browser on this phone. There’s no account, no sign-up and no server: we never see it, and nothing is sold or shared. Clearing your browser data or uninstalling deletes it, so export a backup now and then.</p></div>
+ <div class="card"><h2 class="h3">Backup</h2><button class="btn" id="exp">Export my log (CSV)</button><button class="btn ghost" id="wipe">Delete everything on this phone</button></div>
+ <div class="disc">Prime Strong is a habit diary. It isn’t medical advice and can’t diagnose, prevent or treat anything. For questions about your bones, joints or exercise, talk to a doctor.</div>
+ <div class="card"><h2 class="h3">Help & legal</h2><p><a href="privacy.html" style="color:#9c4a36">Privacy Policy</a> · <a href="terms.html" style="color:#9c4a36">Terms of Use</a> · <a href="mailto:support@primetraker.com" style="color:#9c4a36">support@primetraker.com</a></p></div>
+ <p class="muted" style="text-align:center">Prime Strong · a companion to Prime Traker · Money Maker Productions Ltd</p>
+</section>
+</main>
+<nav>
+ <button data-v="log" class="on"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg>Log</button>
+ <button data-v="week"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Week</button>
+ <button data-v="trends"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19c3-.3 3.5-6 6-6.2S13 16 15.5 15 18 8 20 7"/><path d="M3.5 21h17"/></svg>Trends</button>
+ <button data-v="moves"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2"/><path d="M12 7.5v6.5M7 10.5c2 .8 8 .8 10 0M12 14l-3.2 6M12 14l3.2 6"/></svg>Moves</button>
+ <button data-v="me"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.2 8.3-7 10-3.8-1.7-7-5-7-10V6z"/></svg>Privacy</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const KEY="primeStrong.v1",$=id=>document.getElementById(id);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+const TK=["bw","wt","bd","wk"],intIn=(x,a,b)=>Number.isInteger(x)&&x>=a&&x<=b?x:null,bool=x=>typeof x==="boolean"?x:null;
+function clean(raw){const out={d:{},goal:2};if(!raw||typeof raw!=="object"||Array.isArray(raw))return out;
+ const g=Number(raw.goal);out.goal=Number.isInteger(g)&&g>=1&&g<=5?g:Math.min(5,Math.max(1,Number.isFinite(g)?Math.round(g):2));
+ const d=raw.d&&typeof raw.d==="object"&&!Array.isArray(raw.d)?raw.d:{},t=today();
+ for(const k of Object.keys(d)){const e=d[k];if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||isNaN(new Date(k+"T12:00:00"))||k>t||!e||typeof e!=="object"||Array.isArray(e))continue;
+  const s=bool(e.s),c={s,ty:s===true&&Array.isArray(e.ty)?[...new Set(e.ty.filter(x=>TK.includes(x)))]:[],m:s===true?intIn(e.m,0,600):null,p:intIn(e.p,0,4),c:intIn(e.c,0,3),v:bool(e.v),e:intIn(e.e,1,5),j:intIn(e.j,0,3)};
+  if(c.s!==null||c.p!==null||c.c!==null||c.v!==null||c.e!==null||c.j!==null)out.d[k]=c}
+ return out}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}};
+const iso=d=>{const z=new Date(d);z.setMinutes(z.getMinutes()-z.getTimezoneOffset());return z.toISOString().slice(0,10)};
+const today=()=>iso(new Date()),addD=(d,n)=>{const x=new Date(d+"T12:00:00");x.setDate(x.getDate()+n);return iso(x)};
+const fmt=d=>new Date(d+"T12:00:00").toLocaleDateString("en",{weekday:"short",month:"short",day:"numeric"});
+const monday=d=>{const x=new Date(d+"T12:00:00");return addD(d,-((x.getDay()+6)%7))};
+S=clean(S);
+const TYPES=[["bw","Bodyweight"],["wt","Weights"],["bd","Bands"],["wk","Walk / impact"]],TL=Object.fromEntries(TYPES);
+const blank=()=>({s:null,ty:[],m:null,p:null,c:null,v:null,e:null,j:null});
+let day=today(),cur=blank();
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function seg(id,opts,key,cls){$(id).innerHTML=opts.map(([v,l])=>`<button type="button" aria-pressed="${cur[key]===v}" class="${cur[key]===v?"on "+(cls?cls(v):""):""}" data-v="${esc(JSON.stringify(v))}">${esc(l)}</button>`).join("");
+ $(id).querySelectorAll("button").forEach(b=>b.onclick=()=>{const v=JSON.parse(b.dataset.v);cur[key]=cur[key]===v?null:v;persist();render()})}
+function render(){
+ $("dlab").textContent=day===today()?"Today":fmt(day);$("next").disabled=day>=today();
+ seg("s",[[true,"Yes"],[false,"Not today"]],"s",v=>v?"ok":"");
+ $("sx").classList.toggle("hide",cur.s!==true);
+ $("ty").innerHTML=TYPES.map(([k,l])=>`<button type="button" class="chip${cur.ty.includes(k)?" on":""}" aria-pressed="${cur.ty.includes(k)}" data-k="${esc(k)}">${esc(l)}</button>`).join("");
+ $("ty").querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=b.dataset.k;cur.ty=cur.ty.includes(k)?cur.ty.filter(x=>x!==k):[...cur.ty,k];persist();render()});
+ $("m").value=cur.m??"";
+ seg("p",[[0,"0"],[1,"1"],[2,"2"],[3,"3"],[4,"4+"]],"p");
+ seg("c",[[0,"0"],[1,"1"],[2,"2"],[3,"3+"]],"c");
+ seg("v",[[true,"Yes"],[false,"No"]],"v",v=>v?"ok":"");
+ seg("e",[[1,"1"],[2,"2"],[3,"3"],[4,"4"],[5,"5"]],"e");
+ seg("j",[[0,"0"],[1,"1"],[2,"2"],[3,"3"]],"j");
+}
+const parseMin=v=>{if(String(v).trim()==="")return null;const n=Number(v);return Number.isFinite(n)&&n>=0?Math.min(600,Math.round(n)):null};
+$("m").oninput=()=>{cur.m=parseMin($("m").value);persist()};
+$("m").onchange=$("m").onblur=()=>{cur.m=parseMin($("m").value);$("m").value=cur.m??"";persist()};
+function load(){const e=S.d[day];cur=e?{...blank(),...e,ty:Array.isArray(e.ty)?[...e.ty]:[]}:blank()}
+$("prev").onclick=()=>{day=addD(day,-1);load();render()};
+$("next").onclick=()=>{if(day<today()){day=addD(day,1);load();render()}};
+function persist(){const e={...cur};if(e.s!==true){e.ty=[];e.m=null}
+ const empty=e.s===null&&e.p===null&&e.c===null&&e.v===null&&e.e===null&&e.j===null;
+ if(empty)delete S.d[day];else S.d[day]=e;return{ok:save(),empty}}
+let tt;function toast(t){$("toast").textContent=t;$("toast").classList.add("on");clearTimeout(tt);tt=setTimeout(()=>$("toast").classList.remove("on"),1800)}
+$("save").onclick=()=>{const r=persist();toast(r.ok?(r.empty?"Nothing to save, day cleared":"Saved"):"Couldn’t save: storage is full or blocked")};
+const sess=d=>S.d[d]&&S.d[d].s===true;
+const wkCount=m=>{let n=0;for(let i=0;i<7;i++)if(sess(addD(m,i)))n++;return n};
+function week(){const t=today(),m=monday(t),n=wkCount(m),g=S.goal;
+ $("wsum").textContent=`${n} of ${g} this week`+(n>=g?" · goal met":"");
+ $("wmeter").style.width=Math.min(100,n/g*100)+"%";
+ $("wk").innerHTML=[0,1,2,3,4,5,6].map(i=>{const d=addD(m,i),e=S.d[d];return`<div><span class="${sess(d)?"on":""}" aria-hidden="true"></span>${esc(new Date(d+"T12:00:00").toLocaleDateString("en",{weekday:"short"}))}${sess(d)?'<span class="sr">, session</span>':""}</div>`}).join("");
+ // streak = consecutive weeks meeting goal; current week counts only if already met
+ let s=0,w=n>=g?m:addD(m,-7);while(wkCount(w)>=g&&s<520){s++;w=addD(w,-7)}
+ $("streak").textContent=s?`Streak: ${s} week${s>1?"s":""} in a row at your goal.`:"Streak: meet your goal this week to start one.";
+ $("g").innerHTML=[1,2,3,4,5].map(v=>`<button type="button" aria-pressed="${S.goal===v}" class="${S.goal===v?"on ok":""}">${esc(v)}</button>`).join("");
+ $("g").querySelectorAll("button").forEach((b,i)=>b.onclick=()=>{S.goal=Math.min(5,Math.max(1,i+1));save();week()});
+ const ds=[0,1,2,3,4,5,6].map(i=>S.d[addD(m,i)]).filter(Boolean),avg=k=>{const v=ds.map(e=>e[k]).filter(x=>x!==null&&x!==undefined);return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):"–"};
+ $("wstats").innerHTML=`<div class="stat"><b>${esc(avg("p"))}</b><small>avg protein</small></div><div class="stat"><b>${esc(avg("c"))}</b><small>avg calcium</small></div><div class="stat"><b>${esc(ds.filter(e=>e.v===true).length)}</b><small>vitamin D days</small></div>`}
+function bars(id,val,max,col,lab){const t=today();$(id).innerHTML=Array.from({length:30},(_,i)=>addD(t,i-29)).map(d=>{const e=S.d[d],v=e?val(e):null;const h=v===null?3:Math.min(100,Math.max(6,v/max*100));return`<div style="height:${h}%;background:${v===null?"var(--line)":col(e,v)}" title="${esc(fmt(d)+": "+(v===null?"not logged":lab(v)))}"></div>`}).join("");$(id).setAttribute("role","img");$(id).setAttribute("aria-label","30 daily bars, oldest first")}
+function trends(){const t=today(),ds=Array.from({length:30},(_,i)=>S.d[addD(t,i-29)]).filter(Boolean),n=ds.filter(e=>e.s===true).length,mins=ds.reduce((a,e)=>a+(e.s===true&&e.m?e.m:0),0);
+ $("tstats").innerHTML=`<div class="stat"><b>${esc(n)}</b><small>sessions</small></div><div class="stat"><b>${esc(mins)}</b><small>minutes</small></div><div class="stat"><b>${esc(ds.length)}</b><small>days logged</small></div>`;
+ bars("bm",e=>e.s===true?(e.m??20):null,90,(e)=>e.m===null?"var(--ochre)":"var(--olive)",v=>v+" min");
+ bars("bp",e=>e.p,4,()=>"var(--blush)",v=>(v>=4?"4+":v)+" servings");
+ bars("bc",e=>e.c,3,()=>"var(--ochre)",v=>(v>=3?"3+":v)+" servings")}
+function show(v){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));document.querySelectorAll("nav button").forEach(b=>{b.classList.toggle("on",b.dataset.v===v);b.setAttribute("aria-current",b.dataset.v===v?"page":"false")});if(v==="week")week();if(v==="trends")trends();scrollTo(0,0)}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+const csv=x=>x===null||x===undefined?"":/[",\n]/.test(String(x))?`"${String(x).replace(/"/g,'""')}"`:String(x);
+$("exp").onclick=()=>{const yn=x=>x===true?"yes":x===false?"no":"";const rows=[["date","strength_session","types","minutes","protein_servings","calcium_servings","vitamin_d","energy_1to5","joint_aches_0to3"],...Object.keys(S.d).sort().map(d=>{const e=S.d[d];return[d,yn(e.s),(e.ty||[]).map(k=>TL[k]||k).join(";"),e.m,e.p===4?"4+":e.p,e.c===3?"3+":e.c,yn(e.v),e.e,e.j]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(csv).join(",")).join("\n")],{type:"text/csv"}));a.download="prime-strong.csv";a.click()};
+$("wipe").onclick=()=>{if(confirm("Delete everything saved on this phone? This can't be undone.")){S={d:{},goal:2};save();day=today();load();render();toast("Deleted")}};
+load();render();
+if("serviceWorker"in navigator&&location.protocol!=="file:")navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});
+</script></body></html>
