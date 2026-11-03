@@ -36,7 +36,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;margin:0 0 8px}
-h1{font-size:26px}h2{font-size:21px}h3{font-size:16px;color:var(--sage);margin-top:4px}
+h1{font-size:26px}h2{font-size:21px}h3,.h3{font-size:16px;color:var(--sage);margin-top:4px}
 .wrap{max-width:560px;margin:0 auto;padding:16px 16px 96px}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .card{background:#fff;border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 1px 3px rgba(60,74,59,.08)}
@@ -125,8 +125,8 @@ input[type=time]{border:1.5px solid var(--sageL);border-radius:10px;padding:9px;
 html,body{background:var(--cream);color:var(--ink);font:15.5px/1.5 Nunito,Rubik,system-ui,sans-serif}
 [lang=he] body,[lang=he] html{font-family:Rubik,Nunito,system-ui,sans-serif}
 h1,h2,.stat b,.letter h1,.letter h2{font-family:Fraunces,Rubik,Georgia,serif;font-variation-settings:"SOFT" 100,"opsz" 40;font-weight:600;letter-spacing:-.01em}
-h3{font-family:Caveat,"Amatic SC",cursive;font-size:22px;font-weight:700;color:var(--rose)}
-[lang=he] h3{font-family:"Amatic SC",Rubik,cursive;font-size:27px}
+h3,.h3{font-family:Caveat,"Amatic SC",cursive;font-size:22px;font-weight:700;color:var(--rose);font-variation-settings:normal;letter-spacing:normal}
+[lang=he] h3,[lang=he] .h3{font-family:"Amatic SC",Rubik,cursive;font-size:27px}
 .card{background:var(--card);border:2px solid var(--line);border-radius:22px 26px 20px 24px;box-shadow:3px 4px 0 rgba(217,154,61,.12)}
 .card:nth-child(even){border-radius:26px 20px 24px 22px}
 .btn{border-radius:18px 22px 16px 20px;background:var(--rose);font-weight:800;box-shadow:2px 3px 0 rgba(74,51,40,.15)}
@@ -206,21 +206,21 @@ nav button{min-height:52px}
 </div>
 
 <div id="app" class="hide">
-<div class="wrap">
+<main class="wrap">
  <!-- TODAY -->
  <section id="v-today" class="view">
   <div class="top"><h1 data-t="checkin"></h1><span class="muted" id="streakTop"></span></div>
   <div class="datebar"><button id="prevD" aria-label="Previous day">‹</button><b id="dLabel"></b><button id="nextD" aria-label="Next day">›</button></div>
-  <div class="card"><h3><span data-t="symptoms"></span> <span class="muted" data-t="scale"></span></h3><div id="symList"></div>
+  <div class="card"><h2 class="h3"><span data-t="symptoms"></span> <span class="muted" data-t="scale"></span></h2><div id="symList"></div>
    <button class="btn ghost block" id="moreSym" style="padding:8px"></button></div>
-  <div class="card"><h3><span data-t="stressT"></span> <span class="muted" data-t="scale"></span></h3><div id="stressRow"></div></div>
-  <div class="card"><h3 data-t="cntT"></h3><div id="cntRow"></div></div>
-  <div class="card"><h3 data-t="bleeding"></h3><div class="chips" id="bleedC"></div></div>
-  <div class="card"><h3 data-t="triggers"></h3><div class="chips" id="trigC"></div></div>
-  <div class="card"><h3 data-t="meds"></h3><div class="chips" id="medC"></div>
-   <div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="newMed" data-p="addMedPh"><button class="btn alt" id="addMed" data-t="add"></button></div></div>
-  <div class="card"><h3><span data-t="notes"></span> <span class="muted" data-t="optional"></span></h3><textarea id="notes" rows="2" data-p="notesPh"></textarea></div>
-  <button class="btn block" id="saveBtn"></button>
+  <div class="card"><h2 class="h3"><span data-t="stressT"></span> <span class="muted" data-t="scale"></span></h2><div id="stressRow"></div></div>
+  <div class="card"><h2 class="h3" data-t="cntT"></h2><div id="cntRow"></div></div>
+  <div class="card"><h2 class="h3" data-t="bleeding"></h2><div class="chips" id="bleedC"></div></div>
+  <div class="card"><h2 class="h3" data-t="triggers"></h2><div class="chips" id="trigC"></div></div>
+  <div class="card"><h2 class="h3" data-t="meds"></h2><div class="chips" id="medC"></div>
+   <div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="newMed" data-p="addMedPh" maxlength="40" aria-describedby="medMsg"><button class="btn alt" id="addMed" data-t="add"></button></div><p id="medMsg" role="alert" style="color:#9c4a36;margin:6px 0 0;font-size:13.5px"></p><button type="button" class="btn ghost block" id="medEd" style="margin-top:6px;padding:8px">Edit my list</button><div id="medMgr" class="hide"></div></div>
+  <div class="card"><h2 class="h3"><span data-t="notes"></span> <span class="muted" data-t="optional"></span></h2><textarea id="notes" rows="2" data-p="notesPh" maxlength="1000"></textarea></div>
+  <button class="btn block" id="saveBtn"></button><button type="button" class="btn ghost block hide" id="clearDay" style="margin-top:8px">Delete this day</button>
  </section>
 
  <!-- INSIGHTS -->
@@ -230,14 +230,14 @@ nav button{min-height:52px}
   <div class="stats" id="statBox"></div>
   <div class="stats" id="cntBox" style="grid-template-columns:1fr 1fr;margin-top:8px"></div>
   <div class="tipw" id="weekTip"></div>
-  <div class="card"><div class="tabs2"><button class="btn alt" data-r="7" data-t="d7"></button><button class="btn alt" data-r="30" data-t="d30"></button></div>
+  <div class="card"><div class="tabs2"><button class="btn alt" data-r="7" data-t="d7"></button><button class="btn alt" data-r="30" data-t="d30"></button><button class="btn alt" data-r="0">All</button></div>
    <select id="chartSym"></select><div id="chart" style="margin-top:8px"></div></div>
-  <div class="card"><h3 data-t="topT"></h3><div id="topSym"></div></div>
-  <div class="card"><h3 data-t="patT"></h3><div id="corr"></div>
+  <div class="card"><h2 class="h3" data-t="topT"></h2><div id="topSym"></div></div>
+  <div class="card"><h2 class="h3" data-t="patT"></h2><div id="corr"></div>
    <p class="muted" data-t="patNote"></p></div>
-  <div class="card"><h3 data-t="cycleT"></h3><div id="cycle"></div></div>
-  <div class="card"><h3 data-t="calT"></h3><div class="cal" id="cal"></div><p class="muted" data-t="calNote"></p></div>
-  <div class="card" id="helpCard"><h3 data-t="helpT"></h3><p class="muted" style="margin-top:0" data-t="helpSub"></p><div id="helpList"></div>
+  <div class="card"><h2 class="h3" data-t="cycleT"></h2><div id="cycle"></div></div>
+  <div class="card"><h2 class="h3" data-t="calT"></h2><div class="cal" id="cal"></div><p class="muted" data-t="calNote"></p></div>
+  <div class="card" id="helpCard"><h2 class="h3" data-t="helpT"></h2><p class="muted" style="margin-top:0" data-t="helpSub"></p><div id="helpList"></div>
    <p class="affdisc" data-t="affShort"></p></div>
  </section>
 
@@ -247,7 +247,7 @@ nav button{min-height:52px}
    <div class="tabs2"><button class="btn" id="modeSum" data-t="modeSum"></button><button class="btn alt" id="modeLet" data-t="modeLet"></button></div>
    <div id="sumCtl" style="display:flex;gap:6px"><select id="sumMonth"></select><button class="btn" id="printBtn" data-t="print"></button></div>
    <div id="letCtl" class="hide">
-    <div class="row2"><input type="text" id="drName" data-p="drPh"><input type="text" id="myName" data-p="mePh"></div>
+    <div class="row2"><input type="text" id="drName" data-p="drPh" maxlength="60"><input type="text" id="myName" data-p="mePh" maxlength="60"></div>
     <div style="display:flex;gap:6px"><select id="letRange"><option value="1" data-t="r1"></option><option value="3" data-t="r3"></option><option value="6" data-t="r6"></option><option value="0" data-t="rAll"></option></select><button class="btn" id="printBtn2" data-t="print"></button></div>
    </div>
    <p class="muted" data-t="printHelp"></p></div>
@@ -265,29 +265,29 @@ nav button{min-height:52px}
  <!-- SETTINGS -->
  <section id="v-settings" class="view hide">
   <h1 data-t="setT"></h1>
-  <div class="card"><h3 data-t="langT"></h3><div class="langsw"><button class="btn alt" data-lang="en">English</button><button class="btn alt" data-lang="he">עברית</button></div></div>
-  <div class="card"><h3 data-t="remT"></h3>
+  <div class="card"><h2 class="h3" data-t="langT"></h2><div class="langsw"><button class="btn alt" data-lang="en">English</button><button class="btn alt" data-lang="he">עברית</button></div></div>
+  <div class="card"><h2 class="h3" data-t="remT"></h2>
    <div style="display:flex;gap:8px;align-items:center"><label for="remTime" data-t="remAt"></label><input type="time" id="remTime" value="20:30"></div>
    <button class="btn block" id="remOn"></button>
    <p class="muted" id="remStatus"></p>
    <div class="ins g" style="font-size:13px" data-h="remHonest"></div>
    <button class="btn alt block" id="icsBtn" data-t="ics"></button>
    <p class="muted" data-t="icsNote"></p></div>
-  <div class="card"><h3 data-t="instT"></h3><p class="muted" id="instStat"></p><button class="btn alt block" id="instBtn" data-t="instHow"></button></div>
-  <div class="card"><h3 data-t="backupT"></h3><p class="muted" data-t="backupSub"></p>
+  <div class="card"><h2 class="h3" data-t="instT"></h2><p class="muted" id="instStat"></p><button class="btn alt block" id="instBtn" data-t="instHow"></button></div>
+  <div class="card"><h2 class="h3" data-t="backupT"></h2><p class="muted" data-t="backupSub"></p>
    <button class="btn block" id="expCsv" data-t="exp"></button>
    <button class="btn alt block" id="impBtn" data-t="imp"></button><input type="file" id="impFile" accept=".csv,text/csv" class="hide"></div>
-  <div class="card"><h3 data-t="tryT"></h3><button class="btn alt block" id="demoBtn" data-t="demo"></button>
+  <div class="card"><h2 class="h3" data-t="tryT"></h2><button class="btn alt block" id="demoBtn" data-t="demo"></button>
    <button class="btn rose block" id="clearBtn" data-t="clear"></button></div>
-  <div class="card" id="helpLegal"><h3>Help &amp; legal</h3>
+  <div class="card" id="helpLegal"><h2 class="h3">Help &amp; legal</h2>
    <p class="muted">Questions or problems? Email us and we'll help.</p>
    <a class="btn block" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box" href="mailto:support@primetraker.com">Contact support</a>
    <ul class="legal" style="list-style:none;padding:0;margin:10px 0 0"><li><a href="privacy.html">Privacy Policy</a></li><li><a href="health-data.html">Consumer Health Data Policy</a></li><li><a href="terms.html">Terms of Use and Sale</a></li><li><a href="accessibility.html">Accessibility Statement</a></li></ul>
    <p class="muted" style="font-size:13px">support@primetraker.com · Money Maker Productions Ltd</p></div>
-  <div class="card"><h3 data-t="aboutT"></h3><div class="disc" data-t="discShort"></div>
+  <div class="card"><h2 class="h3" data-t="aboutT"></h2><div class="disc" data-t="discShort"></div>
    <button class="btn ghost block" id="reOnb" data-t="reOnb"></button></div>
  </section>
-</div>
+</main>
 <nav><button data-v="today" class="on"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></b><span data-t="nToday"></span></button><button data-v="insights"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17c2-1 3-6 5-6.5s3 4 5 3.6 2.6-7.2 4.8-7.6S20.5 9 21 10"/><path d="M3 21h18"/></svg></b><span data-t="nIns"></span></button><button data-v="summary"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h8l3.5 3.6v13.2c0 .3-.3.6-.6.6H6.6c-.4 0-.6-.3-.6-.7V4.1c0-.4.2-.6.5-.6z"/><path d="M9 11h6M9 14.5h6M9 18h4"/></svg></b><span data-t="nDoc"></span></button><button data-v="comfort"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.3-8.4-9.6C3 6.9 6.7 4.6 9.3 6.3 10.6 7 11.4 8.3 12 9c.7-.8 1.5-2 2.8-2.7 2.7-1.5 6.2.8 5.6 4.3C19.5 15.8 12 20 12 20z"/></svg></b><span data-t="nComfort"></span></button><button data-v="settings"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.4 5.4l1.9 1.9M16.7 16.7l1.9 1.9M5.4 18.6l1.9-1.9M16.7 7.3l1.9-1.9"/></svg></b><span data-t="nSet"></span></button></nav>
 </div>
 <script>
@@ -485,7 +485,7 @@ function renderHelp(topKeys){let picks=[];for(let r=0;r<4;r++)topKeys.forEach(k=
  if(!picks.length)picks=PROD.filter(p=>p.g=="book");picks=picks.slice(0,4);
  $("helpList").innerHTML=picks.map(affItem).join("")}
 function renderShop(){const G=[["cool","gCool"],["sleep","gSleep"],["ache","gAche"],["calm","gCalm"],["book","gBook"]];
- $("shopList").innerHTML=G.map(([g,k])=>`<h4 style="margin:10px 0 2px">${t(k)}</h4>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
+ $("shopList").innerHTML=G.map(([g,k])=>`<h2 class="h4" style="margin:10px 0 2px;font-size:16px">${t(k)}</h2>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
 
 // ---------- language
 function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==="he"?"rtl":"ltr";document.title=t("appName");
@@ -533,7 +533,7 @@ function renderToday(){
  $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||`<span class="muted">${t("noMeds")}</span>`;
  $("notes").value=e.notes||"";
  $("streakTop").textContent=t("streak",{n:streak()});
- $("saveBtn").textContent=S.e[cur]?t("update"):t("saveNew");
+ $("saveBtn").textContent=S.e[cur]?t("update"):t("saveNew");$("clearDay").classList.toggle("hide",!S.e[cur]);
 }
 function segClick(ev,fn){const i=ev.target.closest(".info");if(i){explain(i.dataset.x);return}const b=ev.target.closest(".seg button");if(!b)return;fn(b.parentNode.dataset.k,+b.dataset.v);persist();renderToday()}
 $("symList").onclick=ev=>segClick(ev,(k,v)=>entry(cur).s[k]=v);
@@ -545,7 +545,17 @@ function cntStats(E){const h=E.filter(e=>e.hf!=null),z=E.filter(e=>e.hs!=null);r
 $("bleedC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;entry(cur).bleed=b.dataset.k;persist();renderToday()};
 $("trigC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.trig=e.trig.includes(k)?e.trig.filter(x=>x!==k):[...e.trig,k];persist();renderToday()};
 $("medC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.meds=e.meds.includes(k)?e.meds.filter(x=>x!==k):[...e.meds,k];persist();renderToday()};
-$("addMed").onclick=()=>{const v=$("newMed").value.trim();if(v&&!S.meds.includes(v)){S.meds.push(v);persist()}$("newMed").value="";renderToday()};
+const medMsg=m=>{$("medMsg").textContent=m};
+function medCheck(v,skip){if(!v)return"Type a name first.";if(v.length>40)return"Keep names to 40 characters or fewer.";if(S.meds.some(m=>m!==skip&&m.toLowerCase()===v.toLowerCase()))return"That’s already on your list.";if(!skip&&S.meds.length>=30)return"Your list is full (30). Remove one first.";return""}
+$("addMed").onclick=()=>{const v=$("newMed").value.trim().replace(/\s+/g," "),er=medCheck(v);medMsg(er);if(er){$("newMed").focus();return}S.meds.push(v);persist();$("newMed").value="";renderToday()};
+$("newMed").addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();$("addMed").click()}});
+function medMgr(){$("medMgr").innerHTML=S.meds.length?S.meds.map((m,i)=>`<div class="hrtl" style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0"><span>${esc(m)}</span><span style="white-space:nowrap"><button type="button" class="chip" data-mr="${i}" aria-label="${esc("Rename "+m)}">Rename</button> <button type="button" class="chip" data-md="${i}" aria-label="${esc("Remove "+m)}">Remove</button></span></div>`).join("")+`<p class="muted" style="font-size:12.5px">Removing takes it off this list. Days you already logged keep it.</p>`:`<p class="muted">${t("noMeds")}</p>`}
+$("medEd").onclick=()=>{const h=$("medMgr").classList.toggle("hide");$("medEd").textContent=h?"Edit my list":"Done editing";$("medEd").setAttribute("aria-expanded",String(!h));if(!h)medMgr()};
+$("medMgr").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;
+ if(b.dataset.md!=null){const m=S.meds[+b.dataset.md];if(m==null||!confirm(`Remove “${m}” from your list?`))return;S.meds.splice(+b.dataset.md,1);persist();medMgr();renderToday();return}
+ const m=S.meds[+b.dataset.mr];if(m==null)return;const raw=prompt("New name",m);if(raw==null)return;const v=raw.trim().replace(/\s+/g," ");if(v===m)return;const er=medCheck(v,m);medMsg(er);if(er)return;
+ S.meds[+b.dataset.mr]=v;Object.values(S.e).forEach(e=>{if(e&&Array.isArray(e.meds))e.meds=[...new Set(e.meds.map(x=>x===m?v:x))]});persist();medMgr();renderToday()};
+$("clearDay").onclick=()=>{if(!S.e[cur]||!confirm("Delete everything logged for this day? This can’t be undone."))return;delete S.e[cur];persist();renderToday();toast("Day deleted")};
 $("notes").oninput=e=>{entry(cur).notes=e.target.value;persist()};
 $("moreSym").onclick=()=>{showAll=!showAll;renderToday()};
 $("prevD").onclick=()=>{cur=addD(cur,-1);renderToday()};
@@ -592,10 +602,10 @@ function renderInsights(){
  $("cal").innerHTML=h;
 }
 $("topSym").onclick=ev=>{const i=ev.target.closest(".info");if(i)explain(i.dataset.x)};
-document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{range=+b.dataset.r;drawChart()});
+let rangeAll=false;document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{rangeAll=b.dataset.r==="0";if(rangeAll){const k=Object.keys(S.e).sort()[0];range=k?Math.min(3650,Math.max(30,Math.round((new Date(today()+"T12:00:00")-new Date(k+"T12:00:00"))/864e5)+1)):30}else range=+b.dataset.r;drawChart()});
 $("chartSym").onchange=drawChart;
 function drawChart(){
- document.querySelectorAll("[data-r]").forEach(b=>{b.className="btn "+(+b.dataset.r===range?"":"alt")});
+ document.querySelectorAll("[data-r]").forEach(b=>{const on=b.dataset.r==="0"?rangeAll:(!rangeAll&&+b.dataset.r===range);b.className="btn "+(on?"":"alt");b.setAttribute("aria-pressed",String(on))});
  const k=$("chartSym").value||"_all",ds=days(range),W=340,H=150,P=24;
  const vals=ds.map(d=>{const e=S.e[d];if(!e)return null;if(k==="_all")return load_(e);if(k==="_st")return stressOf(e);return e.s[k]||0});
  const max=k==="_all"?Math.max(6,...vals.filter(v=>v!=null)):3;
@@ -606,7 +616,7 @@ function drawChart(){
  let path="",pen=false;vals.forEach((v,i)=>{if(v==null){pen=false;return}path+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1);pen=true});
  g+=`<path d="${path}" fill="none" stroke="#c98b8b" stroke-width="2.5" stroke-linejoin="round"/>`;
  if(range<=7)vals.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#6f8a6e"/>`});
- const step=range<=7?1:7;ds.forEach((d,i)=>{if(i%step===0||i===ds.length-1)g+=`<text x="${x(i)}" y="${H-1}" font-size="9" fill="#7a8679" text-anchor="middle">${fmt(d,range<=7?{weekday:"narrow"}:{month:"numeric",day:"numeric"})}</text>`});
+ const step=range<=7?1:Math.max(7,Math.ceil(range/8));ds.forEach((d,i)=>{if(i%step===0||i===ds.length-1)g+=`<text x="${x(i)}" y="${H-1}" font-size="9" fill="#7a8679" text-anchor="middle">${fmt(d,range<=7?{weekday:"narrow"}:{month:"numeric",day:"numeric"})}</text>`});
  g+="</svg>";
  const vv=vals.filter(v=>v!=null),n=vv.length;
  $("chart").innerHTML=n?g+`<p class="muted">${t("chartAvg",{a:r1(avg(vv)),n})}</p>`:`<p class="muted">${t("noPeriod")}</p>`;
@@ -710,14 +720,16 @@ function qSel(){return [...(S.qs||[]).filter(i=>i>=0&&i<8).sort((a,b)=>a-b).map(
 function qHTML(lines){const sel=qSel(),Q=L().Q;
  const pick=`<div class="qpick"><p class="muted" style="margin:2px 0 4px">${t("qPickH")}</p>${Q.map((q,i)=>`<label><input type="checkbox" data-q="${i}" ${(S.qs||[]).includes(i)?"checked":""}><span>${q}</span></label>`).join("")}
  ${(S.qc||[]).map((q,i)=>`<label><input type="checkbox" checked disabled><span style="flex:1">${esc(q)}</span><button class="x" data-cx="${i}" aria-label="Remove">×</button></label>`).join("")}
- <div class="cq"><input type="text" class="qIn" data-p="qPh" placeholder="${esc(t("qPh"))}"><button class="btn alt qAdd">${t("qAdd")}</button></div></div>`;
+ <div class="cq"><input type="text" class="qIn" maxlength="200" data-p="qPh" placeholder="${esc(t("qPh"))}"><button class="btn alt qAdd">${t("qAdd")}</button></div></div>`;
  const pr=lines?`<ul class="qprint">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ul>`+(sel.length?"":'<div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div>')
   :(sel.length?`<p style="margin-bottom:4px">${t("L_qs")}</p><ol style="margin:0 0 10px;padding-inline-start:20px">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:"");
  return pick+pr}
 function qRefresh(){const y=scrollY;renderSummary();scrollTo(0,y)}
 $("sumBody").addEventListener("change",ev=>{const c=ev.target.closest("[data-q]");if(!c)return;const i=+c.dataset.q;S.qs=(S.qs||[]).filter(x=>x!==i);if(c.checked)S.qs.push(i);persist();qRefresh()});
-$("sumBody").addEventListener("click",ev=>{const x=ev.target.closest("[data-cx]");if(x){S.qc.splice(+x.dataset.cx,1);persist();qRefresh();return}
- const a=ev.target.closest(".qAdd");if(a){const inp=a.parentNode.querySelector(".qIn"),v=inp.value.trim();if(!v)return;(S.qc=S.qc||[]).push(v.slice(0,200));persist();qRefresh()}});
+$("sumBody").addEventListener("click",ev=>{const x=ev.target.closest("[data-cx]");if(x){if(!confirm("Remove this question?"))return;S.qc.splice(+x.dataset.cx,1);persist();qRefresh();return}
+ const a=ev.target.closest(".qAdd");if(a){const inp=a.parentNode.querySelector(".qIn"),v=inp.value.trim().replace(/\s+/g," ");const qm=m=>{let p=a.parentNode.querySelector(".qMsg");if(!p){a.parentNode.insertAdjacentHTML("afterend",'<p class="qMsg" role="alert" style="color:#9c4a36;margin:4px 0;font-size:13.5px"></p>');p=a.parentNode.nextElementSibling}p.textContent=m};
+ if(!v){qm("Type your question first.");inp.focus();return}if(v.length>200){qm("Keep questions to 200 characters or fewer.");return}if((S.qc||[]).some(q=>q.toLowerCase()===v.toLowerCase())){qm("You’ve already added that question.");return}if((S.qc||[]).length>=20){qm("You can add up to 20 of your own questions.");return}
+ (S.qc=S.qc||[]).push(v);persist();qRefresh()}});
 $("sumBody").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&ev.target.classList.contains("qIn")){ev.preventDefault();ev.target.parentNode.querySelector(".qAdd").click()}});
 $("sumMonth").onchange=renderSummary;
 $("printBtn").onclick=$("printBtn2").onclick=()=>window.print();
@@ -770,14 +782,14 @@ $("expCsv").onclick=()=>{const ds=[...new Set([...Object.keys(S.e),...(S.hrt||[]
 function parseCSV(x){const rows=[];let r=[],f="",i=0,qd=false;for(;i<x.length;i++){const c=x[i];if(qd){if(c=='"'){if(x[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&x[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
 $("impBtn").onclick=()=>$("impFile").click();
 $("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then(x=>{const rows=parseCSV(x),h=rows.shift();if(!h||h[0]!=="date"){alert(t("badCsv"));return}let n=0;
- rows.forEach(r=>{if(!/^\d{4}-\d\d-\d\d$/.test(r[0]))return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:o.bleeding||"none",trig:o.triggers?o.triggers.split(";"):[],meds:o.meds?o.meds.split(";"):[],notes:o.notes||""};
+ rows.forEach(r=>{if(!/^\d{4}-\d\d-\d\d$/.test(r[0])||isNaN(new Date(r[0]+"T12:00:00"))||r[0]>today())return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:o.bleeding||"none",trig:o.triggers?o.triggers.split(";"):[],meds:o.meds?[...new Set(o.meds.split(";").map(x=>x.trim().replace(/\s+/g," ").slice(0,40)).filter(Boolean))]:[],notes:(o.notes||"").slice(0,1000)};
   if(o.hot_flash_count!=null&&o.hot_flash_count!==""&&!isNaN(+o.hot_flash_count))e.hf=Math.max(0,Math.min(99,Math.round(+o.hot_flash_count)));
   if(o.sleep_hours!=null&&o.sleep_hours!==""&&!isNaN(+o.sleep_hours))e.hs=Math.max(0,Math.min(14,Math.round(+o.sleep_hours*2)/2));
   if(o.exercise_type&&["none","walk","strength","yoga","cardio"].includes(o.exercise_type))e.ex={t:o.exercise_type,m:+o.exercise_minutes>0?Math.min(600,Math.round(+o.exercise_minutes)):null};
   if(o.treatment_started){S.hrt=S.hrt||[];o.treatment_started.split(";").forEach((x,j)=>{const [nm,ds]=x.split(" | ");if(nm&&!S.hrt.some(h=>h.d===o.date&&h.x===nm))S.hrt.push({id:o.date+j+Math.random().toString(36).slice(2,6),d:o.date,x:nm.slice(0,80),dose:(ds||"").slice(0,40)})})}
   if(o.mrs_items){const a=o.mrs_items.trim().split(/\s+/).map(Number);if(a.length===11&&a.every(v=>v>=0&&v<=4&&Number.isInteger(v))){S.mrs=(S.mrs||[]).filter(m=>m.d.slice(0,7)!==o.date.slice(0,7));S.mrs.push({d:o.date,a})}}
   if(o.stress!=null&&o.stress!=="")e.st=Math.max(0,Math.min(3,+o.stress||0));
-  SYMK.forEach(k=>{if(o[k]!=null&&o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(!S.meds.includes(m))S.meds.push(m)});if(!Object.keys(e.s).length&&e.bleed==="none"&&!e.notes&&e.hf==null&&e.hs==null&&!e.ex&&e.st==null&&!e.trig.length&&!e.meds.length)return;S.e[o.date]=e;n++});
+  SYMK.forEach(k=>{if(o[k]!=null&&o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(S.meds.length<30&&!S.meds.some(x=>x.toLowerCase()===m.toLowerCase()))S.meds.push(m)});if(!Object.keys(e.s).length&&e.bleed==="none"&&!e.notes&&e.hf==null&&e.hs==null&&!e.ex&&e.st==null&&!e.trig.length&&!e.meds.length)return;S.e[o.date]=e;n++});
  persist();toast(t("imported",{n}));ev.target.value=""})};
 
 // ---------- demo / clear
@@ -843,7 +855,7 @@ const restDay=e=>!!e&&!moved(e);
 (function(){const ins=(sel,pos,html)=>document.querySelector(sel).insertAdjacentHTML(pos,html);
  ins("#cntRow","afterend",`<button class="btn block hfnow" id="hfNow" data-t="hfNow"></button>`);
  $("cntRow").closest(".card").insertAdjacentHTML("afterend",`<button class="chip" id="hrtJump" style="display:block;margin:0 auto 12px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="7.5" rx="3.8" transform="rotate(-30 12 12)"/><path d="M10 8.3l4 7.2"/></svg> <span data-t="hrtJump"></span></button><div class="card"><h3 data-t="moveT"></h3><div class="chips" id="exT"></div><div id="exMW" style="margin-top:8px"><small class="muted" data-t="exMin"></small><div class="chips" id="exM" style="margin-top:4px"></div></div><button class="btn ghost block" id="rtBtn" data-t="rtBtn" style="padding:8px;margin-top:6px"></button></div>`);
- $("corr").closest(".card").insertAdjacentHTML("afterend",`<div class="card" id="hrtCard"><h3 data-t="hrtT"></h3><p class="muted" style="margin-top:0" data-t="hrtSub"></p><div id="hrtList"></div><label class="muted" for="hrtD" data-t="hrtStart"></label><input type="date" id="hrtD"><input type="text" id="hrtX" data-p="hrtType" style="margin-top:6px"><input type="text" id="hrtDo" data-p="hrtDose" style="margin-top:6px"><div style="display:flex;gap:6px"><button class="btn alt block" id="hrtAdd" data-t="hrtAdd"></button><button class="btn ghost hide" id="hrtCancel" data-t="hrtCancel"></button></div></div><div class="card"><h3 data-t="hwT"></h3><div id="hwBox"></div></div><div class="card"><h3 data-t="mvT"></h3><div id="mvBox"></div></div><div class="card"><h3 data-t="mrsT"></h3><p class="muted" style="margin-top:0" data-t="mrsSub"></p><div id="mrsBox"></div><button class="btn block" id="mrsBtn"></button><p class="muted" data-t="mrsNote"></p></div>`);
+ $("corr").closest(".card").insertAdjacentHTML("afterend",`<div class="card" id="hrtCard"><h3 data-t="hrtT"></h3><p class="muted" style="margin-top:0" data-t="hrtSub"></p><div id="hrtList"></div><label class="muted" for="hrtD" data-t="hrtStart"></label><input type="date" id="hrtD" min="1990-01-01"><input type="text" id="hrtX" data-p="hrtType" style="margin-top:6px" maxlength="80"><input type="text" id="hrtDo" data-p="hrtDose" style="margin-top:6px" maxlength="40"><p id="hrtMsg" role="alert" style="color:#9c4a36;margin:6px 0 0;font-size:13.5px"></p><div style="display:flex;gap:6px"><button class="btn alt block" id="hrtAdd" data-t="hrtAdd"></button><button class="btn ghost hide" id="hrtCancel" data-t="hrtCancel"></button></div></div><div class="card"><h3 data-t="hwT"></h3><div id="hwBox"></div></div><div class="card"><h3 data-t="mvT"></h3><div id="mvBox"></div></div><div class="card"><h3 data-t="mrsT"></h3><p class="muted" style="margin-top:0" data-t="mrsSub"></p><div id="mrsBox"></div><button class="btn block" id="mrsBtn"></button><p class="muted" data-t="mrsNote"></p></div>`);
  document.body.insertAdjacentHTML("beforeend",`<div id="sheet" class="modal hide"><div class="box sheet"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 id="shT" style="margin:0"></h2><button id="shX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><div id="shB"></div></div></div>`);
 })();
 function openSheet(title,html){$("shT").textContent=title;$("shB").innerHTML=html;$("sheet").classList.remove("hide")}
@@ -873,11 +885,14 @@ $("hfNow").onclick=()=>{openSheet(t("brT"),`<p class="muted" style="margin:4px 0
    c.textContent=np?`${t("brOut")} ${10-pos}`:`${t("brIn")} ${4-pos}`;$("brL").textContent=t("brLeft",{s:left})};
   tick();brT=setInterval(tick,1000)}};
 // --- treatments
-function renderHrt(){const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if(!$("hrtD").value)$("hrtD").value=today();
+function renderHrt(){const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);$("hrtD").max=today();if(!$("hrtD").value)$("hrtD").value=today();
  $("hrtList").innerHTML=H.length?H.map(h=>`<div class="hrtl"><span><b>${esc(h.x)}</b>${h.dose?" · "+esc(h.dose):""}<br><small class="muted">${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}</small></span><span style="white-space:nowrap"><button data-e="${h.id}" aria-label="${t("hrtEdit")}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></button><button data-id="${h.id}" aria-label="Remove">×</button></span></div>`).join(""):`<p class="muted">${t("hrtNone")}</p>`}
 let hrtEd=null;
-function hrtReset(){hrtEd=null;$("hrtX").value="";$("hrtDo").value="";$("hrtD").value=today();$("hrtAdd").textContent=t("hrtAdd");$("hrtCancel").classList.add("hide")}
-$("hrtAdd").onclick=()=>{const x=$("hrtX").value.trim(),d=$("hrtD").value||today();if(!x){toast(t("hrtNeedType"));return}
+function hrtReset(){hrtEd=null;if($("hrtMsg"))$("hrtMsg").textContent="";$("hrtX").value="";$("hrtDo").value="";$("hrtD").value=today();$("hrtAdd").textContent=t("hrtAdd");$("hrtCancel").classList.add("hide")}
+$("hrtAdd").onclick=()=>{const x=$("hrtX").value.trim().replace(/\s+/g," "),d=$("hrtD").value||today(),hm=m=>{$("hrtMsg").textContent=m};hm("");if(!x){hm(t("hrtNeedType"));$("hrtX").focus();return}
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||isNaN(new Date(d+"T12:00:00"))||d<"1990-01-01"){hm("Please pick a valid start date.");$("hrtD").focus();return}
+ if(d>today()){hm("The start date can’t be in the future.");$("hrtD").focus();return}
+ if((S.hrt||[]).some(h=>h.id!==hrtEd&&h.d===d&&h.x.toLowerCase()===x.slice(0,80).toLowerCase())){hm("You’ve already logged this treatment on that date.");return}
  const o={d,x:x.slice(0,80),dose:$("hrtDo").value.trim().slice(0,40)};S.hrt=S.hrt||[];const h=hrtEd&&S.hrt.find(h=>h.id===hrtEd);if(h)Object.assign(h,o);else S.hrt.push({id:Date.now().toString(36),...o});persist();hrtReset();renderInsights()};
 $("hrtCancel").onclick=()=>{hrtReset();renderHrt()};
 $("hrtJump").onclick=()=>{show("insights");setTimeout(()=>{$("hrtCard").scrollIntoView({behavior:"smooth"});},50)};
@@ -1025,7 +1040,7 @@ document.head.insertAdjacentHTML("beforeend",`<style>
 const A11Y_LBL={chartSym:"Symptom to show on the chart",sumMonth:"Month to summarise",letRange:"Time range for the letter",remTime:"Reminder time",impFile:"Choose a backup CSV file"};
 function a11yFix(){document.querySelectorAll("svg:not([aria-hidden]):not([role])").forEach(s=>s.setAttribute("aria-hidden","true"));
  document.querySelectorAll("input,select,textarea").forEach(el=>{if(el.type==="hidden"||el.getAttribute("aria-label")||el.getAttribute("aria-labelledby"))return;if(el.id&&document.querySelector(`label[for="${el.id}"]`))return;if(el.closest("label"))return;
-  const l=A11Y_LBL[el.id]||el.placeholder||el.title||(el.closest(".card")&&el.closest(".card").querySelector("h3")?.textContent)||el.id;if(l)el.setAttribute("aria-label",l)});
+  const l=A11Y_LBL[el.id]||el.placeholder||el.title||(el.closest(".card")&&el.closest(".card").querySelector("h3,.h3")?.textContent)||el.id;if(l)el.setAttribute("aria-label",l)});
  document.querySelectorAll("button").forEach(b=>{if(!b.textContent.trim()&&!b.getAttribute("aria-label"))b.setAttribute("aria-label",b.title||"Button")});
  document.querySelectorAll(".modal:not(.hide)").forEach(m=>{m.setAttribute("role","dialog");m.setAttribute("aria-modal","true")})}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".modal:not(.hide)").forEach(m=>{const x=m.querySelector("[aria-label=Close]");x?x.click():m.classList.add("hide")})}});
