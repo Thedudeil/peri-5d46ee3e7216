@@ -966,7 +966,20 @@ function startTrial(){if(!S.t0){S.t0=today();persist()}}
 function seenDay(){const d=today();if(!S.seen||d>S.seen){S.seen=d;persist()}return S.seen} // PT-006: clock set back can't add trial days
 function trialLeft(){if(!S.t0)return TRIAL_DAYS;return Math.max(0,TRIAL_DAYS-dayDiff(S.t0,seenDay()))}
 function inTrial(){return trialLeft()>0}
-function isPlus(){return !!S.plus} // PT-004: demo never grants Plus
+// PT-001: server license check (Whop), behind a flag. When on, legacy offline PRIME codes are ignored.
+const LICENSE_SERVER_ENABLED=false;
+const LICENSE_API="https://prime-license.TODO.workers.dev"; // TODO: deployed Worker URL
+const LICENSE_PUBKEY={kty:"OKP",crv:"Ed25519",x:"TODO_PUBLIC_KEY_X"}; // TODO: from scripts/gen-signing-key.mjs (public only)
+const LIC_RECHECK_MS=3*864e5;
+function devId(){if(!S.dev){const a=new Uint8Array(12);crypto.getRandomValues(a);S.dev="dev-"+[...a].map(x=>x.toString(16).padStart(2,"0")).join("");persist()}return S.dev}
+function tokPayload(tok){try{const b=String(tok).split(".")[0].replace(/-/g,"+").replace(/_/g,"/");return JSON.parse(atob(b+"=".repeat((4-b.length%4)%4)))}catch(e){return null}}
+async function tokValid(tok){try{const[b,g]=String(tok).split(".");const u=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"=".repeat((4-s.length%4)%4)),c=>c.charCodeAt(0));
+ const k=await crypto.subtle.importKey("jwk",LICENSE_PUBKEY,{name:"Ed25519"},false,["verify"]);return await crypto.subtle.verify({name:"Ed25519"},k,u(g),new TextEncoder().encode(b))}catch(e){return true}} // old browsers without Ed25519: rely on exp + server recheck
+async function licCall(path,body){const r=await fetch(LICENSE_API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});return r.json()}
+async function licActivate(key){const j=await licCall("/activate",{key:String(key).trim(),device:devId()});if(j.ok&&await tokValid(j.token)){S.plus={key:String(key).trim(),tok:j.token,exp:j.exp,chk:Date.now()};persist();return {ok:true}}return j}
+async function licRefresh(force){if(!LICENSE_SERVER_ENABLED||!S.plus||!S.plus.tok)return;if(!force&&Date.now()-(S.plus.chk||0)<LIC_RECHECK_MS)return;
+ try{const j=await licCall("/refresh",{token:S.plus.tok});if(j.ok){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now()}else if(j.error){S.plus=null} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
+function isPlus(){if(!S.plus)return false;if(!LICENSE_SERVER_ENABLED)return true;const p=S.plus.tok&&tokPayload(S.plus.tok);return !!(p&&p.exp*1000>Date.now()&&p.dev===S.dev)} // PT-004: demo never grants Plus
 function hasAccess(){return !PAYWALL_ENABLED||isPlus()||inTrial()}
 function histFloor(){return addD(seenDay(),-(FREE_HIST-1))}
 Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus trial: last day",trialNote:"Your free Plus trial is almost over. Check-ins and your last 30 days stay free, always. Plus keeps your patterns, doctor summary and full history going.",
@@ -985,7 +998,7 @@ function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0
 <button class="btn ghost block upcode">${t("upCode")}</button></div>`}
 function bindUp(root){root.querySelectorAll(".upcode").forEach(b=>b.onclick=openCode)}
 function openCode(){openSheet(t("codeT"),`<input type="text" id="codeIn" autocomplete="off" autocapitalize="characters" placeholder="${t("codePh")}" style="text-transform:uppercase;letter-spacing:.08em"><p id="codeMsg" class="muted"></p><button class="btn block" id="codeGo">${t("codeGo")}</button>`);
- $("codeGo").onclick=()=>{const v=$("codeIn").value;if(validCode(v)){S.plus={code:v.toUpperCase().trim(),d:today()};persist();$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=t("codeBad")}}}
+ $("codeGo").onclick=async()=>{const v=$("codeIn").value;if(LICENSE_SERVER_ENABLED){$("codeGo").disabled=true;let r;try{r=await licActivate(v)}catch(e){r={error:"net"}}$("codeGo").disabled=false;if(r.ok){$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=r.error==="device_limit"?"This key is already used on "+(r.max||3)+" devices. Remove one from Settings on another device, or contact support.":r.error==="net"?"Can’t reach the server. Check your connection and try again.":r.error==="inactive"?"This membership isn’t active. Check your Whop account.":t("codeBad")}return}if(validCode(v)){S.plus={code:v.toUpperCase().trim(),d:today()};persist();$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=t("codeBad")}}}
 function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
@@ -994,6 +1007,7 @@ const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","cor
 function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el)el.innerHTML=""})}
 const _lockIns=renderInsights;renderInsights=function(){if(!hasAccess()){wipeLocked("v-insights");return}return _lockIns.apply(this,arguments)};
 const _lockSum=renderSummary;renderSummary=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockSum.apply(this,arguments)};
+setTimeout(()=>licRefresh(false),1500);document.addEventListener("visibilitychange",()=>{if(!document.hidden)licRefresh(false)});
 function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet();renderFaq()}
 function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn,.histl").forEach(x=>x.remove());if(!PAYWALL_ENABLED)return;
  const bar=v.querySelector(".datebar");
