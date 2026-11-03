@@ -929,28 +929,32 @@ function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.
  if(Mr.length)o+=`<p style="margin-bottom:4px">${t("L_mrs")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${Mr.map(m=>{const s=mrsSc(m.a);return`<li>${t("sumMrsL",{d:df(m.d),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}</li>`}).join("")}</ul>`;
  return o}
 
-// ---------- v13: Prime Traker Plus. The 14-day free trial is run by Whop (card required, auto-bills unless cancelled).
-// No trial clock is kept on the phone, so reinstalling cannot reset it. Plus unlocks only with a PRIME-XXXX-XXXX code
-// delivered by Whop for an active membership/trial. TODO(Avi): Whop links + code delivery before launch.
+// ---------- v14: Prime Traker Free + Plus.
+// Free forever, no card: daily check-ins + the last 30 days of history. Plus: patterns/insights, doctor summary, full history + export.
+// A 14-day Plus trial starts on first use with no card (S.t0). After it ends, Plus features lock; data is kept, older days are only hidden.
+// Reinstalling wipes local data and only resets to Free, so no extra guard is needed. Plus unlocks with a PRIME-XXXX-XXXX code from Whop.
 // TODO(Avi): replace with the real Whop checkout links before launch.
 const PAYWALL_ENABLED=false; // false = everything free, no trial chip or upsell (current live behaviour)
 const WHOP_CHECKOUT_URL="https://whop.com/TODO-prime-traker-plus";
-const PLUS_PRICE={m:"$5.99",y:"$29",ym:"$2.42"};
+const PLUS_PRICE={m:"$9.99",y:"$49",ym:"$4.08"};
+const TRIAL_DAYS=14,FREE_HIST=30;
 const CODE_ABC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 function codeCheck(body){let h=2166136261;for(const ch of "prime-plus|"+body){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return CODE_ABC[h%32]+CODE_ABC[(h>>>5)%32]}
 function validCode(raw){const c=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(!/^PRIME[A-Z0-9]{8}$/.test(c))return false;const b=c.slice(5,11),k=c.slice(11);if([...b+k].some(x=>!CODE_ABC.includes(x)))return false;return codeCheck(b)===k}
+function dayDiff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
+function startTrial(){if(!S.t0){S.t0=today();persist()}}
+function trialLeft(){if(!S.t0)return TRIAL_DAYS;return Math.max(0,TRIAL_DAYS-dayDiff(S.t0,today()))}
+function inTrial(){return trialLeft()>0}
 function isPlus(){return !!(S.plus||S.demo)}
-function hasAccess(){return !PAYWALL_ENABLED||isPlus()}
-Object.assign(I18N.en,{trialChip:"Free trial: {n} days left",trialChip1:"Free trial: last day",trialNote:"Your free week is almost over. Everything you’ve logged stays yours, always. Plus keeps your patterns, doctor summary and insights going.",
- upT:"Your patterns are just starting to show",upSub:"Start your 14-day free trial. Card required; cancel anytime before it ends and you won’t be charged. Check-ins, counters, the breathing button and Comfort stay free, and your data is never locked or deleted. Plus unlocks the rest:",
- upL1:"Patterns, triggers and trends",upL2:"“Is it working?” for your treatment",upL3:"Doctor summary and letter",upL4:"Movement insight, MRS trend and CSV export",upL5:"Gentle movement routines",
- upM:"{p} / month",upY:"{p} / year",upYs:"{m}/mo, save 60%",upTry:"Start 14-day free trial",upFine:"Card required. Cancel anytime before the 14 days end and you won’t be charged. After the trial it renews automatically until you cancel.",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
- plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusOff:"Free plan. Your data is safe; Plus unlocks insights and the doctor summary.",plusNoStart:"Start a 14-day free trial on Whop, then enter the code you receive.",plusSee:"See Plus",lockedTap:"Part of Plus"});
-Object.assign(I18N.he,{trialChip:"תקופת ניסיון: עוד {n} ימים",trialChip1:"תקופת ניסיון: יום אחרון",trialNote:"השבוע החינמי שלך כמעט נגמר. כל מה שרשמת נשאר שלך, תמיד. עם Plus הדפוסים, הסיכום לרופא והתובנות ממשיכים.",
- upT:"הדפוסים שלך רק מתחילים להתגלות",upSub:"התחילי 14 ימי ניסיון בחינם. נדרש כרטיס; אפשר לבטל לפני הסיום בלי חיוב. הצ'ק-אין, המונים, כפתור הנשימה ודברים קטנים שעוזרים נשארים בחינם, והנתונים שלך אף פעם לא ננעלים או נמחקים. עם Plus מקבלים בחזרה את השאר:",
- upL1:"דפוסים, טריגרים ומגמות",upL2:"״זה עובד?״ עבור הטיפול שלך",upL3:"סיכום ומכתב לרופא",upL4:"תובנת תנועה, מגמת MRS וייצוא CSV",upL5:"שגרות תנועה עדינות",
- upM:"{p} לחודש",upY:"{p} לשנה",upYs:"{m} לחודש, חיסכון של 60%",upTry:"התחילי 14 ימי ניסיון בחינם",upFine:"נדרש כרטיס. אפשר לבטל לפני תום 14 הימים בלי חיוב. לאחר מכן המנוי מתחדש אוטומטית עד לביטול.",upCode:"יש לי קוד",upLater:"אולי אחר כך",codeT:"הזיני את הקוד",codePh:"PRIME-XXXX-XXXX",codeGo:"פתיחה",codeBad:"הקוד לא נראה נכון. כדאי לבדוק את האותיות ולנסות שוב.",codeOk:"ברוכה הבאה ל-Plus. הכול פתוח.",
- plusT:"Prime Traker Plus",plusOn:"Plus פעיל בטלפון הזה. תודה!",plusDemo:"מצב הדגמה: הכול פתוח.",plusOff:"תוכנית חינמית. הנתונים שלך בטוחים; Plus פותח את התובנות והסיכום לרופא.",plusNoStart:"התחילי 14 ימי ניסיון ב-Whop והזיני את הקוד שתקבלי.",plusSee:"מה יש ב-Plus",lockedTap:"חלק מ-Plus"});
+function hasAccess(){return !PAYWALL_ENABLED||isPlus()||inTrial()}
+function histFloor(){return addD(today(),-(FREE_HIST-1))}
+Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus trial: last day",trialNote:"Your free Plus trial is almost over. Check-ins and your last 30 days stay free, always. Plus keeps your patterns, doctor summary and full history going.",
+ upT:"Your patterns are just starting to show",upSub:"Prime Traker stays free forever: daily check-ins and your last 30 days, no card needed. Your data is never deleted; older days are just tucked away until you upgrade. Plus unlocks the rest:",
+ upL1:"Patterns, triggers and trends",upL2:"“Is it working?” for your treatment",upL3:"Doctor summary and letter",upL4:"Your full history, plus CSV export",upL5:"Movement insight and MRS trend",
+ upM:"{p} / month",upY:"{p} / year",upYs:"{m}/mo, save ~59%",upTry:"Get Plus",upFine:"Billed by Whop. Renews automatically on the plan you choose until you cancel; cancel anytime.",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
+ plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusTrial:"You’re on a free Plus trial: {n} days left. No card needed, nothing to cancel.",plusNoStart:"Free plan: check-ins and your last 30 days. Get Plus on Whop, then enter the code you receive.",plusSee:"See Plus",lockedTap:"Part of Plus",
+ histLock:"Days older than 30 are safe and kept. Plus shows your full history.",
+ faqT:"Free & Plus questions",faqs:[["Do I need a card to start?","No. Prime Traker is free forever, and every new user gets 14 days of Plus free, with no card."],["What happens after the 14 days?","Plus features lock and you keep the free version: check-ins and your last 30 days. Nothing is charged and nothing is deleted."],["What does Plus cost?","$9.99 a month or $49 a year. It renews automatically on the plan you pick until you cancel."],["Is my older data gone if I don’t upgrade?","No. It stays on your phone; it’s only hidden past 30 days until you get Plus."]]});
 const ICK='<svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--sage)"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px;color:var(--ochre)"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
 <h2>${t("upT")}</h2><p class="muted" style="font-size:14px">${t("upSub")}</p><ul class="upl">${["upL1","upL2","upL3","upL4","upL5"].map(k=>`<li>${ICK}<span>${t(k)}</span></li>`).join("")}</ul>
@@ -964,10 +968,15 @@ function openCode(){openSheet(t("codeT"),`<input type="text" id="codeIn" autocom
 function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
-function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet()}
-function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn").forEach(x=>x.remove());}
+function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet();renderFaq()}
+function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn,.histl").forEach(x=>x.remove());if(!PAYWALL_ENABLED)return;
+ const bar=v.querySelector(".datebar");
+ if(!isPlus()&&inTrial()){const n=trialLeft();bar.insertAdjacentHTML("beforebegin",`<button class="chip trialc">${n<=1?t("trialChip1"):t("trialChip",{n})}</button>`+(n<=3?`<p class="muted trialn">${t("trialNote")}</p>`:""));v.querySelector(".trialc").onclick=openUp}
+ if(!hasAccess()&&cur<=histFloor()){bar.insertAdjacentHTML("afterend",`<p class="muted histl" style="text-align:center">${t("histLock")} <a href="#" class="histu">${t("plusSee")}</a></p>`);v.querySelector(".histu").onclick=e=>{e.preventDefault();openUp()}}}
+function renderFaq(){const st=$("v-settings");if(!st)return;let c=$("faqCard");if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){$("helpLegal").insertAdjacentHTML("beforebegin",`<div class="card" id="faqCard"></div>`);c=$("faqCard")}
+ c.innerHTML=`<h3>${t("faqT")}</h3>`+I18N.en.faqs.map(([q,a])=>`<details><summary>${esc(q)}</summary><p class="muted">${esc(a)}</p></details>`).join("")}
 function renderPlusSet(){let c=$("plusCard");const st=$("v-settings");if(!st)return;if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){st.querySelector(".card").insertAdjacentHTML("beforebegin",`<div class="card" id="plusCard"></div>`);c=$("plusCard")}
- const msg=S.plus?t("plusOn"):S.demo?t("plusDemo"):t("plusNoStart");
+ const msg=S.plus?t("plusOn"):S.demo?t("plusDemo"):inTrial()?t("plusTrial",{n:trialLeft()}):t("plusNoStart");
  c.innerHTML=`<h3>${t("plusT")}</h3><p style="margin:0 0 6px">${msg}</p>`+(isPlus()?"":`<div class="row2"><button class="btn" id="plusSee">${t("plusSee")}</button><button class="btn ghost" id="plusCode">${t("upCode")}</button></div>`);
  if(!isPlus()){$("plusSee").onclick=openUp;$("plusCode").onclick=openCode}}
 const _show=show;show=function(v,k){_show(v,k);gateAll()};
@@ -980,7 +989,9 @@ function renderDemoCtl(){const b=$("demoBtn");if(!b)return;let r=$("demoRm");if(
 Object.assign(I18N.en,{demoRm:"Remove demo data (keep my own entries)",demoGone:"Demo data removed. Your own entries are back."});
 Object.assign(I18N.he,{demoRm:"הסרת נתוני ההדגמה (הרישומים שלי נשמרים)",demoGone:"נתוני ההדגמה הוסרו. הרישומים שלך חזרו."});
 if(!HEBREW_ENABLED)document.querySelectorAll(".langsw").forEach(x=>{const c=x.closest(".card");(c&&c.querySelector(".langsw")===x&&c.children.length<=2?c:x).remove()});
-const _boot=boot;boot=function(){renderDemoCtl();_boot();gateAll()};
+const _boot=boot;boot=function(){if(S.onb)startTrial();renderDemoCtl();_boot();gateAll()};
+const _prev=$("prevD").onclick;$("prevD").onclick=e=>{if(!hasAccess()&&addD(cur,-1)<histFloor()){openUp();return}_prev(e);gateAll()};
+const _next=$("nextD").onclick;$("nextD").onclick=e=>{_next(e);gateAll()};
 const _al=applyLang;applyLang=function(){_al();if(typeof gateAll==="function"&&$("v-today"))gateAll()};
 document.head.insertAdjacentHTML("beforeend",`<style>
 .lockv .card:not(.upg):not(#helpCard),.lockv #weekTip,.lockv #sumBody,.lockv #sumCtl,.lockv #letCtl,.lockv .tabs2{filter:blur(5px) saturate(.8);opacity:.75;pointer-events:none;user-select:none}
