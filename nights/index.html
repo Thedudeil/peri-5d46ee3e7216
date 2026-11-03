@@ -82,13 +82,16 @@ const iso=d=>{const z=new Date(d);z.setMinutes(z.getMinutes()-z.getTimezoneOffse
 const today=()=>iso(new Date()),addD=(d,n)=>{const x=new Date(d+"T12:00:00");x.setDate(x.getDate()+n);return iso(x)};
 const fmt=d=>new Date(d+"T12:00:00").toLocaleDateString("en",{weekday:"short",month:"short",day:"numeric"});
 const Q=["Rough","Poor","Okay","Good","Great"],W=["0","1","2","3","4","5+"],TAGS={caffeine:"Caffeine",alcohol:"Alcohol",stress:"Stress",late:"Late meal",warm:"Warm room"};
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const intIn=(x,a,b)=>Number.isInteger(x)&&x>=a&&x<=b?x:null; // PN-011: validate stored data on load
+(()=>{const n={},t=today();for(const k of Object.keys(S.n)){const e=S.n[k];if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||isNaN(new Date(k+"T12:00:00"))||k>t||!e||typeof e!=="object"||Array.isArray(e))continue;const q=intIn(e.q,1,5);if(q===null)continue;n[k]={q,w:intIn(e.w,0,5),h:intIn(e.h,0,3),t:Array.isArray(e.t)?[...new Set(e.t.filter(x=>Object.prototype.hasOwnProperty.call(TAGS,x)))]:[]}}S.n=n})();
 let cur=today(),draft;
 function load(){const e=S.n[cur];draft=e?JSON.parse(JSON.stringify(e)):{q:null,w:null,h:null,t:[]}}
-function seg(id,vals,key,cls){$(id).innerHTML=vals.map((v,i)=>{const val=key==="q"?i+1:i;const on=draft[key]===val;const c=key==="q"?(val>=4?"ok":val===3?"mid":""):"";return `<button class="${on?"on "+c:""}" aria-pressed="${on}" data-v="${val}">${v}</button>`}).join("");
+function seg(id,vals,key,cls){$(id).innerHTML=vals.map((v,i)=>{const val=key==="q"?i+1:i;const on=draft[key]===val;const c=key==="q"?(val>=4?"ok":val===3?"mid":""):"";return `<button class="${on?"on "+c:""}" aria-pressed="${on}" data-v="${esc(val)}">${esc(v)}</button>`}).join("");
  $(id).querySelectorAll("button").forEach(b=>b.onclick=()=>{draft[key]=+b.dataset.v;render()})}
 function render(){const sh=d=>new Date(d+"T12:00:00").toLocaleDateString("en",{month:"short",day:"numeric"});$("dlab").textContent=(cur===today()?"Last night · ":"")+"Night of "+sh(addD(cur,-1))+" → "+sh(cur); /* PN-007 */$("next").disabled=cur>=today();
  seg("q",Q,"q");seg("w",W,"w");seg("h",["0","1","2","3"],"h");
- $("t").innerHTML=Object.entries(TAGS).map(([k,v])=>`<button class="chip ${draft.t.includes(k)?"on":""}" aria-pressed="${draft.t.includes(k)}" data-k="${k}">${v}</button>`).join("");
+ $("t").innerHTML=Object.entries(TAGS).map(([k,v])=>`<button class="chip ${draft.t.includes(k)?"on":""}" aria-pressed="${draft.t.includes(k)}" data-k="${esc(k)}">${esc(v)}</button>`).join("");
  $("t").querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=b.dataset.k;draft.t=draft.t.includes(k)?draft.t.filter(x=>x!==k):[...draft.t,k];render()});
  $("save").textContent=S.n[cur]?"Update this night":"Save my night"}
 function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)}
@@ -101,19 +104,19 @@ $("prev").onclick=()=>go(-1);$("next").onclick=()=>{if(cur<today())go(1)};
 let R=7;const rough=e=>e.q<=2||(e.h!=null&&e.h>=2);
 function nights(){const ds=[];for(let i=R-1;i>=0;i--)ds.push(addD(today(),-i));
  const L=ds.map(d=>S.n[d]).filter(Boolean),avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):"–";
- $("stats").innerHTML=`<div class="stat"><b>${L.length}/${R}</b><small>nights logged</small></div><div class="stat"><b>${avg(L.map(e=>e.q))}</b><small>avg quality /5</small></div><div class="stat"><b>${L.filter(rough).length}</b><small>rough nights</small></div>`;
- $("bq").innerHTML=ds.map(d=>{const e=S.n[d];return e?`<div title="${fmt(d)}: ${Q[e.q-1]}" style="height:${e.q*20}%;background:${e.q>=4?"var(--olive)":e.q===3?"var(--ochre)":"var(--blush)"}"></div>`:`<div title="${fmt(d)}: not logged" style="height:4%;background:var(--line)"></div>`}).join("");
- $("bh").innerHTML=ds.map(d=>{const e=S.n[d];const ok=e&&e.h!=null;return `<div title="${fmt(d)}${ok?"":": not logged"}" style="height:${ok?Math.max(4,e.h*33):4}%;background:${ok?"var(--night)":"var(--line)"}"></div>`}).join("")}
+ $("stats").innerHTML=`<div class="stat"><b>${esc(L.length+"/"+R)}</b><small>nights logged</small></div><div class="stat"><b>${esc(avg(L.map(e=>e.q)))}</b><small>avg quality /5</small></div><div class="stat"><b>${esc(L.filter(rough).length)}</b><small>rough nights</small></div>`;
+ $("bq").innerHTML=ds.map(d=>{const e=S.n[d];return e?`<div title="${esc(fmt(d)+": "+Q[e.q-1])}" style="height:${e.q*20}%;background:${e.q>=4?"var(--olive)":e.q===3?"var(--ochre)":"var(--blush)"}"></div>`:`<div title="${esc(fmt(d))}: not logged" style="height:4%;background:var(--line)"></div>`}).join("");
+ $("bh").innerHTML=ds.map(d=>{const e=S.n[d];const ok=e&&e.h!=null;return `<div title="${esc(fmt(d))}${ok?"":": not logged"}" style="height:${ok?Math.max(4,e.h*33):4}%;background:${ok?"var(--night)":"var(--line)"}"></div>`}).join("")}
 document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{R=+b.dataset.r;document.querySelectorAll("[data-r]").forEach(x=>x.classList.toggle("on",x===b));nights()});
 function before(){const L=Object.values(S.n),MIN=3;
- if(L.length<7){$("pats").innerHTML=`<p>Log at least 7 nights and patterns will start to show here. You have ${L.length} so far.</p>`;return}
+ if(L.length<7){$("pats").innerHTML=`<p>Log at least 7 nights and patterns will start to show here. You have ${esc(L.length)} so far.</p>`;return}
  const base=L.filter(rough).length/L.length;let out=[];
  for(const[k,v]of Object.entries(TAGS)){const w=L.filter(e=>e.t.includes(k)),wo=L.filter(e=>!e.t.includes(k));
-  if(w.length<MIN||wo.length<MIN){out.push(`<div class="pat"><span>${v}</span><span class="muted">needs at least 3 nights with and 3 without (now ${w.length} with, ${wo.length} without)</span></div>`);continue}
+  if(w.length<MIN||wo.length<MIN){out.push(`<div class="pat"><span>${esc(v)}</span><span class="muted">needs at least 3 nights with and 3 without (now ${esc(w.length)} with, ${esc(wo.length)} without)</span></div>`);continue}
   const a=w.filter(rough).length/w.length,b=wo.filter(rough).length/wo.length;
   out.push({k:v,a,b,n:w.length,m:wo.length})}
  const rows=out.filter(o=>typeof o==="object").sort((x,y)=>(y.a-y.b)-(x.a-x.b)),pct=x=>Math.round(x*100)+"%";
- $("pats").innerHTML=`<p>Overall, ${pct(base)} of your ${L.length} logged nights were rough.</p>`+rows.map(o=>`<div class="pat" style="display:block"><b>${o.k}</b> <span class="muted">· ${o.n} nights with, ${o.m} without</span><div class="muted">Rough after ${o.k.toLowerCase()}: ${pct(o.a)} · without: ${pct(o.b)}</div><div class="meter"><span style="width:${pct(o.a)}"></span></div></div>`).join("")+out.filter(o=>typeof o==="string").join("")+`<p class="muted">Small numbers can mislead. The more nights you log, the more these mean.</p>`}
+ $("pats").innerHTML=`<p>Overall, ${esc(pct(base))} of your ${esc(L.length)} logged nights were rough.</p>`+rows.map(o=>`<div class="pat" style="display:block"><b>${esc(o.k)}</b> <span class="muted">· ${esc(o.n)} nights with, ${esc(o.m)} without</span><div class="muted">Rough after ${esc(o.k.toLowerCase())}: ${esc(pct(o.a))} · without: ${esc(pct(o.b))}</div><div class="meter"><span style="width:${esc(pct(o.a))}"></span></div></div>`).join("")+out.filter(o=>typeof o==="string").join("")+`<p class="muted">Small numbers can mislead. The more nights you log, the more these mean.</p>`}
 function show(v){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));if(v==="nights")nights();if(v==="before")before();scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
 $("exp").onclick=()=>{const rows=[["morning_of","sleep_quality_1to5","wakings","sweats_0to3","tags"],...Object.keys(S.n).sort().map(d=>{const e=S.n[d];return[d,e.q,e.w??"",e.h??"",e.t.join(";")]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(",")).join("\n")],{type:"text/csv"}));a.download="prime-nights.csv";a.click()};
