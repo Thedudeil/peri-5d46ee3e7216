@@ -47,7 +47,7 @@ nav button{flex:1;min-width:0;white-space:nowrap;border:0;background:none;paddin
  <div class="card"><h2 class="h3" id="l-e">Energy <span class="muted sub">optional · 1 low, 5 great</span></h2><div class="seg" id="e" role="group" aria-labelledby="l-e"></div></div>
  <div class="card"><h2 class="h3" id="l-j">Joint aches <span class="muted sub">optional · 0 none, 3 a lot</span></h2><div class="seg" id="j" role="group" aria-labelledby="l-j"></div></div>
  <div class="card"><h2 class="h3" id="l-x">Moves I did <span class="muted sub">optional · weight & reps</span></h2>
-  <div class="row"><div><label class="fl" for="xm">Move</label><select id="xm"></select></div><div><label class="fl" for="xk">Weight (kg) <span class="muted sub">0 = bodyweight</span></label><input type="number" id="xk" min="0" max="200" step="0.5" inputmode="decimal" value="0"></div><div><label class="fl" for="xr">Reps</label><input type="number" id="xr" min="1" max="200" step="1" inputmode="numeric"></div></div>
+  <div class="row"><div><label class="fl" for="xm">Move</label><select id="xm"></select></div><div><label class="fl" for="xk">Weight (kg) <span class="muted sub">0 = bodyweight</span></label><input type="number" id="xk" min="0" max="200" step="0.1" inputmode="decimal" value="0"></div><div><label class="fl" for="xr">Reps</label><input type="number" id="xr" min="1" max="200" step="1" inputmode="numeric"></div></div>
   <p id="xmsg" class="muted" role="alert" style="color:#9c4a36;margin:6px 0 0"></p><button class="btn ghost" id="xadd" type="button">Add this set</button><div id="xlist" aria-live="polite"></div></div>
  <button class="btn" id="save">Save my day</button><button class="btn ghost hide" id="delD" type="button">Clear this day</button>
 </section>
@@ -70,7 +70,7 @@ nav button{flex:1;min-width:0;white-space:nowrap;border:0;background:none;paddin
 </section>
 <section id="v-moves" class="hide">
  <h1>Starter plan</h1>
- <div class="disc"><b>Check with your doctor or a physiotherapist before starting.</b> This is general, educational information, not a personal exercise prescription or medical advice. That matters most if you have osteoporosis, joint problems, a heart condition or recent surgery. Stop if anything hurts, and stay at a week that feels comfortable as long as you like.</div>
+ <div class="disc"><b>Check with your doctor or a physiotherapist before starting.</b> This is general, educational information, not a personal exercise prescription or medical advice. That matters most if you have osteoporosis, joint problems, a heart condition or recent surgery. Stop and seek medical care straight away if you get chest pain or pressure, dizziness or faintness, unusual breathlessness, or sudden sharp pain. If you have osteoporosis or low bone density, ask a physiotherapist to check your form on moves that bend or load the spine, like the bent-over row, before adding weight. Stop if anything hurts, and stay at a week that feels comfortable as long as you like.</div>
  <div class="card"><h2 class="h3" id="l-pw">I’m on plan week</h2><div class="seg" id="pw" role="group" aria-labelledby="l-pw"></div><p class="muted" id="pwn"></p></div>
  <div id="plan"></div>
  <div class="card"><h2 class="h3">Personal bests</h2><div id="pb"></div></div>
@@ -101,13 +101,14 @@ const MV={sts:["Sit-to-stand","Stand up from a sturdy chair and sit back down sl
 const SESS=[["Session A",["sts","wpu","hr","cur"]],["Session B",["gb","sll","row","ohp"]],["Session C",["gs","wpu","gb","hr"]]];
 const WEEKS=[[1,"6–8"],[1,"8–10"],[2,"6–8"],[2,"8–10"],[2,"10–12"],[3,"8–10"],[3,"10–12"],[3,"10–12"]];
 const WNOTE=["Learn the moves. Light or no weight.","Same moves, a couple more reps.","Add a second round.","Two rounds, a few more reps.","Two rounds. If 12 feels easy, try a slightly heavier weight.","Add a third round with fewer reps.","Three rounds.","Keep going here, or repeat any earlier week."];
+const realD=k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&(()=>{const d=new Date(k+"T12:00:00Z");return !isNaN(d)&&d.toISOString().slice(0,10)===k})();
 function clean(raw){const out={d:{},goal:2,pw:1,x:{}};if(!raw||typeof raw!=="object"||Array.isArray(raw))return out;
  out.pw=intIn(raw.pw,1,8)??1;
  const xs=raw.x&&typeof raw.x==="object"&&!Array.isArray(raw.x)?raw.x:{};
- for(const k of Object.keys(xs)){const a=xs[k];if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||isNaN(new Date(k+"T12:00:00"))||k>today()||!Array.isArray(a))continue;const v=a.filter(o=>o&&typeof o==="object"&&Object.prototype.hasOwnProperty.call(MV,o.mv)&&typeof o.kg==="number"&&Number.isFinite(o.kg)&&o.kg>=0&&o.kg<=200&&intIn(o.r,1,200)!==null).slice(0,60).map(o=>({mv:o.mv,kg:Math.round(o.kg*2)/2,r:o.r}));if(v.length)out.x[k]=v}
+ for(const k of Object.keys(xs)){const a=xs[k];if(!realD(k)||k>today()||!Array.isArray(a))continue;const v=a.filter(o=>o&&typeof o==="object"&&Object.prototype.hasOwnProperty.call(MV,o.mv)&&typeof o.kg==="number"&&Number.isFinite(o.kg)&&o.kg>=0&&o.kg<=200&&intIn(o.r,1,200)!==null).slice(0,60).map(o=>({mv:o.mv,kg:Math.round(o.kg*10)/10,r:o.r}));if(v.length)out.x[k]=v}
  const g=Number(raw.goal);out.goal=Number.isInteger(g)&&g>=1&&g<=5?g:Math.min(5,Math.max(1,Number.isFinite(g)?Math.round(g):2));
  const d=raw.d&&typeof raw.d==="object"&&!Array.isArray(raw.d)?raw.d:{},t=today();
- for(const k of Object.keys(d)){const e=d[k];if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||isNaN(new Date(k+"T12:00:00"))||k>t||!e||typeof e!=="object"||Array.isArray(e))continue;
+ for(const k of Object.keys(d)){const e=d[k];if(!realD(k)||k>t||!e||typeof e!=="object"||Array.isArray(e))continue;
   const s=bool(e.s),c={s,ty:s===true&&Array.isArray(e.ty)?[...new Set(e.ty.filter(x=>TK.includes(x)))]:[],m:s===true?intIn(e.m,0,600):null,p:intIn(e.p,0,4),c:intIn(e.c,0,3),v:bool(e.v),e:intIn(e.e,1,5),j:intIn(e.j,0,3)};
   if(c.s!==null||c.p!==null||c.c!==null||c.v!==null||c.e!==null||c.j!==null)out.d[k]=c}
  return out}
@@ -151,9 +152,9 @@ $("xadd").onclick=()=>{const mv=$("xm").value,kg=Number($("xk").value||0),rp=Num
  if(String($("xk").value).trim()!==""&&(!Number.isFinite(kg)||kg<0||kg>200)){xm("Weight should be a number from 0 to 200 kg (0 = bodyweight).");$("xk").focus();return}
  if(!Number.isInteger(rp)||rp<1||rp>200){xm("Enter reps as a whole number from 1 to 200.");$("xr").focus();return}
  const prev=S.x[day],a=prev||[];if(a.length>=60){toast("That’s the most sets for one day");return}
- const pb=best(mv);S.x[day]=[...a,{mv,kg:Math.round(kg*2)/2,r:rp}];
+ const pb=best(mv);S.x[day]=[...a,{mv,kg:Math.round(kg*10)/10,r:rp}];
  if(!save()){if(prev)S.x[day]=prev;else delete S.x[day];toast("Couldn’t save: storage is full or blocked");return}
- const nb=best(mv);toast(pb&&(nb.kg>pb.kg||nb.reps>pb.reps)?"Set added · new personal best":"Set added");$("xr").value="";xlist()};
+ const nb=best(mv);toast(pb&&(nb.kg>pb.kg||(nb.kg===pb.kg&&nb.kgr>pb.kgr)||nb.reps>pb.reps)?"Set added · new personal best":"Set added");$("xr").value="";xlist()};
 function best(mv){let kg=null,kgr=0,kgd="",reps=0,rd="",rkg=0;for(const d of Object.keys(S.x).sort())for(const o of S.x[d])if(o.mv===mv){if(kg===null||o.kg>kg||(o.kg===kg&&o.r>kgr)){kg=o.kg;kgr=o.r;kgd=d}if(o.r>reps){reps=o.r;rd=d;rkg=o.kg}}return kg===null?null:{kg,kgr,kgd,reps,rd,rkg}}
 function plan(){const w=S.pw,[sets,reps]=WEEKS[w-1];
  $("pw").innerHTML=[1,2,3,4,5,6,7,8].map(v=>`<button type="button" aria-pressed="${w===v}" class="${w===v?"on ok":""}" aria-label="Week ${esc(v)}">${esc(v)}</button>`).join("");
@@ -197,7 +198,7 @@ function trends(){const full=TR===0;$("thist").classList.toggle("hide",!full);do
  bars("bc",e=>e.c,3,()=>"var(--ochre)",v=>(v>=3?"3+":v)+" servings")}
 function show(v){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));document.querySelectorAll("nav button").forEach(b=>{b.classList.toggle("on",b.dataset.v===v);b.setAttribute("aria-current",b.dataset.v===v?"page":"false")});if(v==="week")week();if(v==="trends")trends();if(v==="moves")plan();scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
-const csv=x=>x===null||x===undefined?"":/[",\n]/.test(String(x))?`"${String(x).replace(/"/g,'""')}"`:String(x);
+const csv=x=>{if(x===null||x===undefined)return"";x=String(x);if(/^[=+\-@\t\r]/.test(x))x="'"+x;return /[",\n]/.test(x)?`"${x.replace(/"/g,'""')}"`:x};
 $("exp").onclick=()=>{const yn=x=>x===true?"yes":x===false?"no":"";const rows=[["date","strength_session","types","minutes","protein_servings","calcium_servings","vitamin_d","energy_1to5","joint_aches_0to3"],...Object.keys(S.d).sort().map(d=>{const e=S.d[d];return[d,yn(e.s),(e.ty||[]).map(k=>TL[k]||k).join(";"),e.m,e.p===4?"4+":e.p,e.c===3?"3+":e.c,yn(e.v),e.e,e.j]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(csv).join(",")).join("\n")],{type:"text/csv"}));a.download="prime-strong.csv";a.click();
  const xr=[["date","move","weight_kg","reps"],...Object.keys(S.x).sort().flatMap(d=>S.x[d].map(o=>[d,MV[o.mv][0],o.kg,o.r]))];if(xr.length>1)setTimeout(()=>{const b=document.createElement("a");b.href=URL.createObjectURL(new Blob([xr.map(r=>r.map(csv).join(",")).join("\n")],{type:"text/csv"}));b.download="prime-strong-sets.csv";b.click()},400)};
 $("wipe").onclick=()=>{if(confirm("Delete everything saved on this phone? This can't be undone.")){S={d:{},goal:2,pw:1,x:{}};save();day=today();load();render();toast("Deleted")}};

@@ -778,13 +778,15 @@ $("icsBtn").onclick=()=>{const [h,mi]=(S.remT||$("remTime").value||"20:30").spli
 
 // ---------- CSV
 const COLS=["date",...SYMK,"stress","bleeding","triggers","meds","notes","hot_flash_count","sleep_hours","exercise_type","exercise_minutes","treatment_started","mrs_items"];
-const q=v=>{v=String(v??"");return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+const realD=k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&(()=>{const d=new Date(k+"T12:00:00Z");return !isNaN(d)&&d.toISOString().slice(0,10)===k})();
+const FX=/^[=+\-@\t\r]/,unq=v=>typeof v==="string"&&/^'[=+\-@\t\r]/.test(v)?v.slice(1):v;
+const q=v=>{v=String(v??"");if(FX.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
 $("expCsv").onclick=()=>{const ds=[...new Set([...Object.keys(S.e),...(S.hrt||[]).map(h=>h.d),...(S.mrs||[]).map(m=>m.d)])].sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d]||{s:{},bleed:"none",trig:[],meds:[],notes:""};return[d,...SYMK.map(k=>e.s[k]??""),e.st??"",e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes,e.hf??"",e.hs??"",e.ex?e.ex.t:"",e.ex&&e.ex.m?e.ex.m:"",(S.hrt||[]).filter(h=>h.d===d).map(h=>h.x+(h.dose?" | "+h.dose:"")).join(";"),(S.mrs||[]).filter(m=>m.d===d).map(m=>m.a.join(" ")).join("")].map(q).join(",")})].join("\n");
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="peri-tracker-backup-"+today()+".csv";document.body.appendChild(a);a.click();a.remove();toast(t("backupDl"))};
 function parseCSV(x){const rows=[];let r=[],f="",i=0,qd=false;for(;i<x.length;i++){const c=x[i];if(qd){if(c=='"'){if(x[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&x[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
 $("impBtn").onclick=()=>$("impFile").click();
 $("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then(x=>{const rows=parseCSV(x),h=rows.shift();if(!h||h[0]!=="date"){alert(t("badCsv"));return}let n=0;
- rows.forEach(r=>{if(!/^\d{4}-\d\d-\d\d$/.test(r[0])||isNaN(new Date(r[0]+"T12:00:00"))||r[0]>today())return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:o.bleeding||"none",trig:o.triggers?o.triggers.split(";"):[],meds:o.meds?[...new Set(o.meds.split(";").map(x=>x.trim().replace(/\s+/g," ").slice(0,40)).filter(Boolean))]:[],notes:(o.notes||"").slice(0,1000)};
+ rows.forEach(r=>{r=r.map(unq);if(!realD(r[0])||r[0]>today())return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:BLEEDK.includes(o.bleeding)?o.bleeding:"none",trig:o.triggers?[...new Set(o.triggers.split(";").map(x=>x.trim()).filter(x=>TRIGK.includes(x)))]:[],meds:o.meds?[...new Set(o.meds.split(";").map(x=>unq(x.trim()).replace(/\s+/g," ").slice(0,40)).filter(x=>x&&!FX.test(x)))]:[],notes:(o.notes||"").slice(0,1000)};
   if(o.hot_flash_count!=null&&o.hot_flash_count!==""&&!isNaN(+o.hot_flash_count))e.hf=Math.max(0,Math.min(99,Math.round(+o.hot_flash_count)));
   if(o.sleep_hours!=null&&o.sleep_hours!==""&&!isNaN(+o.sleep_hours))e.hs=Math.max(0,Math.min(14,Math.round(+o.sleep_hours*2)/2));
   if(o.exercise_type&&["none","walk","strength","yoga","cardio"].includes(o.exercise_type))e.ex={t:o.exercise_type,m:+o.exercise_minutes>0?Math.min(600,Math.round(+o.exercise_minutes)):null};
@@ -892,7 +894,7 @@ function renderHrt(){const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);$("hr
 let hrtEd=null;
 function hrtReset(){hrtEd=null;if($("hrtMsg"))$("hrtMsg").textContent="";$("hrtX").value="";$("hrtDo").value="";$("hrtD").value=today();$("hrtAdd").textContent=t("hrtAdd");$("hrtCancel").classList.add("hide")}
 $("hrtAdd").onclick=()=>{const x=$("hrtX").value.trim().replace(/\s+/g," "),d=$("hrtD").value||today(),hm=m=>{$("hrtMsg").textContent=m};hm("");if(!x){hm(t("hrtNeedType"));$("hrtX").focus();return}
- if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||isNaN(new Date(d+"T12:00:00"))||d<"1990-01-01"){hm("Please pick a valid start date.");$("hrtD").focus();return}
+ if(!realD(d)||d<"1990-01-01"){hm("Please pick a valid start date.");$("hrtD").focus();return}
  if(d>today()){hm("The start date can’t be in the future.");$("hrtD").focus();return}
  if((S.hrt||[]).some(h=>h.id!==hrtEd&&h.d===d&&h.x.toLowerCase()===x.slice(0,80).toLowerCase())){hm("You’ve already logged this treatment on that date.");return}
  const o={d,x:x.slice(0,80),dose:$("hrtDo").value.trim().slice(0,40)};S.hrt=S.hrt||[];const h=hrtEd&&S.hrt.find(h=>h.id===hrtEd);if(h)Object.assign(h,o);else S.hrt.push({id:Date.now().toString(36),...o});persist();hrtReset();renderInsights()};
