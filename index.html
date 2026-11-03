@@ -959,8 +959,9 @@ const WHOP_CHECKOUT_URL="https://whop.com/TODO-prime-traker-plus";
 const PLUS_PRICE={m:"$9.99",y:"$49",ym:"$4.08"};
 const TRIAL_DAYS=14,FREE_HIST=30;
 const CODE_ABC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-function codeCheck(body){let h=2166136261;for(const ch of "prime-plus|"+body){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return CODE_ABC[h%32]+CODE_ABC[(h>>>5)%32]}
-function validCode(raw){const c=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(!/^PRIME[A-Z0-9]{8}$/.test(c))return false;const b=c.slice(5,11),k=c.slice(11);if([...b+k].some(x=>!CODE_ABC.includes(x)))return false;return codeCheck(b)===k}
+function codeCheck(body){if(LICENSE_SERVER_ENABLED)return null;let h=2166136261;for(const ch of "prime-plus|"+body){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return CODE_ABC[h%32]+CODE_ABC[(h>>>5)%32]}
+function validCode(raw){if(LICENSE_SERVER_ENABLED)return false; // PT-012: legacy offline codes (PT-001) never accepted with server on; delete before paywall launch
+ const c=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(!/^PRIME[A-Z0-9]{8}$/.test(c))return false;const b=c.slice(5,11),k=c.slice(11);if([...b+k].some(x=>!CODE_ABC.includes(x)))return false;return codeCheck(b)===k}
 function dayDiff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
 function startTrial(){if(!S.t0){S.t0=today();persist()}}
 function seenDay(){const d=today();if(!S.seen||d>S.seen){S.seen=d;persist()}return S.seen} // PT-006: clock set back can't add trial days
@@ -970,16 +971,31 @@ function inTrial(){return trialLeft()>0}
 const LICENSE_SERVER_ENABLED=false;
 const LICENSE_API="https://prime-license.TODO.workers.dev"; // TODO: deployed Worker URL
 const LICENSE_PUBKEY={kty:"OKP",crv:"Ed25519",x:"TODO_PUBLIC_KEY_X"}; // TODO: from scripts/gen-signing-key.mjs (public only)
-const LIC_RECHECK_MS=3*864e5;
-function devId(){if(!S.dev){const a=new Uint8Array(12);crypto.getRandomValues(a);S.dev="dev-"+[...a].map(x=>x.toString(16).padStart(2,"0")).join("");persist()}return S.dev}
-function tokPayload(tok){try{const b=String(tok).split(".")[0].replace(/-/g,"+").replace(/_/g,"/");return JSON.parse(atob(b+"=".repeat((4-b.length%4)%4)))}catch(e){return null}}
-async function tokValid(tok){try{const[b,g]=String(tok).split(".");const u=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"=".repeat((4-s.length%4)%4)),c=>c.charCodeAt(0));
- const k=await crypto.subtle.importKey("jwk",LICENSE_PUBKEY,{name:"Ed25519"},false,["verify"]);return await crypto.subtle.verify({name:"Ed25519"},k,u(g),new TextEncoder().encode(b))}catch(e){return true}} // old browsers without Ed25519: rely on exp + server recheck
-async function licCall(path,body){const r=await fetch(LICENSE_API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});return r.json()}
-async function licActivate(key){const j=await licCall("/activate",{key:String(key).trim(),device:devId()});if(j.ok&&await tokValid(j.token)){S.plus={key:String(key).trim(),tok:j.token,exp:j.exp,chk:Date.now()};persist();return {ok:true}}return j}
-async function licRefresh(force){if(!LICENSE_SERVER_ENABLED||!S.plus||!S.plus.tok)return;if(!force&&Date.now()-(S.plus.chk||0)<LIC_RECHECK_MS)return;
- try{const j=await licCall("/refresh",{token:S.plus.tok});if(j.ok){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now()}else if(j.error){S.plus=null} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
-function isPlus(){if(!S.plus)return false;if(!LICENSE_SERVER_ENABLED)return true;const p=S.plus.tok&&tokPayload(S.plus.tok);return !!(p&&p.exp*1000>Date.now()&&p.dev===S.dev)} // PT-004: demo never grants Plus
+const LIC_RECHECK_MS=864e5; // recheck daily (tokens live 3 days)
+// SEC-013 build guard: flag on with placeholder config => Plus stays locked (fail closed), loud error. CI: prime-license-server/scripts/check-app.mjs
+const LIC_CONFIG_OK=!LICENSE_SERVER_ENABLED||(!/TODO/i.test(LICENSE_API+JSON.stringify(LICENSE_PUBKEY))&&/^https:\/\//.test(LICENSE_API)&&/^[A-Za-z0-9_-]{43}$/.test(LICENSE_PUBKEY.x||""));
+if(!LIC_CONFIG_OK)console.error("Prime Traker: LICENSE_SERVER_ENABLED with placeholder LICENSE_API/LICENSE_PUBKEY. Plus is locked.");
+const DEV_RE=/^dev-[a-f0-9]{24}$/;
+function devId(){if(!DEV_RE.test(S.dev||"")){const a=new Uint8Array(12);crypto.getRandomValues(a);S.dev="dev-"+[...a].map(x=>x.toString(16).padStart(2,"0")).join("");persist()}return S.dev}
+const ub64u=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"=".repeat((4-s.length%4)%4)),c=>c.charCodeAt(0));
+function tokPayload(tok){try{return JSON.parse(new TextDecoder().decode(ub64u(String(tok).split(".")[0])))}catch(e){return null}}
+// SEC-013: signature checked with the embedded public key; any error => invalid (fail closed). Result cached per token.
+let licVerified={tok:null,ok:false};
+async function tokValid(tok){try{if(!LIC_CONFIG_OK)return false;const p=String(tok).split(".");if(p.length!==2)return false;
+ const k=await crypto.subtle.importKey("jwk",LICENSE_PUBKEY,{name:"Ed25519"},false,["verify"]);return await crypto.subtle.verify({name:"Ed25519"},k,ub64u(p[1]),new TextEncoder().encode(p[0]))}catch(e){return false}}
+async function licVerify(){const tok=S.plus&&S.plus.tok;if(!tok){licVerified={tok:null,ok:false};return}if(licVerified.tok===tok)return;const ok=await tokValid(tok);licVerified={tok,ok};gateAll()}
+async function licCall(path,body){const r=await fetch(LICENSE_API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}j.status=r.status;return j}
+async function licActivate(key){if(!LIC_CONFIG_OK)return {error:"config"};const k=String(key||"").trim();const j=await licCall("/activate",{key:k,device:devId()});
+ if(j.ok&&await tokValid(j.token)){S.plus={tok:j.token,exp:j.exp,chk:Date.now()};licVerified={tok:j.token,ok:true};persist();return {ok:true}}return j.ok?{error:"bad_sig"}:j}
+// PT-009: only a definitive 401/403 clears Plus; 429/5xx/offline keep the token until it expires.
+async function licRefresh(force){if(!LICENSE_SERVER_ENABLED||!LIC_CONFIG_OK||!S.plus||!S.plus.tok)return;if(!force&&Date.now()-(S.plus.chk||0)<LIC_RECHECK_MS)return;
+ try{const j=await licCall("/refresh",{token:S.plus.tok});if(j.ok&&await tokValid(j.token)){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now();licVerified={tok:j.token,ok:true}}else if(j.status===401||j.status===403){S.plus=null;licVerified={tok:null,ok:false}} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
+// PT-011/SEC-012: free this device's slot (server requires this device's token; limited to 3 per 30 days).
+async function licRelease(){if(!S.plus||!S.plus.tok)return;if(!confirm("Remove Plus from this device? You can use your key on another device. Limited to 3 removals per 30 days."))return;
+ let j;try{j=await licCall("/release",{token:S.plus.tok})}catch(e){toast("Can’t reach the server. Try again when you’re online.");return}
+ if(j.ok){S.plus=null;licVerified={tok:null,ok:false};persist();gateAll();toast("This device was removed from your Plus key.")}else if(j.error==="release_cooldown"){toast("You’ve removed 3 devices in the last 30 days. Try again in "+(j.retry_days||"a few")+" days or contact support@primetraker.com.")}else{toast("Couldn’t remove this device. Try again later.")}}
+function isPlus(){if(!S.plus)return false;if(!LICENSE_SERVER_ENABLED)return true;if(!LIC_CONFIG_OK)return false;const tok=S.plus.tok,p=tok&&tokPayload(tok);
+ if(!p||!(p.exp*1000>Date.now())||p.dev!==S.dev)return false;if(licVerified.tok!==tok){licVerify();return false}return licVerified.ok} // PT-004: demo never grants Plus
 function hasAccess(){return !PAYWALL_ENABLED||isPlus()||inTrial()}
 function histFloor(){return addD(seenDay(),-(FREE_HIST-1))}
 Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus trial: last day",trialNote:"Your free Plus trial is almost over. Check-ins and your last 30 days stay free, always. Plus keeps your patterns, doctor summary and full history going.",
@@ -998,7 +1014,7 @@ function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0
 <button class="btn ghost block upcode">${t("upCode")}</button></div>`}
 function bindUp(root){root.querySelectorAll(".upcode").forEach(b=>b.onclick=openCode)}
 function openCode(){openSheet(t("codeT"),`<input type="text" id="codeIn" autocomplete="off" autocapitalize="characters" placeholder="${t("codePh")}" style="text-transform:uppercase;letter-spacing:.08em"><p id="codeMsg" class="muted"></p><button class="btn block" id="codeGo">${t("codeGo")}</button>`);
- $("codeGo").onclick=async()=>{const v=$("codeIn").value;if(LICENSE_SERVER_ENABLED){$("codeGo").disabled=true;let r;try{r=await licActivate(v)}catch(e){r={error:"net"}}$("codeGo").disabled=false;if(r.ok){$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=r.error==="device_limit"?"This key is already used on "+(r.max||3)+" devices. Remove one from Settings on another device, or contact support.":r.error==="net"?"Can’t reach the server. Check your connection and try again.":r.error==="inactive"?"This membership isn’t active. Check your Whop account.":t("codeBad")}return}if(validCode(v)){S.plus={code:v.toUpperCase().trim(),d:today()};persist();$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=t("codeBad")}}}
+ $("codeGo").onclick=async()=>{const v=$("codeIn").value;if(LICENSE_SERVER_ENABLED){$("codeGo").disabled=true;let r;try{r=await licActivate(v)}catch(e){r={error:"net"}}$("codeGo").disabled=false;if(r.ok){$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=r.error==="device_limit"?"This key is already used on "+(r.max||3)+" devices. On one of them, open Settings › Plus › Remove this device, or contact support@primetraker.com.":r.error==="net"?"Can’t reach the server. Check your connection and try again.":r.error==="inactive"?"This membership isn’t active. Check your Whop account.":r.error==="rate_limited"?"Too many tries. Wait a minute and try again.":r.error==="config"||r.error==="bad_sig"?"Plus can’t be activated right now. Please contact support@primetraker.com.":t("codeBad")}return}if(validCode(v)){S.plus={code:v.toUpperCase().trim(),d:today()};persist();$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=t("codeBad")}}}
 function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
@@ -1016,8 +1032,9 @@ function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(
 function renderFaq(){const st=$("v-settings");if(!st)return;let c=$("faqCard");if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){$("helpLegal").insertAdjacentHTML("beforebegin",`<div class="card" id="faqCard"></div>`);c=$("faqCard")}
  c.innerHTML=`<h3>${t("faqT")}</h3>`+I18N.en.faqs.map(([q,a])=>`<details><summary>${esc(q)}</summary><p class="muted">${esc(a)}</p></details>`).join("")}
 function renderPlusSet(){let c=$("plusCard");const st=$("v-settings");if(!st)return;if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){st.querySelector(".card").insertAdjacentHTML("beforebegin",`<div class="card" id="plusCard"></div>`);c=$("plusCard")}
- const msg=S.plus?t("plusOn"):inTrial()?t("plusTrial",{n:trialLeft()}):t("plusNoStart");
+ const msg=isPlus()?t("plusOn"):inTrial()?t("plusTrial",{n:trialLeft()}):t("plusNoStart");
  c.innerHTML=`<h3>${t("plusT")}</h3><p style="margin:0 0 6px">${msg}</p>`+(isPlus()?"":`<div class="row2"><button class="btn" id="plusSee">${t("plusSee")}</button><button class="btn ghost" id="plusCode">${t("upCode")}</button></div>`);
+ if(isPlus()&&LICENSE_SERVER_ENABLED){c.insertAdjacentHTML("beforeend",`<button class="btn ghost" id="plusRel">Remove this device</button>`);$("plusRel").onclick=licRelease}
  if(!isPlus()){$("plusSee").onclick=openUp;$("plusCode").onclick=openCode}}
 const _show=show;show=function(v,k){_show(v,k);gateAll()};
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
