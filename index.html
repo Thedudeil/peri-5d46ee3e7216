@@ -953,15 +953,11 @@ function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.
 // Free forever, no card: daily check-ins + the last 30 days of history. Plus: patterns/insights, doctor summary, full history + export.
 // A 14-day Plus trial starts on first use with no card (S.t0). After it ends, Plus features lock; data is kept, older days are only hidden.
 // Reinstalling wipes local data and only resets to Free, so no extra guard is needed. Plus unlocks with a PRIME-XXXX-XXXX code from Whop.
-// TODO(Avi): replace with the real Whop checkout links before launch.
 const PAYWALL_ENABLED=false; // false = everything free, no trial chip or upsell (current live behaviour)
-const WHOP_CHECKOUT_URL="https://whop.com/TODO-prime-traker-plus";
+const WHOP_CHECKOUT_URL="https://whop.com/checkout/plan_1vwPkXNIAsn0e"; // yearly $49
+const WHOP_CHECKOUT_URL_MONTHLY="https://whop.com/checkout/plan_824SwuUQsDzJI"; // monthly $9.99
 const PLUS_PRICE={m:"$9.99",y:"$49",ym:"$4.08"};
 const TRIAL_DAYS=14,FREE_HIST=30;
-const CODE_ABC="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-function codeCheck(body){if(LICENSE_SERVER_ENABLED)return null;let h=2166136261;for(const ch of "prime-plus|"+body){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return CODE_ABC[h%32]+CODE_ABC[(h>>>5)%32]}
-function validCode(raw){if(LICENSE_SERVER_ENABLED)return false; // PT-012: legacy offline codes (PT-001) never accepted with server on; delete before paywall launch
- const c=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");if(!/^PRIME[A-Z0-9]{8}$/.test(c))return false;const b=c.slice(5,11),k=c.slice(11);if([...b+k].some(x=>!CODE_ABC.includes(x)))return false;return codeCheck(b)===k}
 function dayDiff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
 function startTrial(){if(!S.t0){S.t0=today();persist()}}
 function seenDay(){const d=today();if(!S.seen||d>S.seen){S.seen=d;persist()}return S.seen} // PT-006: clock set back can't add trial days
@@ -969,8 +965,8 @@ function trialLeft(){if(!S.t0)return TRIAL_DAYS;return Math.max(0,TRIAL_DAYS-day
 function inTrial(){return trialLeft()>0}
 // PT-001: server license check (Whop), behind a flag. When on, legacy offline PRIME codes are ignored.
 const LICENSE_SERVER_ENABLED=false;
-const LICENSE_API="https://prime-license.TODO.workers.dev"; // TODO: deployed Worker URL
-const LICENSE_PUBKEY={kty:"OKP",crv:"Ed25519",x:"TODO_PUBLIC_KEY_X"}; // TODO: from scripts/gen-signing-key.mjs (public only)
+const LICENSE_API="https://license.primetraker.com"; // Cloudflare Worker prime-license (also prime-license.levavijosh.workers.dev)
+const LICENSE_PUBKEY={kty:"OKP",crv:"Ed25519",x:"PfXiAONx731JzXVCJjznE1HNAZcEAri5Ug0_XR1-3_o"}; // public only; served at /pubkey
 const LIC_RECHECK_MS=864e5; // recheck daily (tokens live 3 days)
 // SEC-013 build guard: flag on with placeholder config => Plus stays locked (fail closed), loud error. CI: prime-license-server/scripts/check-app.mjs
 const LIC_CONFIG_OK=!LICENSE_SERVER_ENABLED||(!/TODO/i.test(LICENSE_API+JSON.stringify(LICENSE_PUBKEY))&&/^https:\/\//.test(LICENSE_API)&&/^[A-Za-z0-9_-]{43}$/.test(LICENSE_PUBKEY.x||""));
@@ -1008,13 +1004,13 @@ Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus tr
 const ICK='<svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--sage)"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px;color:var(--ochre)"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
 <h2>${t("upT")}</h2><p class="muted" style="font-size:14px">${t("upSub")}</p><ul class="upl">${["upL1","upL2","upL3","upL4","upL5"].map(k=>`<li>${ICK}<span>${t(k)}</span></li>`).join("")}</ul>
-<a class="btn block upbuy" href="${WHOP_CHECKOUT_URL}?plan=yearly" target="_blank" rel="noopener">${t("upTry")}: ${t("upY",{p:PLUS_PRICE.y})} <small>· ${t("upYs",{m:PLUS_PRICE.ym})}</small></a>
-<a class="btn alt block upbuy" href="${WHOP_CHECKOUT_URL}?plan=monthly" target="_blank" rel="noopener">${t("upTry")}: ${t("upM",{p:PLUS_PRICE.m})}</a>
+<a class="btn block upbuy" href="${WHOP_CHECKOUT_URL}" target="_blank" rel="noopener">${t("upTry")}: ${t("upY",{p:PLUS_PRICE.y})} <small>· ${t("upYs",{m:PLUS_PRICE.ym})}</small></a>
+<a class="btn alt block upbuy" href="${WHOP_CHECKOUT_URL_MONTHLY}" target="_blank" rel="noopener">${t("upTry")}: ${t("upM",{p:PLUS_PRICE.m})}</a>
 <p class="muted" style="font-size:13px">${t("upFine")}</p>
 <button class="btn ghost block upcode">${t("upCode")}</button></div>`}
 function bindUp(root){root.querySelectorAll(".upcode").forEach(b=>b.onclick=openCode)}
 function openCode(){openSheet(t("codeT"),`<input type="text" id="codeIn" autocomplete="off" autocapitalize="characters" placeholder="${t("codePh")}" style="text-transform:uppercase;letter-spacing:.08em"><p id="codeMsg" class="muted"></p><button class="btn block" id="codeGo">${t("codeGo")}</button>`);
- $("codeGo").onclick=async()=>{const v=$("codeIn").value;if(LICENSE_SERVER_ENABLED){$("codeGo").disabled=true;let r;try{r=await licActivate(v)}catch(e){r={error:"net"}}$("codeGo").disabled=false;if(r.ok){$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=r.error==="device_limit"?"This key is already used on "+(r.max||3)+" devices. On one of them, open Settings › Plus › Remove this device, or contact support@primetraker.com.":r.error==="net"?"Can’t reach the server. Check your connection and try again.":r.error==="inactive"?"This membership isn’t active. Check your Whop account.":r.error==="rate_limited"?"Too many tries. Wait a minute and try again.":r.error==="config"||r.error==="bad_sig"?"Plus can’t be activated right now. Please contact support@primetraker.com.":t("codeBad")}return}if(validCode(v)){S.plus={code:v.toUpperCase().trim(),d:today()};persist();$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=t("codeBad")}}}
+ $("codeGo").onclick=async()=>{const v=$("codeIn").value;if(LICENSE_SERVER_ENABLED){$("codeGo").disabled=true;let r;try{r=await licActivate(v)}catch(e){r={error:"net"}}$("codeGo").disabled=false;if(r.ok){$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=r.error==="device_limit"?"This key is already used on "+(r.max||3)+" devices. On one of them, open Settings › Plus › Remove this device, or contact support@primetraker.com.":r.error==="net"?"Can’t reach the server. Check your connection and try again.":r.error==="inactive"?"This membership isn’t active. Check your Whop account.":r.error==="rate_limited"?"Too many tries. Wait a minute and try again.":r.error==="config"||r.error==="bad_sig"?"Plus can’t be activated right now. Please contact support@primetraker.com.":t("codeBad")}return}$("codeMsg").textContent=t("codeBad")}} // PT-012: legacy offline PRIME codes removed; Plus only via license server
 function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
