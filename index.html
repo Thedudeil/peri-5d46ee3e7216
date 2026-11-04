@@ -320,7 +320,7 @@ chartAvg:"Average {a} over {n} logged day(s). Red marks = bleeding days.",noPeri
 lower:"Your overall symptom load is <b>{p}% lower</b> than the 30 days before. Whatever you're doing, it's worth noting.",higher:"Your overall symptom load is <b>{p}% higher</b> than the 30 days before. Could be worth mentioning at your next appointment.",
 streakIns:"{n} days in a row. Steady logging is what makes these patterns reliable.",patWait:"Patterns appear after about 2 weeks of check-ins, once there are enough days to compare.",
 corr:"{label}, your <b>{s}</b> averaged <b>{a}</b> vs {b} on other days ({na} vs {nb} days).",afterPoor:"On days after poor sleep",onTrig:"On days you logged {t}",onMed:"On days you took {m}",highStress:"On higher-stress days",
-lastPer:"Last period started <b>{d}</b> ({n} days ago).",cycLens:"Recent cycle lengths: <b>{l}</b> days (average {a}).",cycVar:"Your cycle length has varied by a week or more, which is common in perimenopause and useful to share with your doctor.",cycMore:"Log another period start to see cycle length.",cycNone:"Tap a bleeding level on the check-in and cycle lengths will appear here.",
+lastPer:"Last period started <b>{d}</b> ({n} days ago).",cycLens:"Recent cycle lengths: <b>{l}</b> days (average {a}).",cycSkip1:"1 cycle not counted because of a gap in logging.",cycSkipN:"{n} cycles not counted because of a gap in logging.",cycVar:"Your cycle length has varied by a week or more, which is common in perimenopause and useful to share with your doctor.",cycMore:"Log another period start to see cycle length.",cycNone:"Tap a bleeding level on the check-in and cycle lengths will appear here.",
 tipRough:"Rough day. Many women find this helps {w}:",
 weekTipT:"This week's tip",
 docT:"Doctor summary",modeSum:"Monthly summary",modeLet:"Letter to my doctor",print:"Print / PDF",drPh:"Doctor's name (optional)",mePh:"Your name (optional)",r1:"Last month",r3:"Last 3 months",r6:"Last 6 months",rAll:"All my entries",
@@ -599,7 +599,7 @@ function renderInsights(){
  $("corr").innerHTML=ins.length?ins.map(([c,x])=>`<div class="ins ${c}">${x}</div>`).join(""):`<p class="muted">${t("patWait")}</p>`;
  const cy=cycles();
  $("cycle").innerHTML=cy.starts.length?`<p>${t("lastPer",{d:fmt(cy.starts[cy.starts.length-1]),n:Math.round((new Date(today())-new Date(cy.starts[cy.starts.length-1]))/864e5)})}</p>`+
-  (cy.lens.length?`<p>${t("cycLens",{l:cy.lens.slice(-6).join(", "),a:Math.round(avg(cy.lens))})} ${Math.max(...cy.lens)-Math.min(...cy.lens)>=7?t("cycVar"):""}</p>`:`<p class='muted'>${t("cycMore")}</p>`):`<p class='muted'>${t("cycNone")}</p>`;
+  (cy.lens.length?`<p>${t("cycLens",{l:cy.lens.slice(-6).join(", "),a:Math.round(avg(cy.lens))})} ${Math.max(...cy.lens)-Math.min(...cy.lens)>=7?t("cycVar"):""}</p>`:`<p class='muted'>${t("cycMore")}</p>`)+(cy.raw.some(x=>x==null)?`<p class="muted">${skipTxt(cy.raw.filter(x=>x==null).length)}</p>`:""):`<p class='muted'>${t("cycNone")}</p>`;
  const cd=days(35);let h="";cd.slice(0,7).forEach(d=>h+=`<div style="background:none;border:0;text-align:center">${fmt(d,{weekday:"narrow"})}</div>`);
  cd.forEach(k=>{const e=S.e[k];const Lv=e?load_(e):0;const c=e?(Lv>=14?"l3":Lv>=8?"l2":Lv>0?"l1":""):"";h+=`<div class="${c} ${isBleed(e)?"bl":""}">${+k.slice(8)}</div>`});
  $("cal").innerHTML=h;
@@ -636,6 +636,7 @@ function correlations(n,dsIn){
  S.meds.forEach(m=>{if(ds.filter(d=>S.e[d].meds.includes(m)).length>=4)test(t("onMed",{m:esc(m)}),d=>S.e[d].meds.includes(m),"sleep")});
  return out.sort((a,b)=>b[2]-a[2]).slice(0,5).map(x=>[x[0],x[1]]);
 }
+function skipTxt(n){return n?t(n===1?"cycSkip1":"cycSkipN",{n}):""}
 function cycles(only){const ks=only?only.slice().sort():Object.keys(S.e).sort(),ok=only?new Set(ks):null,g=d=>ok&&!ok.has(d)?undefined:S.e[d],starts=[];ks.forEach(d=>{if(isBleed(S.e[d])&&!isBleed(g(addD(d,-1)))&&!isBleed(g(addD(d,-2))))starts.push(d)});
  /* PT-032: skip cycles that look like logging gaps: longer than 60 days, or more than 10 unlogged days in a row */
  const gapOk=(a,b)=>{let run=0;for(let d=addD(a,1);d<b;d=addD(d,1)){if(S.e[d])run=0;else if(++run>10)return false}return true};
@@ -657,7 +658,7 @@ function renderSummary(){
  const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"});
  const rows=SYMK.map(k=>{const v=E.map(e=>e.s[k]||0);return[SN(k),avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
  const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${BN(S.e[d].bleed)})`);
- const cy=(()=>{const c=cycles(),lens=[];for(let i=1;i<c.starts.length;i++)if(addD(c.starts[i],-1).slice(0,7)===mon&&c.raw[i-1]!=null)lens.push(c.raw[i-1]);return{lens}})(),/* cycles that ended this month (may have started earlier) */trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const cy=(()=>{const c=cycles(),lens=[];let sk=0;for(let i=1;i<c.starts.length;i++)if(addD(c.starts[i],-1).slice(0,7)===mon){if(c.raw[i-1]!=null)lens.push(c.raw[i-1]);else sk++}return{lens,sk}})(),/* cycles that ended this month (may have started earlier) */trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
  const stv=E.map(stressOf).filter(v=>v!=null);
  const notes=ds.filter(d=>S.e[d].notes).slice(-6).map(d=>`<li><b>${fmt(d,{month:"short",day:"numeric"})}:</b> ${esc(S.e[d].notes)}</li>`).join("");
  const pats=correlations(0,ds).slice(0,3); // selected month only
@@ -672,7 +673,7 @@ function renderSummary(){
  ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r1(r[1])}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("")}</table>
  <div class="lbl">${t("byWeek")}</div>${svg}
  <div class="lbl">${t("bleedCyc")}</div>
- <p style="margin:0">${bleedDays.length?t("bleedOn")+bleedDays.join(", "):t("noBleed")}${cy.lens.length?"<br>"+t("recentLens",{l:cy.lens.slice(-6).join(", ")}):""}</p>
+ <p style="margin:0">${bleedDays.length?t("bleedOn")+bleedDays.join(", "):t("noBleed")}${cy.lens.length?"<br>"+t("recentLens",{l:cy.lens.slice(-6).join(", ")}):""}${cy.sk?"<br>"+skipTxt(cy.sk):""}</p>
  <div class="lbl">${t("trigMeds")}</div>
  <p style="margin:0">${trc.map(x=>`${x[0]}: ${x[1]}`).join(" · ")||t("none")}<br>${mc.map(x=>`${esc(x[0])}: ${x[1]}`).join(" · ")||t("noneLogged")}</p>
  ${pats.length?`<div class="lbl">${t("myPats")}</div><ul style="margin:0;padding-inline-start:18px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
@@ -695,13 +696,14 @@ function renderLetter(){
  // periods: weeks if <=1 month, else calendar months
  let per=[];
  if(m===1){for(let i=0;i<5;i++){const a=addD(from,i*7),b=i===4?today():addD(from,i*7+6);if(a>today())break;per.push([fmt(a,{day:"numeric",month:"short"}),ds.filter(d=>d>=a&&d<=b)])}}
- else{const td=today();[...new Set(ds.map(d=>d.slice(0,7)))].forEach(mo=>{const end=addD(mo+"-01",new Date(+mo.slice(0,4),+mo.slice(5),0).getDate()-1),fs=from<=mo+"-01",fe=td>=end;let lab=new Date(mo+"-15T12:00:00").toLocaleDateString(LOC(),{month:"short",year:"numeric"});if(!fe)lab+=" "+t("L_partTo",{d:fmt(td,{month:"short",day:"numeric"})});else if(!fs)lab+=" "+t("L_partFrom",{d:fmt(from,{month:"short",day:"numeric"})});per.push([lab,ds.filter(d=>d.startsWith(mo)),fs&&fe])})}
+ else{const td=today();[...new Set(ds.map(d=>d.slice(0,7)))].forEach(mo=>{const end=addD(mo+"-01",new Date(+mo.slice(0,4),+mo.slice(5),0).getDate()-1),md=ds.filter(d=>d.startsWith(mo)),fs=from<=mo+"-01"&&all[0]<=mo+"-01",fe=td>=end&&all[all.length-1]>=end;let lab=new Date(mo+"-15T12:00:00").toLocaleDateString(LOC(),{month:"short",year:"numeric"});if(!fe)lab+=" "+t("L_partTo",{d:fmt(td<end?td:md[md.length-1],{month:"short",day:"numeric"})});else if(!fs)lab+=" "+t("L_partFrom",{d:fmt(md[0],{month:"short",day:"numeric"})});per.push([lab,ds.filter(d=>d.startsWith(mo)),fs&&fe])})}
  per=per.filter(p=>p[1].length).map(([lab,dd,full])=>{const ee=dd.map(d=>S.e[d]),sv=ee.map(stressOf).filter(v=>v!=null);return{lab,full:!!full,n:dd.length,load:avg(ee.map(load_)),sleep:avg(ee.map(e=>e.s.sleep||0)),st:sv.length?avg(sv):null}});
  const mx=Math.max(1,...per.map(p=>p.load)),bw=Math.min(52,300/per.length-8);
  let svg=`<svg viewBox="0 0 320 100" width="100%" style="max-width:460px" direction="ltr">`;per.forEach((p,i)=>{const cx=10+(i+.5)*(300/per.length),h=p.load/mx*62;svg+=`<rect x="${cx-bw/2}" y="${78-h}" width="${bw}" height="${h}" rx="4" fill="#c98b8b"/><text x="${cx}" y="${74-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(p.load)}</text><text x="${cx}" y="94" font-size="9.5" text-anchor="middle" fill="#7a8679">${esc(p.lab.replace(/ \(.*\)$/,""))}</text>`});svg+="</svg>";
  const cy=cycles(),stIn=cy.starts.filter(d=>d>=from),lens=[];for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from&&cy.raw[i-1]!=null)lens.push(cy.raw[i-1]);
  let cyc;if(lens.length){const mn=Math.min(...lens),mxx=Math.max(...lens);cyc=t("L_cyc",{n:stIn.length,l:lens.join(", "),mn,mx:mxx,d:mxx-mn})}else if(stIn.length)cyc=t("L_cycOne",{d:df(stIn[0])});else cyc=t("L_cycNone");
  if(stIn.length>1)cyc+=" "+t("L_cycLast",{d:df(stIn[stIn.length-1])});
+ {let cSk=0;for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from&&cy.raw[i-1]==null)cSk++;if(cSk)cyc+=" "+skipTxt(cSk)}
  const sv=E.map(stressOf).filter(v=>v!=null);
  const pats=correlations(0,ds).slice(0,3);
  const lAll=avg(E.map(load_)),top3=freq.slice(0,3),pf=per.filter(p=>p.full),ch=pf.length>1?r1(pf[pf.length-1].load-pf[0].load):null;
