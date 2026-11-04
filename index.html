@@ -104,7 +104,7 @@ nav button.on{color:var(--sage);font-weight:700}
 .modal .src{font-size:12px;color:var(--mute);margin-top:10px}.modal .src a{color:var(--sage)}
 .langsw{display:flex;gap:6px}.langsw button{flex:1}
 .tipw{background:var(--sageL);border-radius:14px;padding:12px 14px;margin:12px 0;font-size:14px}.tipw b{display:block;color:var(--sage);font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
-.letter{font-family:Georgia,"Times New Roman",serif;font-size:14px;line-height:1.6}.letter p{margin:0 0 10px}.letter table{font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+.letter{font-family:Georgia,"Times New Roman",serif;font-size:14px;line-height:1.6}.letter p{margin:0 0 10px}@media print{.letter.lv2{line-height:1.42;font-size:13px}.letter.lv2 p{margin:0 0 6px}.letter.lv2 h2.lh{margin:10px 0 4px}.letter.lv2 svg{max-height:80px}}.letter h2.lh{font-size:15px;margin:16px 0 6px;padding-bottom:3px;border-bottom:1px solid #d9dfd6;break-after:avoid}.letter .lhead,.letter .lkv{width:100%;border-collapse:collapse;margin:0 0 6px}.letter .lhead th,.letter .lkv th{text-align:start;font-weight:600;width:42%;padding:3px 8px 3px 0;vertical-align:top;background:none!important;color:inherit!important}.letter .lhead td,.letter .lkv td{padding:3px 0}.letter .ltbl{width:100%;margin:4px 0 2px}.letter .ltbl td:not(:first-child),.letter .ltbl th:not(:first-child){text-align:center}.letter .lnote{font-size:11.5px;color:#6b7769;margin:2px 0 10px}.letter table{font-family:-apple-system,Segoe UI,Roboto,sans-serif}
 .row2{display:flex;gap:6px;margin:6px 0}.row2>*{flex:1}
 input[type=time]{border:1.5px solid var(--sageL);border-radius:10px;padding:9px;font:inherit;background:#fffdf9;color:var(--ink)}
 [dir=rtl] .afftag{margin-left:0;margin-right:4px}
@@ -325,11 +325,11 @@ tipRough:"Rough day. Many women find this helps {w}:",
 weekTipT:"This week's tip",
 docT:"Doctor summary",modeSum:"Monthly summary",modeLet:"Letter to my doctor",print:"Print / PDF",drPh:"Doctor's name (optional)",mePh:"Your name (optional)",r1:"Last month",r3:"Last 3 months",r6:"Last 6 months",rAll:"All my entries",
 printHelp:"On iPhone: Print → pinch-out the preview → Share to save as PDF or send. On Android: Print → Save as PDF.",
-sumTitle:"Monthly Symptom Summary",sumLine:"Days logged: <b>{n}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Average daily symptom load: <b>{a}</b>",sumMost:"Symptoms, most to least intense",thSym:"Symptom",thAvg:"Avg",thDays:"Days present",thMod:"Days ≥ moderate",thWorst:"Worst",byWeek:"Overall symptom load by week",wk:"Wk {n}",bleedCyc:"Bleeding & cycle",bleedOn:"Bleeding/spotting on day(s): ",noBleed:"No bleeding logged this month.",recentLens:"Cycles that ended this month: {l} days.",trigMeds:"Triggers logged · Meds/supplements taken",none:"None",noneLogged:"None logged",stressAvg:"Average stress: {a} / 3",
+sumTitle:"Monthly Symptom Summary",sumLine:"Days logged: <b>{n}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Overall symptom score (avg per day): <b>{a}</b> of 54 (sum of all 18 symptom ratings, each 0–3)",sumMost:"Symptoms, most to least intense",thSym:"Symptom",thAvg:"Avg",thDays:"Days present",thMod:"Days ≥ moderate",thWorst:"Worst",byWeek:"Overall symptom score by week (avg per day, max 54)",wk:"Wk {n}",bleedCyc:"Bleeding & cycle",bleedOn:"Bleeding/spotting on day(s): ",noBleed:"No bleeding logged this month.",recentLens:"Cycles that ended this month: {l} days.",trigMeds:"Triggers logged · Meds/supplements taken",none:"None",noneLogged:"None logged",stressAvg:"Average stress: {a} / 3",
 myPats:"Patterns I noticed (my own averages, not a diagnosis)",qs:"Questions for my doctor",footer:"Self-reported tracking summary made with Prime Traker. An organizing tool, not medical advice.",noMonth:"No entries for this month yet. Log a few check-ins, or load demo data in Settings to preview.",
 L_dear:"Dear {d},",L_dearNo:"Dear Doctor,",L_intro:"I have been tracking my symptoms every day to help us make the most of my appointment. Below is a short summary of {n} days of records from {a} to {b}. I rated each symptom from 0 (none) to 3 (severe).",
 L_freq:"The symptoms I have had most often are:",L_item:"<b>{s}</b>: on {p}% of logged days, usually {sev}",
-L_chart:"How my overall symptom load has changed:",L_tbl:"Period",L_load:"Avg load",L_sleep:"Sleep trouble",L_stress:"Stress",L_days:"Days",
+L_chart:"How my overall symptom score (avg per day) has changed:",L_tbl:"Period",L_load:"Overall symptom score (avg per day)",L_loadNote:"Sum of all symptom ratings for a day (each 0 none to 3 severe, 18 symptoms, max 54), averaged over the period.",L_hPat:"Patient",L_hDr:"Doctor",L_hPer:"Period covered",L_hDays:"{n} days logged",L_hMade:"Date made",L_sReason:"Reason for this letter",L_sGlance:"At a glance",L_gDays:"Days logged",L_gTop:"Top 3 symptoms (share of days)",L_gScore:"Overall symptom score (avg per day)",L_gChg:"Change vs the earlier period",L_gChgV:"{a} to {b}: {c} points",L_sSym:"Symptoms over time",L_sCyc:"Bleeding and cycle",L_sTrt:"Treatments and supplements",L_meds:"Meds or supplements I logged (days taken):",L_medItem:"{m} ({n})",L_trtNone:"No treatments or supplements logged in this period.",L_sQs:"Questions for my doctor",L_qsNone:"No questions selected yet.",L_sClose:"Closing",L_sleep:"Sleep trouble",L_stress:"Stress",L_days:"Days",
 L_cyc:"My cycle: I logged {n} period start(s). Cycle lengths were {l} days (shortest {mn}, longest {mx}, a difference of {d} days).",L_cycOne:"My cycle: I logged one period start, on {d}, so there is no cycle length yet.",L_cycNone:"My cycle: I did not log any bleeding in this period.",L_cycLast:"My last period started on {d}.",
 L_ss:"Alongside this, my sleep trouble averaged {s} out of 3 and my stress averaged {t} out of 3.",L_pats:"A few patterns in my own records (simple averages, not proof of cause):",
 L_ask:"I would be grateful if we could talk about these symptoms and what options might be suitable for me.",L_note:"These are my own day-to-day records, not a diagnosis. I am happy to share more detail.",L_close:"Kind regards,",L_noData:"There are no entries in this period yet. Log a few check-ins, or load demo data in Settings to preview.",L_dateFmt:"en-GB",
@@ -702,19 +702,33 @@ function renderLetter(){
  if(stIn.length>1)cyc+=" "+t("L_cycLast",{d:df(stIn[stIn.length-1])});
  const sv=E.map(stressOf).filter(v=>v!=null);
  const pats=correlations(0,ds).slice(0,3);
- $("sumBody").innerHTML=`<div class="letter">
- <p style="text-align:end">${df(today())}</p>
+ const lAll=avg(E.map(load_)),top3=freq.slice(0,3),ch=per.length>1?r1(per[per.length-1].load-per[0].load):null;
+ const cn=cntStats(E),mcL=(S.meds||[]).map(x=>[x,E.filter(e=>(e.meds||[]).includes(x)).length]).filter(x=>x[1]);
+ const H2=k=>`<h2 class="lh">${t(k)}</h2>`,kv=(k,v)=>`<tr><th scope="row">${t(k)}</th><td>${v}</td></tr>`;
+ $("sumBody").innerHTML=`<div class="letter lv2">
+ <table class="lhead">${kv("L_hPat",me?esc(me):"–")}${kv("L_hDr",dr?esc(dr):"–")}${kv("L_hPer",`${df(ds[0])} – ${df(ds[ds.length-1])} (${t("L_hDays",{n:ds.length})})`)}${kv("L_hMade",df(today()))}</table>
+ ${H2("L_sReason")}
  <p>${dr?t("L_dear",{d:esc(dr)}):t("L_dearNo")}</p>
  <p>${t("L_intro",{n:ds.length,a:df(ds[0]),b:df(ds[ds.length-1])})}</p>
+ ${H2("L_sGlance")}
+ <table class="sum lkv">${kv("L_gDays",ds.length)}${kv("L_gTop",top3.map(([k,c])=>`${SN(k)} (${Math.round(c/ds.length*100)}%)`).join(", ")||"–")}${kv("L_gScore",`${r1(lAll)} / 54`)}${ch==null?"":kv("L_gChg",t("L_gChgV",{a:esc(per[0].lab),b:esc(per[per.length-1].lab),c:(ch>0?"+":"")+ch}))}</table>
+ ${H2("L_sSym")}
  <p style="margin-bottom:4px">${t("L_freq")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${freq.map(([k,c,md])=>`<li>${t("L_item",{s:SN(k),p:Math.round(c/ds.length*100),sev:L().sev[md]})}</li>`).join("")}</ul>
  <p style="margin-bottom:2px">${t("L_chart")}</p>${svg}
- <table class="sum" style="padding:0;margin:4px 0 12px"><tr><th>${t("L_tbl")}</th><th>${t("L_days")}</th><th>${t("L_load")}</th><th>${t("L_sleep")} (0–3)</th><th>${t("L_stress")} (0–3)</th></tr>${per.map(p=>`<tr><td>${esc(p.lab)}</td><td>${p.n}</td><td>${r1(p.load)}</td><td>${r1(p.sleep)}</td><td>${p.st==null?"–":r1(p.st)}</td></tr>`).join("")}</table>
- <p>${cyc}</p>
+ <table class="sum ltbl"><tr><th>${t("L_tbl")}</th><th>${t("L_days")}</th><th>${t("L_load")}</th><th>${t("L_sleep")} (0–3)</th><th>${t("L_stress")} (0–3)</th></tr>${per.map(p=>`<tr><td>${esc(p.lab)}</td><td>${p.n}</td><td>${r1(p.load)}</td><td>${r1(p.sleep)}</td><td>${p.st==null?"–":r1(p.st)}</td></tr>`).join("")}</table>
+ <p class="lnote">${t("L_loadNote")}</p>
  <p>${t("L_ss",{s:r1(avg(E.map(e=>e.s.sleep||0))),t:sv.length?r1(avg(sv)):"–"})}</p>
+ ${(cn.hn?`<p>${t("L_cnt",{a:r1(cn.ha),n:cn.hn})}</p>`:"")+(cn.sn?`<p>${t("L_slh",{a:r1(cn.sa),n:cn.sn})}</p>`:"")}
  ${pats.length?`<p style="margin-bottom:4px">${t("L_pats")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${pats.map(p=>`<li>${LANG==="en"?p[1].replace(/\byour\b/g,"my").replace(/\bYour\b/g,"My").replace(/\byou\b/g,"I"):p[1]}</li>`).join("")}</ul>`:""}
- ${(()=>{const c=cntStats(E);return (c.hn?`<p>${t("L_cnt",{a:r1(c.ha),n:c.hn})}</p>`:"")+(c.sn?`<p>${t("L_slh",{a:r1(c.sa),n:c.sn})}</p>`:"")})()}
- ${v6Let(E,ds)}
- <div class="qwrap">${qHTML(false)}</div>
+ ${H2("L_sCyc")}
+ <p>${cyc}</p>
+ ${H2("L_sTrt")}
+ ${v6Let(E,ds)||""}
+ ${mcL.length?`<p>${t("L_meds")} ${mcL.map(x=>t("L_medItem",{m:esc(x[0]),n:x[1]})).join(", ")}.</p>`:""}
+ ${(S.hrt||[]).length||mcL.length?"":`<p>${t("L_trtNone")}</p>`}
+ ${H2("L_sQs")}
+ <div class="qwrap">${qHTML(false)}</div>${qSel().length?"":`<p class="lnote">${t("L_qsNone")}</p>`}
+ ${H2("L_sClose")}
  <p>${t("L_ask")}</p><p>${t("L_note")}</p>
  <p>${t("L_close")}<br>${me?esc(me):"<span style='display:inline-block;width:180px;border-bottom:1px solid #c9d2c6;height:20px'></span>"}</p>
  <p class="muted" style="margin-top:14px;font-size:11px;font-family:-apple-system,Segoe UI,Roboto,sans-serif">${t("footer")}</p></div>`;
@@ -833,7 +847,7 @@ mrsLv:["None","Mild","Moderate","Severe","Very severe"],mrsItems:["Hot flushes, 
 mrsTot:"Total",mrsSom:"Body",mrsPsy:"Mood & mind",mrsUro:"Bladder & vaginal",mrsTrend:"Score over time (lower = fewer complaints)",mrsNoData:"No self-checks yet.",mrsNote:"Self-check only, not a diagnosis. Scores go from 0 to 44. Share changes with your doctor.",
 mvT:"Movement and how you feel",mvNeed:"Not enough data yet to compare. This needs at least 5 days with movement and 5 without in the last 90 days. So far: {m} with, {n} without.",mvSub:"Averages on days you moved ({m} days) vs days you didn't ({n} days), last 90 days.",mvMove:"Moved",mvRest:"Didn't",mvNote:"A pattern in your own data, not proof of cause. Days you move may differ in other ways too.",
 sumMove:"Movement",sumMoveL:"Moved on {m} of {n} logged days, about {a} min on those days.",sumMoveTypes:"Types: {x}",sumNoMove:"No movement logged.",sumHrt:"Treatments / HRT",sumMrs:"Monthly self-check (MRS)",sumMrsL:"{d}: total {s}/44 (body {a}, mood & mind {b}, bladder & vaginal {c})",
-L_move:"I logged movement (walking, strength, yoga or cardio) on {m} of {n} days, about {a} minutes on those days.",L_hrt:"Treatments I have logged:",L_hrtItem:"{x}{dose}, started {d}",L_hw:"In the 4 weeks before vs after starting {x}, my average symptom load was {b} vs {a} and hot flashes a day {hb} vs {ha}.",L_mrs:"My Menopause Rating Scale self-check scores (0–44, self-reported):"});
+L_move:"I logged movement (walking, strength, yoga or cardio) on {m} of {n} days, about {a} minutes on those days.",L_hrt:"Treatments I have logged:",L_hrtItem:"{x}{dose}, started {d}",L_hw:"In the 4 weeks before vs after starting {x}, my overall symptom score (avg per day, max 54) was {b} vs {a} and hot flashes a day {hb} vs {ha}.",L_mrs:"My Menopause Rating Scale self-check scores (0–44, self-reported):"});
 Object.assign(I18N.he,{moveT:"תנועה היום",exNone:"בלי",exWalk:"הליכה",exStrength:"כוח",exYoga:"יוגה / מתיחות",exCardio:"אירובי",exMin:"דקות",rtBtn:"שגרות עדינות של 5–10 דקות",
 rtT:"שגרות עדינות",rtNote:"בקצב שלך, ועצרי אם משהו כואב או מרגיש לא נכון. אם יש לך מצב רפואי או שאת חדשה בפעילות גופנית, התייעצי קודם עם הרופא/ה. מידע כללי, לא ייעוץ רפואי.",rtDone:"עשיתי את זה היום",rtLogged:"נוסף לתנועה של היום",
 hfNow:"גל חום עכשיו? בואי ננשום",brT:"נשימה איטית",brIn:"שאיפה",brOut:"נשיפה",brLog:"להוסיף גם 1 לספירת גלי החום של היום",brStart:"התחלה (2 דק׳)",brStop:"עצירה",brDone:"סיימת. כל הכבוד שעצרת לרגע.",brSub:"שאיפה ל-4, נשיפה ל-6. כתפיים רפויות. בערך 2 דקות.",brLeft:"נותרו {s} שנ׳",brLogged:"גל חום נוסף להיום",
