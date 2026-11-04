@@ -1119,7 +1119,7 @@ d.style.cssText="position:fixed;left:12px;right:12px;margin:0 auto;box-sizing:bo
 var s=document.createElement("span");s.textContent=t.m;s.style.cssText="flex:1 1 auto;min-width:0;line-height:1.3";var b=document.createElement("button");b.type="button";b.id="upd-go";b.textContent=t.b;b.style.cssText="flex:0 0 auto;white-space:nowrap;min-height:44px;padding:0 14px;border:0;border-radius:12px;background:var(--sage,var(--olive,#6f8a6e));color:#fff;font:inherit;font-weight:700;cursor:pointer";
 var x=document.createElement("button");x.type="button";x.setAttribute("aria-label",t.x);x.textContent="×";x.style.cssText="flex:0 0 auto;min-width:44px;min-height:44px;border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer";
 b.onclick=function(){if(reg&&reg.waiting){want=true;reg.waiting.postMessage({type:"SKIP_WAITING"})}else{want=true;go()}};x.onclick=function(){d.remove()};d.append(s,b,x);document.body.appendChild(d)}
-window.__updShow=show; // used by app/tests/update_banner_test.py
+if(location.hostname==="localhost"||location.hostname==="127.0.0.1")window.__updShow=show; // test hook, local only (app/tests/update_banner_test.py)
 function go(){if(done)return;try{if(sessionStorage.getItem("upd-r")&&Date.now()-sessionStorage.getItem("upd-r")<10000)return;sessionStorage.setItem("upd-r",Date.now())}catch(e){}done=true;location.reload()}
 var had=!!navigator.serviceWorker.controller;
 navigator.serviceWorker.addEventListener("controllerchange",function(){if(!had){had=true;return}if(want&&!busy())go();else show()});
