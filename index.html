@@ -251,6 +251,14 @@ h3,.h3{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600;color:v
 .card p[data-t="calNote"]{display:none}
 </style>
 
+<style id="v27-sumcard">
+.sumc{display:flex;gap:12px;align-items:center;position:relative;padding-right:44px!important}
+.sumc svg{flex:none;width:58px;height:72px;border-radius:6px;box-shadow:0 1px 4px rgba(74,51,40,.18)}
+.sumc h2{font-family:Fraunces,Georgia,serif;font-size:17px;margin:0 0 6px;color:var(--ink);line-height:1.25}
+.sumc .btn{padding:9px 14px;min-height:44px}
+.sumc .x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;background:none;font-size:22px;color:var(--mute);border-radius:50%}
+</style>
+
 </head>
 <body>
 <div id="toast" class="saved"></div>
@@ -1223,6 +1231,18 @@ function renderHeatmap(){const c=$("cal");if(!c)return;const now=today();if(!cal
  c.innerHTML=h;c.setAttribute("role","img");c.setAttribute("aria-label",t("hmAria",{m:mName,n}));
  const em=$("hmEmpty");em.textContent=t("hmEmpty");em.classList.toggle("hide",n>0)}
 {const _ri=renderInsights;renderInsights=function(){const r=_ri.apply(this,arguments);try{renderHeatmap()}catch(e){console.error(e)}return r}}
+
+// v27: "Your {Month} summary is ready" card on Today when last month has entries; dismissible per month
+Object.assign(I18N.en,{sumReady:"Your {m} summary is ready",sumOpen:"Open summary",sumDismiss:"Dismiss {m} summary card"});
+function prevMonth(){const d=new Date(today()+"T12:00:00");d.setDate(1);d.setMonth(d.getMonth()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}
+function renderSumCard(){const v=$("v-today");if(!v)return;const o=$("sumCard");if(o)o.remove();const pm=prevMonth();
+ if(!S.onb||S.sumDis===pm||!Object.keys(S.e).some(k=>k.startsWith(pm)))return;
+ const mn=new Date(pm+"-15T12:00:00").toLocaleDateString("en-US",{month:"long"});
+ const thumb=`<svg viewBox="0 0 58 72" aria-hidden="true"><rect width="58" height="72" fill="#fffaf5"/><rect x="7" y="7" width="30" height="5" rx="2" fill="#4a3328"/><rect x="7" y="15" width="22" height="3" rx="1.5" fill="#c9b1a2"/>${[[24,"#a84a33"],[18,"#e39a86"],[14,"#e39a86"],[9,"#f5cdbf"],[6,"#f5cdbf"]].map(([w,c],i)=>`<rect x="7" y="${25+i*7}" width="${w*1.8}" height="4.5" rx="2" fill="${c}"/>`).join("")}<rect x="7" y="62" width="40" height="2.5" rx="1" fill="#e8cfc0"/></svg>`;
+ const p=$("prog")||v.querySelector(".datebar");p.insertAdjacentHTML("afterend",`<div class="card sumc" id="sumCard" role="region" aria-label="${esc(t("sumReady",{m:mn}))}">${thumb}<div><h2>${t("sumReady",{m:mn})}</h2><button class="btn" id="sumOpen">${t("sumOpen")}</button></div><button class="x" id="sumX" aria-label="${esc(t("sumDismiss",{m:mn}))}">×</button></div>`);
+ $("sumOpen").onclick=()=>{const s=$("sumMonth");s.innerHTML=`<option value="${pm}"></option>`;s.value=pm;sumMode="sum";show("summary")};
+ $("sumX").onclick=()=>{S.sumDis=pm;persist();renderSumCard()}}
+{const _rtS=renderToday;renderToday=function(){const r=_rtS.apply(this,arguments);renderSumCard();return r}}
 
 askPersist();
 boot();
