@@ -197,6 +197,12 @@ nav button{min-height:52px}
 .seg button.on{font-weight:800;box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink);position:relative}
 </style>
 
+<style id="v27-legend">
+.seglg{border:0!important;padding:0 0 2px!important}
+.seglg .seg i{width:44px;text-align:center;font-style:normal;font-size:10.5px;font-weight:700;color:var(--mute);white-space:nowrap;letter-spacing:-.02em;line-height:1.1}
+h2 .muted[data-t="scale"]{display:none}
+</style>
+
 </head>
 <body>
 <div id="toast" class="saved"></div>
@@ -1133,6 +1139,10 @@ function renderBakStat(){let p=$("bakStat");if(!p){$("expCsv").insertAdjacentHTM
 {const c=$("expCsv").closest(".card"),st=$("v-settings"),h=st&&st.querySelector("h1");if(c&&h)h.insertAdjacentElement("afterend",c)}
 {const _rt=renderToday;renderToday=function(){const r=_rt.apply(this,arguments);renderBakNote();return r}}
 {const _sv=show;show=function(v,k){const r=_sv(v,k);if(v==="settings")renderBakStat();return r}}
+// v27: scale legend shown once, above the first symptom row
+I18N.en.lgNone="None";I18N.en.lgMild="Mild";I18N.en.lgMod="Moderate";I18N.en.lgSev="Severe";
+{const _rtL=renderToday;renderToday=function(){const r=_rtL.apply(this,arguments);const sl=$("symList");if(sl&&!sl.querySelector(".seglg"))sl.insertAdjacentHTML("afterbegin",`<div class="sym seglg" aria-hidden="true"><span></span><div class="seg">${["lgNone","lgMild","lgMod","lgSev"].map(k=>`<i>${t(k)}</i>`).join("")}</div></div>`);return r}}
+
 askPersist();
 boot();
 </script>
