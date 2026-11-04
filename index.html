@@ -325,7 +325,7 @@ tipRough:"Rough day. Many women find this helps {w}:",
 weekTipT:"This week's tip",
 docT:"Doctor summary",modeSum:"Monthly summary",modeLet:"Letter to my doctor",print:"Print / PDF",drPh:"Doctor's name (optional)",mePh:"Your name (optional)",r1:"Last month",r3:"Last 3 months",r6:"Last 6 months",rAll:"All my entries",
 printHelp:"On iPhone: Print → pinch-out the preview → Share to save as PDF or send. On Android: Print → Save as PDF.",
-sumTitle:"Monthly Symptom Summary",sumLine:"Days logged: <b>{n}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Average daily symptom load: <b>{a}</b>",sumMost:"Symptoms, most to least intense",thSym:"Symptom",thAvg:"Avg",thDays:"Days present",thMod:"Days ≥ moderate",thWorst:"Worst",byWeek:"Overall symptom load by week",wk:"Wk {n}",bleedCyc:"Bleeding & cycle",bleedOn:"Bleeding/spotting on day(s): ",noBleed:"No bleeding logged this month.",recentLens:"Cycle lengths within this month: {l} days.",trigMeds:"Triggers logged · Meds/supplements taken",none:"None",noneLogged:"None logged",stressAvg:"Average stress: {a} / 3",
+sumTitle:"Monthly Symptom Summary",sumLine:"Days logged: <b>{n}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Average daily symptom load: <b>{a}</b>",sumMost:"Symptoms, most to least intense",thSym:"Symptom",thAvg:"Avg",thDays:"Days present",thMod:"Days ≥ moderate",thWorst:"Worst",byWeek:"Overall symptom load by week",wk:"Wk {n}",bleedCyc:"Bleeding & cycle",bleedOn:"Bleeding/spotting on day(s): ",noBleed:"No bleeding logged this month.",recentLens:"Cycles that ended this month: {l} days.",trigMeds:"Triggers logged · Meds/supplements taken",none:"None",noneLogged:"None logged",stressAvg:"Average stress: {a} / 3",
 myPats:"Patterns I noticed (my own averages, not a diagnosis)",qs:"Questions for my doctor",footer:"Self-reported tracking summary made with Prime Traker. An organizing tool, not medical advice.",noMonth:"No entries for this month yet. Log a few check-ins, or load demo data in Settings to preview.",
 L_dear:"Dear {d},",L_dearNo:"Dear Doctor,",L_intro:"I have been tracking my symptoms every day to help us make the most of my appointment. Below is a short summary of {n} days of records from {a} to {b}. I rated each symptom from 0 (none) to 3 (severe).",
 L_freq:"The symptoms I have had most often are:",L_item:"<b>{s}</b>: on {p}% of logged days, usually {sev}",
@@ -655,7 +655,7 @@ function renderSummary(){
  const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"});
  const rows=SYMK.map(k=>{const v=E.map(e=>e.s[k]||0);return[SN(k),avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
  const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${BN(S.e[d].bleed)})`);
- const cy=cycles(ds),trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const cy=(()=>{const c=cycles(),lens=[];for(let i=1;i<c.starts.length;i++)if(addD(c.starts[i],-1).slice(0,7)===mon)lens.push(c.lens[i-1]);return{lens}})(),/* cycles that ended this month (may have started earlier) */trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
  const stv=E.map(stressOf).filter(v=>v!=null);
  const notes=ds.filter(d=>S.e[d].notes).slice(-6).map(d=>`<li><b>${fmt(d,{month:"short",day:"numeric"})}:</b> ${esc(S.e[d].notes)}</li>`).join("");
  const pats=correlations(0,ds).slice(0,3); // selected month only
@@ -943,7 +943,7 @@ const _rIns=renderInsights;renderInsights=function(){_rIns();renderHrt();if(!hrt
  $("mrsBtn").textContent=thisM?t("mrsAgain"):t("mrsGo")};
 // --- summary / letter blocks
 function v6Move(E){const M=E.filter(moved),mins=M.map(e=>e.ex&&e.ex.m).filter(x=>x>0),ty={};M.forEach(e=>{const k=e.ex&&e.ex.t&&e.ex.t!=="none"?e.ex.t:"other";ty[k]=(ty[k]||0)+1});return{M,a:mins.length?Math.round(avg(mins)):"–",ty}}
-function v6Sum(E,ds){const mv=v6Move(E),mo0=ds[0]?ds[0].slice(0,7):"",H=(S.hrt||[]).filter(h=>h.d.slice(0,7)<=mo0).sort((a,b)=>a.d<b.d?-1:1),mo=ds[0]?ds[0].slice(0,7):"",Mr=mrsList().filter(m=>m.d.slice(0,7)===mo).slice(-3);
+function v6Sum(E,ds){const mv=v6Move(E),mo0=ds[0]?ds[0].slice(0,7):"",H=(S.hrt||[]).filter(h=>h.d.slice(0,7)<=mo0&&!(h.end&&h.end.slice(0,7)<mo0)) /* active during the month; h.end = optional stop date */.sort((a,b)=>a.d<b.d?-1:1),mo=ds[0]?ds[0].slice(0,7):"",Mr=mrsList().filter(m=>m.d.slice(0,7)===mo).slice(-3);
  const tys=Object.entries(mv.ty).map(([k,n])=>`${k==="other"?TN("exercise"):EXN(k)}: ${n}`).join(" · ");
  return `<div class="lbl">${t("sumMove")}</div><p style="margin:0">${mv.M.length?t("sumMoveL",{m:mv.M.length,n:E.length,a:mv.a})+(tys?"<br>"+t("sumMoveTypes",{x:tys}):""):t("sumNoMove")}</p>`+
  (H.length?`<div class="lbl">${t("sumHrt")}</div><p style="margin:0">${H.map(h=>`${esc(h.x)}${h.dose?" ("+esc(h.dose)+")":""} · ${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}`).join("<br>")}</p>`:"")+
