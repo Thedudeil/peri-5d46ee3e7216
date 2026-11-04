@@ -419,7 +419,7 @@ html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
    <button class="btn ghost block" id="reOnb" data-t="reOnb"></button></div>
  </section>
 </main>
-<nav><button data-v="today" class="on"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></b><span data-t="nToday"></span></button><button data-v="insights"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17c2-1 3-6 5-6.5s3 4 5 3.6 2.6-7.2 4.8-7.6S20.5 9 21 10"/><path d="M3 21h18"/></svg></b><span data-t="nIns"></span></button><button data-v="summary"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h8l3.5 3.6v13.2c0 .3-.3.6-.6.6H6.6c-.4 0-.6-.3-.6-.7V4.1c0-.4.2-.6.5-.6z"/><path d="M9 11h6M9 14.5h6M9 18h4"/></svg></b><span data-t="nDoc"></span></button><button data-v="comfort"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.3-8.4-9.6C3 6.9 6.7 4.6 9.3 6.3 10.6 7 11.4 8.3 12 9c.7-.8 1.5-2 2.8-2.7 2.7-1.5 6.2.8 5.6 4.3C19.5 15.8 12 20 12 20z"/></svg></b><span data-t="nComfort"></span></button><button data-v="settings"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.4 5.4l1.9 1.9M16.7 16.7l1.9 1.9M5.4 18.6l1.9-1.9M16.7 7.3l1.9-1.9"/></svg></b><span data-t="nSet"></span></button></nav>
+<nav><button data-v="today" class="on"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></b><span data-t="nToday"></span></button><button data-v="insights"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17c2-1 3-6 5-6.5s3 4 5 3.6 2.6-7.2 4.8-7.6S20.5 9 21 10"/><path d="M3 21h18"/></svg></b><span data-t="nIns"></span></button><button data-v="summary" data-al="Doctor summary"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h8l3.5 3.6v13.2c0 .3-.3.6-.6.6H6.6c-.4 0-.6-.3-.6-.7V4.1c0-.4.2-.6.5-.6z"/><path d="M9 11h6M9 14.5h6M9 18h4"/></svg></b><span data-t="nDoc"></span></button><button data-v="comfort"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.3-8.4-9.6C3 6.9 6.7 4.6 9.3 6.3 10.6 7 11.4 8.3 12 9c.7-.8 1.5-2 2.8-2.7 2.7-1.5 6.2.8 5.6 4.3C19.5 15.8 12 20 12 20z"/></svg></b><span data-t="nComfort"></span></button><button data-v="settings"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.4 5.4l1.9 1.9M16.7 16.7l1.9 1.9M5.4 18.6l1.9-1.9M16.7 7.3l1.9-1.9"/></svg></b><span data-t="nSet"></span></button></nav>
 </div>
 <script>
 const I18N={en:{cntT:"Counts (optional)",hfC:"Hot flashes today",hfSub:"Tap + each time one happens",slH:"Hours slept last night",slSub:"Steps of 30 minutes",hShort:"h",
@@ -1230,7 +1230,7 @@ function a11yFix(){document.querySelectorAll("svg:not([aria-hidden]):not([role])
  document.querySelectorAll("input,select,textarea").forEach(el=>{if(el.type==="hidden"||el.getAttribute("aria-label")||el.getAttribute("aria-labelledby"))return;if(el.id&&document.querySelector(`label[for="${el.id}"]`))return;if(el.closest("label"))return;
   const l=A11Y_LBL[el.id]||el.placeholder||el.title||(el.closest(".card")&&el.closest(".card").querySelector("h3,.h3")?.textContent)||el.id;if(l)el.setAttribute("aria-label",l)});
  document.querySelectorAll("button").forEach(b=>{const tx=b.textContent.trim();if(b.dataset.a11y&&tx){b.removeAttribute("aria-label");delete b.dataset.a11y}if(!tx&&!b.getAttribute("aria-label")&&b.title){b.setAttribute("aria-label",b.title);b.dataset.a11y="1"}});
- document.querySelectorAll("nav button").forEach(b=>{const sp=b.querySelector("span"),l=sp&&sp.textContent.trim();if(l&&b.getAttribute("aria-label")!==l)b.setAttribute("aria-label",l);const on=b.classList.contains("on");if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+ document.querySelectorAll("nav button").forEach(b=>{const sp=b.querySelector("span"),l=b.dataset.al||(sp&&sp.textContent.trim());if(l&&b.getAttribute("aria-label")!==l)b.setAttribute("aria-label",l);const on=b.classList.contains("on");if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
  const nv=document.querySelector("nav");if(nv&&!nv.getAttribute("aria-label"))nv.setAttribute("aria-label","Main");
  document.querySelectorAll(".modal:not(.hide)").forEach(m=>{m.setAttribute("role","dialog");m.setAttribute("aria-modal","true")})}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".modal:not(.hide)").forEach(m=>{const x=m.querySelector("[aria-label=Close]");x?x.click():m.classList.add("hide")})}});
@@ -1321,6 +1321,8 @@ function renderEmpty(){const v=$("v-insights");if(!v)return;const o=$("emptyCard
  const g=$("emGo");if(g)g.onclick=()=>{cur=today();show("today")};}
 {const _riE=renderInsights;renderInsights=function(){const r=_riE.apply(this,arguments);try{renderEmpty()}catch(e){console.error(e)}return r}}
 
+// v27: short visible nav label; accessible name stays "Doctor summary" (data-al)
+I18N.en.nDoc="Summary";
 askPersist();
 boot();
 </script>
