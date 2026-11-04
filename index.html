@@ -1267,7 +1267,7 @@ function renderProg(){const v=$("v-today");if(!v)return;let p=$("prog");if(!p){c
   $("doneSee").onclick=()=>show("insights");justDone=false;return}
  p.innerHTML=`<div class="pt"><span>${t("progN",{x,n})}</span>${x===n?`<span>${t("progAll")}</span>`:""}</div><div class="bar" role="progressbar" aria-label="${esc(t("progN",{x,n}))}" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${x}"><i style="width:${Math.round(x/n*100)}%"></i></div>`}
 {const _rtP=renderToday;renderToday=function(){const r=_rtP.apply(this,arguments);renderProg();return r}}
-{const _sb=$("saveBtn").onclick;$("saveBtn").onclick=ev=>{_sb(ev);if(cur===today()){justDone=true;show("today");window.scrollTo(0,0)}}}
+{const _sb=$("saveBtn").onclick;$("saveBtn").onclick=ev=>{const isT=cur===today(),_to=toast;if(isT)toast=()=>{};try{_sb(ev)}finally{toast=_to}if(isT){justDone=true;show("today");window.scrollTo(0,0)}}}
 
 // v27: month calendar heatmap with month navigation + legend (replaces the 5-week grid)
 Object.assign(I18N.en,{calT:"Your month at a glance",hmLess:"Lighter",hmMore:"Heavier",hmNone:"Not logged",hmBleed:"Bleeding",hmPrev:"Previous month",hmNext:"Next month",hmEmpty:"No check-ins this month yet.",hmAria:"{m}: {n} days logged"});
