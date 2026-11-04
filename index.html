@@ -343,7 +343,7 @@ nTitle:"Time for your check-in",nBody:"30 seconds to log how today went. Your fu
 backupT:"Backup",backupSub:"Your data lives only on this phone. Export a CSV now and then to keep it safe.",exp:"Export backup (CSV)",imp:"Import backup (CSV)",tryT:"Try it out",demo:"Load 60 days of demo data",clear:"Clear all data",aboutT:"About",
 discShort:"This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.",reOnb:"View welcome screen",
 nToday:"Check-in",nIns:"Insights",nDoc:"Doctor summary",nComfort:"Comfort",nSet:"Settings",
-backupDl:"Backup downloaded",imported:"Imported {n} days",badCsv:"That doesn't look like a Prime Traker backup.",demoMix:"Demo data will be mixed with your entries. Continue?",demoOk:"Demo data loaded",clearQ:"Delete ALL your entries from this phone? This can't be undone. (Export a backup first if you want to keep them.)",cleared:"All data cleared",
+backupDl:"Backup downloaded",imported:"Imported {n} days",badCsv:"That doesn't look like a Prime Traker backup.",demoMix:"Demo data will be mixed with your entries. Continue?",demoOk:"Demo data loaded",clearQ:"Delete all your entries, treatments, self-checks, names and reminder settings from this phone? This can't be undone. Your Plus code stays so you don't lose what you paid for. Export a backup first if you want to keep anything.",cleared:"All data cleared",
 whyT:"Why this can happen",explNote:"General education only, not a diagnosis or treatment advice. If a symptom worries you, talk to your doctor.",srcL:"Sources:"
 },he:{cntT:"ספירות (לא חובה)",hfC:"גלי חום היום",hfSub:"הקישי + בכל פעם שיש גל",slH:"שעות שינה בלילה האחרון",slSub:"בצעדים של חצי שעה",hShort:"ש׳",
 avgHF:"ממוצע גלי חום ליום",avgSl:"ממוצע שעות שינה",cntNone:"–",cntDays:"{n} ימים נספרו",
@@ -813,7 +813,13 @@ $("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm(t("demoMix")))ret
   const hd=addD(today(),-29);S.hrt=(S.hrt||[]).filter(h=>!h.demo);S.hrt.push({id:"demo1",demo:1,d:hd,x:LANG==="he"?"מדבקת אסטרדיול":"Estradiol patch",dose:"50 mcg"});
   const mo=k=>addD(today(),-k);S.mrs=[{d:mo(58),a:[3,1,3,2,2,2,3,2,1,2,2]},{d:mo(28),a:[3,1,3,2,1,2,2,2,1,2,2]},{d:today(),a:[2,0,2,1,1,1,2,2,1,1,2]}]}
  persist();toast(t("demoOk"));show("insights")};
-$("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){S={onb:true,e:{},meds:["Magnesium","Vitamin D"],lang:S.lang,plus:S.plus,remOn:S.remOn,remT:S.remT,dr:S.dr,me:S.me};persist();toast(t("cleared"));show("today")}};
+$("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){
+  const keep={onb:true,lang:S.lang,plus:S.plus,t0:S.t0}; // keep paid code + trial date only
+  try{localStorage.removeItem(KEY)}catch(x){}
+  S=Object.assign({e:{},meds:["Magnesium","Vitamin D"],remOn:false},keep);
+  clearTimeout(remTimer);remTimer=null; // cancel any scheduled reminder
+  persist();
+  toast(t("cleared"));show("today")}};
 
 // ---------- v6: movement, breathing, treatment/HRT, MRS
 Object.assign(I18N.en,{moveT:"Movement today",exNone:"None",exWalk:"Walk",exStrength:"Strength",exYoga:"Yoga / stretch",exCardio:"Cardio",exMin:"Minutes",rtBtn:"Gentle 5–10 min routines",
