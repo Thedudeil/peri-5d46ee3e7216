@@ -1087,6 +1087,23 @@ function a11yFix(){document.querySelectorAll("svg:not([aria-hidden]):not([role])
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".modal:not(.hide)").forEach(m=>{const x=m.querySelector("[aria-label=Close]");x?x.click():m.classList.add("hide")})}});
 new MutationObserver(()=>{clearTimeout(window._a11yT);window._a11yT=setTimeout(a11yFix,50)}).observe(document.body,{childList:true,subtree:true});
 
+// ---------- v26: protect history (Safari can clear site data after ~7 days without a visit)
+const BAK_DAYS=14;
+Object.assign(I18N.en,{bakDue:"It's been a while since your last backup. Your diary lives only on this phone, and some browsers clear stored data after a few weeks without a visit. Export a copy to keep it safe.",bakNever:"You haven't exported a backup yet. Your diary lives only on this phone, and some browsers clear stored data after a few weeks without a visit. Export a copy to keep it safe.",bakNow:"Export backup now",bakLater:"Remind me later",bakLast:"Last backup: {d}",bakNone:"No backup exported yet."});
+function askPersist(){try{if(navigator.storage&&navigator.storage.persist&&navigator.storage.persisted){navigator.storage.persisted().then(p=>{if(!p)return navigator.storage.persist()}).then(r=>{if(r!==undefined)S.persistOk=!!r}).catch(()=>{})}}catch(x){}}
+function realDays(){const D=S.demoTag||{e:{}},J=x=>JSON.stringify(x);return Object.keys(S.e||{}).filter(d=>{const x=S.e[d];if(!x||!x.saved)return false;return !(D.e&&d in D.e&&D.e[d]===J(x))}).sort()}
+function bakDue(){const r=realDays();if(r.length<3)return false;const now=today();if(S.bakSnz&&S.bakSnz>now)return false;const ref=S.lastBak||r[0];return dayDiff(ref,now)>BAK_DAYS}
+function renderBakNote(){const v=$("v-today");if(!v)return;v.querySelectorAll(".baknote").forEach(x=>x.remove());if(!S.onb||!bakDue())return;
+ const h1=v.querySelector("h1")||v.firstElementChild;const html=`<div class="card baknote" role="region" aria-label="${esc(t("backupT"))}"><p style="margin:0 0 8px">${t(S.lastBak?"bakDue":"bakNever")}</p><button class="btn block" id="bakNow">${t("bakNow")}</button><button class="btn ghost block" id="bakLater">${t("bakLater")}</button></div>`;
+ h1?h1.insertAdjacentHTML("afterend",html):v.insertAdjacentHTML("afterbegin",html);
+ $("bakNow").onclick=()=>$("expCsv").click();$("bakLater").onclick=()=>{S.bakSnz=addD(today(),7);persist();renderBakNote()}}
+function renderBakStat(){let p=$("bakStat");if(!p){$("expCsv").insertAdjacentHTML("beforebegin",'<p class="muted" id="bakStat" style="margin:0 0 6px"></p>');p=$("bakStat")}p.textContent=S.lastBak?t("bakLast",{d:fmt(S.lastBak,{day:"numeric",month:"long",year:"numeric"})}):t("bakNone")}
+{const ex=$("expCsv").onclick;$("expCsv").onclick=e=>{ex(e);S.lastBak=today();delete S.bakSnz;persist();renderBakNote();renderBakStat()}}
+// Backup card first in Settings so it's easy to find
+{const c=$("expCsv").closest(".card"),st=$("v-settings"),h=st&&st.querySelector("h1");if(c&&h)h.insertAdjacentElement("afterend",c)}
+{const _rt=renderToday;renderToday=function(){const r=_rt.apply(this,arguments);renderBakNote();return r}}
+{const _sv=show;show=function(v,k){const r=_sv(v,k);if(v==="settings")renderBakStat();return r}}
+askPersist();
 boot();
 </script>
 
