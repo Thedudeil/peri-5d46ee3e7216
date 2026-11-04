@@ -956,7 +956,7 @@ function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.
  return o}
 
 // ---------- v14: Prime Traker Free + Plus.
-// Free forever, no card: daily check-ins + the last 30 days of history. Plus: patterns/insights, doctor summary, full history + export.
+// Core App is free, no payment card: daily check-ins + the last 30 days of history. Plus: patterns/insights, doctor summary, full history + export.
 // A 14-day Plus trial starts on first use with no card (S.t0). After it ends, Plus features lock; data is kept, older days are only hidden.
 // Reinstalling wipes local data and only resets to Free, so no extra guard is needed. Plus unlocks with a PRIME-XXXX-XXXX code from Whop.
 const PAYWALL_ENABLED=false; // false = everything free, no trial chip or upsell (current live behaviour)
@@ -1001,12 +1001,12 @@ function isPlus(){if(!S.plus)return false;if(!LICENSE_SERVER_ENABLED)return true
 function hasAccess(){return !PAYWALL_ENABLED||isPlus()||inTrial()}
 function histFloor(){return addD(seenDay(),-(FREE_HIST-1))}
 Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus trial: last day",trialNote:"Your free Plus trial is almost over. Check-ins and your last 30 days stay free, always. Plus keeps your patterns, doctor summary and full history going.",
- upT:"Your patterns are just starting to show",upSub:"Prime Traker stays free forever: daily check-ins and your last 30 days, no card needed. Your data is never deleted; older days are just tucked away until you upgrade. Plus unlocks the rest:",
+ upT:"Your patterns are just starting to show",upSub:"The core App is free and needs no payment card: daily check-ins and your last 30 days of history. Your data is never deleted; older days are just tucked away until you upgrade. Plus unlocks the rest:",
  upL1:"Patterns, triggers and trends",upL2:"“Is it working?” for your treatment",upL3:"Doctor summary and letter",upL4:"Your full history, plus CSV export",upL5:"Movement insight and MRS trend",
  upM:"{p} / month",upY:"{p} / year",upYs:"{m}/mo, save ~59%",upTry:"Get Plus",upFine:"Billed by Whop. Renews automatically on the plan you choose until you cancel; cancel anytime.",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
  plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusTrial:"You’re on a free Plus trial: {n} days left. No card needed, nothing to cancel.",plusNoStart:"Free plan: check-ins and your last 30 days. Get Plus on Whop, then enter the code you receive.",plusSee:"See Plus",lockedTap:"Part of Plus",
  histLock:"Days older than 30 are safe and kept. Plus shows your full history.",
- faqT:"Free & Plus questions",faqs:[["Do I need a card to start?","No. Prime Traker is free forever, and every new user gets 14 days of Plus free, with no card."],["What happens after the 14 days?","Plus features lock and you keep the free version: check-ins and your last 30 days. Nothing is charged and nothing is deleted."],["What does Plus cost?","$9.99 a month or $49 a year. It renews automatically on the plan you pick until you cancel."],["Is my older data gone if I don’t upgrade?","No. It stays on your phone; it’s only hidden past 30 days until you get Plus."]]});
+ faqT:"Free & Plus questions",faqs:[["Do I need a card to start?","No. The core App is free and needs no payment card: daily check-ins and your last 30 days of history. Every new user also gets 14 days of Plus free, with no card."],["What happens after the 14 days?","Plus features lock and you keep the free version: check-ins and your last 30 days. Nothing is charged and nothing is deleted."],["What does Plus cost?","$9.99 a month or $49 a year. It renews automatically on the plan you pick until you cancel."],["Is my older data gone if I don’t upgrade?","No. It stays on your phone; it’s only hidden past 30 days until you get Plus."]]});
 const ICK='<svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--sage)"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px;color:var(--ochre)"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
 <h2>${t("upT")}</h2><p class="muted" style="font-size:14px">${t("upSub")}</p><ul class="upl">${["upL1","upL2","upL3","upL4","upL5"].map(k=>`<li>${ICK}<span>${t(k)}</span></li>`).join("")}</ul>
