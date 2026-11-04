@@ -504,7 +504,7 @@ document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{LANG=b.datase
 function explain(k){const x=EXPL[k];if(!x)return;$("mT").textContent=SN(k);$("mB").innerHTML=`<b>${t("whyT")}</b><br>`+x[LANG];$("mN").textContent=t("explNote");
  $("mS").innerHTML=t("srcL")+" "+x.s.map(s=>`<a href="${SRC[s][1]}" target="_blank" rel="noopener" dir="ltr">${SRC[s][0]}</a>`).join(" · ");$("modal").classList.remove("hide")}
 $("mX").onclick=()=>$("modal").classList.add("hide");$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.add("hide")};
-const infoBtn=k=>`<button class="info" data-x="${k}" aria-label="${esc(t("whyT"))}">i</button>`;
+const infoBtn=k=>`<button class="info" data-x="${k}" aria-label="${esc(t("whyT"))}: ${esc(SN(k))}">i</button>`;
 
 // ---------- onboarding
 function boot(){applyLang();
@@ -520,7 +520,7 @@ function show(v,keep){document.querySelectorAll(".view").forEach(s=>s.classList.
  ({today:renderToday,insights:renderInsights,summary:renderSummary,comfort:renderShop,settings:()=>{renderReminder();renderInstStat()}})[v]();if(!keep)scrollTo(0,0)}
 
 // ---------- check-in
-const seg=(k,val)=>`<div class="seg" data-k="${k}">${[0,1,2,3].map(v=>`<button data-v="${v}" class="${(val??-1)===v?"on":""}">${v}</button>`).join("")}</div>`;
+const seg=(k,val)=>{const nm=SN(k==="_st"?"stress":k),sv=L().sev||[];return `<div class="seg" data-k="${k}" role="group" aria-label="${esc(nm)}">${[0,1,2,3].map(v=>`<button data-v="${v}" class="${(val??-1)===v?"on":""}" aria-pressed="${(val??-1)===v}" aria-label="${esc(nm)}: ${v}${sv[v]?" "+esc(sv[v]):""}">${v}</button>`).join("")}</div>`};
 function renderToday(){
  const e=S.e[cur]||{s:{},bleed:"none",trig:[],meds:[],notes:""};
  $("dLabel").textContent=cur===today()?t("today")+" · "+fmt(cur,{month:"short",day:"numeric"}):fmt(cur);
@@ -529,8 +529,8 @@ function renderToday(){
  $("symList").innerHTML=list.map(k=>`<div class="sym"><span>${SN(k)}${infoBtn(k)}</span>${seg(k,e.s[k])}</div>`).join("");
  $("stressRow").innerHTML=`<div class="sym"><span>${SN("stress")}${infoBtn("stress")}</span>${seg("_st",e.st)}</div>`;
  $("moreSym").textContent=showAll?t("showFewer"):t("showMore",{n:SYMK.length-CORE});
- const hs=e.hs;$("cntRow").innerHTML=`<div class="ctr"><span>${t("hfC")}<small>${t("hfSub")}</small></span><div class="st"><button id="hfM" aria-label="−">−</button><b id="hfN">${e.hf||0}</b><button id="hfP" class="p" aria-label="+">+</button></div></div>
- <div class="ctr"><span>${t("slH")}<small>${t("slSub")}</small></span><div class="st"><button id="slM" aria-label="−">−</button><b id="slN">${hs==null?"–":hs+t("hShort")}</b><button id="slP" class="p" aria-label="+">+</button></div></div>`;
+ const hs=e.hs;$("cntRow").innerHTML=`<div class="ctr"><span>${t("hfC")}<small>${t("hfSub")}</small></span><div class="st"><button id="hfM" aria-label="One fewer hot flash">−</button><b id="hfN">${e.hf||0}</b><button id="hfP" class="p" aria-label="One more hot flash">+</button></div></div>
+ <div class="ctr"><span>${t("slH")}<small>${t("slSub")}</small></span><div class="st"><button id="slM" aria-label="Less sleep">−</button><b id="slN">${hs==null?"–":hs+t("hShort")}</b><button id="slP" class="p" aria-label="More sleep">+</button></div></div>`;
  $("bleedC").innerHTML=BLEEDK.map(k=>`<button class="chip ${e.bleed===k?"on":""}" data-k="${k}">${BN(k)}</button>`).join("");
  $("trigC").innerHTML=TRIGK.filter(k=>k!=="stress").map(k=>`<button class="chip ${e.trig.includes(k)?"on":""}" data-k="${k}">${TN(k)}</button>`).join("");
  $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||`<span class="muted">${t("noMeds")}</span>`;
@@ -722,7 +722,7 @@ function renderLetter(){
 function qSel(){return [...(S.qs||[]).filter(i=>i>=0&&i<8).sort((a,b)=>a-b).map(i=>L().Q[i]),...(S.qc||[])]}
 function qHTML(lines){const sel=qSel(),Q=L().Q;
  const pick=`<div class="qpick"><p class="muted" style="margin:2px 0 4px">${t("qPickH")}</p>${Q.map((q,i)=>`<label><input type="checkbox" data-q="${i}" ${(S.qs||[]).includes(i)?"checked":""}><span>${q}</span></label>`).join("")}
- ${(S.qc||[]).map((q,i)=>`<label><input type="checkbox" checked disabled><span style="flex:1">${esc(q)}</span><button class="x" data-cx="${i}" aria-label="Remove">×</button></label>`).join("")}
+ ${(S.qc||[]).map((q,i)=>`<label><input type="checkbox" checked disabled><span style="flex:1">${esc(q)}</span><button class="x" data-cx="${i}" aria-label="Remove question">×</button></label>`).join("")}
  <div class="cq"><input type="text" class="qIn" maxlength="200" data-p="qPh" placeholder="${esc(t("qPh"))}"><button class="btn alt qAdd">${t("qAdd")}</button></div></div>`;
  const pr=lines?`<ul class="qprint">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ul>`+(sel.length?"":'<div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div>')
   :(sel.length?`<p style="margin-bottom:4px">${t("L_qs")}</p><ol style="margin:0 0 10px;padding-inline-start:20px">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:"");
@@ -898,7 +898,7 @@ $("hfNow").onclick=()=>{openSheet(t("brT"),`<p class="muted" style="margin:4px 0
   tick();brT=setInterval(tick,1000)}};
 // --- treatments
 function renderHrt(){const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);$("hrtD").max=today();if(!$("hrtD").value)$("hrtD").value=today();
- $("hrtList").innerHTML=H.length?H.map(h=>`<div class="hrtl"><span><b>${esc(h.x)}</b>${h.dose?" · "+esc(h.dose):""}<br><small class="muted">${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}</small></span><span style="white-space:nowrap"><button data-e="${h.id}" aria-label="${t("hrtEdit")}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></button><button data-id="${h.id}" aria-label="Remove">×</button></span></div>`).join(""):`<p class="muted">${t("hrtNone")}</p>`}
+ $("hrtList").innerHTML=H.length?H.map(h=>`<div class="hrtl"><span><b>${esc(h.x)}</b>${h.dose?" · "+esc(h.dose):""}<br><small class="muted">${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}</small></span><span style="white-space:nowrap"><button data-e="${h.id}" aria-label="${t("hrtEdit")}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></button><button data-id="${h.id}" aria-label="Remove treatment">×</button></span></div>`).join(""):`<p class="muted">${t("hrtNone")}</p>`}
 let hrtEd=null;
 function hrtReset(){hrtEd=null;if($("hrtMsg"))$("hrtMsg").textContent="";$("hrtX").value="";$("hrtDo").value="";$("hrtD").value=today();$("hrtAdd").textContent=t("hrtAdd");$("hrtCancel").classList.add("hide")}
 $("hrtAdd").onclick=()=>{const x=$("hrtX").value.trim().replace(/\s+/g," "),d=$("hrtD").value||today(),hm=m=>{$("hrtMsg").textContent=m};hm("");if(!x){hm(t("hrtNeedType"));$("hrtX").focus();return}
@@ -1083,7 +1083,9 @@ const A11Y_LBL={chartSym:"Symptom to show on the chart",sumMonth:"Month to summa
 function a11yFix(){document.querySelectorAll("svg:not([aria-hidden]):not([role])").forEach(s=>s.setAttribute("aria-hidden","true"));
  document.querySelectorAll("input,select,textarea").forEach(el=>{if(el.type==="hidden"||el.getAttribute("aria-label")||el.getAttribute("aria-labelledby"))return;if(el.id&&document.querySelector(`label[for="${el.id}"]`))return;if(el.closest("label"))return;
   const l=A11Y_LBL[el.id]||el.placeholder||el.title||(el.closest(".card")&&el.closest(".card").querySelector("h3,.h3")?.textContent)||el.id;if(l)el.setAttribute("aria-label",l)});
- document.querySelectorAll("button").forEach(b=>{if(!b.textContent.trim()&&!b.getAttribute("aria-label"))b.setAttribute("aria-label",b.title||"Button")});
+ document.querySelectorAll("button").forEach(b=>{const tx=b.textContent.trim();if(b.dataset.a11y&&tx){b.removeAttribute("aria-label");delete b.dataset.a11y}if(!tx&&!b.getAttribute("aria-label")&&b.title){b.setAttribute("aria-label",b.title);b.dataset.a11y="1"}});
+ document.querySelectorAll("nav button").forEach(b=>{const sp=b.querySelector("span"),l=sp&&sp.textContent.trim();if(l&&b.getAttribute("aria-label")!==l)b.setAttribute("aria-label",l);const on=b.classList.contains("on");if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+ const nv=document.querySelector("nav");if(nv&&!nv.getAttribute("aria-label"))nv.setAttribute("aria-label","Main");
  document.querySelectorAll(".modal:not(.hide)").forEach(m=>{m.setAttribute("role","dialog");m.setAttribute("aria-modal","true")})}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".modal:not(.hide)").forEach(m=>{const x=m.querySelector("[aria-label=Close]");x?x.click():m.classList.add("hide")})}});
 new MutationObserver(()=>{clearTimeout(window._a11yT);window._a11yT=setTimeout(a11yFix,50)}).observe(document.body,{childList:true,subtree:true});
