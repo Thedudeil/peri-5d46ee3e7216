@@ -637,7 +637,9 @@ function correlations(n,dsIn){
  return out.sort((a,b)=>b[2]-a[2]).slice(0,5).map(x=>[x[0],x[1]]);
 }
 function cycles(only){const ks=only?only.slice().sort():Object.keys(S.e).sort(),ok=only?new Set(ks):null,g=d=>ok&&!ok.has(d)?undefined:S.e[d],starts=[];ks.forEach(d=>{if(isBleed(S.e[d])&&!isBleed(g(addD(d,-1)))&&!isBleed(g(addD(d,-2))))starts.push(d)});
- const lens=[];for(let i=1;i<starts.length;i++)lens.push(Math.round((new Date(starts[i])-new Date(starts[i-1]))/864e5));return{starts,lens}}
+ /* PT-032: skip cycles that look like logging gaps: longer than 60 days, or more than 10 unlogged days in a row */
+ const gapOk=(a,b)=>{let run=0;for(let d=addD(a,1);d<b;d=addD(d,1)){if(S.e[d])run=0;else if(++run>10)return false}return true};
+ const raw=[];for(let i=1;i<starts.length;i++){const n=Math.round((new Date(starts[i])-new Date(starts[i-1]))/864e5);raw.push(n<=60&&gapOk(starts[i-1],starts[i])?n:null)}return{starts,raw,lens:raw.filter(x=>x!=null)}}
 
 // ---------- summary + letter
 $("modeSum").onclick=()=>{sumMode="sum";renderSummary()};$("modeLet").onclick=()=>{sumMode="let";renderSummary()};
@@ -655,7 +657,7 @@ function renderSummary(){
  const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"});
  const rows=SYMK.map(k=>{const v=E.map(e=>e.s[k]||0);return[SN(k),avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
  const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${BN(S.e[d].bleed)})`);
- const cy=(()=>{const c=cycles(),lens=[];for(let i=1;i<c.starts.length;i++)if(addD(c.starts[i],-1).slice(0,7)===mon)lens.push(c.lens[i-1]);return{lens}})(),/* cycles that ended this month (may have started earlier) */trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const cy=(()=>{const c=cycles(),lens=[];for(let i=1;i<c.starts.length;i++)if(addD(c.starts[i],-1).slice(0,7)===mon&&c.raw[i-1]!=null)lens.push(c.raw[i-1]);return{lens}})(),/* cycles that ended this month (may have started earlier) */trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
  const stv=E.map(stressOf).filter(v=>v!=null);
  const notes=ds.filter(d=>S.e[d].notes).slice(-6).map(d=>`<li><b>${fmt(d,{month:"short",day:"numeric"})}:</b> ${esc(S.e[d].notes)}</li>`).join("");
  const pats=correlations(0,ds).slice(0,3); // selected month only
@@ -697,7 +699,7 @@ function renderLetter(){
  per=per.filter(p=>p[1].length).map(([lab,dd,full])=>{const ee=dd.map(d=>S.e[d]),sv=ee.map(stressOf).filter(v=>v!=null);return{lab,full:!!full,n:dd.length,load:avg(ee.map(load_)),sleep:avg(ee.map(e=>e.s.sleep||0)),st:sv.length?avg(sv):null}});
  const mx=Math.max(1,...per.map(p=>p.load)),bw=Math.min(52,300/per.length-8);
  let svg=`<svg viewBox="0 0 320 100" width="100%" style="max-width:460px" direction="ltr">`;per.forEach((p,i)=>{const cx=10+(i+.5)*(300/per.length),h=p.load/mx*62;svg+=`<rect x="${cx-bw/2}" y="${78-h}" width="${bw}" height="${h}" rx="4" fill="#c98b8b"/><text x="${cx}" y="${74-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(p.load)}</text><text x="${cx}" y="94" font-size="9.5" text-anchor="middle" fill="#7a8679">${esc(p.lab.replace(/ \(.*\)$/,""))}</text>`});svg+="</svg>";
- const cy=cycles(),stIn=cy.starts.filter(d=>d>=from),lens=[];for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from)lens.push(cy.lens[i-1]);
+ const cy=cycles(),stIn=cy.starts.filter(d=>d>=from),lens=[];for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from&&cy.raw[i-1]!=null)lens.push(cy.raw[i-1]);
  let cyc;if(lens.length){const mn=Math.min(...lens),mxx=Math.max(...lens);cyc=t("L_cyc",{n:stIn.length,l:lens.join(", "),mn,mx:mxx,d:mxx-mn})}else if(stIn.length)cyc=t("L_cycOne",{d:df(stIn[0])});else cyc=t("L_cycNone");
  if(stIn.length>1)cyc+=" "+t("L_cycLast",{d:df(stIn[stIn.length-1])});
  const sv=E.map(stressOf).filter(v=>v!=null);
