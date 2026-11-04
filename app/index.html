@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="en" dir="ltr"><head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#e8a99a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prime Traker">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6f8a6e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Prime Traker">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23fbeee6'/%3E%3Cpath d='M84 52c40-4 74-2 92 12 20 16 18 48-4 62-20 12-52 12-86 8z' fill='%23e8a99a' stroke='%234a3328' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M84 50c-3 50-1 104 2 156' fill='none' stroke='%234a3328' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='186' cy='182' r='17' fill='%23d99a3d' stroke='%234a3328' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' stroke-width='7'/%3E%3C/svg%3E">
+<title>Prime Traker</title>
+<meta name="description" content="30-second daily check-in, patterns you can see, and a summary for your doctor. Your data stays on your phone.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Prime Traker">
+<meta property="og:title" content="Prime Traker">
+<meta property="og:description" content="30-second daily check-in, patterns you can see, and a summary for your doctor. Your data stays on your phone.">
+<meta property="og:url" content="https://primetraker.com/app/">
+<meta property="og:image" content="https://primetraker.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prime Traker app screens: daily check-in and patterns">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prime Traker">
+<meta name="twitter:description" content="30-second daily check-in, patterns you can see, and a summary for your doctor. Your data stays on your phone.">
+<meta name="twitter:image" content="https://primetraker.com/og-image.png">
+<style>
+:root{--sage:#6f8a6e;--sageL:#dfe7dc;--rose:#c98b8b;--roseL:#f3e2df;--cream:#fbf7f0;--ink:#3c4a3b;--mute:#7a8679}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;margin:0 0 8px}
+h1{font-size:26px}h2{font-size:21px}h3,.h3{font-size:16px;color:var(--sage);margin-top:4px}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 96px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card{background:#fff;border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 1px 3px rgba(60,74,59,.08)}
+.muted{color:var(--mute);font-size:13px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-size:15px;font-weight:600;background:var(--sage);color:#fff;cursor:pointer}
+.btn.alt{background:var(--sageL);color:var(--ink)}.btn.rose{background:var(--rose)}.btn.ghost{background:transparent;color:var(--sage);border:1.5px solid var(--sage)}
+.btn.block{width:100%;margin-top:8px}
+.sym{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eee}
+.sym:last-child{border:0}.sym span{font-size:14px;flex:1}
+.seg{display:flex;gap:5px}
+.seg button{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--rose);background:#fff;color:var(--rose);font-weight:700;font-size:15px}
+.seg button.on[data-v="0"]{background:var(--sageL);border-color:var(--sage);color:var(--ink)}
+.seg button.on[data-v="1"]{background:var(--roseL);color:var(--ink)}
+.seg button.on[data-v="2"]{background:#dcaaa6;color:#fff}
+.seg button.on[data-v="3"]{background:var(--rose);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid var(--sage);background:#fff;color:var(--sage);border-radius:20px;padding:7px 12px;font-size:13.5px}
+.chip.on{background:var(--sage);color:#fff}
+textarea,input[type=text],select{width:100%;border:1.5px solid var(--sageL);border-radius:10px;padding:10px;font:inherit;background:#fffdf9;color:var(--ink)}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid var(--sageL);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav button{flex:1;border:0;background:none;padding:9px 0 10px;font-size:11.5px;color:var(--mute)}
+nav button b{display:block;font-size:20px;font-weight:400}
+nav button.on{color:var(--sage);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--sageL);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:22px;font-family:Georgia,serif}
+.stat small{font-size:11.5px;color:var(--mute)}
+.ins{background:var(--roseL);border-left:4px solid var(--rose);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:14px}
+.ins.g{background:var(--sageL);border-color:var(--sage)}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13.5px}
+.bar span{width:120px;flex:none}.bar i{height:12px;background:var(--rose);border-radius:6px;display:block}
+.bar em{font-style:normal;color:var(--mute);font-size:12.5px}
+.tabs2{display:flex;gap:6px;margin-bottom:8px}
+.disc{background:var(--roseL);border-left:4px solid var(--rose);border-radius:10px;padding:12px;font-size:13.5px}
+.hide{display:none!important}
+.saved{position:fixed;left:50%;top:16px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;z-index:9;opacity:0;transition:.3s}
+.saved.show{opacity:1}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal div{aspect-ratio:1;border-radius:6px;font-size:10px;padding:2px;color:var(--mute);background:#fff;border:1px solid #eee}
+.cal .l1{background:var(--roseL)}.cal .l2{background:#dcaaa6;color:#fff}.cal .l3{background:var(--rose);color:#fff}.cal .bl{box-shadow:inset 0 -4px 0 #a33}
+.datebar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.datebar button{background:var(--sageL);border:0;border-radius:10px;width:40px;height:40px;font-size:18px;color:var(--ink)}
+/* summary */
+.sum{background:#fff;border-radius:12px;padding:16px;font-size:13px}
+.sum table{width:100%;border-collapse:collapse;margin:6px 0}
+.sum th{background:var(--sage);color:#fff;text-align:left;padding:5px;font-size:12px}
+.sum td{border-bottom:1px solid #e6ebe4;padding:5px;font-size:12.5px}
+.sum .hd{border-bottom:3px solid var(--sage);display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}
+.lbl{font-size:13px;font-weight:600;margin:12px 0 6px}
+@media print{
+ @page{margin:12mm}
+ html,body{background:#fff!important}
+ .lbl{break-after:avoid;page-break-after:avoid}
+ .sum table,.letter table,.letter ul,.letter ol{break-inside:avoid}
+ nav,.noprint,.saved{display:none!important}
+ .wrap{padding:0;max-width:none}
+ .view:not(#v-summary){display:none!important}
+ .sum{box-shadow:none;padding:0}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.aff{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid #eef0ea}.aff:first-of-type{border-top:0}.aff a{color:#3c4a3b;font-weight:600;text-decoration:none}.aff p{margin:2px 0;font-size:13px;color:#667}.afftag{display:inline-block;font-size:10px;background:#f3ead9;color:#7a5b20;border-radius:6px;padding:1px 6px;margin-left:4px;font-weight:600}.pic{flex:0 0 auto;border-radius:14px}#tipTxt{display:flex;gap:10px;align-items:center}.affdisc{font-size:11px;color:#889;margin-top:8px}
+.info{width:20px;height:20px;border-radius:50%;border:1.3px solid var(--sage);background:#fff;color:var(--sage);font:italic 700 12px Georgia,serif;padding:0;margin-inline-start:6px;vertical-align:1px;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(40,50,40,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.modal .box{background:#fff;border-radius:18px 18px 0 0;max-width:560px;width:100%;padding:18px 18px calc(18px + env(safe-area-inset-bottom));max-height:80vh;overflow:auto}
+.modal .src{font-size:12px;color:var(--mute);margin-top:10px}.modal .src a{color:var(--sage)}
+.langsw{display:flex;gap:6px}.langsw button{flex:1}
+.tipw{background:var(--sageL);border-radius:14px;padding:12px 14px;margin:12px 0;font-size:14px}.tipw b{display:block;color:var(--sage);font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.letter{font-family:Georgia,"Times New Roman",serif;font-size:14px;line-height:1.6}.letter p{margin:0 0 10px}@media print{.letter.lv2{line-height:1.42;font-size:13px}.letter.lv2 p{margin:0 0 6px}.letter.lv2 h2.lh{margin:10px 0 4px}.letter.lv2 svg{max-height:80px}}.letter h2.lh{font-size:15px;margin:16px 0 6px;padding-bottom:3px;border-bottom:1px solid #d9dfd6;break-after:avoid}.letter .lhead,.letter .lkv{width:100%;border-collapse:collapse;margin:0 0 6px}.letter .lhead th,.letter .lkv th{text-align:start;font-weight:600;width:42%;padding:3px 8px 3px 0;vertical-align:top;background:none!important;color:inherit!important}.letter .lhead td,.letter .lkv td{padding:3px 0}.letter .ltbl{width:100%;margin:4px 0 2px}.letter .ltbl td:not(:first-child),.letter .ltbl th:not(:first-child){text-align:center}.letter .lnote{font-size:11.5px;color:#6b7769;margin:2px 0 10px}.letter table{font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+.row2{display:flex;gap:6px;margin:6px 0}.row2>*{flex:1}
+input[type=time]{border:1.5px solid var(--sageL);border-radius:10px;padding:9px;font:inherit;background:#fffdf9;color:var(--ink)}
+[dir=rtl] .afftag{margin-left:0;margin-right:4px}
+[dir=rtl] .ins,[dir=rtl] .disc{border-left:0;border-right:4px solid var(--rose)}[dir=rtl] .ins.g{border-right-color:var(--sage)}
+[dir=rtl] .sum th{text-align:right}[dir=rtl] .bar i{transform-origin:right}
+@media print{.modal{display:none!important}.qpick{display:none!important}}
+.ctr{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #eef1ec}.ctr:last-child{border-bottom:0}
+.ctr .st{display:flex;align-items:center;gap:6px}.ctr .st button{width:42px;height:42px;border-radius:50%;border:0;background:var(--sageL);color:var(--ink);font-size:22px;line-height:1}
+.ctr .st button.p{background:var(--sage);color:#fff}.ctr .st b{min-width:46px;text-align:center;font-size:20px;font-family:Georgia,serif}
+.ctr small{display:block;color:var(--mute);font-size:12px}
+.qpick label{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:13.5px}.qpick input[type=checkbox]{width:20px;height:20px;flex:none;margin-top:1px}
+.qpick .cq{display:flex;gap:6px;margin-top:6px}.qpick .x{border:0;background:none;color:var(--mute);font-size:18px;padding:0 4px}
+.qprint{margin:4px 0;padding-inline-start:0;list-style:none}.qprint li{padding:2px 0}
+.inst ol{padding-inline-start:20px;margin:8px 0}.inst li{margin:6px 0}
+</style>
+<style id="fonts">@font-face{font-family: 'Caveat'; font-style: normal; font-weight: 500 700; font-display: swap; src: url(fonts/caveat-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family: 'Fraunces'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/fraunces-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family: 'Nunito'; font-style: normal; font-weight: 400 800; font-display: swap; src: url(fonts/nunito-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}</style>
+<style id="v8">:root{--sage:#7d8f4e;--sageL:#eef0dc;--rose:#d4846f;--roseL:#f8e0d6;--cream:#fbeee6;--ink:#4a3328;--mute:#9a7f70;--ochre:#d99a3d;--blush:#e8a99a;--line:#ecd6c8;--card:#fff8f2}
+html,body{background:var(--cream);color:var(--ink);font:15.5px/1.5 Nunito,Rubik,system-ui,sans-serif}
+[lang=he] body,[lang=he] html{font-family:Rubik,Nunito,system-ui,sans-serif}
+h1,h2,.stat b,.letter h1,.letter h2{font-family:Fraunces,Rubik,Georgia,serif;font-variation-settings:"SOFT" 100,"opsz" 40;font-weight:600;letter-spacing:-.01em}
+h3,.h3{font-family:Caveat,"Amatic SC",cursive;font-size:22px;font-weight:700;color:var(--rose);font-variation-settings:normal;letter-spacing:normal}
+[lang=he] h3,[lang=he] .h3{font-family:"Amatic SC",Rubik,cursive;font-size:27px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px 26px 20px 24px;box-shadow:3px 4px 0 rgba(217,154,61,.12)}
+.card:nth-child(even){border-radius:26px 20px 24px 22px}
+.btn{border-radius:18px 22px 16px 20px;background:var(--rose);font-weight:800;box-shadow:2px 3px 0 rgba(74,51,40,.15)}
+.btn.alt{background:var(--roseL);color:var(--ink)}.btn.rose{background:var(--ochre)}.btn.ghost{color:var(--ink);border:2px solid var(--ink);background:transparent}
+.chip{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px 18px 22px 16px;font-weight:600}
+.chip.on{background:var(--sage);border-color:var(--sage);color:#fff}
+.seg button{border:2px solid var(--blush);background:var(--card);color:var(--ink);border-radius:50% 45% 55% 50%}
+.seg button.on[data-v="0"]{background:var(--sageL);border-color:var(--sage)}
+.seg button.on[data-v="1"]{background:#fbe3c2;border-color:var(--ochre)}
+.seg button.on[data-v="2"]{background:var(--blush);color:#fff;border-color:var(--blush)}
+.seg button.on[data-v="3"]{background:var(--rose);color:#fff;border-color:var(--rose)}
+.sym{border-bottom:1.5px dashed var(--line)}
+textarea,input[type=text],input[type=time],select{border:2px solid var(--line);border-radius:14px 16px 12px 15px;background:#fffaf5}
+nav{background:var(--card);border-top:2px solid var(--line);border-radius:22px 22px 0 0}
+nav button{color:var(--mute);font-weight:700}nav button.on{color:var(--rose)}
+nav button b{height:26px;display:flex;justify-content:center}
+.ic{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-6px}
+nav button.on .ic{stroke-width:2.4}
+.chip .ic{width:18px;height:18px;vertical-align:-4px}
+.stat{background:var(--roseL);border-radius:18px 14px 20px 16px}
+.stat:nth-child(2){background:#fbe7c8}.stat:nth-child(3){background:var(--sageL)}
+.ins{background:var(--roseL);border:0;border-inline-start:4px solid var(--blush);border-radius:16px 20px 14px 18px}
+.ins.g{background:var(--sageL);border-color:var(--sage)}
+.disc{background:#fbe7c8;border:0;border-inline-start:4px solid var(--ochre);border-radius:16px 20px 14px 18px}
+.tipw{background:#fbe7c8;border-radius:18px 22px 16px 20px}.tipw b{color:#a8701f}
+.bar i{background:var(--blush);border-radius:8px 6px 9px 5px}
+.datebar button{background:var(--roseL);border-radius:50% 45% 55% 50%}
+.cal div{background:var(--card);border:1.5px solid var(--line);border-radius:8px 6px 9px 7px}
+.cal .l1{background:var(--roseL)}.cal .l2{background:var(--blush)}.cal .l3{background:var(--rose)}
+.modal .box{background:var(--card);border-radius:26px 30px 0 0}
+.info{border-color:var(--rose);color:var(--rose);background:var(--card)}
+.saved{background:var(--ink);border-radius:18px 22px 16px 20px;font-weight:700}
+.sum{background:#fffaf5;border-radius:18px}
+.sum th{background:var(--rose)}.sum .hd{border-bottom:3px solid var(--rose)}.sum td{border-bottom:1px solid var(--line)}
+.letter{font-family:Fraunces,Rubik,Georgia,serif;font-variation-settings:"SOFT" 100}
+.logo{display:inline-block;transform:rotate(-4deg)}
+.aff{border-top:1.5px dashed var(--line)}.aff a{color:var(--ink)}
+a{color:#a35d4a}
+.qprint{list-style:none;padding-inline-start:4px}.qprint li:before{content:"";display:inline-block;width:11px;height:11px;border:1.6px solid var(--ink);border-radius:3px 4px 2px 4px;margin-inline-end:8px;vertical-align:-1px}
+@media print{body,.sum{background:#fff!important}.card{box-shadow:none}.sum th{background:#d4846f!important;color:#fff}}
+</style>
+<style id="a11y">/* v11 accessibility (WCAG 2.1 AA) */
+:root{--mute:#6e5547;--rose:#9c4a36;--sage:#5b6b2f}
+.btn.rose{background:#8a5a14}.tipw b{color:#8a5a14}
+.seg button.on[data-v="2"]{color:var(--ink)}.cal .l2{color:var(--ink)}
+[data-t=affLong],[data-t=affShort],.affdisc,.afftag{color:var(--mute)!important}
+:focus{outline:none}
+:focus-visible{outline:3px solid #4a3328!important;outline-offset:2px;border-radius:10px}
+.seg{gap:4px}.seg button{width:44px;height:44px}
+.datebar button{width:44px;height:44px}
+.chip{min-height:44px}
+.btn{min-height:44px}
+.info{position:relative}.info::after{content:"";position:absolute;inset:-12px}
+#shX,#instX,#mX,#tipX,button.x,[data-id],[data-e]{min-width:44px;min-height:44px}
+nav button{min-height:52px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+<style id="v12">.legal li a{display:block;padding:11px 2px;font-weight:700;border-bottom:1.5px dashed var(--line)}.legal li:last-child a{border-bottom:0}</style>
+<style id="v27-heat">
+/* 0-3 heat scale: cream -> pink -> terracotta. Selected also gets a ring + bold (not colour alone). */
+.seg button.on[data-v="0"]{background:#fbeee6;color:#4a3328;border-color:#9a7f70}
+.seg button.on[data-v="1"]{background:#f5cdbf;color:#4a3328;border-color:#c9826d}
+.seg button.on[data-v="2"]{background:#e39a86;color:#3a251c;border-color:#b5644f}
+.seg button.on[data-v="3"]{background:#a84a33;color:#fff;border-color:#7d3322}
+.seg button.on{font-weight:800;box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink);position:relative}
+</style>
+
+<style id="v27-legend">
+.seglg{border:0!important;padding:0 0 2px!important}
+.seglg .seg i{width:44px;text-align:center;font-style:normal;font-size:10.5px;font-weight:700;color:var(--mute);white-space:nowrap;letter-spacing:-.02em;line-height:1.1}
+h2 .muted[data-t="scale"]{display:none}
+</style>
+
+<style id="v27-progress">
+#prog{margin:0 0 12px}
+#prog .pt{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--ink);margin:0 2px 5px}
+#prog .bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden}
+#prog .bar i{display:block;height:100%;background:linear-gradient(90deg,#f5cdbf,#e39a86,#a84a33);border-radius:6px;transition:width .3s}
+.donec{position:relative;overflow:hidden;text-align:center;padding:18px 14px!important}
+.donec h2{font-family:Fraunces,Georgia,serif;font-size:22px;margin:0 0 4px;color:var(--ink)}
+.donec .ck{display:inline-flex;width:46px;height:46px;border-radius:50%;background:#a84a33;color:#fff;font-size:26px;font-weight:800;align-items:center;justify-content:center;margin-bottom:6px}
+.donec .stk{font-family:Caveat,cursive;font-size:24px;font-weight:700;color:var(--rose);margin:2px 0 10px}
+.donec.pop .ck{animation:ckpop .6s ease-out}
+.donec .cf{position:absolute;left:50%;top:40px;width:8px;height:8px;border-radius:2px;opacity:0;pointer-events:none}
+.donec.pop .cf{animation:cf 1.1s ease-out forwards}
+@keyframes ckpop{0%{transform:scale(.3)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes cf{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(200deg)}}
+@media (prefers-reduced-motion:reduce){.donec.pop .ck,.donec.pop .cf,#prog .bar i{animation:none!important;transition:none!important}.donec .cf{display:none}}
+</style>
+
+<style id="v27-type">
+/* Section titles in the serif; handwritten Caveat kept for 2 accents only: #streakTop and the Done-state streak line */
+h3,.h3{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.005em;line-height:1.25}
+#streakTop{font-family:Caveat,cursive;font-size:20px;font-weight:700;color:var(--rose)}
+</style>
+
+<style id="v27-heatmap">
+.hmnav{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
+.hmnav b{font-family:Fraunces,Georgia,serif;font-size:17px;color:var(--ink)}
+.hmnav button{width:44px;height:44px;border-radius:50%;border:0;background:var(--roseL);color:var(--ink);font-size:20px}
+.hmnav button:disabled{opacity:.35}
+.cal.hm{gap:4px;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal.hm .wd{background:none!important;border:0!important;aspect-ratio:auto;text-align:center;font-size:11px;font-weight:700;color:var(--mute);padding:0 0 2px}
+.cal.hm .pad{visibility:hidden}
+.cal.hm .d{position:relative;aspect-ratio:1;display:flex;align-items:flex-start;justify-content:flex-start;font-size:11px;font-weight:700;padding:3px 4px;border-radius:8px;color:var(--ink);box-shadow:none}
+.cal.hm .nl{background:transparent;border:1.5px dashed var(--line);color:var(--mute)}
+.cal.hm .hm0{background:#fbeee6;border:1.5px solid #e8cfc0}
+.cal.hm .hm1{background:#f5cdbf;border:1.5px solid #f5cdbf}
+.cal.hm .hm2{background:#e39a86;border:1.5px solid #e39a86;color:#3a251c}
+.cal.hm .hm3{background:#a84a33;border:1.5px solid #a84a33;color:#fff}
+.cal.hm .bl::after{content:"";position:absolute;right:4px;bottom:4px;width:7px;height:7px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink);border:1.5px solid #fff}
+.cal.hm .td{outline:2.5px solid var(--ink);outline-offset:1px}
+.cal.hm .fu{border-style:dotted}
+.hmleg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:12px;color:var(--mute);font-weight:700}
+.hmleg .sw{display:inline-flex;gap:3px;align-items:center}
+.hmleg i{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:middle}
+.hmleg .lg0{background:#fbeee6;border:1.5px solid #e8cfc0}.hmleg .lg1{background:#f5cdbf}.hmleg .lg2{background:#e39a86}.hmleg .lg3{background:#a84a33}
+.hmempty{text-align:center;margin:8px 0 0;font-size:13px}
+.card p[data-t="calNote"]{display:none}
+</style>
+
+<style id="v27-sumcard">
+.sumc{display:flex;gap:12px;align-items:center;position:relative;padding-right:44px!important}
+.sumc svg{flex:none;width:58px;height:72px;border-radius:6px;box-shadow:0 1px 4px rgba(74,51,40,.18)}
+.sumc h2{font-family:Fraunces,Georgia,serif;font-size:17px;margin:0 0 6px;color:var(--ink);line-height:1.25}
+.sumc .btn{padding:9px 14px;min-height:44px}
+.sumc .x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;background:none;font-size:22px;color:var(--mute);border-radius:50%}
+</style>
+
+<script>try{(function(){var p=localStorage.getItem("periTheme")||"auto",d=p==="dark"||(p==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light"})()}catch(e){}</script>
+<style id="v27-dark">
+/* Neutral near-black dark. Heat scale runs dark -> glowing terracotta so "more" is still brighter/stronger. */
+html[data-theme=dark]{color-scheme:dark;--cream:#0f0f10;--card:#1a1a1c;--line:#2a2a2e;--ink:#ededee;--mute:#b4b4b9;--rose:#f0a68c;--roseL:#3a2a28;--blush:#b9705e;--sage:#c3cf8c;--sageL:#3a3f27;--ochre:#e6b35e}
+html[data-theme=dark] body{background:var(--cream);color:var(--ink)}
+html[data-theme=dark] .card,html[data-theme=dark] nav,html[data-theme=dark] .modal .box,html[data-theme=dark] .sum{background:var(--card)!important;color:var(--ink)}
+html[data-theme=dark] textarea,html[data-theme=dark] input,html[data-theme=dark] select{background:#141416!important;color:var(--ink)!important;border-color:var(--line)!important}
+html[data-theme=dark] .sym{border-bottom-color:var(--line)}
+html[data-theme=dark] .btn{background:#e8957c;color:#22150f}
+html[data-theme=dark] .btn.alt,html[data-theme=dark] .btn.ghost{background:transparent;color:var(--rose);border-color:var(--rose)}
+html[data-theme=dark] .chip{background:#141416;color:var(--ink);border-color:var(--line)}
+html[data-theme=dark] .chip.on{background:var(--sage);color:#1c1d10;border-color:var(--sage)}
+html[data-theme=dark] .stat,html[data-theme=dark] .disc,html[data-theme=dark] .tipw,html[data-theme=dark] .stat:nth-child(2){background:#232326!important;color:var(--ink)!important}
+html[data-theme=dark] .seg button{background:#141416;color:var(--ink);border-color:#6a6a72}
+html[data-theme=dark] .seg button.on[data-v="0"]{background:#2c2c30;color:#f3e6dc;border-color:#8a8a92}
+html[data-theme=dark] .seg button.on[data-v="1"]{background:#7a4a3e;color:#fff4ec;border-color:#a8705f}
+html[data-theme=dark] .seg button.on[data-v="2"]{background:#d98a73;color:#1f1512;border-color:#d98a73}
+html[data-theme=dark] .seg button.on[data-v="3"]{background:#f4b49b;color:#1f1512;border-color:#fff}
+html[data-theme=dark] .seg button.on{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink)}
+html[data-theme=dark] .cal.hm .hm0{background:#2c2c30;border-color:#3a3a40;color:var(--ink)}
+html[data-theme=dark] .cal.hm .hm1{background:#7a4a3e;border-color:#7a4a3e;color:#fff4ec}
+html[data-theme=dark] .cal.hm .hm2{background:#d98a73;border-color:#d98a73;color:#1f1512}
+html[data-theme=dark] .cal.hm .hm3{background:#f4b49b;border-color:#f4b49b;color:#1f1512}
+html[data-theme=dark] .cal.hm .bl::after{border-color:#1f1512;background:#1f1512}
+html[data-theme=dark] .cal.hm .hm0.bl::after,html[data-theme=dark] .cal.hm .hm1.bl::after{background:#fff4ec}
+html[data-theme=dark] .hmleg .lg0{background:#2c2c30;border-color:#3a3a40}html[data-theme=dark] .hmleg .lg1{background:#7a4a3e}html[data-theme=dark] .hmleg .lg2{background:#d98a73}html[data-theme=dark] .hmleg .lg3{background:#f4b49b}
+html[data-theme=dark] #prog .bar i{background:linear-gradient(90deg,#7a4a3e,#d98a73,#f4b49b)}
+html[data-theme=dark] .donec .ck{background:#f4b49b;color:#1f1512}
+html[data-theme=dark] .muted{color:var(--mute)}
+.thm{display:flex;gap:6px}html[data-theme=dark] a{color:#f0a68c}
+html[data-theme=dark] .tipw b,html[data-theme=dark] #weekTip b{color:#e6b35e}
+html[data-theme=dark] .sum th{background:#8a4433!important;color:#fff!important}
+html[data-theme=dark] .afftag{background:#232326!important;color:var(--mute)!important}
+html[data-theme=dark] .aff p{color:var(--mute)!important}
+html[data-theme=dark] .cal.hm .nl{color:var(--mute)}
+.thm button{flex:1;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:15px}
+.thm button[aria-pressed=true]{border-color:var(--ink);background:var(--roseL)}
+@media print{html[data-theme=dark]{color-scheme:light;--cream:#fbeee6;--card:#fff8f2;--line:#ecd6c8;--ink:#4a3328;--mute:#6e5547;--rose:#9c4a36;--roseL:#f8e0d6;--blush:#e8a99a;--sage:#5b6b2f;--sageL:#eef0dc}html[data-theme=dark] body,html[data-theme=dark] .sum{background:#fff!important;color:#4a3328}}
+</style>
+
+<style id="v27-nav">
+/* Text labels always visible under the nav icons */
+nav button span{display:block!important;visibility:visible!important;font-size:12px;line-height:1.15;margin-top:3px;padding:0 2px;white-space:normal;overflow-wrap:anywhere}
+nav button{min-height:58px;padding:7px 0 8px}
+nav button.on span{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+</style>
+
+<style id="v27-empty">
+.emptyc{text-align:center;padding:18px 16px!important}
+.emptyc h2{font-family:Fraunces,Georgia,serif;font-size:19px;margin:6px 0 6px;color:var(--ink);line-height:1.3}
+.emptyc .dots{display:flex;justify-content:center;gap:7px;margin:10px 0 4px}
+.emptyc .dots i{width:22px;height:22px;border-radius:50%;border:2px dashed var(--line);display:inline-block}
+.emptyc .dots i.f{background:#e39a86;border:2px solid #b5644f}
+.emptyc .pn{font-weight:800;color:var(--ink);margin:4px 0 12px}
+html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
+</style>
+
+</head>
+<body>
+<div id="toast" class="saved"></div>
+<div id="inst" class="modal hide"><div class="box inst"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 data-t="instT" style="margin:0"></h2><button id="instX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><p id="instWhy" class="muted" data-t="instWhy"></p><div id="instBody"></div><button class="btn block" id="instOk" data-t="instOk"></button></div></div>
+<div id="modal" class="modal hide"><div class="box"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 id="mT" style="margin:0"></h2><button id="mX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><p id="mB" style="margin:10px 0 0"></p><p class="muted" id="mN" style="margin-top:10px"></p><div class="src" id="mS"></div></div></div>
+
+<!-- ONBOARDING -->
+<div id="onb" class="wrap hide">
+ <div class="langsw noprint" style="max-width:200px;margin:0 0 0 auto"><button class="btn alt" data-lang="en">English</button><button class="btn alt" data-lang="he">עברית</button></div>
+ <div style="text-align:center;padding:18px 0 8px"><div style="font-size:44px;color:var(--sage)"><svg class="logo" viewBox="0 0 256 256" width="96" height="96" aria-hidden="true"><path d="M84 52c40-4 74-2 92 12 20 16 18 48-4 62-20 12-52 12-86 8z" fill="#e8a99a" stroke="#4a3328" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M84 50c-3 50-1 104 2 156" fill="none" stroke="#4a3328" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><circle cx="186" cy="182" r="17" fill="#d99a3d" stroke="#4a3328" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/></svg>
+</div>
+ <h1 data-t="appName"></h1><p class="muted" data-t="tagline"></p></div>
+ <div class="card"><h3 data-t="howT"></h3><p data-h="howB"></p></div>
+ <div class="card"><h3 data-t="privT"></h3><p data-h="privB"></p></div>
+ <div class="disc" data-h="discFull"></div>
+ <p class="muted hide" id="onbTrial" data-t="onbTrial" style="text-align:center;margin:12px 4px 0"></p>
+ <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 2px"><input type="checkbox" id="agree" style="width:22px;height:22px;flex:none"><span data-t="agree"></span></label>
+ <button class="btn block" id="start" disabled data-t="start"></button>
+</div>
+
+<div id="app" class="hide">
+<main class="wrap">
+ <!-- TODAY -->
+ <section id="v-today" class="view">
+  <div class="top"><h1 data-t="checkin"></h1><span class="muted" id="streakTop"></span></div>
+  <div class="datebar"><button id="prevD" aria-label="Previous day">‹</button><b id="dLabel"></b><button id="nextD" aria-label="Next day">›</button></div>
+  <div class="card"><h2 class="h3"><span data-t="symptoms"></span> <span class="muted" data-t="scale"></span></h2><div id="symList"></div>
+   <button class="btn ghost block" id="moreSym" style="padding:8px"></button></div>
+  <div class="card"><h2 class="h3"><span data-t="stressT"></span> <span class="muted" data-t="scale"></span></h2><div id="stressRow"></div></div>
+  <div class="card"><h2 class="h3" data-t="cntT"></h2><div id="cntRow"></div></div>
+  <div class="card"><h2 class="h3" data-t="bleeding"></h2><div class="chips" id="bleedC"></div></div>
+  <div class="card"><h2 class="h3" data-t="triggers"></h2><div class="chips" id="trigC"></div></div>
+  <div class="card"><h2 class="h3" data-t="meds"></h2><div class="chips" id="medC"></div>
+   <div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="newMed" data-p="addMedPh" maxlength="40" aria-describedby="medMsg"><button class="btn alt" id="addMed" data-t="add"></button></div><p id="medMsg" role="alert" style="color:#9c4a36;margin:6px 0 0;font-size:13.5px"></p><button type="button" class="btn ghost block" id="medEd" style="margin-top:6px;padding:8px">Edit my list</button><div id="medMgr" class="hide"></div></div>
+  <div class="card"><h2 class="h3"><span data-t="notes"></span> <span class="muted" data-t="optional"></span></h2><textarea id="notes" rows="2" data-p="notesPh" maxlength="1000"></textarea></div>
+  <button class="btn block" id="saveBtn"></button><button type="button" class="btn ghost block hide" id="clearDay" style="margin-top:8px">Delete this day</button>
+ </section>
+
+ <!-- INSIGHTS -->
+ <section id="v-insights" class="view hide">
+  <div id="tipBox" class="card hide" style="display:flex;gap:8px;align-items:flex-start;padding:10px 12px"><div style="flex:1;font-size:14px" id="tipTxt"></div><button id="tipX" aria-label="Dismiss" style="border:0;background:none;font-size:18px;color:var(--mute);padding:0 4px">×</button></div>
+  <h1 data-t="patterns"></h1>
+  <div class="stats" id="statBox"></div>
+  <div class="stats" id="cntBox" style="grid-template-columns:1fr 1fr;margin-top:8px"></div>
+  <div class="tipw" id="weekTip"></div>
+  <div class="card"><div class="tabs2"><button class="btn alt" data-r="7" data-t="d7"></button><button class="btn alt" data-r="30" data-t="d30"></button><button class="btn alt" data-r="0">All</button></div>
+   <select id="chartSym"></select><div id="chart" style="margin-top:8px"></div></div>
+  <div class="card"><h2 class="h3" data-t="topT"></h2><div id="topSym"></div></div>
+  <div class="card"><h2 class="h3" data-t="patT"></h2><div id="corr"></div>
+   <p class="muted" data-t="patNote"></p></div>
+  <div class="card"><h2 class="h3" data-t="cycleT"></h2><div id="cycle"></div></div>
+  <div class="card"><h2 class="h3" data-t="calT"></h2><div class="cal" id="cal"></div><p class="muted" data-t="calNote"></p></div>
+  <div class="card" id="helpCard"><h2 class="h3" data-t="helpT"></h2><p class="muted" style="margin-top:0" data-t="helpSub"></p><div id="helpList"></div>
+   <p class="affdisc" data-t="affShort"></p></div>
+ </section>
+
+ <!-- SUMMARY -->
+ <section id="v-summary" class="view hide">
+  <div class="noprint"><h1 data-t="docT"></h1>
+   <div class="tabs2"><button class="btn" id="modeSum" data-t="modeSum"></button><button class="btn alt" id="modeLet" data-t="modeLet"></button></div>
+   <div id="sumCtl" style="display:flex;gap:6px"><select id="sumMonth"></select><button class="btn" id="printBtn" data-t="print"></button></div>
+   <div id="letCtl" class="hide">
+    <div class="row2"><input type="text" id="drName" data-p="drPh" maxlength="60"><input type="text" id="myName" data-p="mePh" maxlength="60"></div>
+    <div style="display:flex;gap:6px"><select id="letRange"><option value="1" data-t="r1"></option><option value="3" data-t="r3"></option><option value="6" data-t="r6"></option><option value="0" data-t="rAll"></option></select><button class="btn" id="printBtn2" data-t="print"></button></div>
+   </div>
+   <p class="muted" data-t="printHelp"></p></div>
+  <div class="sum" id="sumBody"></div>
+ </section>
+
+ <!-- COMFORT -->
+ <section id="v-comfort" class="view hide">
+  <h1 data-t="comfortT"></h1>
+  <p class="muted" data-t="comfortSub"></p>
+  <div id="shopList"></div>
+  <p class="affdisc" data-t="affLong"></p>
+ </section>
+
+ <!-- SETTINGS -->
+ <section id="v-settings" class="view hide">
+  <h1 data-t="setT"></h1>
+  <div class="card"><h2 class="h3" data-t="langT"></h2><div class="langsw"><button class="btn alt" data-lang="en">English</button><button class="btn alt" data-lang="he">עברית</button></div></div>
+  <div class="card"><h2 class="h3" data-t="remT"></h2>
+   <div style="display:flex;gap:8px;align-items:center"><label for="remTime" data-t="remAt"></label><input type="time" id="remTime" value="20:30"></div>
+   <button class="btn block" id="remOn"></button>
+   <p class="muted" id="remStatus"></p>
+   <div class="ins g" style="font-size:13px" data-h="remHonest"></div>
+   <button class="btn alt block" id="icsBtn" data-t="ics"></button>
+   <p class="muted" data-t="icsNote"></p></div>
+  <div class="card"><h2 class="h3" data-t="instT"></h2><p class="muted" id="instStat"></p><button class="btn alt block" id="instBtn" data-t="instHow"></button></div>
+  <div class="card"><h2 class="h3" data-t="backupT"></h2><p class="muted" data-t="backupSub"></p>
+   <button class="btn block" id="expCsv" data-t="exp"></button>
+   <button class="btn alt block" id="impBtn" data-t="imp"></button><input type="file" id="impFile" accept=".csv,text/csv" class="hide"></div>
+  <div class="card"><h2 class="h3" data-t="tryT"></h2><button class="btn alt block" id="demoBtn" data-t="demo"></button>
+   <button class="btn rose block" id="clearBtn" data-t="clear"></button></div>
+  <div class="card" id="helpLegal"><h2 class="h3">Help &amp; legal</h2>
+   <p class="muted">Questions or problems? Email us and we'll help.</p>
+   <a class="btn block" style="display:block;text-align:center;text-decoration:none;box-sizing:border-box" href="mailto:support@primetraker.com">Contact support</a>
+   <ul class="legal" style="list-style:none;padding:0;margin:10px 0 0"><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../health-data.html">Consumer Health Data Policy</a></li><li><a href="../terms.html">Terms of Use and Sale</a></li><li><a href="../accessibility.html">Accessibility Statement</a></li></ul>
+   <p class="muted" style="font-size:13px">support@primetraker.com · Money Maker Productions Ltd</p></div>
+  <div class="card"><h2 class="h3" data-t="aboutT"></h2><div class="disc" data-t="discShort"></div>
+   <button class="btn ghost block" id="reOnb" data-t="reOnb"></button></div>
+ </section>
+</main>
+<nav><button data-v="today" class="on"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></b><span data-t="nToday"></span></button><button data-v="insights"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17c2-1 3-6 5-6.5s3 4 5 3.6 2.6-7.2 4.8-7.6S20.5 9 21 10"/><path d="M3 21h18"/></svg></b><span data-t="nIns"></span></button><button data-v="summary" data-al="Doctor summary"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h8l3.5 3.6v13.2c0 .3-.3.6-.6.6H6.6c-.4 0-.6-.3-.6-.7V4.1c0-.4.2-.6.5-.6z"/><path d="M9 11h6M9 14.5h6M9 18h4"/></svg></b><span data-t="nDoc"></span></button><button data-v="comfort"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.3-8.4-9.6C3 6.9 6.7 4.6 9.3 6.3 10.6 7 11.4 8.3 12 9c.7-.8 1.5-2 2.8-2.7 2.7-1.5 6.2.8 5.6 4.3C19.5 15.8 12 20 12 20z"/></svg></b><span data-t="nComfort"></span></button><button data-v="settings"><b><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.4 5.4l1.9 1.9M16.7 16.7l1.9 1.9M5.4 18.6l1.9-1.9M16.7 7.3l1.9-1.9"/></svg></b><span data-t="nSet"></span></button></nav>
+</div>
+<script>
+const I18N={en:{cntT:"Counts (optional)",hfC:"Hot flashes today",hfSub:"Tap + each time one happens",slH:"Hours slept last night",slSub:"Steps of 30 minutes",hShort:"h",
+avgHF:"Avg hot flashes / day",avgSl:"Avg hours slept",cntNone:"–",cntDays:"{n} days counted",
+sumCnt:"Counts",sumHF:"Hot flashes: avg {a} per day ({n} days counted, {t} in total)",sumSl:"Sleep: avg {a} hours per night ({n} nights logged)",noCnt:"No counts logged this month.",
+L_cnt:"On the days I counted them, I had an average of {a} hot flashes a day ({n} days).",L_slh:"I slept an average of {a} hours a night ({n} nights logged).",
+qPickH:"Tick the questions you want to ask. Only ticked questions and your own will print.",qAdd:"Add",qPh:"Add your own question",qNone:"(No questions ticked yet)",L_qs:"Questions I would like to ask:",
+Q:["What could be causing these symptoms, and how can we confirm it?","What are my options, and what are the benefits and risks of each?","Is there anything in my health history that changes my options?","Are there tests you'd recommend for me? What would they show?","How will we know if a treatment is working, and when should we review it?","Are any of my current medications or supplements a concern together?","Which symptoms mean I should contact you before my next visit?","Is there a specialist or menopause clinic you'd suggest?"],
+instT:"Add to your home screen",instWhy:"It opens like an app, works offline, and reminders work best once it's installed. Your entries stay on this phone.",instOk:"Got it",instHow:"How to install",instDone:"Installed. You're using the home-screen app.",instNot:"Not installed yet. Installing makes reminders more reliable.",instNow:"Install now",
+instIOS:["Open this page in <b>Safari</b> (not inside another app).","Tap the <b>Share</b> button (square with an arrow).","Scroll and tap <b>Add to Home Screen</b>, then <b>Add</b>.","Open Prime Traker from your home screen."],
+instAnd:["Open this page in <b>Chrome</b>.","Tap the <b>⋮</b> menu at the top right.","Tap <b>Install app</b> or <b>Add to Home screen</b>.","Open Prime Traker from your home screen."],
+instInapp:"If you opened this from WhatsApp, Instagram or Facebook, first use the menu to open it in Safari or Chrome.",
+appName:"Prime Traker",tagline:"A gentle 30-second daily check-in that shows your patterns and builds a summary for your doctor.",
+howT:"How it works",howB:"1. Each day, tap 0–3 for how strong each symptom was (0 none, 1 mild, 2 moderate, 3 severe). Tap <b>i</b> to learn why a symptom can happen.<br>2. Watch your trends, top symptoms and patterns build up.<br>3. Before an appointment, open <b>Doctor summary</b> to print a monthly report or a letter to your doctor.",
+privT:"Your privacy",privB:"Everything stays on this phone, in this browser. Nothing is uploaded or sent anywhere. Use <b>Export backup</b> in Settings to keep a copy.",
+discFull:"<b>Important: not medical advice.</b> This app is an organizing tool to help you record symptoms and prepare for conversations with your own doctor. It is not medical advice and does not diagnose, treat, or recommend any treatment, including HRT. Patterns it shows are simple averages, not proof of cause. Always consult a qualified healthcare provider before starting, stopping, or changing any medication or supplement. If you have bleeding after menopause, chest pain, or thoughts of self-harm, contact a doctor or emergency services right away.",
+agree:"I understand this is a tracking tool, not medical advice.",start:"Let’s begin",
+checkin:"How are you today?",symptoms:"Symptoms",scale:"(0 none · 3 severe)",stressT:"Stress level today",bleeding:"Bleeding",triggers:"Possible triggers today",meds:"Meds / supplements taken",addMedPh:"Add one (e.g. Magnesium)",add:"Add",notes:"Notes",optional:"(optional)",notesPh:"Anything on your mind today? A sentence is plenty.",
+showMore:"Show more symptoms ({n})",showFewer:"Show fewer symptoms",saveNew:"Save check-in",update:"Update entry",today:"Today",streak:"{n} days in a row",noMeds:"None added yet",
+saved:"Saved, thank you",savedStreak:"Saved. {n} days in a row, lovely!",savedFirst:"Saved. What a nice start!",
+patterns:"What your days are telling you",d7:"7 days",d30:"30 days",topT:"Top symptoms (last 30 days)",patT:"Patterns worth noticing",patNote:"These are simple averages from your own entries, not medical conclusions. Worth discussing with your doctor.",
+cycleT:"Cycle",calT:"Last 5 weeks at a glance",calNote:"Darker = higher total symptom load · red line = bleeding",helpT:"Helpful for you",helpSub:"Comfort picks for your top symptoms this month.",
+affShort:"As an Amazon Associate we earn from qualifying purchases. Not medical advice.",affLink:"Affiliate link",
+stStreak:"day streak",stLogged:"days logged (30d)",stTotal:"total entries",overall:"Overall symptom load",
+chartAvg:"Average {a} over {n} logged day(s). Red marks = bleeding days.",noPeriod:"No entries in this period yet.",avgDays:"avg {a} · {n} days",logFew:"Log a few days to see your top symptoms.",
+lower:"Your overall symptom load is <b>{p}% lower</b> than the 30 days before. Whatever you're doing, it's worth noting.",higher:"Your overall symptom load is <b>{p}% higher</b> than the 30 days before. Could be worth mentioning at your next appointment.",
+streakIns:"{n} days in a row. Steady logging is what makes these patterns reliable.",patWait:"Patterns appear after about 2 weeks of check-ins, once there are enough days to compare.",
+corr:"{label}, your <b>{s}</b> averaged <b>{a}</b> vs {b} on other days ({na} vs {nb} days).",afterPoor:"On days after poor sleep",onTrig:"On days you logged {t}",onMed:"On days you took {m}",highStress:"On higher-stress days",
+lastPer:"Last period started <b>{d}</b> ({n} days ago).",cycLens:"Recent cycle lengths: <b>{l}</b> days (average {a}).",cycSkip1:"1 cycle not counted because of a gap in logging.",cycSkipN:"{n} cycles not counted because of a gap in logging.",cycVar:"Your cycle length has varied by a week or more, which is common in perimenopause and useful to share with your doctor.",cycMore:"Log another period start to see cycle length.",cycNone:"Tap a bleeding level on the check-in and cycle lengths will appear here.",
+tipRough:"Rough day. Many women find this helps {w}:",
+weekTipT:"This week's tip",
+docT:"Doctor summary",modeSum:"Monthly summary",modeLet:"Letter to my doctor",print:"Print / PDF",drPh:"Doctor's name (optional)",mePh:"Your name (optional)",r1:"Last month",r3:"Last 3 months",r6:"Last 6 months",rAll:"All my entries",
+printHelp:"On iPhone: Print → pinch-out the preview → Share to save as PDF or send. On Android: Print → Save as PDF.",
+sumTitle:"Monthly Symptom Summary",sumLine:"Days logged: <b>{n}</b> · Scale: 0 none, 1 mild, 2 moderate, 3 severe · Overall symptom score (avg per day): <b>{a}</b> of 54 (sum of all 18 symptom ratings, each 0–3)",sumMost:"Symptoms, most to least intense",thSym:"Symptom",thAvg:"Avg",thDays:"Days present",thMod:"Days ≥ moderate",thWorst:"Worst",byWeek:"Overall symptom score by week (avg per day, max 54)",wk:"Wk {n}",bleedCyc:"Bleeding & cycle",bleedOn:"Bleeding/spotting on day(s): ",noBleed:"No bleeding logged this month.",recentLens:"Cycles that ended this month: {l} days.",trigMeds:"Triggers logged · Meds/supplements taken",none:"None",noneLogged:"None logged",stressAvg:"Average stress: {a} / 3",
+myPats:"Patterns I noticed (my own averages, not a diagnosis)",qs:"Questions for my doctor",footer:"Self-reported tracking summary made with Prime Traker. An organizing tool, not medical advice.",noMonth:"No entries for this month yet. Log a few check-ins, or load demo data in Settings to preview.",
+L_dear:"Dear {d},",L_dearNo:"Dear Doctor,",L_intro:"I have been tracking my symptoms every day to help us make the most of my appointment. Below is a short summary of {n} days of records from {a} to {b}. I rated each symptom from 0 (none) to 3 (severe).",
+L_freq:"The symptoms I have had most often are:",L_item:"<b>{s}</b>: on {p}% of logged days, usually {sev}",
+L_chart:"How my overall symptom score (avg per day) has changed:",L_tbl:"Period",L_load:"Overall symptom score (avg per day)",L_loadNote:"Sum of all symptom ratings for a day (each 0 none to 3 severe, 18 symptoms, max 54), averaged over the period.",L_hPat:"Patient",L_hDr:"Doctor",L_hPer:"Period covered",L_hDays:"{n} days logged",L_hMade:"Date made",L_sReason:"Reason for this letter",L_sGlance:"At a glance",L_gDays:"Days logged",L_gTop:"Top 3 symptoms (share of days)",L_gScore:"Overall symptom score (avg per day)",L_gChg:"Change vs the earlier period",L_gChgV:"{a} to {b} (full months): {c} points",L_partTo:"(partial, to {d})",L_partFrom:"(partial, from {d})",L_sSym:"Symptoms over time",L_sCyc:"Bleeding and cycle",L_sTrt:"Treatments and supplements",L_meds:"Meds or supplements I logged (days taken):",L_medItem:"{m} ({n})",L_trtNone:"No treatments or supplements logged in this period.",L_sQs:"Questions for my doctor",L_qsNone:"No questions selected yet.",L_sClose:"Closing",L_sleep:"Sleep trouble",L_stress:"Stress",L_days:"Days",
+L_cyc:"My cycle: I logged {n} period start(s). Cycle lengths were {l} days (shortest {mn}, longest {mx}, a difference of {d} days).",L_cycOne:"My cycle: I logged one period start, on {d}, so there is no cycle length yet.",L_cycNone:"My cycle: I did not log any bleeding in this period.",L_cycLast:"My last period started on {d}.",
+L_ss:"Alongside this, my sleep trouble averaged {s} out of 3 and my stress averaged {t} out of 3.",L_pats:"A few patterns in my own records (simple averages, not proof of cause):",
+L_ask:"I would be grateful if we could talk about these symptoms and what options might be suitable for me.",L_note:"These are my own day-to-day records, not a diagnosis. I am happy to share more detail.",L_close:"Kind regards,",L_noData:"There are no entries in this period yet. Log a few check-ins, or load demo data in Settings to preview.",L_dateFmt:"en-GB",
+sev:["none","mild","moderate","severe"],
+comfortT:"Little comforts",comfortSub:"Everyday comfort products other women often mention, grouped by symptom. No supplements or medicine.",affLong:"Affiliate links: as an Amazon Associate we earn from qualifying purchases, at no extra cost to you. Not medical advice; talk to your doctor about symptoms.",
+gCool:"Hot flashes & night sweats",gSleep:"Sleep trouble & fatigue",gAche:"Joint pain & headaches",gCalm:"Anxiety, mood & irritability",gBook:"Reading: brain fog & understanding perimenopause",
+setT:"Settings & data",langT:"Language",remT:"Daily reminder",remAt:"Remind me at",remOnB:"Turn on reminder",remOffB:"Turn off reminder",remStOn:"On: a gentle nudge at {t}, skipped on days you've already checked in.",remStOff:"Off.",remDenied:"Notifications are blocked for this site. You can allow them in your browser settings, or use the calendar reminder below.",remUnsup:"This browser doesn't support web notifications. Use the calendar reminder below instead.",
+remHonest:"<b>Honest note:</b> web app reminders only arrive reliably while the app or browser is open or running in the background. On iPhone they need iOS 16.4 or later and the app added to your Home Screen. For a reminder that always arrives, add it to your calendar.",
+ics:"Add daily reminder to my calendar",icsNote:"Downloads a calendar file with a repeating daily reminder. Open it to add it to your phone's calendar.",
+nTitle:"Time for your check-in",nBody:"30 seconds to log how today went. Your future self (and your doctor) will thank you.",icsTitle:"Prime Traker check-in",icsDesc:"30 seconds to log how today went.",
+backupT:"Backup",backupSub:"Your data lives only on this phone. Export a CSV now and then to keep it safe.",exp:"Export backup (CSV)",imp:"Import backup (CSV)",tryT:"Try it out",demo:"Load 60 days of demo data",clear:"Clear all data",aboutT:"About",
+discShort:"This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.",reOnb:"View welcome screen",
+nToday:"Check-in",nIns:"Insights",nDoc:"Doctor summary",nComfort:"Comfort",nSet:"Settings",
+backupDl:"Backup downloaded",imported:"Imported {n} days",badCsv:"That doesn't look like a Prime Traker backup.",demoMix:"Demo data will be mixed with your entries. Continue?",demoOk:"Demo data loaded",clearQ:"Delete all your entries, treatments, self-checks, names and reminder settings from this phone? This can't be undone. Your Plus code stays so you don't lose what you paid for. Export a backup first if you want to keep anything.",cleared:"All data cleared",
+whyT:"Why this can happen",explNote:"General education only, not a diagnosis or treatment advice. If a symptom worries you, talk to your doctor.",srcL:"Sources:"
+},he:{cntT:"ספירות (לא חובה)",hfC:"גלי חום היום",hfSub:"הקישי + בכל פעם שיש גל",slH:"שעות שינה בלילה האחרון",slSub:"בצעדים של חצי שעה",hShort:"ש׳",
+avgHF:"ממוצע גלי חום ליום",avgSl:"ממוצע שעות שינה",cntNone:"–",cntDays:"{n} ימים נספרו",
+sumCnt:"ספירות",sumHF:"גלי חום: ממוצע {a} ליום ({n} ימים נספרו, {t} בסך הכול)",sumSl:"שינה: ממוצע {a} שעות בלילה ({n} לילות תועדו)",noCnt:"לא נרשמו ספירות החודש.",
+L_cnt:"בימים שספרתי, היו לי בממוצע {a} גלי חום ביום ({n} ימים).",L_slh:"ישנתי בממוצע {a} שעות בלילה ({n} לילות תועדו).",
+qPickH:"סמני את השאלות שתרצי לשאול. רק שאלות מסומנות ושאלות משלך יודפסו.",qAdd:"הוספה",qPh:"הוסיפי שאלה משלך",qNone:"(עוד לא סומנו שאלות)",L_qs:"שאלות שאשמח לשאול:",
+Q:["מה יכול לגרום לתסמינים האלה, ואיך אפשר לברר את זה?","מהן האפשרויות שלי, ומה היתרונות והסיכונים של כל אחת?","האם יש משהו בהיסטוריה הרפואית שלי שמשנה את האפשרויות?","האם יש בדיקות שהיית ממליץ/ה לי? מה הן יראו?","איך נדע אם טיפול עובד, ומתי כדאי לבדוק אותו מחדש?","האם יש בעיה בשילוב של התרופות או התוספים שאני לוקחת?","אילו תסמינים מחייבים לפנות אלייך לפני הביקור הבא?","האם יש מומחה/ית או מרפאת גיל המעבר שהיית ממליץ/ה עליה?"],
+instT:"הוספה למסך הבית",instWhy:"האפליקציה תיפתח כמו אפליקציה רגילה, תעבוד בלי אינטרנט, והתזכורות עובדות הכי טוב אחרי התקנה. הנתונים נשארים בטלפון.",instOk:"הבנתי",instHow:"איך מתקינים",instDone:"מותקן. את משתמשת באפליקציה ממסך הבית.",instNot:"עוד לא מותקן. התקנה הופכת את התזכורות לאמינות יותר.",instNow:"להתקנה עכשיו",
+instIOS:["פתחי את הדף ב-<b>Safari</b> (לא בתוך אפליקציה אחרת).","הקישי על כפתור <b>השיתוף</b> (ריבוע עם חץ).","גללי והקישי על <b>הוספה למסך הבית</b>, ואז <b>הוסף</b>.","פתחי את Prime Traker ממסך הבית."],
+instAnd:["פתחי את הדף ב-<b>Chrome</b>.","הקישי על התפריט <b>⋮</b> למעלה.","הקישי על <b>התקנת אפליקציה</b> או <b>הוספה למסך הבית</b>.","פתחי את Prime Traker ממסך הבית."],
+instInapp:"אם פתחת מוואטסאפ, אינסטגרם או פייסבוק, קודם פתחי את הדף ב-Safari או Chrome דרך התפריט.",
+appName:"Prime Traker",tagline:"צ'ק-אין יומי של 30 שניות שמראה לך דפוסים ומכין סיכום לרופא או לרופאה.",
+howT:"איך זה עובד",howB:"1. בכל יום מסמנים 0–3 לכל תסמין (0 בכלל לא, 1 קל, 2 בינוני, 3 חזק). לחיצה על <b>i</b> מסבירה למה התסמין יכול להופיע.<br>2. עם הזמן נבנים מגמות, התסמינים הבולטים ודפוסים.<br>3. לפני תור, נכנסים ל<b>סיכום לרופא</b> ומדפיסים סיכום חודשי או מכתב לרופא.",
+privT:"הפרטיות שלך",privB:"הכל נשמר בטלפון הזה, בדפדפן הזה. שום דבר לא עולה לשרת ולא נשלח לשום מקום. אפשר לשמור עותק דרך <b>ייצוא גיבוי</b> בהגדרות.",
+discFull:"<b>חשוב: זה לא ייעוץ רפואי.</b> האפליקציה היא כלי לתיעוד תסמינים ולהכנה לשיחה עם הרופא או הרופאה שלך. היא לא מחליפה ייעוץ רפואי, לא מאבחנת, לא מטפלת ולא ממליצה על טיפול כלשהו, כולל טיפול הורמונלי. הדפוסים שהיא מציגה הם ממוצעים פשוטים ולא הוכחה לסיבה. לפני שמתחילים, מפסיקים או משנים תרופה או תוסף, תמיד כדאי להתייעץ עם איש מקצוע. אם יש דימום אחרי גיל המעבר, כאב בחזה או מחשבות על פגיעה עצמית, יש לפנות מיד לרופא או למוקד חירום.",
+agree:"הבנתי שזה כלי מעקב ולא ייעוץ רפואי.",start:"בואי נתחיל",
+checkin:"איך את היום?",symptoms:"תסמינים",scale:"(0 בכלל לא · 3 חזק)",stressT:"רמת הסטרס היום",bleeding:"דימום",triggers:"גורמים אפשריים היום",meds:"תרופות / תוספים שלקחתי",addMedPh:"הוסיפי (למשל מגנזיום)",add:"הוספה",notes:"הערות",optional:"(לא חובה)",notesPh:"משהו על הלב היום? משפט אחד מספיק.",
+showMore:"עוד תסמינים ({n})",showFewer:"פחות תסמינים",saveNew:"שמירת הצ'ק-אין",update:"עדכון הרישום",today:"היום",streak:"{n} ימים ברצף",noMeds:"עוד לא נוסף כלום",
+saved:"נשמר, תודה",savedStreak:"נשמר. {n} ימים ברצף, כל הכבוד!",savedFirst:"נשמר. איזו התחלה יפה!",
+patterns:"מה הימים שלך מספרים",d7:"7 ימים",d30:"30 יום",topT:"התסמינים הבולטים (30 הימים האחרונים)",patT:"דפוסים ששווה לשים לב אליהם",patNote:"אלה ממוצעים פשוטים מהרישומים שלך, לא מסקנות רפואיות. כדאי לדבר עליהם עם הרופא.",
+cycleT:"מחזור",calT:"5 השבועות האחרונים במבט אחד",calNote:"כהה יותר = עומס תסמינים גבוה יותר · קו אדום = דימום",helpT:"יכול לעזור לך",helpSub:"מוצרי נוחות שמתאימים לתסמינים הבולטים שלך החודש.",
+affShort:"כשותפים של אמזון אנחנו מרוויחים מרכישות מתאימות. לא ייעוץ רפואי.",affLink:"קישור שותפים",
+stStreak:"ימים ברצף",stLogged:"ימים מתועדים (30 יום)",stTotal:"סך הרישומים",overall:"עומס תסמינים כולל",
+chartAvg:"ממוצע {a} ב-{n} ימים מתועדים. סימון אדום = ימי דימום.",noPeriod:"אין עדיין רישומים בתקופה הזו.",avgDays:"ממוצע {a} · {n} ימים",logFew:"אחרי כמה ימי תיעוד יופיעו כאן התסמינים הבולטים.",
+lower:"עומס התסמינים הכולל שלך <b>נמוך ב-{p}%</b> לעומת 30 הימים שלפני. מה שאת עושה, שווה לרשום.",higher:"עומס התסמינים הכולל שלך <b>גבוה ב-{p}%</b> לעומת 30 הימים שלפני. אולי כדאי להזכיר את זה בתור הבא.",
+streakIns:"{n} ימים ברצף. תיעוד קבוע הוא מה שהופך את הדפוסים לאמינים.",patWait:"דפוסים מופיעים אחרי בערך שבועיים של צ'ק-אין, כשיש מספיק ימים להשוואה.",
+corr:"{label}, <b>{s}</b> היו בממוצע <b>{a}</b> לעומת {b} בימים אחרים ({na} לעומת {nb} ימים).",afterPoor:"בימים שאחרי לילה גרוע",onTrig:"בימים שסימנת {t}",onMed:"בימים שלקחת {m}",highStress:"בימים עם יותר סטרס",
+lastPer:"הווסת האחרונה התחילה ב-<b>{d}</b> (לפני {n} ימים).",cycLens:"אורכי מחזור אחרונים: <b>{l}</b> ימים (ממוצע {a}).",cycVar:"אורך המחזור שלך השתנה בשבוע או יותר. זה נפוץ בגיל המעבר וכדאי לשתף עם הרופא.",cycMore:"סמני תחילת וסת נוספת כדי לראות את אורך המחזור.",cycNone:"סמני רמת דימום בצ'ק-אין, ואורכי המחזור יופיעו כאן.",
+tipRough:"יום לא קל. הרבה נשים מספרות שזה עוזר {w}:",
+weekTipT:"הטיפ של השבוע",
+docT:"סיכום לרופא",modeSum:"סיכום חודשי",modeLet:"מכתב לרופא",print:"הדפסה / PDF",drPh:"שם הרופא/ה (לא חובה)",mePh:"השם שלך (לא חובה)",r1:"החודש האחרון",r3:"3 החודשים האחרונים",r6:"6 החודשים האחרונים",rAll:"כל הרישומים",
+printHelp:"באייפון: הדפסה ← הגדלת התצוגה בשתי אצבעות ← שיתוף, כדי לשמור כ-PDF או לשלוח. באנדרואיד: הדפסה ← שמירה כ-PDF.",
+sumTitle:"סיכום תסמינים חודשי",sumLine:"ימים מתועדים: <b>{n}</b> · סולם: 0 בכלל לא, 1 קל, 2 בינוני, 3 חזק · עומס תסמינים יומי ממוצע: <b>{a}</b>",sumMost:"תסמינים, מהחזק לחלש",thSym:"תסמין",thAvg:"ממוצע",thDays:"ימים עם התסמין",thMod:"ימים בינוני ומעלה",thWorst:"הכי חזק",byWeek:"עומס תסמינים כולל לפי שבוע",wk:"שבוע {n}",bleedCyc:"דימום ומחזור",bleedOn:"דימום/הכתמה בימים: ",noBleed:"לא תועד דימום החודש.",recentLens:"אורכי מחזור אחרונים: {l} ימים.",trigMeds:"גורמים שתועדו · תרופות/תוספים",none:"אין",noneLogged:"לא תועד",stressAvg:"סטרס ממוצע: {a} מתוך 3",
+myPats:"דפוסים ששמתי לב אליהם (ממוצעים שלי, לא אבחנה)",qs:"שאלות לרופא",footer:"סיכום מעקב בדיווח עצמי, נוצר באפליקציית Prime Traker. כלי לארגון מידע, לא ייעוץ רפואי.",noMonth:"אין עדיין רישומים בחודש הזה. אפשר לעשות כמה צ'ק-אינים, או לטעון נתוני דוגמה בהגדרות כדי לראות איך זה נראה.",
+L_dear:"לכבוד {d}, שלום רב,",L_dearNo:"לכבוד הרופא/ה, שלום רב,",L_intro:"אני עוקבת אחרי התסמינים שלי מדי יום, כדי שנוכל להפיק את המרב מהפגישה. ריכזתי כאן סיכום קצר של {n} ימי תיעוד, מ-{a} עד {b}. דירגתי כל תסמין מ-0 (בכלל לא) עד 3 (חזק).",
+L_freq:"התסמינים שהופיעו אצלי הכי הרבה:",L_item:"<b>{s}</b>: ב-{p}% מהימים המתועדים, בדרך כלל ברמה {sev}",
+L_chart:"איך עומס התסמינים הכולל השתנה:",L_tbl:"תקופה",L_load:"עומס ממוצע",L_sleep:"קשיי שינה",L_stress:"סטרס",L_days:"ימים",
+L_cyc:"המחזור שלי: תיעדתי {n} התחלות וסת. אורכי המחזור היו {l} ימים (הקצר ביותר {mn}, הארוך ביותר {mx}, הפרש של {d} ימים).",L_cycOne:"המחזור שלי: תיעדתי התחלת וסת אחת, ב-{d}, ולכן אין עדיין אורך מחזור.",L_cycNone:"המחזור שלי: לא תיעדתי דימום בתקופה הזו.",L_cycLast:"הווסת האחרונה שלי התחילה ב-{d}.",
+L_ss:"במקביל, קשיי השינה שלי היו בממוצע {s} מתוך 3, והסטרס בממוצע {t} מתוך 3.",L_pats:"כמה דפוסים מהתיעוד שלי (ממוצעים פשוטים, לא הוכחה לסיבה):",
+L_ask:"אשמח אם נוכל לדבר על התסמינים האלה ועל האפשרויות שעשויות להתאים לי.",L_note:"זה תיעוד אישי שלי מיום ליום, לא אבחנה. אשמח לפרט עוד.",L_close:"בתודה ובברכה,",L_noData:"אין עדיין רישומים בתקופה הזו. אפשר לעשות כמה צ'ק-אינים, או לטעון נתוני דוגמה בהגדרות.",L_dateFmt:"he-IL",
+sev:["ללא","קלה","בינונית","חזקה"],
+comfortT:"דברים קטנים שעוזרים",comfortSub:"מוצרי נוחות יומיומיים שנשים מזכירות לא פעם, לפי תסמין. בלי תוספים ובלי תרופות.",affLong:"קישורי שותפים: כשותפים של אמזון אנחנו מרוויחים מרכישות מתאימות, בלי עלות נוספת לך. לא ייעוץ רפואי; על תסמינים כדאי לדבר עם הרופא.",
+gCool:"גלי חום והזעות לילה",gSleep:"קשיי שינה ועייפות",gAche:"כאבי מפרקים וכאבי ראש",gCalm:"חרדה, מצב רוח ועצבנות",gBook:"קריאה: ערפל מוחי והבנת גיל המעבר",
+setT:"הגדרות ונתונים",langT:"שפה",remT:"תזכורת יומית",remAt:"להזכיר לי ב-",remOnB:"הפעלת תזכורת",remOffB:"כיבוי התזכורת",remStOn:"פעילה: תזכורת עדינה ב-{t}, ולא בימים שכבר עשית צ'ק-אין.",remStOff:"כבויה.",remDenied:"ההתראות חסומות באתר הזה. אפשר לאשר אותן בהגדרות הדפדפן, או להשתמש בתזכורת ביומן למטה.",remUnsup:"הדפדפן הזה לא תומך בהתראות. אפשר להשתמש בתזכורת ביומן למטה.",
+remHonest:"<b>בכנות:</b> תזכורות של אפליקציית רשת מגיעות באופן אמין רק כשהאפליקציה או הדפדפן פתוחים או פועלים ברקע. באייפון צריך iOS 16.4 ומעלה, ושהאפליקציה תהיה מותקנת במסך הבית. לתזכורת שתמיד מגיעה, עדיף להוסיף אותה ליומן.",
+ics:"הוספת תזכורת יומית ליומן",icsNote:"יורד קובץ יומן עם תזכורת שחוזרת כל יום. פותחים אותו כדי להוסיף ליומן בטלפון.",
+nTitle:"הגיע הזמן לצ'ק-אין",nBody:"30 שניות לתעד איך עבר היום. את (והרופא שלך) תודי לעצמך אחר כך.",icsTitle:"צ'ק-אין במעקב גיל המעבר",icsDesc:"30 שניות לתעד איך עבר היום.",
+backupT:"גיבוי",backupSub:"הנתונים שלך נשמרים רק בטלפון הזה. מדי פעם כדאי לייצא קובץ CSV לשמירה.",exp:"ייצוא גיבוי (CSV)",imp:"ייבוא גיבוי (CSV)",tryT:"לנסות",demo:"טעינת 60 ימים של נתוני דוגמה",clear:"מחיקת כל הנתונים",aboutT:"אודות",
+discShort:"האפליקציה היא כלי לארגון מידע ולא ייעוץ רפואי. היא לא מאבחנת, לא מטפלת ולא ממליצה על טיפול. תמיד כדאי להתייעץ עם איש מקצוע.",reOnb:"למסך הפתיחה",
+nToday:"צ'ק-אין",nIns:"תובנות",nDoc:"סיכום לרופא",nComfort:"נוחות",nSet:"הגדרות",
+backupDl:"הגיבוי ירד",imported:"יובאו {n} ימים",badCsv:"זה לא נראה כמו קובץ גיבוי של האפליקציה.",demoMix:"נתוני הדוגמה יתערבבו ברישומים שלך. להמשיך?",demoOk:"נתוני הדוגמה נטענו",clearQ:"למחוק את כל הרישומים מהטלפון? אי אפשר לבטל את זה. (אם רוצים לשמור, כדאי לייצא גיבוי קודם.)",cleared:"כל הנתונים נמחקו",
+whyT:"למה זה יכול לקרות",explNote:"מידע כללי בלבד, לא אבחנה ולא המלצה לטיפול. אם תסמין מדאיג אותך, כדאי לדבר עם הרופא.",srcL:"מקורות:"
+}};
+const SYMN={en:{hot:"Hot flashes",sweat:"Night sweats",sleep:"Sleep trouble",fatigue:"Fatigue / low energy",fog:"Brain fog",anx:"Anxiety",mood:"Low mood",irrit:"Irritability",head:"Headache",joint:"Joint / muscle pain",palp:"Heart palpitations",bloat:"Bloating",breast:"Breast tenderness",dry:"Vaginal dryness",libido:"Low libido",bladder:"Bladder urgency",skin:"Dry skin / itching",dizzy:"Dizziness",stress:"Stress"},
+he:{hot:"גלי חום",sweat:"הזעות לילה",sleep:"קשיי שינה",fatigue:"עייפות / חוסר אנרגיה",fog:"ערפל מוחי",anx:"חרדה",mood:"מצב רוח ירוד",irrit:"עצבנות",head:"כאב ראש",joint:"כאבי מפרקים / שרירים",palp:"דפיקות לב",bloat:"נפיחות בבטן",breast:"רגישות בשדיים",dry:"יובש בנרתיק",libido:"ירידה בחשק המיני",bladder:"דחיפות במתן שתן",skin:"יובש בעור / גירוד",dizzy:"סחרחורת",stress:"סטרס"}};
+const TRIGN={en:{caffeine:"Caffeine",alcohol:"Alcohol",stress:"Stress",poorsleep:"Poor sleep",spicy:"Spicy food",sugar:"Sugar",exercise:"Exercise"},he:{caffeine:"קפאין",alcohol:"אלכוהול",stress:"סטרס",poorsleep:"לילה גרוע",spicy:"אוכל חריף",sugar:"סוכר",exercise:"פעילות גופנית"}};
+const BLEEDN={en:{none:"None",spot:"Spotting",light:"Light",medium:"Medium",heavy:"Heavy"},he:{none:"אין",spot:"הכתמה",light:"קל",medium:"בינוני",heavy:"כבד"}};
+const TIPWN={en:{hot:"for hot flashes",sweat:"for night sweats",sleep:"for sleep",fatigue:"for rest",fog:"for brain fog",anx:"for unwinding",mood:"for low days",irrit:"for unwinding",head:"for headaches",joint:"for aches"},he:{hot:"עם גלי חום",sweat:"עם הזעות לילה",sleep:"עם השינה",fatigue:"למנוחה",fog:"עם ערפל מוחי",anx:"להירגע",mood:"בימים קשים",irrit:"להירגע",head:"עם כאבי ראש",joint:"עם כאבים"}};
+const SRC={nhs:["NHS: Menopause symptoms","https://www.nhs.uk/conditions/menopause/symptoms/"],nhsP:["NHS: Perimenopause","https://www.nhs.uk/conditions/menopause/"],tms:["The Menopause Society: Menopause topics","https://menopause.org/patient-education/menopause-topics"],nice:["NICE guideline NG23: Menopause","https://www.nice.org.uk/guidance/ng23"]};
+const EXPL={
+hot:{s:["nhs","tms"],en:"Hot flashes are sudden waves of heat, often in the face, neck and chest, sometimes with sweating or a racing heart. As estrogen levels rise and fall, the brain's temperature control centre becomes more sensitive to small changes, and the body reacts by flushing and sweating to cool down.",he:"גלי חום הם תחושת חום פתאומית, בדרך כלל בפנים, בצוואר ובחזה, ולפעמים עם הזעה או דופק מהיר. כשרמות האסטרוגן עולות ויורדות, מרכז ויסות החום במוח נעשה רגיש יותר לשינויים קטנים, והגוף מגיב בהסמקה ובהזעה כדי להתקרר."},
+sweat:{s:["nhs","tms"],en:"Night sweats are hot flashes that happen during sleep. They come from the same hormone-related changes in temperature control, and they often wake you up or disturb sleep.",he:"הזעות לילה הן גלי חום שמגיעים בזמן השינה. הן נובעות מאותם שינויים הורמונליים בוויסות החום, ולעתים קרובות מעירות או פוגעות בשינה."},
+sleep:{s:["nhs","nice"],en:"Sleep often becomes lighter or more broken in perimenopause. Night sweats, changing hormone levels, anxiety and needing the toilet at night can all play a part.",he:"השינה נעשית לא פעם קלה יותר או מקוטעת בגיל המעבר. הזעות לילה, שינויים ברמות ההורמונים, חרדה וצורך לקום לשירותים בלילה יכולים כולם לתרום לכך."},
+fatigue:{s:["nhs"],en:"Feeling tired or low on energy is common, often linked to broken sleep and night sweats. Tiredness has many possible causes, such as low iron or thyroid changes, so it's worth mentioning to your doctor.",he:"עייפות וחוסר אנרגיה נפוצים מאוד, ולרוב קשורים לשינה מקוטעת ולהזעות לילה. לעייפות יש הרבה סיבות אפשריות, כמו ברזל נמוך או שינויים בבלוטת התריס, ולכן כדאי להזכיר אותה לרופא."},
+fog:{s:["nhs","tms"],en:"Many women notice forgetfulness or trouble concentrating. Changing estrogen levels, poor sleep and stress are thought to contribute. For most women it improves with time.",he:"הרבה נשים שמות לב לשכחה או לקושי להתרכז. ההערכה היא ששינויים ברמות האסטרוגן, שינה לא טובה וסטרס תורמים לכך. אצל רוב הנשים זה משתפר עם הזמן."},
+anx:{s:["nhs","nice"],en:"Feeling anxious or on edge can appear or increase in perimenopause, even if you've never had anxiety before. Hormone changes, disrupted sleep and life pressures may all contribute.",he:"חרדה או תחושת דריכות יכולות להופיע או להתגבר בגיל המעבר, גם אצל מי שלא חוותה חרדה קודם. שינויים הורמונליים, שינה מופרעת ולחצים בחיים יכולים כולם לתרום לכך."},
+mood:{s:["nhs","nice"],en:"Low mood and mood swings are common. Fluctuating hormones can affect mood, and poor sleep makes everything harder. If low mood lasts, or you have thoughts of harming yourself, seek help right away.",he:"מצב רוח ירוד ותנודות במצב הרוח נפוצים. תנודות הורמונליות יכולות להשפיע על מצב הרוח, ושינה גרועה מקשה על הכל. אם מצב הרוח הירוד נמשך, או אם יש מחשבות על פגיעה עצמית, חשוב לפנות לעזרה מיד."},
+irrit:{s:["nhs"],en:"Feeling short-tempered or easily annoyed is a commonly reported symptom, often tied to hormone swings, tiredness and stress.",he:"עצבנות או סבלנות קצרה הם תסמין שנשים מדווחות עליו הרבה, ולרוב הוא קשור לתנודות הורמונליות, לעייפות ולסטרס."},
+head:{s:["nhs","tms"],en:"Some women get more headaches, or find migraines change pattern, as hormone levels fluctuate. Headaches that used to come with periods may become less predictable.",he:"חלק מהנשים סובלות מיותר כאבי ראש, או שדפוס המיגרנות משתנה, כשרמות ההורמונים משתנות. כאבי ראש שהיו מגיעים עם הווסת יכולים להפוך לפחות צפויים."},
+joint:{s:["nhs","tms"],en:"Aches and stiffness in joints and muscles are common. Estrogen plays a role in joints and connective tissue, so falling levels may contribute.",he:"כאבים ונוקשות במפרקים ובשרירים נפוצים. לאסטרוגן יש תפקיד במפרקים וברקמות החיבור, ולכן ירידה ברמתו יכולה לתרום לכך."},
+palp:{s:["nhs","tms"],en:"A pounding or fluttering heartbeat can happen, sometimes during hot flashes. It's usually harmless, but palpitations should always be checked by a doctor, and urgently if you also have chest pain, fainting or breathlessness.",he:"דפיקות לב או תחושת רפרוף בלב יכולות להופיע, לפעמים בזמן גל חום. בדרך כלל זה לא מסוכן, אבל תמיד כדאי שרופא יבדוק דפיקות לב, ובדחיפות אם יש גם כאב בחזה, עילפון או קוצר נשימה."},
+bloat:{s:["tms"],en:"Many women report bloating and changes in digestion. Hormone shifts can affect fluid balance and how the gut works.",he:"הרבה נשים מדווחות על נפיחות ושינויים בעיכול. שינויים הורמונליים יכולים להשפיע על מאזן הנוזלים ועל פעילות המעיים."},
+breast:{s:["nhsP"],en:"Breast tenderness can come and go as hormone levels swing, similar to how it can feel before a period. Any new lump or change should be checked by a doctor.",he:"רגישות בשדיים יכולה לבוא וללכת עם התנודות ברמות ההורמונים, בדומה לתחושה לפני וסת. כל גוש או שינוי חדש צריך להיבדק אצל רופא."},
+dry:{s:["nhs","nice","tms"],en:"Lower estrogen can make the tissues of the vagina and vulva thinner and drier, which can cause discomfort or pain during sex. It's very common, often not talked about, and worth raising with your doctor.",he:"ירידה באסטרוגן יכולה לגרום לרקמות הנרתיק והפות להיות דקות ויבשות יותר, מה שעלול לגרום לאי-נוחות או לכאב ביחסי מין. זה נפוץ מאוד, לא מדברים על זה מספיק, ושווה להעלות את זה מול הרופא."},
+libido:{s:["nhs","nice"],en:"A change in sex drive is common. Hormone changes, tiredness, mood and vaginal dryness can all affect it.",he:"שינוי בחשק המיני נפוץ. שינויים הורמונליים, עייפות, מצב הרוח ויובש בנרתיק יכולים כולם להשפיע עליו."},
+bladder:{s:["nhs","tms"],en:"Lower estrogen also affects the bladder and urethra, which can bring a more urgent need to pee, more frequent trips, or more urine infections.",he:"הירידה באסטרוגן משפיעה גם על שלפוחית השתן ועל השופכה, ויכולה לגרום לדחיפות במתן שתן, ליותר ביקורים בשירותים או ליותר דלקות בדרכי השתן."},
+skin:{s:["nhs","tms"],en:"Estrogen helps skin hold moisture and collagen, so as levels fall skin may become drier, thinner or itchy.",he:"האסטרוגן עוזר לעור לשמור על לחות ועל קולגן, ולכן כשהרמה יורדת העור יכול להיעשות יבש, דק או מגרד יותר."},
+dizzy:{s:["tms"],en:"Some women report dizziness or feeling light-headed, sometimes with hot flashes or after poor sleep. Dizziness has many possible causes, so mention it to your doctor.",he:"חלק מהנשים מדווחות על סחרחורת או תחושת ריחוף, לפעמים עם גלי חום או אחרי לילה גרוע. לסחרחורת יש הרבה סיבות אפשריות, ולכן כדאי לספר עליה לרופא."},
+stress:{s:["nhs","nice"],en:"Stress isn't a symptom of perimenopause, but it often comes along at this stage of life, and it can make hot flashes, sleep and mood feel worse. Tracking it helps you and your doctor see the whole picture.",he:"סטרס הוא לא תסמין של גיל המעבר, אבל הוא מגיע איתו לא פעם בשלב הזה של החיים, ויכול להחמיר את גלי החום, את השינה ואת מצב הרוח. מעקב אחריו עוזר לך ולרופא לראות את התמונה המלאה."}};
+const TIPS=[
+["Bring your records","Before an appointment, write your top 3 questions at the bottom of your summary. Short visits go further when you lead with what matters most to you.","להביא את התיעוד","לפני תור, כתבי בתחתית הסיכום את 3 השאלות הכי חשובות לך. בפגישה קצרה מספיקים יותר כשמתחילים ממה שהכי חשוב."],
+["Layer up","Dressing in light layers makes it easier to cool down quickly when a hot flash starts.","שכבות","לבוש בשכבות דקות מאפשר להתקרר מהר כשגל חום מתחיל."],
+["A cooler bedroom","Many women sleep better in a cool, dark, quiet bedroom. A fan or a window open a little can help.","חדר שינה קריר","הרבה נשים ישנות טוב יותר בחדר קריר, חשוך ושקט. מאוורר או חלון פתוח קצת יכולים לעזור."],
+["Notice your triggers","Some women find caffeine, alcohol or spicy food set off hot flashes. Your Patterns card shows whether that's true for you.","לשים לב לטריגרים","יש נשים שמגלות שקפאין, אלכוהול או אוכל חריף מעוררים אצלן גלי חום. כרטיס הדפוסים יראה לך אם זה נכון אצלך."],
+["Keep moving","Regular movement you enjoy, like walking, swimming or dancing, is good for mood, sleep, bones and heart.","להמשיך לזוז","תנועה קבועה שאת נהנית ממנה, כמו הליכה, שחייה או ריקוד, טובה למצב הרוח, לשינה, לעצמות וללב."],
+["Strength matters","Muscle and bone strength matter more from midlife. Simple resistance exercises a couple of times a week can help.","כוח זה חשוב","כוח שרירים ועצמות חשוב יותר מאמצע החיים. כמה תרגילי כוח פשוטים פעמיים בשבוע יכולים לעזור."],
+["Say it plainly","It's OK to tell your doctor exactly how symptoms affect your work, sleep or relationships. That context helps them help you.","להגיד את זה ישר","זה בסדר לספר לרופא בדיוק איך התסמינים משפיעים על העבודה, השינה או הזוגיות. ההקשר הזה עוזר לו לעזור לך."],
+["You can ask for more time","If you have a lot to discuss, ask whether you can book a longer appointment or a follow-up.","מותר לבקש עוד זמן","אם יש הרבה על מה לדבר, אפשר לשאול אם ניתן לקבוע תור ארוך יותר או תור המשך."],
+["Talk about it","Sharing what you're going through with a partner or friend can make a hard week lighter. You're far from alone.","לדבר על זה","לשתף בן זוג או חברה במה שעובר עלייך יכול להקל על שבוע קשה. את ממש לא לבד."],
+["Wind down","A short, regular wind-down routine, such as dimming lights and putting the phone away, can make it easier to fall asleep.","להאט לקראת השינה","שגרה קצרה וקבועה לפני השינה, כמו לעמעם אורות ולהניח את הטלפון בצד, יכולה להקל על ההירדמות."],
+["Keep a small water bottle near","Having cool water close by can help when you feel a flush coming on, day or night.","בקבוק מים קרוב","מים קרים בהישג יד יכולים לעזור כשמרגישים גל חום מתקרב, ביום או בלילה."],
+["Check in, even on good days","Logging good days matters as much as bad ones. It shows your doctor what 'normal' looks like for you.","צ'ק-אין גם בימים טובים","תיעוד של ימים טובים חשוב בדיוק כמו של ימים קשים. הוא מראה לרופא איך נראה 'רגיל' אצלך."]];
+const PRODW={he:{B00EINBSEW:"כרית מתכווננת ומאווררת שהרבה ישנים חמים אוהבים.",B09NBPQ672:"מאוורר צוואר שקט, בלי ידיים, לגל חום מחוץ לבית.",B0C45VXSD8:"פיג'מת סאטן קלה וחלקה ללילות חמים.",B07PRG2CQY:"מסכת שינה שמחשיכה לגמרי, בלי לחץ על העיניים.",B00HD0ELFK:"מכשיר רעש לבן עם מאוורר אמיתי שמסתיר רעשים, ותיק ואהוב.",B075F9ST7G:"משקל עדין ואחיד שהרבה אנשים מרגישים שמרגיע לפני השינה.",B0B32R3BB3:"כרית חימום גדולה עם 6 דרגות וכיבוי אוטומטי.",B09G3KYR28:"שאלה קצרה ביום כדי להירגע ולעשות חשבון נפש.",B07W731WSH:"למתיחות עדינות או לכמה דקות רגועות בבית.","0806540664":"מדריך מבוסס מחקר מאת רופאת נשים (באנגלית).","059379625X":"מדריך מעשי לגיל המעבר מאת רופאת נשים (באנגלית)."}};
+"use strict";
+const AFFTAG='moneymaker0bd-20'; // <-- Amazon Associates tag (one place)
+const PROD=[
+ {a:"B00EINBSEW",n:"Coop Home Goods Original Adjustable Pillow",w:"Breathable, adjustable-fill pillow that many hot sleepers like.",g:"cool",k:["hot","sweat"]},
+ {a:"B09NBPQ672",n:"JISULIFE Portable Neck Fan",w:"Hands-free, quiet breeze for when a hot flash hits on the go.",g:"cool",k:["hot","sweat"]},
+ {a:"B0C45VXSD8",n:"Ekouaer Silk Satin Pajama Set",w:"Smooth, light satin sleepwear for warmer nights.",g:"cool",k:["sweat","hot"]},
+ {a:"B07PRG2CQY",n:"Manta Sleep Mask",w:"Full-blackout mask with no pressure on the eyes.",g:"sleep",k:["sleep","fatigue"]},
+ {a:"B00HD0ELFK",n:"Yogasleep Dohm Classic White Noise Machine",w:"Real-fan sound that masks noise; a long-time favorite.",g:"sleep",k:["sleep"]},
+ {a:"B075F9ST7G",n:"YnM Weighted Blanket (15 lb, Queen)",w:"Gentle, even weight many people find calming at bedtime.",g:"sleep",k:["sleep","anx"]},
+ {a:"B0B32R3BB3",n:"Sunbeam XL Heating Pad",w:"Large 12x24 pad with 6 settings and auto shut-off.",g:"ache",k:["joint","head"]},
+ {a:"B09G3KYR28",n:"The Five Minute Journal",w:"A short daily prompt to unwind and reflect.",g:"calm",k:["anx","mood","irrit","fog"]},
+ {a:"B07W731WSH",n:"Gaiam Premium Yoga Mat",w:"For gentle stretching or a few calm minutes at home.",g:"calm",k:["anx","joint","irrit","mood"]},
+ {a:"0806540664",n:"The Menopause Manifesto, Dr. Jen Gunter",w:"Evidence-based guide by an OB/GYN.",g:"book",k:["fog","fatigue","mood"]},
+ {a:"059379625X",n:"The New Menopause, Dr. Mary Claire Haver",w:"Practical guide by an OB/GYN to perimenopause and beyond.",g:"book",k:["fog","fatigue","dry","libido"]}];
+const SYMK=["hot","sweat","sleep","fatigue","fog","anx","mood","irrit","head","joint","palp","bloat","breast","dry","libido","bladder","skin","dizzy"];
+const CORE=10,TRIGK=["caffeine","alcohol","stress","poorsleep","spicy","sugar","exercise"],BLEEDK=["none","spot","light","medium","heavy"];
+const KEY="periTracker.v1";
+let S=load(); let cur=today(); let showAll=false; let range=7; let sumMode="sum";
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{onb:false,e:{},meds:["Magnesium","Vitamin D"]}}catch(x){return{onb:false,e:{},meds:["Magnesium","Vitamin D"]}}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
+const HEBREW_ENABLED=false; // set true to bring back the Hebrew UI (strings kept below)
+if(!HEBREW_ENABLED&&S.lang==="he"){S.lang="en";try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
+let LANG=!HEBREW_ENABLED?"en":S.lang||((navigator.language||"en").toLowerCase().startsWith("he")||(navigator.language||"").toLowerCase().startsWith("iw")?"he":"en");
+const L=()=>I18N[LANG];
+function t(k,o){let s=L()[k]??I18N.en[k]??k;if(o)for(const x in o)s=s.split("{"+x+"}").join(o[x]);return s}
+const SN=k=>SYMN[LANG][k],TN=k=>TRIGN[LANG][k],BN=k=>BLEEDN[LANG][k];
+const LOC=()=>LANG==="he"?"he-IL":"en-US";
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function today(){return iso(new Date())}
+function addD(s,n){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)}
+function fmt(s,o){return new Date(s+"T12:00:00").toLocaleDateString(LOC(),o||{weekday:"short",month:"short",day:"numeric"})}
+const $=id=>document.getElementById(id);
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(m){const e=$("toast");e.textContent=m;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1600)}
+function entry(d){return S.e[d]||(S.e[d]={s:{},bleed:"none",trig:[],meds:[],notes:""})}
+const isBleed=e=>e&&["light","medium","heavy"].includes(e.bleed);
+const load_=e=>e?SYMK.reduce((a,k)=>a+(e.s[k]||0),0):0;
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+const r1=x=>(Math.round(x*10)/10).toFixed(1);
+const stressOf=e=>e.st!=null?e.st:(e.trig.includes("stress")?2:null);
+
+// ---------- affiliate
+const PICON={"B00EINBSEW":'<rect x="10" y="18" width="36" height="22" rx="10" fill="#fff" stroke="#5f7a5b" stroke-width="2.5"/><path d="M18 29h20" stroke="#c98b8b" stroke-width="2" stroke-dasharray="3 3"/>',"B09NBPQ672":'<path d="M14 24a14 14 0 0 0 28 0" fill="none" stroke="#5f7a5b" stroke-width="3" stroke-linecap="round"/><circle cx="14" cy="22" r="5" fill="#c98b8b"/><circle cx="42" cy="22" r="5" fill="#c98b8b"/><path d="M10 12q4-3 8 0M38 12q4-3 8 0" stroke="#5f7a5b" stroke-width="2" fill="none" stroke-linecap="round"/>',"B0C45VXSD8":'<path d="M20 12l-8 6 4 7 4-3v22h16V22l4 3 4-7-8-6-4 4h-8z" fill="#c98b8b" stroke="#5f7a5b" stroke-width="2" stroke-linejoin="round"/><circle cx="28" cy="26" r="1.5" fill="#fff"/><circle cx="28" cy="33" r="1.5" fill="#fff"/>',"B07PRG2CQY":'<path d="M8 26h40" stroke="#5f7a5b" stroke-width="2.5"/><ellipse cx="20" cy="28" rx="8" ry="6" fill="#5f7a5b"/><ellipse cx="36" cy="28" rx="8" ry="6" fill="#5f7a5b"/><path d="M38 12a6 6 0 1 0 6 8 5 5 0 0 1-6-8z" fill="#c98b8b"/>',"B00HD0ELFK":'<ellipse cx="28" cy="34" rx="15" ry="7" fill="#5f7a5b"/><ellipse cx="28" cy="30" rx="15" ry="7" fill="#fff" stroke="#5f7a5b" stroke-width="2"/><path d="M18 16q3-3 6 0t6 0 6 0" stroke="#c98b8b" stroke-width="2.5" fill="none" stroke-linecap="round"/>',"B075F9ST7G":'<rect x="10" y="14" width="36" height="28" rx="6" fill="#5f7a5b"/><path d="M22 14v28M34 14v28M10 28h36" stroke="#fff" stroke-width="1.5" opacity=".7"/><circle cx="16" cy="21" r="1.5" fill="#c98b8b"/><circle cx="40" cy="35" r="1.5" fill="#c98b8b"/>',"B0B32R3BB3":'<rect x="12" y="16" width="32" height="22" rx="7" fill="#c98b8b"/><path d="M18 22q3 3 0 6t0 6M28 22q3 3 0 6t0 6M38 22q3 3 0 6t0 6" stroke="#fff" stroke-width="2" fill="none"/><path d="M44 30q6 0 6 8" stroke="#5f7a5b" stroke-width="2.5" fill="none"/>',"B09G3KYR28":'<rect x="15" y="10" width="26" height="34" rx="4" fill="#5f7a5b"/><rect x="19" y="10" width="22" height="34" rx="3" fill="#fff" stroke="#5f7a5b" stroke-width="2"/><path d="M24 20h12M24 26h12M24 32h8" stroke="#c98b8b" stroke-width="2" stroke-linecap="round"/>',"B07W731WSH":'<rect x="8" y="22" width="30" height="14" rx="3" fill="#c98b8b"/><circle cx="40" cy="29" r="8" fill="#5f7a5b"/><circle cx="40" cy="29" r="3.5" fill="#f6efe3"/>',"0806540664":'<rect x="14" y="8" width="28" height="40" rx="3" fill="#c98b8b"/><rect x="14" y="8" width="4" height="40" fill="#000" opacity=".12"/><text x="30" y="24" font-size="6" font-weight="700" fill="#fff" text-anchor="middle" font-family="Georgia,serif">MENOPAUSE</text><text x="30" y="31" font-size="6" font-weight="700" fill="#fff" text-anchor="middle" font-family="Georgia,serif">MANIFESTO</text><path d="M22 38h16" stroke="#fff" stroke-width="1" opacity=".7"/>',"059379625X":'<rect x="14" y="8" width="28" height="40" rx="3" fill="#5f7a5b"/><rect x="14" y="8" width="4" height="40" fill="#000" opacity=".12"/><text x="30" y="24" font-size="6" font-weight="700" fill="#fff" text-anchor="middle" font-family="Georgia,serif">THE NEW</text><text x="30" y="31" font-size="6" font-weight="700" fill="#fff" text-anchor="middle" font-family="Georgia,serif">MENOPAUSE</text><path d="M22 38h16" stroke="#fff" stroke-width="1" opacity=".7"/>'};
+const pIcon=(a,z)=>`<svg class="pic" viewBox="0 0 56 56" width="${z||56}" height="${z||56}" aria-hidden="true" dir="ltr"><rect width="56" height="56" rx="14" fill="#f6efe3"/>${PICON[a]||""}</svg>`;
+const affURL=a=>`https://www.amazon.com/dp/${a}?tag=${encodeURIComponent(AFFTAG)}`;
+const pw=p=>(PRODW[LANG]&&PRODW[LANG][p.a])||p.w;
+const affItem=p=>`<div class="aff">${pIcon(p.a)}<div><a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener" dir="ltr">${p.n}</a><span class="afftag">${t("affLink")}</span><p>${pw(p)}</p></div></div>`;
+function renderHelp(topKeys){let picks=[];for(let r=0;r<4;r++)topKeys.forEach(k=>{const p=PROD.filter(p=>p.k.includes(k)&&!picks.includes(p))[0];if(p)picks.push(p)});
+ if(!picks.length)picks=PROD.filter(p=>p.g=="book");picks=picks.slice(0,4);
+ $("helpList").innerHTML=picks.map(affItem).join("")}
+function renderShop(){const G=[["cool","gCool"],["sleep","gSleep"],["ache","gAche"],["calm","gCalm"],["book","gBook"]];
+ $("shopList").innerHTML=G.map(([g,k])=>`<h2 class="h4" style="margin:10px 0 2px;font-size:16px">${t(k)}</h2>`+PROD.filter(p=>p.g==g).map(affItem).join("")).join("")}
+
+// ---------- language
+function applyLang(){document.documentElement.lang=LANG;document.documentElement.dir=LANG==="he"?"rtl":"ltr";document.title=t("appName");
+ document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));
+ document.querySelectorAll("[data-h]").forEach(e=>e.innerHTML=t(e.dataset.h));
+ document.querySelectorAll("[data-p]").forEach(e=>e.placeholder=t(e.dataset.p));
+ document.querySelectorAll("[data-lang]").forEach(b=>b.className="btn "+(b.dataset.lang===LANG?"":"alt"));
+ $("prevD").textContent=LANG==="he"?"›":"‹";$("nextD").textContent=LANG==="he"?"‹":"›";
+ $("chartSym").innerHTML="";renderReminder()}
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;S.lang=LANG;persist();applyLang();const v=document.querySelector("nav button.on");if(!$("app").classList.contains("hide"))show(v?v.dataset.v:"today",true)});
+
+// ---------- explanations
+function explain(k){const x=EXPL[k];if(!x)return;$("mT").textContent=SN(k);$("mB").innerHTML=`<b>${t("whyT")}</b><br>`+x[LANG];$("mN").textContent=t("explNote");
+ $("mS").innerHTML=t("srcL")+" "+x.s.map(s=>`<a href="${SRC[s][1]}" target="_blank" rel="noopener" dir="ltr">${SRC[s][0]}</a>`).join(" · ");$("modal").classList.remove("hide")}
+$("mX").onclick=()=>$("modal").classList.add("hide");$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.add("hide")};
+const infoBtn=k=>`<button class="info" data-x="${k}" aria-label="${esc(t("whyT"))}: ${esc(SN(k))}">i</button>`;
+
+// ---------- onboarding
+function boot(){applyLang();
+ if(!S.onb){$("onb").classList.remove("hide");$("app").classList.add("hide")}else{$("onb").classList.add("hide");$("app").classList.remove("hide");renderToday();checkReminderNow();maybeInst()}}
+$("agree").onchange=e=>$("start").disabled=!e.target.checked;
+$("start").onclick=()=>{S.onb=true;persist();boot()};
+$("reOnb").onclick=()=>{S.onb=false;persist();$("agree").checked=false;$("start").disabled=true;boot();scrollTo(0,0)};
+
+// ---------- nav
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+function show(v,keep){document.querySelectorAll(".view").forEach(s=>s.classList.add("hide"));$("v-"+v).classList.remove("hide");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+ ({today:renderToday,insights:renderInsights,summary:renderSummary,comfort:renderShop,settings:()=>{renderReminder();renderInstStat()}})[v]();if(!keep)scrollTo(0,0)}
+
+// ---------- check-in
+const seg=(k,val)=>{const nm=SN(k==="_st"?"stress":k),sv=L().sev||[];return `<div class="seg" data-k="${k}" role="group" aria-label="${esc(nm)}">${[0,1,2,3].map(v=>`<button data-v="${v}" class="${(val??-1)===v?"on":""}" aria-pressed="${(val??-1)===v}" aria-label="${esc(nm)}: ${v}${sv[v]?" "+esc(sv[v]):""}">${v}</button>`).join("")}</div>`};
+function renderToday(){
+ const e=S.e[cur]||{s:{},bleed:"none",trig:[],meds:[],notes:""};
+ $("dLabel").textContent=cur===today()?t("today")+" · "+fmt(cur,{month:"short",day:"numeric"}):fmt(cur);
+ $("nextD").disabled=cur>=today();$("nextD").style.opacity=cur>=today()?.3:1;
+ const list=showAll?SYMK:SYMK.slice(0,CORE);
+ $("symList").innerHTML=list.map(k=>`<div class="sym"><span>${SN(k)}${infoBtn(k)}</span>${seg(k,e.s[k])}</div>`).join("");
+ $("stressRow").innerHTML=`<div class="sym"><span>${SN("stress")}${infoBtn("stress")}</span>${seg("_st",e.st)}</div>`;
+ $("moreSym").textContent=showAll?t("showFewer"):t("showMore",{n:SYMK.length-CORE});
+ const hs=e.hs;$("cntRow").innerHTML=`<div class="ctr"><span>${t("hfC")}<small>${t("hfSub")}</small></span><div class="st"><button id="hfM" aria-label="One fewer hot flash">−</button><b id="hfN">${e.hf||0}</b><button id="hfP" class="p" aria-label="One more hot flash">+</button></div></div>
+ <div class="ctr"><span>${t("slH")}<small>${t("slSub")}</small></span><div class="st"><button id="slM" aria-label="Less sleep">−</button><b id="slN">${hs==null?"–":hs+t("hShort")}</b><button id="slP" class="p" aria-label="More sleep">+</button></div></div>`;
+ $("bleedC").innerHTML=BLEEDK.map(k=>`<button class="chip ${e.bleed===k?"on":""}" data-k="${k}">${BN(k)}</button>`).join("");
+ $("trigC").innerHTML=TRIGK.filter(k=>k!=="stress").map(k=>`<button class="chip ${e.trig.includes(k)?"on":""}" data-k="${k}">${TN(k)}</button>`).join("");
+ $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||`<span class="muted">${t("noMeds")}</span>`;
+ $("notes").value=e.notes||"";
+ $("streakTop").textContent=t("streak",{n:streak()});
+ $("saveBtn").textContent=S.e[cur]?t("update"):t("saveNew");$("clearDay").classList.toggle("hide",!S.e[cur]);
+}
+function segClick(ev,fn){const i=ev.target.closest(".info");if(i){explain(i.dataset.x);return}const b=ev.target.closest(".seg button");if(!b)return;fn(b.parentNode.dataset.k,+b.dataset.v);persist();renderToday()}
+$("symList").onclick=ev=>segClick(ev,(k,v)=>entry(cur).s[k]=v);
+$("stressRow").onclick=ev=>segClick(ev,(k,v)=>entry(cur).st=v);
+$("cntRow").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur);
+ if(b.id==="hfP")e.hf=Math.min(99,(e.hf||0)+1);else if(b.id==="hfM")e.hf=Math.max(0,(e.hf||0)-1);
+ else if(b.id==="slP")e.hs=e.hs==null?7:Math.min(14,e.hs+.5);else if(b.id==="slM")e.hs=e.hs==null?6.5:Math.max(0,e.hs-.5);else return;persist();renderToday()};
+function cntStats(E){const h=E.filter(e=>e.hf!=null),z=E.filter(e=>e.hs!=null);return{hn:h.length,ha:h.length?avg(h.map(e=>e.hf)):null,ht:h.reduce((a,e)=>a+e.hf,0),sn:z.length,sa:z.length?avg(z.map(e=>e.hs)):null}}
+$("bleedC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;entry(cur).bleed=b.dataset.k;persist();renderToday()};
+$("trigC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.trig=e.trig.includes(k)?e.trig.filter(x=>x!==k):[...e.trig,k];persist();renderToday()};
+$("medC").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.meds=e.meds.includes(k)?e.meds.filter(x=>x!==k):[...e.meds,k];persist();renderToday()};
+const medMsg=m=>{$("medMsg").textContent=m};
+function medCheck(v,skip){if(!v)return"Type a name first.";if(v.length>40)return"Keep names to 40 characters or fewer.";if(S.meds.some(m=>m!==skip&&m.toLowerCase()===v.toLowerCase()))return"That’s already on your list.";if(!skip&&S.meds.length>=30)return"Your list is full (30). Remove one first.";return""}
+$("addMed").onclick=()=>{const v=$("newMed").value.trim().replace(/\s+/g," "),er=medCheck(v);medMsg(er);if(er){$("newMed").focus();return}S.meds.push(v);persist();$("newMed").value="";renderToday()};
+$("newMed").addEventListener("keydown",ev=>{if(ev.key==="Enter"){ev.preventDefault();$("addMed").click()}});
+function medMgr(){$("medMgr").innerHTML=S.meds.length?S.meds.map((m,i)=>`<div class="hrtl" style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0"><span>${esc(m)}</span><span style="white-space:nowrap"><button type="button" class="chip" data-mr="${i}" aria-label="${esc("Rename "+m)}">Rename</button> <button type="button" class="chip" data-md="${i}" aria-label="${esc("Remove "+m)}">Remove</button></span></div>`).join("")+`<p class="muted" style="font-size:12.5px">Removing takes it off this list. Days you already logged keep it.</p>`:`<p class="muted">${t("noMeds")}</p>`}
+$("medEd").onclick=()=>{const h=$("medMgr").classList.toggle("hide");$("medEd").textContent=h?"Edit my list":"Done editing";$("medEd").setAttribute("aria-expanded",String(!h));if(!h)medMgr()};
+$("medMgr").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;
+ if(b.dataset.md!=null){const m=S.meds[+b.dataset.md];if(m==null||!confirm(`Remove “${m}” from your list?`))return;S.meds.splice(+b.dataset.md,1);persist();medMgr();renderToday();return}
+ const m=S.meds[+b.dataset.mr];if(m==null)return;const raw=prompt("New name",m);if(raw==null)return;const v=raw.trim().replace(/\s+/g," ");if(v===m)return;const er=medCheck(v,m);medMsg(er);if(er)return;
+ S.meds[+b.dataset.mr]=v;Object.values(S.e).forEach(e=>{if(e&&Array.isArray(e.meds))e.meds=[...new Set(e.meds.map(x=>x===m?v:x))]});persist();medMgr();renderToday()};
+$("clearDay").onclick=()=>{if(!S.e[cur]||!confirm("Delete everything logged for this day? This can’t be undone."))return;delete S.e[cur];persist();renderToday();toast("Day deleted")};
+$("notes").oninput=e=>{entry(cur).notes=e.target.value;persist()};
+$("moreSym").onclick=()=>{showAll=!showAll;renderToday()};
+$("prevD").onclick=()=>{cur=addD(cur,-1);renderToday()};
+$("nextD").onclick=()=>{if(cur<today()){cur=addD(cur,1);renderToday()}};
+function maybeTip(e){$("tipBox").classList.add("hide");if(cur!==today()||S.tipDay===today())return;
+ const sev=SYMK.filter(k=>e.s&&e.s[k]===3);let p=null,k0=null;for(const k of sev){p=PROD.find(q=>q.k[0]===k)||PROD.find(q=>q.k.includes(k));if(p){k0=k;break}}if(!p)return;
+ S.tipDay=today();persist();
+ $("tipTxt").innerHTML=`${pIcon(p.a,40)}<div>${t("tipRough",{w:TIPWN[LANG][k0]||""})} <a href="${affURL(p.a)}" target="_blank" rel="sponsored noopener" dir="ltr">${p.n}</a> <span class="afftag">${t("affLink")}</span></div>`;
+ $("tipBox").classList.remove("hide")}
+$("tipX").onclick=()=>$("tipBox").classList.add("hide");
+$("saveBtn").onclick=()=>{const e=entry(cur);e.saved=true;persist();const st=streak();toast(st>1?t("savedStreak",{n:st}):t("savedFirst"));show("insights");maybeTip(e)};
+
+function streak(){let d=today(),n=0;if(!S.e[d])d=addD(d,-1);while(S.e[d]){n++;d=addD(d,-1)}return n}
+function days(n,end){const out=[];let d=end||today();for(let i=0;i<n;i++){out.unshift(d);d=addD(d,-1)}return out}
+
+// ---------- weekly tip
+function weekTip(){const wk=Math.floor((new Date(today()+"T12:00:00")-new Date("2024-01-01T12:00:00"))/(7*864e5));const x=TIPS[((wk%TIPS.length)+TIPS.length)%TIPS.length];
+ const o=LANG==="he"?2:0;$("weekTip").innerHTML=`<b>${t("weekTipT")} · ${x[o]}</b>${x[o+1]}`}
+
+// ---------- insights
+function renderInsights(){
+ const last30=days(30).filter(d=>S.e[d]);
+ const prev30=days(30,addD(today(),-30)).filter(d=>S.e[d]);
+ const l30=avg(last30.map(d=>load_(S.e[d]))),p30=avg(prev30.map(d=>load_(S.e[d])));
+ $("statBox").innerHTML=`<div class="stat"><b>${streak()}</b><small>${t("stStreak")}</small></div><div class="stat"><b>${last30.length}</b><small>${t("stLogged")}</small></div><div class="stat"><b>${Object.keys(S.e).length}</b><small>${t("stTotal")}</small></div>`;
+ {const c=cntStats(last30.map(d=>S.e[d]));$("cntBox").innerHTML=`<div class="stat"><b>${c.ha==null?t("cntNone"):r1(c.ha)}</b><small>${t("avgHF")}${c.hn?"<br>"+t("cntDays",{n:c.hn}):""}</small></div><div class="stat"><b>${c.sa==null?t("cntNone"):r1(c.sa)+t("hShort")}</b><small>${t("avgSl")}${c.sn?"<br>"+t("cntDays",{n:c.sn}):""}</small></div>`}
+ weekTip();
+ if(!$("chartSym").options.length){$("chartSym").innerHTML=`<option value="_all">${t("overall")}</option><option value="_st">${SN("stress")}</option>`+SYMK.map(k=>`<option value="${k}">${SN(k)}</option>`).join("")}
+ drawChart();
+ const tops=SYMK.map(k=>[k,avg(last30.map(d=>S.e[d].s[k]||0)),last30.filter(d=>(S.e[d].s[k]||0)>0).length]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ $("topSym").innerHTML=tops.length?tops.map(([k,a,c])=>`<div class="bar"><span>${SN(k)}${infoBtn(k)}</span><i style="width:${Math.max(4,a/3*100)}px"></i><em>${t("avgDays",{a:r1(a),n:c})}</em></div>`).join(""):`<p class="muted">${t("logFew")}</p>`;
+ try{renderHelp(SYMK.map(k=>[k,avg(last30.map(d=>S.e[d].s[k]||0))]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]))}catch(x){}
+ const ins=[];
+ if(last30.length>=7&&prev30.length>=7){const ch=(l30-p30)/(p30||1);
+  if(ch<-.1)ins.push(["g",t("lower",{p:Math.round(-ch*100)})]);else if(ch>.1)ins.push(["",t("higher",{p:Math.round(ch*100)})])}
+ ins.push(...correlations(90));
+ const st=streak();if(st>=3)ins.push(["g",t("streakIns",{n:st})]);
+ $("corr").innerHTML=ins.length?ins.map(([c,x])=>`<div class="ins ${c}">${x}</div>`).join(""):`<p class="muted">${t("patWait")}</p>`;
+ const cy=cycles();
+ $("cycle").innerHTML=cy.starts.length?`<p>${t("lastPer",{d:fmt(cy.starts[cy.starts.length-1]),n:Math.round((new Date(today())-new Date(cy.starts[cy.starts.length-1]))/864e5)})}</p>`+
+  (cy.lens.length?`<p>${t("cycLens",{l:cy.lens.slice(-6).join(", "),a:Math.round(avg(cy.lens))})} ${Math.max(...cy.lens)-Math.min(...cy.lens)>=7?t("cycVar"):""}</p>`:`<p class='muted'>${t("cycMore")}</p>`)+(cy.raw.some(x=>x==null)?`<p class="muted">${skipTxt(cy.raw.filter(x=>x==null).length)}</p>`:""):`<p class='muted'>${t("cycNone")}</p>`;
+ const cd=days(35);let h="";cd.slice(0,7).forEach(d=>h+=`<div style="background:none;border:0;text-align:center">${fmt(d,{weekday:"narrow"})}</div>`);
+ cd.forEach(k=>{const e=S.e[k];const Lv=e?load_(e):0;const c=e?(Lv>=14?"l3":Lv>=8?"l2":Lv>0?"l1":""):"";h+=`<div class="${c} ${isBleed(e)?"bl":""}">${+k.slice(8)}</div>`});
+ $("cal").innerHTML=h;
+}
+$("topSym").onclick=ev=>{const i=ev.target.closest(".info");if(i)explain(i.dataset.x)};
+let rangeAll=false;document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{rangeAll=b.dataset.r==="0";if(rangeAll){const k=Object.keys(S.e).sort()[0];range=k?Math.min(3650,Math.max(30,Math.round((new Date(today()+"T12:00:00")-new Date(k+"T12:00:00"))/864e5)+1)):30}else range=+b.dataset.r;drawChart()});
+$("chartSym").onchange=drawChart;
+function drawChart(){
+ document.querySelectorAll("[data-r]").forEach(b=>{const on=b.dataset.r==="0"?rangeAll:(!rangeAll&&+b.dataset.r===range);b.className="btn "+(on?"":"alt");b.setAttribute("aria-pressed",String(on))});
+ const k=$("chartSym").value||"_all",ds=days(range),W=340,H=150,P=24;
+ const vals=ds.map(d=>{const e=S.e[d];if(!e)return null;if(k==="_all")return load_(e);if(k==="_st")return stressOf(e);return e.s[k]||0});
+ const max=k==="_all"?Math.max(6,...vals.filter(v=>v!=null)):3;
+ const x=i=>P+i*(W-P-6)/(ds.length-1),y=v=>H-18-(v/max)*(H-30);
+ let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="trend chart" direction="ltr">`;
+ for(let s=0;s<=3;s++){const v=max*s/3;g+=`<line x1="${P}" x2="${W-6}" y1="${y(v)}" y2="${y(v)}" stroke="#e6ebe4"/><text x="2" y="${y(v)+4}" font-size="9" fill="#7a8679">${Math.round(v)}</text>`}
+ ds.forEach((d,i)=>{if(isBleed(S.e[d]))g+=`<rect x="${x(i)-3}" y="${H-14}" width="6" height="5" rx="2" fill="#a33"/>`});
+ let path="",pen=false;vals.forEach((v,i)=>{if(v==null){pen=false;return}path+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1);pen=true});
+ g+=`<path d="${path}" fill="none" stroke="#c98b8b" stroke-width="2.5" stroke-linejoin="round"/>`;
+ if(range<=7)vals.forEach((v,i)=>{if(v!=null)g+=`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="#6f8a6e"/>`});
+ const step=range<=7?1:Math.max(7,Math.ceil(range/8));ds.forEach((d,i)=>{if(i%step===0||i===ds.length-1)g+=`<text x="${x(i)}" y="${H-1}" font-size="9" fill="#7a8679" text-anchor="middle">${fmt(d,range<=7?{weekday:"narrow"}:{month:"numeric",day:"numeric"})}</text>`});
+ g+="</svg>";
+ const vv=vals.filter(v=>v!=null),n=vv.length;
+ $("chart").innerHTML=n?g+`<p class="muted">${t("chartAvg",{a:r1(avg(vv)),n})}</p>`:`<p class="muted">${t("noPeriod")}</p>`;
+}
+function correlations(n,dsIn){
+ const ds=(dsIn||days(n)).filter(d=>S.e[d]),inS=new Set(ds),out=[];
+ const test=(label,cond,sym)=>{const a=[],b=[];ds.forEach(d=>{const c=cond(d);if(c==null)return;(c?a:b).push(S.e[d].s[sym]||0)});
+  if(a.length>=4&&b.length>=4&&Math.abs(avg(a)-avg(b))>=0.5)out.push([avg(a)>avg(b)?"":"g",t("corr",{label,s:SN(sym).toLowerCase(),a:r1(avg(a)),b:r1(avg(b)),na:a.length,nb:b.length}),Math.abs(avg(a)-avg(b))])};
+ const prevPoor=d=>{const q=addD(d,-1),p=inS.has(q)?S.e[q]:null;return p?((p.s.sleep||0)>=2||p.trig.includes("poorsleep")):null};
+ ["hot","fog","mood"].forEach(s=>test(t("afterPoor"),prevPoor,s));
+ const hiSt=d=>{const v=stressOf(S.e[d]);return v==null?null:v>=2};
+ ["anx","head","sleep","hot"].forEach(s=>test(t("highStress"),hiSt,s));
+ [["caffeine","hot"],["alcohol","sweat"],["alcohol","sleep"],["spicy","hot"],["exercise","mood"],["exercise","sleep"]].forEach(([tr,s])=>test(t("onTrig",{t:TN(tr).toLowerCase()}),d=>S.e[d].trig.includes(tr),s));
+ S.meds.forEach(m=>{if(ds.filter(d=>S.e[d].meds.includes(m)).length>=4)test(t("onMed",{m:esc(m)}),d=>S.e[d].meds.includes(m),"sleep")});
+ return out.sort((a,b)=>b[2]-a[2]).slice(0,5).map(x=>[x[0],x[1]]);
+}
+function skipTxt(n){return n?t(n===1?"cycSkip1":"cycSkipN",{n}):""}
+function cycles(only){const ks=only?only.slice().sort():Object.keys(S.e).sort(),ok=only?new Set(ks):null,g=d=>ok&&!ok.has(d)?undefined:S.e[d],starts=[];ks.forEach(d=>{if(isBleed(S.e[d])&&!isBleed(g(addD(d,-1)))&&!isBleed(g(addD(d,-2))))starts.push(d)});
+ /* PT-032: skip cycles that look like logging gaps: longer than 60 days, or more than 10 unlogged days in a row */
+ const gapOk=(a,b)=>{let run=0;for(let d=addD(a,1);d<b;d=addD(d,1)){if(S.e[d])run=0;else if(++run>10)return false}return true};
+ const raw=[];for(let i=1;i<starts.length;i++){const n=Math.round((new Date(starts[i])-new Date(starts[i-1]))/864e5);raw.push(n<=60&&gapOk(starts[i-1],starts[i])?n:null)}return{starts,raw,lens:raw.filter(x=>x!=null)}}
+
+// ---------- summary + letter
+$("modeSum").onclick=()=>{sumMode="sum";renderSummary()};$("modeLet").onclick=()=>{sumMode="let";renderSummary()};
+$("drName").oninput=e=>{S.dr=e.target.value;persist();renderLetter()};$("myName").oninput=e=>{S.me=e.target.value;persist();renderLetter()};
+$("letRange").onchange=e=>{S.lr=e.target.value;persist();renderLetter()};
+function renderSummary(){
+ $("modeSum").className="btn "+(sumMode==="sum"?"":"alt");$("modeLet").className="btn "+(sumMode==="let"?"":"alt");
+ $("sumCtl").classList.toggle("hide",sumMode!=="sum");$("letCtl").classList.toggle("hide",sumMode!=="let");
+ if(sumMode==="let"){$("drName").value=S.dr||"";$("myName").value=S.me||"";$("letRange").value=S.lr||"3";renderLetter();return}
+ const sel=$("sumMonth"),ms=[...new Set([today().slice(0,7),...Object.keys(S.e).map(d=>d.slice(0,7))])].sort().reverse();
+ const cnt=m=>Object.keys(S.e).filter(d=>d.startsWith(m)).length;
+ const keep=sel.value&&ms.includes(sel.value)?sel.value:(cnt(ms[0])>=7||!ms[1]?ms[0]:ms[1]);
+ sel.innerHTML=ms.map(m=>`<option value="${m}">${new Date(m+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"})}</option>`).join("");sel.value=keep;
+ const mon=keep,ds=Object.keys(S.e).filter(d=>d.startsWith(mon)).sort(),E=ds.map(d=>S.e[d]);
+ const mName=new Date(mon+"-15T12:00:00").toLocaleDateString(LOC(),{month:"long",year:"numeric"});
+ const rows=SYMK.map(k=>{const v=E.map(e=>e.s[k]||0);return[SN(k),avg(v),v.filter(x=>x>0).length,v.filter(x=>x>=2).length,Math.max(0,...v)]}).filter(r=>r[2]>0).sort((a,b)=>b[1]-a[1]);
+ const bleedDays=ds.filter(d=>S.e[d].bleed!=="none").map(d=>`${+d.slice(8)} (${BN(S.e[d].bleed)})`);
+ const cy=(()=>{const c=cycles(),lens=[];let sk=0;for(let i=1;i<c.starts.length;i++)if(addD(c.starts[i],-1).slice(0,7)===mon){if(c.raw[i-1]!=null)lens.push(c.raw[i-1]);else sk++}return{lens,sk}})(),/* cycles that ended this month (may have started earlier) */trc=TRIGK.map(k=>[TN(k),E.filter(e=>e.trig.includes(k)).length]).filter(x=>x[1]),mc=S.meds.map(m=>[m,E.filter(e=>e.meds.includes(m)).length]).filter(x=>x[1]);
+ const stv=E.map(stressOf).filter(v=>v!=null);
+ const notes=ds.filter(d=>S.e[d].notes).slice(-6).map(d=>`<li><b>${fmt(d,{month:"short",day:"numeric"})}:</b> ${esc(S.e[d].notes)}</li>`).join("");
+ const pats=correlations(0,ds).slice(0,3); // selected month only
+ const wk=[0,1,2,3,4].map(w=>{const sub=ds.filter(d=>Math.floor((+d.slice(8)-1)/7)===w);return sub.length?avg(sub.map(d=>load_(S.e[d]))):null});
+ const mx=Math.max(1,...wk.filter(v=>v!=null));
+ let svg=`<svg viewBox="0 -10 300 100" width="100%" style="max-width:420px" direction="ltr">`;wk.forEach((v,i)=>{if(v==null)return;const h=v/mx*60;svg+=`<rect x="${10+i*58}" y="${70-h}" width="40" height="${h}" rx="4" fill="#c98b8b"/><text x="${30+i*58}" y="${66-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(v)}</text><text x="${30+i*58}" y="84" font-size="10" text-anchor="middle" fill="#7a8679">${t("wk",{n:i+1})}</text>`});svg+="</svg>";
+ $("sumBody").innerHTML=ds.length?`
+ <div class="hd"><h2 style="margin:0">${t("sumTitle")}</h2><b>${mName}</b></div>
+ <p style="margin:2px 0">${t("sumLine",{n:ds.length,a:r1(avg(E.map(load_)))})}${stv.length?" · "+t("stressAvg",{a:r1(avg(stv))}):""}</p>
+ <div class="lbl">${t("sumMost")}</div>
+ <table><tr><th>${t("thSym")}</th><th>${t("thAvg")}</th><th>${t("thDays")}</th><th>${t("thMod")}</th><th>${t("thWorst")}</th></tr>
+ ${rows.map(r=>`<tr><td>${r[0]}</td><td>${r1(r[1])}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("")}</table>
+ <div class="lbl">${t("byWeek")}</div>${svg}
+ <div class="lbl">${t("bleedCyc")}</div>
+ <p style="margin:0">${bleedDays.length?t("bleedOn")+bleedDays.join(", "):t("noBleed")}${cy.lens.length?"<br>"+t("recentLens",{l:cy.lens.slice(-6).join(", ")}):""}${cy.sk?"<br>"+skipTxt(cy.sk):""}</p>
+ <div class="lbl">${t("trigMeds")}</div>
+ <p style="margin:0">${trc.map(x=>`${x[0]}: ${x[1]}`).join(" · ")||t("none")}<br>${mc.map(x=>`${esc(x[0])}: ${x[1]}`).join(" · ")||t("noneLogged")}</p>
+ ${pats.length?`<div class="lbl">${t("myPats")}</div><ul style="margin:0;padding-inline-start:18px">${pats.map(p=>`<li>${p[1]}</li>`).join("")}</ul>`:""}
+ ${notes?`<div class="lbl">${t("notes")}</div><ul style="margin:0;padding-inline-start:18px">${notes}</ul>`:""}
+ <div class="lbl">${t("sumCnt")}</div>${(()=>{const c=cntStats(E);return c.hn||c.sn?`<p style="margin:0">${c.hn?t("sumHF",{a:r1(c.ha),n:c.hn,t:c.ht}):""}${c.hn&&c.sn?"<br>":""}${c.sn?t("sumSl",{a:r1(c.sa),n:c.sn}):""}</p>`:`<p class="muted" style="margin:0">${t("noCnt")}</p>`})()}
+ ${v6Sum(E,ds)}
+ <div class="lbl">${t("qs")}</div><div class="qwrap">${qHTML(true)}</div>
+ <p class="muted" style="margin-top:12px;font-size:11px">${t("footer")}</p>`
+ :`<p class="muted">${t("noMonth")}</p>`;
+}
+function renderLetter(){
+ const m=+(S.lr||3),all=Object.keys(S.e).sort();
+ const from=m?addD(today(),-(m*30)+1):(all[0]||today());
+ const ds=all.filter(d=>d>=from&&d<=today()),E=ds.map(d=>S.e[d]);
+ const df=d=>new Date(d+"T12:00:00").toLocaleDateString(t("L_dateFmt"),{day:"numeric",month:"long",year:"numeric"});
+ if(!ds.length){$("sumBody").innerHTML=`<p class="muted">${t("L_noData")}</p>`;return}
+ const dr=(S.dr||"").trim(),me=(S.me||"").trim();
+ const median=a=>{const s=[...a].sort((x,y)=>x-y);return s[Math.floor((s.length-1)/2)]};
+ const freq=SYMK.map(k=>{const nz=E.map(e=>e.s[k]||0).filter(v=>v>0);return[k,nz.length,nz.length?median(nz):0]}).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,6);
+ // periods: weeks if <=1 month, else calendar months
+ let per=[];
+ if(m===1){for(let i=0;i<5;i++){const a=addD(from,i*7),b=i===4?today():addD(from,i*7+6);if(a>today())break;per.push([fmt(a,{day:"numeric",month:"short"}),ds.filter(d=>d>=a&&d<=b)])}}
+ else{const td=today();[...new Set(ds.map(d=>d.slice(0,7)))].forEach(mo=>{const end=addD(mo+"-01",new Date(+mo.slice(0,4),+mo.slice(5),0).getDate()-1),md=ds.filter(d=>d.startsWith(mo)),fs=from<=mo+"-01"&&all[0]<=mo+"-01",fe=td>=end&&all[all.length-1]>=end;let lab=new Date(mo+"-15T12:00:00").toLocaleDateString(LOC(),{month:"short",year:"numeric"});if(!fe)lab+=" "+t("L_partTo",{d:fmt(td<end?td:md[md.length-1],{month:"short",day:"numeric"})});else if(!fs)lab+=" "+t("L_partFrom",{d:fmt(md[0],{month:"short",day:"numeric"})});per.push([lab,ds.filter(d=>d.startsWith(mo)),fs&&fe])})}
+ per=per.filter(p=>p[1].length).map(([lab,dd,full])=>{const ee=dd.map(d=>S.e[d]),sv=ee.map(stressOf).filter(v=>v!=null);return{lab,full:!!full,n:dd.length,load:avg(ee.map(load_)),sleep:avg(ee.map(e=>e.s.sleep||0)),st:sv.length?avg(sv):null}});
+ const mx=Math.max(1,...per.map(p=>p.load)),bw=Math.min(52,300/per.length-8);
+ let svg=`<svg viewBox="0 0 320 100" width="100%" style="max-width:460px" direction="ltr">`;per.forEach((p,i)=>{const cx=10+(i+.5)*(300/per.length),h=p.load/mx*62;svg+=`<rect x="${cx-bw/2}" y="${78-h}" width="${bw}" height="${h}" rx="4" fill="#c98b8b"/><text x="${cx}" y="${74-h}" font-size="10" text-anchor="middle" fill="#3c4a3b">${r1(p.load)}</text><text x="${cx}" y="94" font-size="9.5" text-anchor="middle" fill="#7a8679">${esc(p.lab.replace(/ \(.*\)$/,""))}</text>`});svg+="</svg>";
+ const cy=cycles(),stIn=cy.starts.filter(d=>d>=from),lens=[];for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from&&cy.raw[i-1]!=null)lens.push(cy.raw[i-1]);
+ let cyc;if(lens.length){const mn=Math.min(...lens),mxx=Math.max(...lens);cyc=t("L_cyc",{n:stIn.length,l:lens.join(", "),mn,mx:mxx,d:mxx-mn})}else if(stIn.length)cyc=t("L_cycOne",{d:df(stIn[0])});else cyc=t("L_cycNone");
+ if(stIn.length>1)cyc+=" "+t("L_cycLast",{d:df(stIn[stIn.length-1])});
+ {let cSk=0;for(let i=1;i<cy.starts.length;i++)if(cy.starts[i]>=from&&cy.raw[i-1]==null)cSk++;if(cSk)cyc+=" "+skipTxt(cSk)}
+ const sv=E.map(stressOf).filter(v=>v!=null);
+ const pats=correlations(0,ds).slice(0,3);
+ const lAll=avg(E.map(load_)),top3=freq.slice(0,3),pf=per.filter(p=>p.full),ch=pf.length>1?r1(pf[pf.length-1].load-pf[0].load):null;
+ const cn=cntStats(E),mcL=(S.meds||[]).map(x=>[x,E.filter(e=>(e.meds||[]).includes(x)).length]).filter(x=>x[1]);
+ const H2=k=>`<h2 class="lh">${t(k)}</h2>`,kv=(k,v)=>`<tr><th scope="row">${t(k)}</th><td>${v}</td></tr>`;
+ $("sumBody").innerHTML=`<div class="letter lv2">
+ <table class="lhead">${kv("L_hPat",me?esc(me):"–")}${kv("L_hDr",dr?esc(dr):"–")}${kv("L_hPer",`${df(ds[0])} – ${df(ds[ds.length-1])} (${t("L_hDays",{n:ds.length})})`)}${kv("L_hMade",df(today()))}</table>
+ ${H2("L_sReason")}
+ <p>${dr?t("L_dear",{d:esc(dr)}):t("L_dearNo")}</p>
+ <p>${t("L_intro",{n:ds.length,a:df(ds[0]),b:df(ds[ds.length-1])})}</p>
+ ${H2("L_sGlance")}
+ <table class="sum lkv">${kv("L_gDays",ds.length)}${kv("L_gTop",top3.map(([k,c])=>`${SN(k)} (${Math.round(c/ds.length*100)}%)`).join(", ")||"–")}${kv("L_gScore",`${r1(lAll)} / 54`)}${ch==null?"":kv("L_gChg",t("L_gChgV",{a:esc(pf[0].lab),b:esc(pf[pf.length-1].lab),c:(ch>0?"+":"")+ch}))}</table>
+ ${H2("L_sSym")}
+ <p style="margin-bottom:4px">${t("L_freq")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${freq.map(([k,c,md])=>`<li>${t("L_item",{s:SN(k),p:Math.round(c/ds.length*100),sev:L().sev[md]})}</li>`).join("")}</ul>
+ <p style="margin-bottom:2px">${t("L_chart")}</p>${svg}
+ <table class="sum ltbl"><tr><th>${t("L_tbl")}</th><th>${t("L_days")}</th><th>${t("L_load")}</th><th>${t("L_sleep")} (0–3)</th><th>${t("L_stress")} (0–3)</th></tr>${per.map(p=>`<tr><td>${esc(p.lab)}</td><td>${p.n}</td><td>${r1(p.load)}</td><td>${r1(p.sleep)}</td><td>${p.st==null?"–":r1(p.st)}</td></tr>`).join("")}</table>
+ <p class="lnote">${t("L_loadNote")}</p>
+ <p>${t("L_ss",{s:r1(avg(E.map(e=>e.s.sleep||0))),t:sv.length?r1(avg(sv)):"–"})}</p>
+ ${(cn.hn?`<p>${t("L_cnt",{a:r1(cn.ha),n:cn.hn})}</p>`:"")+(cn.sn?`<p>${t("L_slh",{a:r1(cn.sa),n:cn.sn})}</p>`:"")}
+ ${pats.length?`<p style="margin-bottom:4px">${t("L_pats")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${pats.map(p=>`<li>${LANG==="en"?p[1].replace(/\byour\b/g,"my").replace(/\bYour\b/g,"My").replace(/\byou\b/g,"I"):p[1]}</li>`).join("")}</ul>`:""}
+ ${H2("L_sCyc")}
+ <p>${cyc}</p>
+ ${H2("L_sTrt")}
+ ${v6Let(E,ds)||""}
+ ${mcL.length?`<p>${t("L_meds")} ${mcL.map(x=>t("L_medItem",{m:esc(x[0]),n:x[1]})).join(", ")}.</p>`:""}
+ ${(S.hrt||[]).length||mcL.length?"":`<p>${t("L_trtNone")}</p>`}
+ ${H2("L_sQs")}
+ <div class="qwrap">${qHTML(false)}</div>${qSel().length?"":`<p class="lnote">${t("L_qsNone")}</p>`}
+ ${H2("L_sClose")}
+ <p>${t("L_ask")}</p><p>${t("L_note")}</p>
+ <p>${t("L_close")}<br>${me?esc(me):"<span style='display:inline-block;width:180px;border-bottom:1px solid #c9d2c6;height:20px'></span>"}</p>
+ <p class="muted" style="margin-top:14px;font-size:11px;font-family:-apple-system,Segoe UI,Roboto,sans-serif">${t("footer")}</p></div>`;
+}
+function qSel(){return [...(S.qs||[]).filter(i=>i>=0&&i<8).sort((a,b)=>a-b).map(i=>L().Q[i]),...(S.qc||[])]}
+function qHTML(lines){const sel=qSel(),Q=L().Q;
+ const pick=`<div class="qpick"><p class="muted" style="margin:2px 0 4px">${t("qPickH")}</p>${Q.map((q,i)=>`<label><input type="checkbox" data-q="${i}" ${(S.qs||[]).includes(i)?"checked":""}><span>${q}</span></label>`).join("")}
+ ${(S.qc||[]).map((q,i)=>`<label><input type="checkbox" checked disabled><span style="flex:1">${esc(q)}</span><button class="x" data-cx="${i}" aria-label="Remove question">×</button></label>`).join("")}
+ <div class="cq"><input type="text" class="qIn" maxlength="200" data-p="qPh" placeholder="${esc(t("qPh"))}"><button class="btn alt qAdd">${t("qAdd")}</button></div></div>`;
+ const pr=lines?`<ul class="qprint">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ul>`+(sel.length?"":'<div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div>')
+  :(sel.length?`<p style="margin-bottom:4px">${t("L_qs")}</p><ol style="margin:0 0 10px;padding-inline-start:20px">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:"");
+ return pick+pr}
+function qRefresh(){const y=scrollY;renderSummary();scrollTo(0,y)}
+$("sumBody").addEventListener("change",ev=>{const c=ev.target.closest("[data-q]");if(!c)return;const i=+c.dataset.q;S.qs=(S.qs||[]).filter(x=>x!==i);if(c.checked)S.qs.push(i);persist();qRefresh()});
+$("sumBody").addEventListener("click",ev=>{const x=ev.target.closest("[data-cx]");if(x){if(!confirm("Remove this question?"))return;S.qc.splice(+x.dataset.cx,1);persist();qRefresh();return}
+ const a=ev.target.closest(".qAdd");if(a){const inp=a.parentNode.querySelector(".qIn"),v=inp.value.trim().replace(/\s+/g," ");const qm=m=>{let p=a.parentNode.querySelector(".qMsg");if(!p){a.parentNode.insertAdjacentHTML("afterend",'<p class="qMsg" role="alert" style="color:#9c4a36;margin:4px 0;font-size:13.5px"></p>');p=a.parentNode.nextElementSibling}p.textContent=m};
+ if(!v){qm("Type your question first.");inp.focus();return}if(v.length>200){qm("Keep questions to 200 characters or fewer.");return}if((S.qc||[]).some(q=>q.toLowerCase()===v.toLowerCase())){qm("You’ve already added that question.");return}if((S.qc||[]).length>=20){qm("You can add up to 20 of your own questions.");return}
+ (S.qc=S.qc||[]).push(v);persist();qRefresh()}});
+$("sumBody").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&ev.target.classList.contains("qIn")){ev.preventDefault();ev.target.parentNode.querySelector(".qAdd").click()}});
+$("sumMonth").onchange=renderSummary;
+$("printBtn").onclick=$("printBtn2").onclick=()=>window.print();
+
+// ---------- install guide
+let bip=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();bip=e;if(!$("inst").classList.contains("hide"))renderInst()});
+addEventListener("appinstalled",()=>{bip=null;S.instSeen=true;persist();$("inst").classList.add("hide");renderInstStat()});
+const isStandalone=()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch(x){return false}};
+const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+function renderInst(){const steps=isIOS()?L().instIOS:L().instAnd;
+ $("instBody").innerHTML=(bip&&!isIOS()?`<button class="btn block" id="instNow">${t("instNow")}</button>`:"")+`<ol>${steps.map(s=>`<li>${s}</li>`).join("")}</ol><p class="muted" style="font-size:12.5px">${t("instInapp")}</p>`;
+ const n=$("instNow");if(n)n.onclick=async()=>{try{bip.prompt();await bip.userChoice}catch(x){}bip=null;closeInst()}}
+function openInst(){renderInst();$("inst").classList.remove("hide")}
+function closeInst(){$("inst").classList.add("hide");S.instSeen=true;persist()}
+function renderInstStat(){if($("instStat"))$("instStat").textContent=isStandalone()?t("instDone"):t("instNot")}
+$("instX").onclick=$("instOk").onclick=closeInst;$("inst").onclick=e=>{if(e.target.id==="inst")closeInst()};
+$("instBtn").onclick=openInst;
+function instReady(){if(!S.fo){S.fo=today();persist()}const r=(typeof realDays==="function"?realDays():Object.keys(S.e).filter(d=>S.e[d]&&S.e[d].saved));return r.length>=3&&new Set(r).size>=2&&today()>S.fo} // only after real use, never on first open
+function maybeInst(){if(S.onb&&!S.instSeen&&!isStandalone()&&instReady())setTimeout(()=>{if($("modal").classList.contains("hide"))openInst()},1200)}
+
+// ---------- reminder
+const notifOK=()=>"Notification" in window&&"serviceWorker" in navigator;
+function renderReminder(){if(!$("remOn"))return;$("remTime").value=S.remT||"20:30";
+ $("remOn").textContent=S.remOn?t("remOffB"):t("remOnB");$("remOn").className="btn block "+(S.remOn?"alt":"");
+ let st=S.remOn?t("remStOn",{t:S.remT||"20:30"}):t("remStOff");
+ if(!notifOK())st=t("remUnsup");else if(Notification.permission==="denied")st=t("remDenied");$("remStatus").textContent=st}
+$("remTime").onchange=e=>{S.remT=e.target.value||"20:30";persist();renderReminder();scheduleReminder()};
+$("remOn").onclick=async()=>{if(S.remOn){S.remOn=false;persist();renderReminder();return}
+ if(!notifOK()){renderReminder();return}
+ let p=Notification.permission;try{if(p==="default")p=await Notification.requestPermission()}catch(x){}
+ if(p==="granted"){S.remOn=true;S.remT=$("remTime").value||"20:30";persist();scheduleReminder()}renderReminder()};
+let remTimer=null;
+function remDue(){const [h,mi]=(S.remT||"20:30").split(":").map(Number),d=new Date();d.setHours(h,mi,0,0);return d}
+async function fireReminder(){if(!S.remOn||S.e[today()]||S.remLast===today())return;if(!notifOK()||Notification.permission!=="granted")return;
+ S.remLast=today();persist();
+ try{const reg=await navigator.serviceWorker.ready;await reg.showNotification(t("nTitle"),{body:t("nBody"),tag:"peri-daily",icon:"icon-192.png",badge:"icon-192.png",lang:LANG,dir:LANG==="he"?"rtl":"ltr"})}catch(x){try{new Notification(t("nTitle"),{body:t("nBody")})}catch(y){}}}
+function checkReminderNow(){if(S.remOn&&new Date()>=remDue())fireReminder();scheduleReminder()}
+function scheduleReminder(){clearTimeout(remTimer);if(!S.remOn)return;let d=remDue();if(d<=new Date())d.setDate(d.getDate()+1);remTimer=setTimeout(()=>{fireReminder();scheduleReminder()},Math.min(d-new Date(),2147483000))}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.onb)checkReminderNow()});
+$("icsBtn").onclick=()=>{const [h,mi]=(S.remT||$("remTime").value||"20:30").split(":"),d=today().replace(/-/g,""),hm=h.padStart(2,"0")+mi.padStart(2,"0")+"00";
+ const url=location.href.split("#")[0].split("?")[0];
+ const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Prime Traker//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:peri-daily-"+Date.now()+"@peri-tracker","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z",
+  "DTSTART:"+d+"T"+hm,"DURATION:PT5M","RRULE:FREQ=DAILY","SUMMARY:"+t("icsTitle"),"DESCRIPTION:"+t("icsDesc")+"\\n"+url,"URL:"+url,"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+t("icsTitle"),"TRIGGER:PT0M","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.download="peri-tracker-reminder.ics";document.body.appendChild(a);a.click();a.remove()};
+
+// ---------- CSV
+const COLS=["date",...SYMK,"stress","bleeding","triggers","meds","notes","hot_flash_count","sleep_hours","exercise_type","exercise_minutes","treatment_started","mrs_items"];
+const realD=k=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&(()=>{const d=new Date(k+"T12:00:00Z");return !isNaN(d)&&d.toISOString().slice(0,10)===k})();
+const FX=/^[=+\-@\t\r]/,unq=v=>typeof v==="string"&&/^'[=+\-@\t\r]/.test(v)?v.slice(1):v;
+const q=v=>{v=String(v??"");if(FX.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+$("expCsv").onclick=()=>{const ds=[...new Set([...Object.keys(S.e),...(S.hrt||[]).map(h=>h.d),...(S.mrs||[]).map(m=>m.d)])].sort();const csv=[COLS.join(","),...ds.map(d=>{const e=S.e[d]||{s:{},bleed:"none",trig:[],meds:[],notes:""};return[d,...SYMK.map(k=>e.s[k]??""),e.st??"",e.bleed,e.trig.join(";"),e.meds.join(";"),e.notes,e.hf??"",e.hs??"",e.ex?e.ex.t:"",e.ex&&e.ex.m?e.ex.m:"",(S.hrt||[]).filter(h=>h.d===d).map(h=>h.x+(h.dose?" | "+h.dose:"")).join(";"),(S.mrs||[]).filter(m=>m.d===d).map(m=>m.a.join(" ")).join("")].map(q).join(",")})].join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="peri-tracker-backup-"+today()+".csv";document.body.appendChild(a);a.click();a.remove();toast(t("backupDl"))};
+function parseCSV(x){const rows=[];let r=[],f="",i=0,qd=false;for(;i<x.length;i++){const c=x[i];if(qd){if(c=='"'){if(x[i+1]=='"'){f+='"';i++}else qd=false}else f+=c}else if(c=='"')qd=true;else if(c==","){r.push(f);f=""}else if(c=="\n"||c=="\r"){if(c=="\r"&&x[i+1]=="\n")i++;r.push(f);rows.push(r);r=[];f=""}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
+$("impBtn").onclick=()=>$("impFile").click();
+$("impFile").onchange=ev=>{const f=ev.target.files[0];if(!f)return;f.text().then(x=>{const rows=parseCSV(x),h=rows.shift();if(!h||h[0]!=="date"){alert(t("badCsv"));return}let n=0;
+ rows.forEach(r=>{r=r.map(unq);if(!realD(r[0])||r[0]>today())return;const o={};h.forEach((k,i)=>o[k]=r[i]??"");const e={s:{},bleed:BLEEDK.includes(o.bleeding)?o.bleeding:"none",trig:o.triggers?[...new Set(o.triggers.split(";").map(x=>x.trim()).filter(x=>TRIGK.includes(x)))]:[],meds:o.meds?[...new Set(o.meds.split(";").map(x=>unq(x.trim()).replace(/\s+/g," ").slice(0,40)).filter(x=>x&&!FX.test(x)))]:[],notes:(o.notes||"").slice(0,1000)};
+  if(o.hot_flash_count!=null&&o.hot_flash_count!==""&&!isNaN(+o.hot_flash_count))e.hf=Math.max(0,Math.min(99,Math.round(+o.hot_flash_count)));
+  if(o.sleep_hours!=null&&o.sleep_hours!==""&&!isNaN(+o.sleep_hours))e.hs=Math.max(0,Math.min(14,Math.round(+o.sleep_hours*2)/2));
+  if(o.exercise_type&&["none","walk","strength","yoga","cardio"].includes(o.exercise_type))e.ex={t:o.exercise_type,m:+o.exercise_minutes>0?Math.min(600,Math.round(+o.exercise_minutes)):null};
+  if(o.treatment_started){S.hrt=S.hrt||[];o.treatment_started.split(";").forEach((x,j)=>{const [nm,ds]=x.split(" | ");if(nm&&!S.hrt.some(h=>h.d===o.date&&h.x===nm))S.hrt.push({id:o.date+j+Math.random().toString(36).slice(2,6),d:o.date,x:nm.slice(0,80),dose:(ds||"").slice(0,40)})})}
+  if(o.mrs_items){const a=o.mrs_items.trim().split(/\s+/).map(Number);if(a.length===11&&a.every(v=>v>=0&&v<=4&&Number.isInteger(v))){S.mrs=(S.mrs||[]).filter(m=>m.d.slice(0,7)!==o.date.slice(0,7));S.mrs.push({d:o.date,a})}}
+  if(o.stress!=null&&o.stress!=="")e.st=Math.max(0,Math.min(3,+o.stress||0));
+  SYMK.forEach(k=>{if(o[k]!=null&&o[k]!=="")e.s[k]=Math.max(0,Math.min(3,+o[k]||0))});e.meds.forEach(m=>{if(S.meds.length<30&&!S.meds.some(x=>x.toLowerCase()===m.toLowerCase()))S.meds.push(m)});if(!Object.keys(e.s).length&&e.bleed==="none"&&!e.notes&&e.hf==null&&e.hs==null&&!e.ex&&e.st==null&&!e.trig.length&&!e.meds.length)return;S.e[o.date]=e;n++});
+ persist();toast(t("imported",{n}));ev.target.value=""})};
+
+// ---------- demo / clear
+$("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm(t("demoMix")))return;
+ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;const per=[-55,-29,-3];
+ for(let i=59;i>=0;i--){const d=addD(today(),-i);const poor=rnd()<.3,caf=rnd()<.5,alc=rnd()<.18,str=rnd()<.3,ex=rnd()<.35,spicy=rnd()<.15;const prevPoor=S.e[addD(d,-1)]?.trig.includes("poorsleep");
+  const c=v=>Math.max(0,Math.min(3,Math.round(v)));const imp=i<30?-.3:0;
+  const s={hot:c(1+(prevPoor?1:0)+(caf?.5:0)+(spicy?.6:0)+imp+rnd()-.5),sweat:c(.8+(alc?1.2:0)+rnd()-.5),sleep:c((poor?2.4:.8)+(alc?.6:0)-(ex?.4:0)+rnd()*.6-.3),fatigue:c(1+(poor?1:0)+rnd()-.5),fog:c(.7+(prevPoor?1:0)+rnd()-.5),
+   anx:c(.6+(str?1.4:0)+rnd()-.5),mood:c(.8+(ex?-.6:0)+(poor?.6:0)+rnd()-.5),irrit:c(.6+(str?.8:0)+rnd()-.5),head:c(.3+(str?.8:0)+rnd()-.5),joint:c(1.1+rnd()-.5),libido:c(1.3+rnd()-.5)};
+  const tg=[];if(caf)tg.push("caffeine");if(alc)tg.push("alcohol");if(poor)tg.push("poorsleep");if(ex)tg.push("exercise");if(spicy)tg.push("spicy");
+  let bleed="none";per.forEach((p,j)=>{const o=-i-p+(j==1?3:0);if(o>=0&&o<5)bleed=["medium","heavy","medium","light","spot"][o]});
+  if(rnd()<.12&&i!==0&&i%3===0)continue;
+  S.e[d]={s,hf:Math.max(0,Math.round(s.hot*2.2+rnd()*2-.5)),hs:Math.max(3.5,Math.min(9,Math.round((7.6-s.sleep*.9+rnd()*.8-.4)*2)/2)),st:c((str?2.3:.7)+rnd()-.5),bleed,trig:tg,meds:rnd()<.8?["Magnesium"]:[],notes:i==12?(LANG==="he"?"התעוררתי 3 פעמים מהזעות":"Woke up 3x with sweats"):i==4?(LANG==="he"?"הרגשתי הרבה יותר רגועה אחרי הליכה":"Felt much calmer after a walk"):""}}
+ for(let i=0;i<9;i++)S.e[addD(today(),-i)]=S.e[addD(today(),-i)]||S.e[addD(today(),-i-14)];
+ {let sd=11;const rr=()=>(sd=(sd*16807)%2147483647)/2147483647,TY=["walk","walk","yoga","strength","cardio"];Object.keys(S.e).forEach(d=>{const e=S.e[d];if(e.trig.includes("exercise"))e.ex={t:TY[Math.floor(rr()*5)],m:[10,20,30,30,45][Math.floor(rr()*5)]};else if(rr()<.5)e.ex={t:"none",m:0}});
+  const hd=addD(today(),-29);S.hrt=(S.hrt||[]).filter(h=>!h.demo);S.hrt.push({id:"demo1",demo:1,d:hd,x:LANG==="he"?"מדבקת אסטרדיול":"Estradiol patch",dose:"50 mcg"});
+  const mo=k=>addD(today(),-k);S.mrs=[{d:mo(58),a:[3,1,3,2,2,2,3,2,1,2,2]},{d:mo(28),a:[3,1,3,2,1,2,2,2,1,2,2]},{d:today(),a:[2,0,2,1,1,1,2,2,1,1,2]}]}
+ persist();toast(t("demoOk"));show("insights")};
+$("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){
+  const keep={onb:true,lang:S.lang,plus:S.plus,t0:S.t0,dev:S.dev}; // keep paid code, device ID + trial date only
+  try{localStorage.removeItem(KEY)}catch(x){}
+  S=Object.assign({e:{},meds:["Magnesium","Vitamin D"],remOn:false},keep);
+  clearTimeout(remTimer);remTimer=null; // cancel any scheduled reminder
+  persist();
+  toast(t("cleared"));show("today")}};
+
+// ---------- v6: movement, breathing, treatment/HRT, MRS
+Object.assign(I18N.en,{moveT:"Movement today",exNone:"None",exWalk:"Walk",exStrength:"Strength",exYoga:"Yoga / stretch",exCardio:"Cardio",exMin:"Minutes",rtBtn:"Gentle 5–10 min routines",
+rtT:"Gentle routines",rtNote:"Go at your own pace and stop if anything hurts or feels wrong. If you have a health condition or are new to exercise, check with your doctor first. Educational, not medical advice.",rtDone:"I did this today",rtLogged:"Added to today's movement",
+hfNow:"Hot flash now? Breathe with me",brT:"Slow breathing",brIn:"Breathe in",brOut:"Breathe out",brLog:"Also add 1 to today's hot-flash count",brStart:"Start (2 min)",brStop:"Stop",brDone:"Done. Well done for pausing.",brSub:"In for 4, out for 6. Shoulders soft. About 2 minutes.",brLeft:"{s}s left",brLogged:"Hot flash added to today",
+hrtT:"My treatment",hrtJump:"Started or changed treatment? Log it",hrtEdit:"Edit",hrtSaveE:"Save changes",hrtCancel:"Cancel",hrtSub:"Log when you start something new (e.g. HRT, a supplement, a prescription). The card below compares 4 weeks before and after.",hrtStart:"Start date",hrtType:"What (e.g. estradiol patch)",hrtDose:"Dose (optional)",hrtAdd:"Add treatment",hrtNone:"No treatments logged yet.",hrtDel:"Remove this treatment?",hrtNeedType:"Please write what the treatment is",
+hwT:"Is it working?",hwSub:"4 weeks before vs the first 4 weeks after you started {x} ({d}).",hwNeed:"Not enough data yet. This needs at least 7 logged days in the 4 weeks before and 7 in the 4 weeks after {x} ({d}). So far: {b} before, {a} after.",hwNo:"Log a treatment in “My treatment” above to see a before/after comparison here.",hwCol:"",hwBefore:"Before",hwAfter:"After",hwLoad:"Overall symptom load",hwHF:"Hot flashes a day",hwSleep:"Sleep trouble (0–3)",hwMood:"Low mood (0–3)",hwNote:"This is a simple before/after average, not proof that the treatment caused the change. Many things shift over time. Discuss it with your doctor before changing anything.",
+mrsT:"Monthly self-check (MRS)",mrsSub:"The Menopause Rating Scale: 11 questions, about 2 minutes, once a month. A self-check to track change, not a diagnosis.",mrsGo:"Take this month's self-check",mrsAgain:"Retake this month's check",mrsDue:"This month's check is not done yet.",mrsDoneM:"Done this month: score {s} of 44.",mrsQ:"Over the past few weeks, how much has each of these bothered you?",mrsSave:"Save self-check",mrsNeed:"Please answer all 11 questions",mrsSaved:"Self-check saved",
+mrsLv:["None","Mild","Moderate","Severe","Very severe"],mrsItems:["Hot flushes, sweating","Heart discomfort (racing, skipping, tightness)","Sleep problems","Depressive mood (down, sad, close to tears)","Irritability (nervous, aggressive)","Anxiety (restless, panicky)","Physical and mental exhaustion (less able to do things, poor memory, concentration)","Sexual problems (less desire, activity or satisfaction)","Bladder problems (passing urine, leaking)","Vaginal dryness (dryness, burning, pain with sex)","Joint and muscle discomfort"],
+mrsTot:"Total",mrsSom:"Body",mrsPsy:"Mood & mind",mrsUro:"Bladder & vaginal",mrsTrend:"Score over time (lower = fewer complaints)",mrsNoData:"No self-checks yet.",mrsNote:"Self-check only, not a diagnosis. Scores go from 0 to 44. Share changes with your doctor.",
+mvT:"Movement and how you feel",mvNeed:"Not enough data yet to compare. This needs at least 5 days with movement and 5 without in the last 90 days. So far: {m} with, {n} without.",mvSub:"Averages on days you moved ({m} days) vs days you didn't ({n} days), last 90 days.",mvMove:"Moved",mvRest:"Didn't",mvNote:"A pattern in your own data, not proof of cause. Days you move may differ in other ways too.",
+sumMove:"Movement",sumMoveL:"Moved on {m} of {n} logged days, about {a} min on those days.",sumMoveTypes:"Types: {x}",sumNoMove:"No movement logged.",sumHrt:"Treatments / HRT",sumMrs:"Monthly self-check (MRS)",sumMrsL:"{d}: total {s}/44 (body {a}, mood & mind {b}, bladder & vaginal {c})",
+L_move:"I logged movement (walking, strength, yoga or cardio) on {m} of {n} days, about {a} minutes on those days.",L_hrt:"Treatments I have logged:",L_hrtItem:"{x}{dose}, started {d}",L_hw:"In the 4 weeks before vs after starting {x}, my overall symptom score (avg per day, max 54) was {b} vs {a} and hot flashes a day {hb} vs {ha}.",L_mrs:"My Menopause Rating Scale self-check scores (0–44, self-reported):"});
+Object.assign(I18N.he,{moveT:"תנועה היום",exNone:"בלי",exWalk:"הליכה",exStrength:"כוח",exYoga:"יוגה / מתיחות",exCardio:"אירובי",exMin:"דקות",rtBtn:"שגרות עדינות של 5–10 דקות",
+rtT:"שגרות עדינות",rtNote:"בקצב שלך, ועצרי אם משהו כואב או מרגיש לא נכון. אם יש לך מצב רפואי או שאת חדשה בפעילות גופנית, התייעצי קודם עם הרופא/ה. מידע כללי, לא ייעוץ רפואי.",rtDone:"עשיתי את זה היום",rtLogged:"נוסף לתנועה של היום",
+hfNow:"גל חום עכשיו? בואי ננשום",brT:"נשימה איטית",brIn:"שאיפה",brOut:"נשיפה",brLog:"להוסיף גם 1 לספירת גלי החום של היום",brStart:"התחלה (2 דק׳)",brStop:"עצירה",brDone:"סיימת. כל הכבוד שעצרת לרגע.",brSub:"שאיפה ל-4, נשיפה ל-6. כתפיים רפויות. בערך 2 דקות.",brLeft:"נותרו {s} שנ׳",brLogged:"גל חום נוסף להיום",
+hrtT:"הטיפול שלי",hrtJump:"התחלת או שינית טיפול? רשמי כאן",hrtEdit:"עריכה",hrtSaveE:"שמירת שינויים",hrtCancel:"ביטול",hrtSub:"רשמי מתי התחלת משהו חדש (למשל טיפול הורמונלי, תוסף, מרשם). הכרטיס למטה משווה 4 שבועות לפני ואחרי.",hrtStart:"תאריך התחלה",hrtType:"מה (למשל מדבקת אסטרדיול)",hrtDose:"מינון (לא חובה)",hrtAdd:"הוספת טיפול",hrtNone:"עדיין לא נרשמו טיפולים.",hrtDel:"למחוק את הטיפול הזה?",hrtNeedType:"נא לכתוב מהו הטיפול",
+hwT:"האם זה עוזר?",hwSub:"4 שבועות לפני מול 4 השבועות הראשונים אחרי שהתחלת {x} ({d}).",hwNeed:"עדיין אין מספיק נתונים. צריך לפחות 7 ימים רשומים ב-4 השבועות שלפני ו-7 ב-4 השבועות שאחרי {x} ({d}). עד עכשיו: {b} לפני, {a} אחרי.",hwNo:"רשמי טיפול ב„הטיפול שלי” למעלה כדי לראות כאן השוואה של לפני ואחרי.",hwCol:"",hwBefore:"לפני",hwAfter:"אחרי",hwLoad:"עומס תסמינים כללי",hwHF:"גלי חום ביום",hwSleep:"קשיי שינה (0–3)",hwMood:"מצב רוח ירוד (0–3)",hwNote:"זו השוואת ממוצעים פשוטה של לפני ואחרי, לא הוכחה שהטיפול גרם לשינוי. הרבה דברים משתנים עם הזמן. שוחחי עם הרופא/ה לפני שמשנים משהו.",
+mrsT:"בדיקה עצמית חודשית (MRS)",mrsSub:"סולם דירוג גיל המעבר: 11 שאלות, כ-2 דקות, פעם בחודש. בדיקה עצמית למעקב אחרי שינוי, לא אבחנה.",mrsGo:"לבדיקה העצמית של החודש",mrsAgain:"לעשות שוב את בדיקת החודש",mrsDue:"הבדיקה של החודש עוד לא נעשתה.",mrsDoneM:"נעשתה החודש: ציון {s} מתוך 44.",mrsQ:"בשבועות האחרונים, כמה הפריע לך כל אחד מאלה?",mrsSave:"שמירת הבדיקה",mrsNeed:"נא לענות על כל 11 השאלות",mrsSaved:"הבדיקה נשמרה",
+mrsLv:["בכלל לא","קל","בינוני","חמור","חמור מאוד"],mrsItems:["גלי חום, הזעה","אי נוחות בלב (דופק מהיר, דילוגים, לחץ)","בעיות שינה","מצב רוח דיכאוני (ירוד, עצוב, על סף בכי)","עצבנות (מתח, תוקפנות)","חרדה (חוסר מנוחה, בהלה)","תשישות גופנית ונפשית (פחות כוח, זיכרון וריכוז חלשים)","בעיות מיניות (פחות חשק, פעילות או סיפוק)","בעיות בשלפוחית (במתן שתן, דליפה)","יובש בנרתיק (יובש, צריבה, כאב ביחסים)","אי נוחות במפרקים ובשרירים"],
+mrsTot:"סה״כ",mrsSom:"גוף",mrsPsy:"מצב רוח ונפש",mrsUro:"שלפוחית ונרתיק",mrsTrend:"הציון לאורך זמן (נמוך יותר = פחות תלונות)",mrsNoData:"עדיין אין בדיקות עצמיות.",mrsNote:"בדיקה עצמית בלבד, לא אבחנה. הציון בין 0 ל-44. שתפי שינויים עם הרופא/ה.",
+mvT:"תנועה ואיך את מרגישה",mvNeed:"עדיין אין מספיק נתונים להשוואה. צריך לפחות 5 ימים עם תנועה ו-5 בלי ב-90 הימים האחרונים. עד עכשיו: {m} עם, {n} בלי.",mvSub:"ממוצעים בימים שזזת ({m} ימים) מול ימים שלא ({n} ימים), 90 הימים האחרונים.",mvMove:"עם תנועה",mvRest:"בלי",mvNote:"דפוס בנתונים שלך, לא הוכחה לסיבה. ימים עם תנועה יכולים להיות שונים גם בדברים אחרים.",
+sumMove:"תנועה",sumMoveL:"תנועה ב-{m} מתוך {n} ימים רשומים, בערך {a} דק׳ בימים האלה.",sumMoveTypes:"סוגים: {x}",sumNoMove:"לא נרשמה תנועה.",sumHrt:"טיפולים / הורמונים",sumMrs:"בדיקה עצמית חודשית (MRS)",sumMrsL:"{d}: סה״כ {s}/44 (גוף {a}, מצב רוח ונפש {b}, שלפוחית ונרתיק {c})",
+L_move:"רשמתי תנועה (הליכה, כוח, יוגה או אירובי) ב-{m} מתוך {n} ימים, בערך {a} דקות בימים האלה.",L_hrt:"טיפולים שרשמתי:",L_hrtItem:"{x}{dose}, התחלה {d}",L_hw:"ב-4 השבועות שלפני מול אחרי התחלת {x}, עומס התסמינים הממוצע שלי היה {b} מול {a}, וגלי חום ביום {hb} מול {ha}.",L_mrs:"ציוני הבדיקה העצמית שלי בסולם דירוג גיל המעבר (0–44, דיווח עצמי):"});
+const RT={en:[["Gentle stretch","8 min",["Neck: slowly tilt ear to shoulder, 3 breaths each side.","Shoulder rolls: 10 backwards, 10 forwards.","Cat–cow on hands and knees (or seated): 8 slow rounds.","Seated forward fold: sit tall, hinge forward, hold 5 breaths.","Chest opener: hands clasped behind you, lift gently, 5 breaths.","Calf stretch against a wall: 30 seconds each leg."]],
+["Strength basics","10 min",["Sit-to-stand from a chair: 10 times, slow.","Wall push-ups: 10 times.","Glute bridge on the floor: 10 times, pause at the top.","Calf raises holding a chair: 15 times.","Rest 1 minute, then repeat the whole round once more."]],
+["Balance","6 min",["Stand next to a chair or counter for support.","Stand on one foot for 20–30 seconds, then switch. 2 rounds.","Heel-to-toe walk: 10 steps forward, 10 back.","Side leg lifts: 10 each side, standing tall.","Finish with 3 slow breaths."]],
+["Calm breathing","5 min",["Sit or lie down comfortably.","Breathe in through your nose for 4.","Breathe out slowly through your mouth for 6.","Repeat for about 5 minutes. If you feel dizzy, breathe normally.","End by noticing your feet, hands and shoulders."]]],
+he:[["מתיחות עדינות","8 דק׳",["צוואר: הטי לאט אוזן לכתף, 3 נשימות לכל צד.","גלגולי כתפיים: 10 אחורה, 10 קדימה.","חתול–פרה על ארבע (או בישיבה): 8 סבבים איטיים.","כפיפה קדימה בישיבה: שבי זקופה, התכופפי קדימה, 5 נשימות.","פתיחת חזה: ידיים שלובות מאחור, הרימי בעדינות, 5 נשימות.","מתיחת שוקיים מול קיר: 30 שניות לכל רגל."]],
+["כוח בסיסי","10 דק׳",["קימה מכיסא וישיבה: 10 פעמים, לאט.","שכיבות סמיכה מול קיר: 10 פעמים.","גשר אגן על הרצפה: 10 פעמים, עצירה למעלה.","עלייה על קצות האצבעות עם אחיזה בכיסא: 15 פעמים.","מנוחה של דקה, ואז עוד סבב אחד."]],
+["שיווי משקל","6 דק׳",["עמדי ליד כיסא או שיש לתמיכה.","עמידה על רגל אחת 20–30 שניות, ואז החלפה. 2 סבבים.","הליכת עקב-בוהן: 10 צעדים קדימה, 10 אחורה.","הרמת רגל לצד: 10 לכל צד, בעמידה זקופה.","סיום ב-3 נשימות איטיות."]],
+["נשימה מרגיעה","5 דק׳",["שבי או שכבי בנוחות.","שאיפה דרך האף ל-4.","נשיפה איטית דרך הפה ל-6.","חזרה במשך כ-5 דקות. אם יש סחרחורת, נשמי רגיל.","סיום בתשומת לב לכפות הרגליים, הידיים והכתפיים."]]]};
+const RT_T=["yoga","strength","yoga","yoga"],RT_M=[8,10,6,5];
+const EXK=["none","walk","strength","yoga","cardio"],EXN=k=>t("ex"+k[0].toUpperCase()+k.slice(1)),EXMIN=[5,10,15,20,30,45,60];
+const moved=e=>!!e&&((e.ex&&e.ex.t&&e.ex.t!=="none")||(e.trig||[]).includes("exercise"));
+const restDay=e=>!!e&&!moved(e);
+(function(){const st=document.createElement("style");st.textContent=`.sheet h4{margin:12px 0 4px}.sheet ol{padding-inline-start:20px;margin:4px 0}.sheet li{margin:3px 0;font-size:14px}
+.br{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0}.br .c{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#dfe7dc,#6f8a6e);transform:scale(.55);transition:transform 4s ease-in-out;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:600;text-align:center}
+.mrsq{padding:8px 0;border-bottom:1px solid #eef1ec}.mrsq p{margin:0 0 6px;font-size:14px}.mrsq .seg button{font-size:11px;padding:6px 2px}
+.cmp{width:100%;border-collapse:collapse;font-size:13.5px}.cmp td,.cmp th{padding:6px 4px;border-bottom:1px solid #eef1ec;text-align:center}.cmp td:first-child,.cmp th:first-child{text-align:start}
+.hrtl{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #eef1ec;font-size:14px}.hrtl button{border:0;background:none;color:var(--mute);font-size:18px}
+.hfnow{background:var(--roseL);color:var(--ink);border:0;margin-top:10px}`;document.head.appendChild(st)})();
+// --- HTML injection
+(function(){const ins=(sel,pos,html)=>document.querySelector(sel).insertAdjacentHTML(pos,html);
+ ins("#cntRow","afterend",`<button class="btn block hfnow" id="hfNow" data-t="hfNow"></button>`);
+ $("cntRow").closest(".card").insertAdjacentHTML("afterend",`<button class="chip" id="hrtJump" style="display:block;margin:0 auto 12px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="7.5" rx="3.8" transform="rotate(-30 12 12)"/><path d="M10 8.3l4 7.2"/></svg> <span data-t="hrtJump"></span></button><div class="card"><h3 data-t="moveT"></h3><div class="chips" id="exT"></div><div id="exMW" style="margin-top:8px"><small class="muted" data-t="exMin"></small><div class="chips" id="exM" style="margin-top:4px"></div></div><button class="btn ghost block" id="rtBtn" data-t="rtBtn" style="padding:8px;margin-top:6px"></button></div>`);
+ $("corr").closest(".card").insertAdjacentHTML("afterend",`<div class="card" id="hrtCard"><h3 data-t="hrtT"></h3><p class="muted" style="margin-top:0" data-t="hrtSub"></p><div id="hrtList"></div><label class="muted" for="hrtD" data-t="hrtStart"></label><input type="date" id="hrtD" min="1990-01-01"><input type="text" id="hrtX" data-p="hrtType" style="margin-top:6px" maxlength="80"><input type="text" id="hrtDo" data-p="hrtDose" style="margin-top:6px" maxlength="40"><p id="hrtMsg" role="alert" style="color:#9c4a36;margin:6px 0 0;font-size:13.5px"></p><div style="display:flex;gap:6px"><button class="btn alt block" id="hrtAdd" data-t="hrtAdd"></button><button class="btn ghost hide" id="hrtCancel" data-t="hrtCancel"></button></div></div><div class="card"><h3 data-t="hwT"></h3><div id="hwBox"></div></div><div class="card"><h3 data-t="mvT"></h3><div id="mvBox"></div></div><div class="card"><h3 data-t="mrsT"></h3><p class="muted" style="margin-top:0" data-t="mrsSub"></p><div id="mrsBox"></div><button class="btn block" id="mrsBtn"></button><p class="muted" data-t="mrsNote"></p></div>`);
+ document.body.insertAdjacentHTML("beforeend",`<div id="sheet" class="modal hide"><div class="box sheet"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 id="shT" style="margin:0"></h2><button id="shX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><div id="shB"></div></div></div>`);
+})();
+function openSheet(title,html){$("shT").textContent=title;$("shB").innerHTML=html;$("sheet").classList.remove("hide")}
+function closeSheet(){brStop();$("sheet").classList.add("hide")}
+$("shX").onclick=closeSheet;$("sheet").onclick=ev=>{if(ev.target.id==="sheet")closeSheet()};
+// --- movement on Today
+function renderMove(){const e=S.e[cur]||{},x=e.ex||{};
+ $("exT").innerHTML=EXK.map(k=>`<button class="chip ${x.t===k?"on":""}" data-k="${k}">${EXN(k)}</button>`).join("");
+ $("exMW").classList.toggle("hide",!x.t||x.t==="none");
+ $("exM").innerHTML=EXMIN.map(m=>`<button class="chip ${x.m===m?"on":""}" data-m="${m}">${m}</button>`).join("")}
+const _rToday=renderToday;renderToday=function(){_rToday();renderMove()};
+$("exT").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.ex=e.ex&&e.ex.t===k?undefined:{t:k,m:k==="none"?0:(e.ex&&e.ex.m)||null};if(!e.ex)delete e.ex;persist();renderToday()};
+$("exM").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur);if(!e.ex)return;e.ex.m=e.ex.m===+b.dataset.m?null:+b.dataset.m;persist();renderToday()};
+$("rtBtn").onclick=()=>{const R=RT[LANG]||RT.en;openSheet(t("rtT"),`<div class="disc" style="font-size:13px">${t("rtNote")}</div>`+R.map((r,i)=>`<h4>${r[0]} <span class="muted">· ${r[1]}</span></h4><ol>${r[2].map(s=>`<li>${s}</li>`).join("")}</ol><button class="btn alt block rtDo" data-i="${i}" style="padding:8px">${t("rtDone")}</button>`).join(""))};
+$("shB").addEventListener("click",ev=>{const b=ev.target.closest(".rtDo");if(!b)return;const i=+b.dataset.i,e=entry(cur);const m=((e.ex&&e.ex.t!=="none"&&e.ex.m)||0)+RT_M[i];e.ex={t:e.ex&&e.ex.t&&e.ex.t!=="none"?e.ex.t:RT_T[i],m};persist();toast(t("rtLogged"));renderToday()});
+// --- breathing
+let brT=null,brEnd=0;
+function brStop(){clearInterval(brT);brT=null}
+$("hfNow").onclick=()=>{openSheet(t("brT"),`<p class="muted" style="margin:4px 0 0">${t("brSub")}</p><div class="br"><div class="c" id="brC">${t("brIn")}</div><b id="brL"></b></div>
+ <label style="display:flex;gap:8px;align-items:center;margin:6px 0"><input type="checkbox" id="brLog" checked style="width:20px;height:20px"><span>${t("brLog")}</span></label><button class="btn block" id="brGo">${t("brStart")}</button>`);
+ $("brGo").onclick=()=>{if(brT){brStop();closeSheet();return}
+  if($("brLog").checked){const e=entry(today());e.hf=Math.min(99,(e.hf||0)+1);persist();toast(t("brLogged"));if(cur===today())renderToday()}
+  $("brLog").disabled=true;$("brGo").textContent=t("brStop");$("brGo").className="btn alt block";brEnd=Date.now()+120000;let ph=-1;
+  const tick=()=>{const left=Math.max(0,Math.ceil((brEnd-Date.now())/1000)),c=$("brC");if(!c){brStop();return}
+   if(left<=0){brStop();c.style.transition="transform 1s";c.style.transform="scale(.7)";c.innerHTML='<svg class="ic" viewBox="0 0 24 24" style="width:46px;height:46px"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';$("brL").textContent=t("brDone");$("brGo").textContent="OK";$("brGo").onclick=closeSheet;return}
+   const pos=(120-left)%10,np=pos<4?0:1;if(np!==ph){ph=np;c.style.transition=`transform ${np?6:4}s ease-in-out`;c.style.transform=np?"scale(.55)":"scale(1)"}
+   c.textContent=np?`${t("brOut")} ${10-pos}`:`${t("brIn")} ${4-pos}`;$("brL").textContent=t("brLeft",{s:left})};
+  tick();brT=setInterval(tick,1000)}};
+// --- treatments
+function renderHrt(){const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);$("hrtD").max=today();if(!$("hrtD").value)$("hrtD").value=today();
+ $("hrtList").innerHTML=H.length?H.map(h=>`<div class="hrtl"><span><b>${esc(h.x)}</b>${h.dose?" · "+esc(h.dose):""}<br><small class="muted">${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}</small></span><span style="white-space:nowrap"><button data-e="${h.id}" aria-label="${t("hrtEdit")}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 19.5l1-4.2L16 4.8c.9-.9 2.3-.8 3.1.1.8.9.7 2.2-.1 3L8.6 18.4z"/><path d="M14 7l3 3"/></svg></button><button data-id="${h.id}" aria-label="Remove treatment">×</button></span></div>`).join(""):`<p class="muted">${t("hrtNone")}</p>`}
+let hrtEd=null;
+function hrtReset(){hrtEd=null;if($("hrtMsg"))$("hrtMsg").textContent="";$("hrtX").value="";$("hrtDo").value="";$("hrtD").value=today();$("hrtAdd").textContent=t("hrtAdd");$("hrtCancel").classList.add("hide")}
+$("hrtAdd").onclick=()=>{const x=$("hrtX").value.trim().replace(/\s+/g," "),d=$("hrtD").value||today(),hm=m=>{$("hrtMsg").textContent=m};hm("");if(!x){hm(t("hrtNeedType"));$("hrtX").focus();return}
+ if(!realD(d)||d<"1990-01-01"){hm("Please pick a valid start date.");$("hrtD").focus();return}
+ if(d>today()){hm("The start date can’t be in the future.");$("hrtD").focus();return}
+ if((S.hrt||[]).some(h=>h.id!==hrtEd&&h.d===d&&h.x.toLowerCase()===x.slice(0,80).toLowerCase())){hm("You’ve already logged this treatment on that date.");return}
+ const o={d,x:x.slice(0,80),dose:$("hrtDo").value.trim().slice(0,40)};S.hrt=S.hrt||[];const h=hrtEd&&S.hrt.find(h=>h.id===hrtEd);if(h)Object.assign(h,o);else S.hrt.push({id:Date.now().toString(36),...o});persist();hrtReset();renderInsights()};
+$("hrtCancel").onclick=()=>{hrtReset();renderHrt()};
+$("hrtJump").onclick=()=>{show("insights");setTimeout(()=>{$("hrtCard").scrollIntoView({behavior:"smooth"});},50)};
+$("hrtList").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;if(b.dataset.e){const h=(S.hrt||[]).find(h=>h.id===b.dataset.e);if(!h)return;hrtEd=h.id;$("hrtD").value=h.d;$("hrtX").value=h.x;$("hrtDo").value=h.dose||"";$("hrtAdd").textContent=t("hrtSaveE");$("hrtCancel").classList.remove("hide");$("hrtX").focus();return}if(!confirm(t("hrtDel")))return;S.hrt=(S.hrt||[]).filter(h=>h.id!==b.dataset.id);if(hrtEd===b.dataset.id)hrtReset();persist();renderInsights()};
+
+function hrtWork(h){const b=[],a=[];for(let i=1;i<=28;i++){const x=addD(h.d,-i);if(S.e[x])b.push(S.e[x])}for(let i=0;i<28;i++){const x=addD(h.d,i);if(x<=today()&&S.e[x])a.push(S.e[x])}
+ const hf=E=>{const z=E.filter(e=>e.hf!=null);return z.length?avg(z.map(e=>e.hf)):null};
+ return{b,a,ok:b.length>=7&&a.length>=7,lb:avg(b.map(load_)),la:avg(a.map(load_)),hb:hf(b),ha:hf(a),sb:avg(b.map(e=>e.s.sleep||0)),sa:avg(a.map(e=>e.s.sleep||0)),mb:avg(b.map(e=>e.s.mood||0)),ma:avg(a.map(e=>e.s.mood||0))}}
+const cmpT=(c1,c2,rows)=>`<table class="cmp"><tr><th></th><th>${c1}</th><th>${c2}</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]==null?"–":r1(r[1])}</td><td>${r[2]==null?"–":r1(r[2])}</td></tr>`).join("")}</table>`;
+// --- MRS
+const MRS_G=[[0,1,2,10],[3,4,5,6],[7,8,9]];
+const mrsSc=a=>({s:a.reduce((x,y)=>x+y,0),g:MRS_G.map(g=>g.reduce((x,i)=>x+a[i],0))});
+function mrsList(){return (S.mrs||[]).slice().sort((a,b)=>a.d<b.d?-1:1)}
+let mrsA=[];
+$("v-insights").addEventListener("click",ev=>{if(ev.target.id==="mrsBtn"){const m=mrsList().find(x=>x.d.slice(0,7)===today().slice(0,7));mrsA=m?m.a.slice():Array(11).fill(null);renderMrsForm()}});
+function renderMrsForm(){const lv=L().mrsLv;openSheet(t("mrsT"),`<p class="muted" style="margin:4px 0">${t("mrsQ")}</p><p class="muted" style="margin:0 0 6px;font-size:12px">${lv.map((x,i)=>i+" = "+x).join(" · ")}</p>`+
+ L().mrsItems.map((q,i)=>`<div class="mrsq"><p>${i+1}. ${q}</p><div class="seg" data-i="${i}">${[0,1,2,3,4].map(v=>`<button data-v="${v}" class="${mrsA[i]===v?"on":""}" aria-label="${lv[v]}">${v}</button>`).join("")}</div></div>`).join("")+
+ `<button class="btn block" id="mrsSave" style="margin-top:10px">${t("mrsSave")}</button><p class="muted" style="font-size:12px">${t("mrsNote")}</p>`)}
+$("shB").addEventListener("click",ev=>{const b=ev.target.closest(".mrsq .seg button");if(b){mrsA[+b.parentNode.dataset.i]=+b.dataset.v;b.parentNode.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));return}
+ if(ev.target.id==="mrsSave"){if(mrsA.some(v=>v==null)){toast(t("mrsNeed"));return}const mo=today().slice(0,7);S.mrs=(S.mrs||[]).filter(x=>x.d.slice(0,7)!==mo);S.mrs.push({d:today(),a:mrsA.slice()});persist();toast(t("mrsSaved"));closeSheet();renderInsights()}});
+function mrsChart(M){if(M.length<2)return"";const W=300,H=90,mx=44,n=M.length,px=i=>20+i*(W-40)/(n-1),py=v=>10+(1-v/mx)*(H-30);
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" direction="ltr"><polyline fill="none" stroke="#6f8a6e" stroke-width="2.5" points="${M.map((m,i)=>px(i)+","+py(mrsSc(m.a).s)).join(" ")}"/>${M.map((m,i)=>`<circle cx="${px(i)}" cy="${py(mrsSc(m.a).s)}" r="4" fill="#c98b8b"/><text x="${px(i)}" y="${py(mrsSc(m.a).s)-8}" font-size="10" text-anchor="middle" fill="#3c4a3b">${mrsSc(m.a).s}</text><text x="${px(i)}" y="${H-4}" font-size="9" text-anchor="middle" fill="#7a8679">${new Date(m.d+"T12:00:00").toLocaleDateString(LOC(),{month:"short"})}</text>`).join("")}</svg>`}
+// --- insights additions
+function mvStats(ds){const M=ds.filter(d=>moved(S.e[d])).map(d=>S.e[d]),N=ds.filter(d=>restDay(S.e[d])).map(d=>S.e[d]);const hf=E=>{const z=E.filter(e=>e.hf!=null);return z.length?avg(z.map(e=>e.hf)):null};
+ return{M,N,ok:M.length>=5&&N.length>=5,rows:[[t("hwSleep"),avg(M.map(e=>e.s.sleep||0)),avg(N.map(e=>e.s.sleep||0))],[t("hwMood"),avg(M.map(e=>e.s.mood||0)),avg(N.map(e=>e.s.mood||0))],[t("hwHF"),hf(M),hf(N)]]}}
+const _rIns=renderInsights;renderInsights=function(){_rIns();renderHrt();if(!hrtEd)$("hrtAdd").textContent=t("hrtAdd");
+ const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),h=H[H.length-1];
+ if(!h)$("hwBox").innerHTML=`<p class="muted">${t("hwNo")}</p>`;else{const w=hrtWork(h),nm=esc(h.x),dd=fmt(h.d,{day:"numeric",month:"short"});
+  $("hwBox").innerHTML=w.ok?`<p class="muted" style="margin-top:0">${t("hwSub",{x:nm,d:dd})}</p>`+cmpT(t("hwBefore")+` (${w.b.length})`,t("hwAfter")+` (${w.a.length})`,[[t("hwLoad"),w.lb,w.la],[t("hwHF"),w.hb,w.ha],[t("hwSleep"),w.sb,w.sa],[t("hwMood"),w.mb,w.ma]])+`<p class="muted" style="font-size:12px">${t("hwNote")}</p>`
+   :`<p class="muted">${t("hwNeed",{x:nm,d:dd,b:w.b.length,a:w.a.length})}</p>`}
+ const mv=mvStats(days(90).filter(d=>S.e[d]));
+ $("mvBox").innerHTML=mv.ok?`<p class="muted" style="margin-top:0">${t("mvSub",{m:mv.M.length,n:mv.N.length})}</p>`+cmpT(t("mvMove"),t("mvRest"),mv.rows)+`<p class="muted" style="font-size:12px">${t("mvNote")}</p>`:`<p class="muted">${t("mvNeed",{m:mv.M.length,n:mv.N.length})}</p>`;
+ const M=mrsList(),last=M[M.length-1],thisM=last&&last.d.slice(0,7)===today().slice(0,7);
+ $("mrsBox").innerHTML=(M.length?`<p style="margin:0 0 4px">${thisM?t("mrsDoneM",{s:mrsSc(last.a).s}):t("mrsDue")}</p>`+(M.length>1?`<small class="muted">${t("mrsTrend")}</small>`+mrsChart(M.slice(-6)):"")+
+  `<table class="cmp" style="margin-top:6px"><tr><th></th><th>${t("mrsTot")}</th><th>${t("mrsSom")}</th><th>${t("mrsPsy")}</th><th>${t("mrsUro")}</th></tr>${M.slice(-3).reverse().map(m=>{const s=mrsSc(m.a);return`<tr><td>${fmt(m.d,{day:"numeric",month:"short"})}</td><td><b>${s.s}</b></td><td>${s.g[0]}</td><td>${s.g[1]}</td><td>${s.g[2]}</td></tr>`}).join("")}</table>`:`<p class="muted">${t("mrsNoData")} ${t("mrsDue")}</p>`);
+ $("mrsBtn").textContent=thisM?t("mrsAgain"):t("mrsGo")};
+// --- summary / letter blocks
+function v6Move(E){const M=E.filter(moved),mins=M.map(e=>e.ex&&e.ex.m).filter(x=>x>0),ty={};M.forEach(e=>{const k=e.ex&&e.ex.t&&e.ex.t!=="none"?e.ex.t:"other";ty[k]=(ty[k]||0)+1});return{M,a:mins.length?Math.round(avg(mins)):"–",ty}}
+function v6Sum(E,ds){const mv=v6Move(E),mo0=ds[0]?ds[0].slice(0,7):"",H=(S.hrt||[]).filter(h=>h.d.slice(0,7)<=mo0&&!(h.end&&h.end.slice(0,7)<mo0)) /* active during the month; h.end = optional stop date */.sort((a,b)=>a.d<b.d?-1:1),mo=ds[0]?ds[0].slice(0,7):"",Mr=mrsList().filter(m=>m.d.slice(0,7)===mo).slice(-3);
+ const tys=Object.entries(mv.ty).map(([k,n])=>`${k==="other"?TN("exercise"):EXN(k)}: ${n}`).join(" · ");
+ return `<div class="lbl">${t("sumMove")}</div><p style="margin:0">${mv.M.length?t("sumMoveL",{m:mv.M.length,n:E.length,a:mv.a})+(tys?"<br>"+t("sumMoveTypes",{x:tys}):""):t("sumNoMove")}</p>`+
+ (H.length?`<div class="lbl">${t("sumHrt")}</div><p style="margin:0">${H.map(h=>`${esc(h.x)}${h.dose?" ("+esc(h.dose)+")":""} · ${fmt(h.d,{day:"numeric",month:"short",year:"numeric"})}`).join("<br>")}</p>`:"")+
+ (Mr.length?`<div class="lbl">${t("sumMrs")}</div><p style="margin:0">${Mr.map(m=>{const s=mrsSc(m.a);return t("sumMrsL",{d:fmt(m.d,{day:"numeric",month:"short"}),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}).join("<br>")}</p>`:"")}
+function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),df=d=>new Date(d+"T12:00:00").toLocaleDateString(t("L_dateFmt"),{day:"numeric",month:"long",year:"numeric"});
+ const Mr=mrsList().filter(m=>m.d>=ds[0]);let o="";
+ if(mv.M.length)o+=`<p>${t("L_move",{m:mv.M.length,n:E.length,a:mv.a})}</p>`;
+ if(H.length){o+=`<p style="margin-bottom:4px">${t("L_hrt")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${H.map(h=>`<li>${t("L_hrtItem",{x:esc(h.x),dose:h.dose?" ("+esc(h.dose)+")":"",d:df(h.d)})}</li>`).join("")}</ul>`;
+  const w=hrtWork(H[H.length-1]);if(w.ok)o+=`<p>${t("L_hw",{x:esc(H[H.length-1].x),b:r1(w.lb),a:r1(w.la),hb:w.hb==null?"–":r1(w.hb),ha:w.ha==null?"–":r1(w.ha)})}</p>`}
+ if(Mr.length)o+=`<p style="margin-bottom:4px">${t("L_mrs")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${Mr.map(m=>{const s=mrsSc(m.a);return`<li>${t("sumMrsL",{d:df(m.d),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}</li>`}).join("")}</ul>`;
+ return o}
+
+// ---------- v14: Prime Traker Free + Plus.
+// Core App is free, no payment card: daily check-ins + the last 30 days of history. Plus: patterns/insights, doctor summary, full history + export.
+// A 14-day Plus trial starts on first use with no card (S.t0). After it ends, Plus features lock; data is kept, older days are only hidden.
+// Reinstalling wipes local data and only resets to Free, so no extra guard is needed. Plus unlocks with a PRIME-XXXX-XXXX code from Whop.
+const PAYWALL_ENABLED=false; // false = everything free, no trial chip or upsell (current live behaviour)
+const WHOP_CHECKOUT_URL="https://whop.com/checkout/plan_1vwPkXNIAsn0e"; // yearly $49
+const WHOP_CHECKOUT_URL_MONTHLY="https://whop.com/checkout/plan_824SwuUQsDzJI"; // monthly $9.99
+const PLUS_PRICE={m:"$9.99",y:"$49",ym:"$4.08"};
+const TRIAL_DAYS=14,FREE_HIST=30;
+function dayDiff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
+function startTrial(){if(!S.t0){S.t0=today();persist()}}
+function seenDay(){const d=today();if(!S.seen||d>S.seen){S.seen=d;persist()}return S.seen} // PT-006: clock set back can't add trial days
+function trialLeft(){if(!S.t0)return TRIAL_DAYS;return Math.max(0,TRIAL_DAYS-dayDiff(S.t0,seenDay()))}
+function inTrial(){return trialLeft()>0}
+// PT-001: server license check (Whop), behind a flag. When on, legacy offline PRIME codes are ignored.
+const LICENSE_SERVER_ENABLED=false;
+const LICENSE_API="https://license.primetraker.com"; // Cloudflare Worker prime-license (also prime-license.levavijosh.workers.dev)
+const LICENSE_PUBKEY={kty:"OKP",crv:"Ed25519",x:"PfXiAONx731JzXVCJjznE1HNAZcEAri5Ug0_XR1-3_o"}; // public only; served at /pubkey
+const LIC_RECHECK_MS=864e5; // recheck daily (tokens live 3 days)
+// SEC-013 build guard: flag on with placeholder config => Plus stays locked (fail closed), loud error. CI: prime-license-server/scripts/check-app.mjs
+const LIC_CONFIG_OK=!LICENSE_SERVER_ENABLED||(!/TODO/i.test(LICENSE_API+JSON.stringify(LICENSE_PUBKEY))&&/^https:\/\//.test(LICENSE_API)&&/^[A-Za-z0-9_-]{43}$/.test(LICENSE_PUBKEY.x||""));
+if(!LIC_CONFIG_OK)console.error("Prime Traker: LICENSE_SERVER_ENABLED with placeholder LICENSE_API/LICENSE_PUBKEY. Plus is locked.");
+const DEV_RE=/^dev-[a-f0-9]{24}$/;
+function devId(){if(!DEV_RE.test(S.dev||"")){const a=new Uint8Array(12);crypto.getRandomValues(a);S.dev="dev-"+[...a].map(x=>x.toString(16).padStart(2,"0")).join("");persist()}return S.dev}
+const ub64u=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"=".repeat((4-s.length%4)%4)),c=>c.charCodeAt(0));
+function tokPayload(tok){try{return JSON.parse(new TextDecoder().decode(ub64u(String(tok).split(".")[0])))}catch(e){return null}}
+// SEC-013: signature checked with the embedded public key; any error => invalid (fail closed). Result cached per token.
+let licVerified={tok:null,ok:false};
+async function tokValid(tok){try{if(!LIC_CONFIG_OK)return false;const p=String(tok).split(".");if(p.length!==2)return false;
+ const k=await crypto.subtle.importKey("jwk",LICENSE_PUBKEY,{name:"Ed25519"},false,["verify"]);return await crypto.subtle.verify({name:"Ed25519"},k,ub64u(p[1]),new TextEncoder().encode(p[0]))}catch(e){return false}}
+async function licVerify(){const tok=S.plus&&S.plus.tok;if(!tok){licVerified={tok:null,ok:false};return}if(licVerified.tok===tok)return;const ok=await tokValid(tok);licVerified={tok,ok};gateAll()}
+async function licCall(path,body){const r=await fetch(LICENSE_API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}j.status=r.status;return j}
+async function licActivate(key){if(!LIC_CONFIG_OK)return {error:"config"};const k=String(key||"").trim();const j=await licCall("/activate",{key:k,device:devId()});
+ if(j.ok&&await tokValid(j.token)){S.plus={tok:j.token,exp:j.exp,chk:Date.now()};licVerified={tok:j.token,ok:true};persist();return {ok:true}}return j.ok?{error:"bad_sig"}:j}
+// PT-009: only a definitive 401/403 clears Plus; 429/5xx/offline keep the token until it expires.
+async function licRefresh(force){if(!LICENSE_SERVER_ENABLED||!LIC_CONFIG_OK||!S.plus||!S.plus.tok)return;if(!force&&Date.now()-(S.plus.chk||0)<LIC_RECHECK_MS)return;
+ try{const j=await licCall("/refresh",{token:S.plus.tok});if(j.ok&&await tokValid(j.token)){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now();licVerified={tok:j.token,ok:true}}else if(j.status===401||j.status===403){S.plus=null;licVerified={tok:null,ok:false}} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
+// PT-011/SEC-012: free this device's slot (server requires this device's token; limited to 3 per 30 days).
+async function licRelease(){if(!S.plus||!S.plus.tok)return;if(!confirm("Remove Plus from this device? You can use your key on another device. Limited to 3 removals per 30 days."))return;
+ let j;try{j=await licCall("/release",{token:S.plus.tok})}catch(e){toast("Can’t reach the server. Try again when you’re online.");return}
+ if(j.ok){S.plus=null;licVerified={tok:null,ok:false};persist();gateAll();toast("This device was removed from your Plus key.")}else if(j.error==="release_cooldown"){toast("You’ve removed 3 devices in the last 30 days. Try again in "+(j.retry_days||"a few")+" days or contact support@primetraker.com.")}else{toast("Couldn’t remove this device. Try again later.")}}
+function isPlus(){if(!S.plus)return false;if(!LICENSE_SERVER_ENABLED)return true;if(!LIC_CONFIG_OK)return false;const tok=S.plus.tok,p=tok&&tokPayload(tok);
+ if(!p||!(p.exp*1000>Date.now())||p.dev!==S.dev)return false;if(licVerified.tok!==tok){licVerify();return false}return licVerified.ok} // PT-004: demo never grants Plus
+function hasAccess(){return !PAYWALL_ENABLED||isPlus()||inTrial()}
+function histFloor(){return addD(seenDay(),-(FREE_HIST-1))}
+Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus trial: last day",trialNote:"Your free Plus trial is almost over. Check-ins and your last 30 days stay free. Plus keeps your patterns, doctor summary and full history going.",
+ upT:"Your patterns are just starting to show",upSub:"The core App is free and needs no payment card: daily check-ins and your last 30 days of history. We never delete your older days; they're just tucked away until you upgrade. Plus unlocks the rest:",
+ upL1:"Patterns, triggers and trends",upL2:"“Is it working?” for your treatment",upL3:"Doctor summary and letter",upL4:"Your full history, plus CSV export",upL5:"Movement insight and MRS trend",
+ upM:"{p} / month",upY:"{p} / year",upYs:"{m}/mo, save ~59%",upTry:"Get Plus",upFine:"Billed by Whop. Renews automatically on the plan you choose until you cancel; cancel anytime.",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
+ plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusTrial:"You’re on a free Plus trial: {n} days left. No card needed, nothing to cancel.",plusNoStart:"Free plan: check-ins and your last 30 days. Get Plus on Whop, then enter the code you receive.",plusSee:"See Plus",lockedTap:"Part of Plus",
+ histLock:"Days older than 30 are safe and kept. Plus shows your full history.",
+ faqT:"Free & Plus questions",faqs:[["Do I need a card to start?","No. The core App is free and needs no payment card: daily check-ins and your last 30 days of history. Every new user also gets 14 days of Plus free, with no card."],["What happens after the 14 days?","Plus features lock and you keep the free version: check-ins and your last 30 days. Nothing is charged and nothing is deleted."],["What does Plus cost?","$9.99 a month or $49 a year. It renews automatically on the plan you pick until you cancel."],["Is my older data gone if I don’t upgrade?","No. It stays on your phone; it’s only hidden past 30 days until you get Plus."]]});
+const ICK='<svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px;color:var(--sage)"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+function upCardHTML(){return `<div class="card upg"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px;color:var(--ochre)"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
+<h2>${t("upT")}</h2><p class="muted" style="font-size:14px">${t("upSub")}</p><ul class="upl">${["upL1","upL2","upL3","upL4","upL5"].map(k=>`<li>${ICK}<span>${t(k)}</span></li>`).join("")}</ul>
+<a class="btn block upbuy" href="${WHOP_CHECKOUT_URL}" target="_blank" rel="noopener">${t("upTry")}: ${t("upY",{p:PLUS_PRICE.y})} <small>· ${t("upYs",{m:PLUS_PRICE.ym})}</small></a>
+<a class="btn alt block upbuy" href="${WHOP_CHECKOUT_URL_MONTHLY}" target="_blank" rel="noopener">${t("upTry")}: ${t("upM",{p:PLUS_PRICE.m})}</a>
+<p class="muted" style="font-size:13px">${t("upFine")}</p>
+<button class="btn ghost block upcode">${t("upCode")}</button></div>`}
+function bindUp(root){root.querySelectorAll(".upcode").forEach(b=>b.onclick=openCode)}
+function openCode(){openSheet(t("codeT"),`<input type="text" id="codeIn" autocomplete="off" autocapitalize="characters" placeholder="${t("codePh")}" style="text-transform:uppercase;letter-spacing:.08em"><p id="codeMsg" class="muted"></p><button class="btn block" id="codeGo">${t("codeGo")}</button>`);
+ $("codeGo").onclick=async()=>{const v=$("codeIn").value;if(LICENSE_SERVER_ENABLED){$("codeGo").disabled=true;let r;try{r=await licActivate(v)}catch(e){r={error:"net"}}$("codeGo").disabled=false;if(r.ok){$("sheet").classList.add("hide");toast(t("codeOk"));gateAll()}else{$("codeMsg").textContent=r.error==="device_limit"?"This key is already used on "+(r.max||3)+" devices. On one of them, open Settings › Plus › Remove this device, or contact support@primetraker.com.":r.error==="net"?"Can’t reach the server. Check your connection and try again.":r.error==="inactive"?"This membership isn’t active. Check your Whop account.":r.error==="rate_limited"?"Too many tries. Wait a minute and try again.":r.error==="config"||r.error==="bad_sig"?"Plus can’t be activated right now. Please contact support@primetraker.com.":t("codeBad")}return}$("codeMsg").textContent=t("codeBad")}} // PT-012: legacy offline PRIME codes removed; Plus only via license server
+function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
+function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
+ if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
+// PT-002: locked views are never rendered; their data containers are emptied (no blur over real data).
+const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt"],"v-summary":["sumBody","sumMonth"]};
+function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el)el.innerHTML=""})}
+const _lockIns=renderInsights;renderInsights=function(){if(!hasAccess()){wipeLocked("v-insights");return}return _lockIns.apply(this,arguments)};
+const _lockSum=renderSummary;renderSummary=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockSum.apply(this,arguments)};
+setTimeout(()=>licRefresh(false),1500);document.addEventListener("visibilitychange",()=>{if(!document.hidden)licRefresh(false)});
+function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet();renderFaq()}
+function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn,.histl").forEach(x=>x.remove());if(!PAYWALL_ENABLED)return;
+ const bar=v.querySelector(".datebar");
+ if(!isPlus()&&inTrial()){const n=trialLeft();bar.insertAdjacentHTML("beforebegin",`<button class="chip trialc">${n<=1?t("trialChip1"):t("trialChip",{n})}</button>`+(n<=3?`<p class="muted trialn">${t("trialNote")}</p>`:""));v.querySelector(".trialc").onclick=openUp}
+ if(!hasAccess()&&cur<=histFloor()){bar.insertAdjacentHTML("afterend",`<p class="muted histl" style="text-align:center">${t("histLock")} <a href="#" class="histu">${t("plusSee")}</a></p>`);v.querySelector(".histu").onclick=e=>{e.preventDefault();openUp()}}}
+function renderFaq(){const st=$("v-settings");if(!st)return;let c=$("faqCard");if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){$("helpLegal").insertAdjacentHTML("beforebegin",`<div class="card" id="faqCard"></div>`);c=$("faqCard")}
+ c.innerHTML=`<h3>${t("faqT")}</h3>`+I18N.en.faqs.map(([q,a])=>`<details><summary>${esc(q)}</summary><p class="muted">${esc(a)}</p></details>`).join("")}
+function renderPlusSet(){let c=$("plusCard");const st=$("v-settings");if(!st)return;if(!PAYWALL_ENABLED){if(c)c.remove();return}if(!c){st.querySelector(".card").insertAdjacentHTML("beforebegin",`<div class="card" id="plusCard"></div>`);c=$("plusCard")}
+ const msg=isPlus()?t("plusOn"):inTrial()?t("plusTrial",{n:trialLeft()}):t("plusNoStart");
+ c.innerHTML=`<h3>${t("plusT")}</h3><p style="margin:0 0 6px">${msg}</p>`+(isPlus()?"":`<div class="row2"><button class="btn" id="plusSee">${t("plusSee")}</button><button class="btn ghost" id="plusCode">${t("upCode")}</button></div>`);
+ if(isPlus()&&LICENSE_SERVER_ENABLED){c.insertAdjacentHTML("beforeend",`<button class="btn ghost" id="plusRel">Remove this device</button>`);$("plusRel").onclick=licRelease}
+ if(!isPlus()){$("plusSee").onclick=openUp;$("plusCode").onclick=openCode}}
+const _show=show;show=function(v,k){_show(v,k);gateAll()};
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+const _exp=$("expCsv").onclick;$("expCsv").onclick=e=>hasAccess()?_exp(e):openUp();
+const _rt=$("rtBtn").onclick;$("rtBtn").onclick=e=>hasAccess()?_rt(e):openUp();
+// PT-004: remember exactly what demo wrote; removal deletes only untouched demo entries and restores any real entry it replaced.
+// PT-008: never mix demo data into a real diary.
+function hasRealData(){const J=x=>JSON.stringify(x),D=S.demoTag||{e:{},hrt:[],mrs:[]};
+ if(Object.keys(S.e||{}).some(d=>{const x=S.e[d];if(D.e&&d in D.e&&D.e[d]===J(x))return false;return x&&x.saved}))return true;
+ return (S.hrt||[]).some(h=>!(D.hrt||[]).includes(J(h)))||(S.mrs||[]).some(m=>!(D.mrs||[]).includes(J(m)))}
+const _demo=$("demoBtn").onclick;$("demoBtn").onclick=e=>{if(hasRealData()){toast("Demo data is only available on an empty diary, so your own entries stay clean.");return}const J=x=>JSON.stringify(x);const before={e:JSON.parse(J(S.e)),hrt:J(S.hrt||[]),mrs:J(S.mrs||[])};const n0=J(S.e);_demo(e);if(J(S.e)===n0)return;
+ const D=S.demoTag||{e:{},prev:{},hrt:[],mrs:[]};
+ Object.keys(S.e).forEach(d=>{const now=J(S.e[d]);if(now!==J(before.e[d])){if(before.e[d]&&!(d in D.prev)&&!(d in D.e))D.prev[d]=before.e[d];D.e[d]=now}});
+ const bh=JSON.parse(before.hrt).map(J),bm=JSON.parse(before.mrs).map(J);(S.hrt||[]).forEach(h=>{if(!bh.includes(J(h)))D.hrt.push(J(h))});(S.mrs||[]).forEach(m=>{if(!bm.includes(J(m)))D.mrs.push(J(m))});
+ S.demo=true;S.demoTag=D;delete S.preDemo;persist();gateAll();renderDemoCtl()};
+function removeDemo(){if(!S.demoTag&&S.preDemo){const p=S.preDemo;S.e=p.e;S.hrt=p.hrt;S.mrs=p.mrs;delete S.demo;delete S.preDemo;persist();toast(t("demoGone"));renderDemoCtl();gateAll();return} // legacy v13/v14 demo
+ const D=S.demoTag||{e:{},prev:{},hrt:[],mrs:[]},J=x=>JSON.stringify(x);
+ Object.keys(D.e).forEach(d=>{if(S.e[d]&&J(S.e[d])===D.e[d]){if(D.prev[d])S.e[d]=D.prev[d];else delete S.e[d]}});
+ S.hrt=(S.hrt||[]).filter(h=>!D.hrt.includes(J(h)));S.mrs=(S.mrs||[]).filter(m=>!D.mrs.includes(J(m)));
+ delete S.demo;delete S.demoTag;delete S.preDemo;persist();toast(t("demoGone"));renderDemoCtl();gateAll()}
+function renderDemoCtl(){const b=$("demoBtn");if(!b)return;let r=$("demoRm");if(S.demo){if(!r){b.insertAdjacentHTML("afterend",'<button class="btn ghost block" id="demoRm"></button>');r=$("demoRm");r.onclick=removeDemo}r.textContent=t("demoRm")}else if(r)r.remove()}
+Object.assign(I18N.en,{demoRm:"Remove demo data (days you edited are kept)",demoGone:"Demo data removed. Your own entries are back."});
+Object.assign(I18N.he,{demoRm:"הסרת נתוני ההדגמה (הרישומים שלי נשמרים)",demoGone:"נתוני ההדגמה הוסרו. הרישומים שלך חזרו."});
+if(!HEBREW_ENABLED)document.querySelectorAll(".langsw").forEach(x=>{const c=x.closest(".card");(c&&c.querySelector(".langsw")===x&&c.children.length<=2?c:x).remove()});
+Object.assign(I18N.en,{onbTrial:"You get 14 days of Plus free, no card needed. It ends on its own with no charge, and daily check-ins plus your last 30 days stay free."});
+Object.assign(I18N.he,{onbTrial:"14 ימים של Plus במתנה, בלי כרטיס אשראי. התקופה מסתיימת לבד בלי חיוב, והרישום היומי ו-30 הימים האחרונים נשארים בחינם."});
+if(PAYWALL_ENABLED&&$("onbTrial"))$("onbTrial").classList.remove("hide");
+const _boot=boot;boot=function(){if(S.onb)startTrial();renderDemoCtl();_boot();gateAll()};
+const _prev=$("prevD").onclick;$("prevD").onclick=e=>{if(!hasAccess()&&addD(cur,-1)<histFloor()){openUp();return}_prev(e);gateAll()};
+const _next=$("nextD").onclick;$("nextD").onclick=e=>{_next(e);gateAll()};
+const _al=applyLang;applyLang=function(){_al();if(typeof gateAll==="function"&&$("v-today"))gateAll()};
+document.head.insertAdjacentHTML("beforeend",`<style>
+.lockv .card:not(.upg):not(#helpCard),.lockv .stats,.lockv #tipBox,.lockv #weekTip,.lockv #sumBody,.lockv #sumCtl,.lockv #letCtl,.lockv .tabs2{display:none!important}
+.upg{background:linear-gradient(160deg,#fff8f2,#fbe7d9);border-color:var(--blush);text-align:center;position:relative;z-index:2}
+.upg h2{margin:6px 0}.upl{list-style:none;padding:0;margin:10px 0;text-align:start}.upl li{display:flex;gap:8px;align-items:center;padding:4px 0;font-size:14.5px}
+.upbuy{display:block;text-decoration:none;text-align:center}.upbuy small{font-weight:600;opacity:.85}
+.trialc{display:block;margin:2px 0 10px;background:#fbe7c8;border-color:var(--ochre);font-weight:700}
+@media print{.lockv #sumBody{display:none}.upg{display:none}}
+</style>`);
+
+// ---------- v11 accessibility helpers
+const A11Y_LBL={chartSym:"Symptom to show on the chart",sumMonth:"Month to summarise",letRange:"Time range for the letter",remTime:"Reminder time",impFile:"Choose a backup CSV file"};
+function a11yFix(){document.querySelectorAll("svg:not([aria-hidden]):not([role])").forEach(s=>s.setAttribute("aria-hidden","true"));
+ document.querySelectorAll("input,select,textarea").forEach(el=>{if(el.type==="hidden"||el.getAttribute("aria-label")||el.getAttribute("aria-labelledby"))return;if(el.id&&document.querySelector(`label[for="${el.id}"]`))return;if(el.closest("label"))return;
+  const l=A11Y_LBL[el.id]||el.placeholder||el.title||(el.closest(".card")&&el.closest(".card").querySelector("h3,.h3")?.textContent)||el.id;if(l)el.setAttribute("aria-label",l)});
+ document.querySelectorAll("button").forEach(b=>{const tx=b.textContent.trim();if(b.dataset.a11y&&tx){b.removeAttribute("aria-label");delete b.dataset.a11y}if(!tx&&!b.getAttribute("aria-label")&&b.title){b.setAttribute("aria-label",b.title);b.dataset.a11y="1"}});
+ document.querySelectorAll("nav button").forEach(b=>{const sp=b.querySelector("span"),l=b.dataset.al||(sp&&sp.textContent.trim());if(l&&b.getAttribute("aria-label")!==l)b.setAttribute("aria-label",l);const on=b.classList.contains("on");if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+ const nv=document.querySelector("nav");if(nv&&!nv.getAttribute("aria-label"))nv.setAttribute("aria-label","Main");
+ document.querySelectorAll(".modal:not(.hide)").forEach(m=>{m.setAttribute("role","dialog");m.setAttribute("aria-modal","true")})}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".modal:not(.hide)").forEach(m=>{const x=m.querySelector("[aria-label=Close]");x?x.click():m.classList.add("hide")})}});
+new MutationObserver(()=>{clearTimeout(window._a11yT);window._a11yT=setTimeout(a11yFix,50)}).observe(document.body,{childList:true,subtree:true});
+
+// ---------- v26: protect history (Safari can clear site data after ~7 days without a visit)
+const BAK_DAYS=7;
+Object.assign(I18N.en,{bakDue:"It's been a while since your last backup. Your diary lives only on this phone, and some browsers can clear stored data after about a week without a visit. Export a copy to keep it safe.",bakNever:"You haven't exported a backup yet. Your diary lives only on this phone, and some browsers can clear stored data after about a week without a visit. Export a copy to keep it safe.",bakNow:"Export backup now",bakLater:"Remind me later",bakLast:"Last backup: {d}",bakNone:"No backup exported yet."});
+function askPersist(){try{if(navigator.storage&&navigator.storage.persist&&navigator.storage.persisted){navigator.storage.persisted().then(p=>{if(!p)return navigator.storage.persist()}).then(r=>{if(r!==undefined)S.persistOk=!!r}).catch(()=>{})}}catch(x){}}
+function realDays(){const D=S.demoTag||{e:{}},J=x=>JSON.stringify(x);return Object.keys(S.e||{}).filter(d=>{const x=S.e[d];if(!x||!x.saved)return false;return !(D.e&&d in D.e&&D.e[d]===J(x))}).sort()}
+function bakDue(){const r=realDays();if(r.length<3)return false;const now=today();if(S.bakSnz&&S.bakSnz>now)return false;const ref=S.lastBak||r[0];return dayDiff(ref,now)>BAK_DAYS}
+function renderBakNote(){const v=$("v-today");if(!v)return;v.querySelectorAll(".baknote").forEach(x=>x.remove());if(!S.onb||!bakDue())return;
+ const h1=v.querySelector("h1")||v.firstElementChild;const html=`<div class="card baknote" role="region" aria-label="${esc(t("backupT"))}"><p style="margin:0 0 8px">${t(S.lastBak?"bakDue":"bakNever")}</p><button class="btn block" id="bakNow">${t("bakNow")}</button><button class="btn ghost block" id="bakLater">${t("bakLater")}</button></div>`;
+ h1?h1.insertAdjacentHTML("afterend",html):v.insertAdjacentHTML("afterbegin",html);
+ $("bakNow").onclick=()=>$("expCsv").click();$("bakLater").onclick=()=>{S.bakSnz=addD(today(),7);persist();renderBakNote()}}
+function renderBakStat(){let p=$("bakStat");if(!p){$("expCsv").insertAdjacentHTML("beforebegin",'<p class="muted" id="bakStat" style="margin:0 0 6px"></p>');p=$("bakStat")}p.textContent=S.lastBak?t("bakLast",{d:fmt(S.lastBak,{day:"numeric",month:"long",year:"numeric"})}):t("bakNone")}
+{const ex=$("expCsv").onclick;$("expCsv").onclick=e=>{ex(e);S.lastBak=today();delete S.bakSnz;persist();renderBakNote();renderBakStat()}}
+// Backup card first in Settings so it's easy to find
+{const c=$("expCsv").closest(".card"),st=$("v-settings"),h=st&&st.querySelector("h1");if(c&&h)h.insertAdjacentElement("afterend",c)}
+{const _rt=renderToday;renderToday=function(){const r=_rt.apply(this,arguments);renderBakNote();return r}}
+{const _sv=show;show=function(v,k){const r=_sv(v,k);if(v==="settings")renderBakStat();return r}}
+// v27: scale legend shown once, above the first symptom row
+I18N.en.lgNone="None";I18N.en.lgMild="Mild";I18N.en.lgMod="Moderate";I18N.en.lgSev="Severe";
+{const _rtL=renderToday;renderToday=function(){const r=_rtL.apply(this,arguments);const sl=$("symList");if(sl&&!sl.querySelector(".seglg"))sl.insertAdjacentHTML("afterbegin",`<div class="sym seglg" aria-hidden="true"><span></span><div class="seg">${["lgNone","lgMild","lgMod","lgSev"].map(k=>`<i>${t(k)}</i>`).join("")}</div></div>`);return r}}
+
+// v27: "X of N logged" progress, then "Done for today" state with a small celebration + streak
+Object.assign(I18N.en,{progN:"{x} of {n} logged",progAll:"All logged. Tap Save below.",doneT:"Done for today ✓",doneSub:"Nice work taking a minute for yourself.",doneSee:"See your patterns",doneEdit:"Edit today",streak1:"Day 1. A great start."});
+let justDone=false;
+function renderProg(){const v=$("v-today");if(!v)return;let p=$("prog");if(!p){const db=v.querySelector(".datebar");(db||v.querySelector("h1")).insertAdjacentHTML("afterend",'<div id="prog"></div>');p=$("prog")}
+ const e=S.e[cur]||{s:{}},list=showAll?SYMK:SYMK.slice(0,CORE),n=list.length+1,x=list.filter(k=>e.s&&e.s[k]!=null).length+(e.st!=null?1:0);
+ if(e.saved&&cur===today()){const st=streak(),cols=["#f5cdbf","#e39a86","#a84a33","#d99a3d","#7d8f4e"];
+  const cf=justDone?Array.from({length:14},(_,i)=>{const a=i/14*6.283,r=70+(i%3)*25;return `<i class="cf" style="background:${cols[i%5]};--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r*.6)}px;animation-delay:${(i%4)*40}ms"></i>`}).join(""):"";
+  p.innerHTML=`<div class="card donec${justDone?" pop":""}" role="status">${cf}<div class="ck" aria-hidden="true">✓</div><h2>${t("doneT")}</h2><p class="muted" style="margin:0">${t("doneSub")}</p><p class="stk">${st>1?t("streak",{n:st}):t("streak1")}</p><button class="btn block" id="doneSee">${t("doneSee")}</button></div>`;
+  $("doneSee").onclick=()=>show("insights");justDone=false;return}
+ p.innerHTML=`<div class="pt"><span>${t("progN",{x,n})}</span>${x===n?`<span>${t("progAll")}</span>`:""}</div><div class="bar" role="progressbar" aria-label="${esc(t("progN",{x,n}))}" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${x}"><i style="width:${Math.round(x/n*100)}%"></i></div>`}
+{const _rtP=renderToday;renderToday=function(){const r=_rtP.apply(this,arguments);renderProg();return r}}
+{const _sb=$("saveBtn").onclick;$("saveBtn").onclick=ev=>{const isT=cur===today(),_to=toast;if(isT)toast=()=>{};try{_sb(ev)}finally{toast=_to}if(isT){justDone=true;show("today");window.scrollTo(0,0)}}}
+
+// v27: month calendar heatmap with month navigation + legend (replaces the 5-week grid)
+Object.assign(I18N.en,{calT:"Your month at a glance",hmLess:"Lighter",hmMore:"Heavier",hmNone:"Not logged",hmBleed:"Bleeding",hmPrev:"Previous month",hmNext:"Next month",hmEmpty:"No check-ins this month yet.",hmAria:"{m}: {n} days logged"});
+let calM=null;
+function renderHeatmap(){const c=$("cal");if(!c)return;const now=today();if(!calM||calM>now.slice(0,7))calM=now.slice(0,7);
+ const ks=Object.keys(S.e).sort(),minM=(ks[0]||now).slice(0,7),[y,m]=calM.split("-").map(Number),first=new Date(y,m-1,1).getDay(),nd=new Date(y,m,0).getDate();
+ const mName=new Date(y,m-1,15).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+ let card=c.closest(".card"),nav=card.querySelector(".hmnav");if(!nav){c.insertAdjacentHTML("beforebegin",`<div class="hmnav"><button id="hmPrev" aria-label="${t("hmPrev")}">‹</button><b id="hmM" aria-live="polite"></b><button id="hmNext" aria-label="${t("hmNext")}">›</button></div>`);
+  c.insertAdjacentHTML("afterend",`<div class="hmleg" id="hmLeg" aria-hidden="true"><span class="sw">${t("hmLess")} <i class="cal hm" style="display:inline-block"></i></span></div><p class="muted hmempty hide" id="hmEmpty"></p>`);
+  $("hmPrev").onclick=()=>{const d=new Date(+calM.slice(0,4),+calM.slice(5)-2,15);calM=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");renderHeatmap()};
+  $("hmNext").onclick=()=>{const d=new Date(+calM.slice(0,4),+calM.slice(5),15);calM=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");renderHeatmap()}}
+ $("hmLeg").innerHTML=`<span class="sw">${t("hmLess")} <i class="lg0"></i><i class="lg1"></i><i class="lg2"></i><i class="lg3"></i> ${t("hmMore")}</span><span class="sw"><i style="border:1.5px dashed var(--line)"></i> ${t("hmNone")}</span><span class="sw"><i style="width:8px;height:8px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink)"></i> ${t("hmBleed")}</span>`;
+ $("hmM").textContent=mName;$("hmPrev").disabled=calM<=minM;$("hmNext").disabled=calM>=now.slice(0,7);
+ c.className="cal hm";let h=["S","M","T","W","T","F","S"].map(w=>`<div class="wd">${w}</div>`).join("")+'<div class="pad"></div>'.repeat(first),n=0;
+ for(let d=1;d<=nd;d++){const k=calM+"-"+String(d).padStart(2,"0"),e=S.e[k],fu=k>now;let cl="nl",lab="not logged";
+  if(e){n++;const Lv=load_(e);cl=Lv>=14?"hm3":Lv>=8?"hm2":Lv>0?"hm1":"hm0";lab=["no symptoms","lighter day","moderate day","heavier day"][+cl[2]]}
+  if(e&&isBleed(e))cl+=" bl";h+=`<div class="d ${cl}${k===now?" td":""}${fu?" fu":""}" title="${k}: ${lab}${e&&isBleed(e)?", bleeding":""}">${d}</div>`}
+ c.innerHTML=h;c.setAttribute("role","img");c.setAttribute("aria-label",t("hmAria",{m:mName,n}));
+ const em=$("hmEmpty");em.textContent=t("hmEmpty");em.classList.toggle("hide",n>0)}
+{const _ri=renderInsights;renderInsights=function(){const r=_ri.apply(this,arguments);try{renderHeatmap()}catch(e){console.error(e)}return r}}
+
+// v27: "Your {Month} summary is ready" card on Today when last month has entries; dismissible per month
+Object.assign(I18N.en,{sumReady:"Your {m} summary is ready",sumOpen:"Open summary",sumDismiss:"Dismiss {m} summary card"});
+function prevMonth(){const d=new Date(today()+"T12:00:00");d.setDate(1);d.setMonth(d.getMonth()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}
+function renderSumCard(){const v=$("v-today");if(!v)return;const o=$("sumCard");if(o)o.remove();const pm=prevMonth();
+ if(!S.onb||S.sumDis===pm||!Object.keys(S.e).some(k=>k.startsWith(pm)))return;
+ const mn=new Date(pm+"-15T12:00:00").toLocaleDateString("en-US",{month:"long"});
+ const thumb=`<svg viewBox="0 0 58 72" aria-hidden="true"><rect width="58" height="72" fill="#fffaf5"/><rect x="7" y="7" width="30" height="5" rx="2" fill="#4a3328"/><rect x="7" y="15" width="22" height="3" rx="1.5" fill="#c9b1a2"/>${[[24,"#a84a33"],[18,"#e39a86"],[14,"#e39a86"],[9,"#f5cdbf"],[6,"#f5cdbf"]].map(([w,c],i)=>`<rect x="7" y="${25+i*7}" width="${w*1.8}" height="4.5" rx="2" fill="${c}"/>`).join("")}<rect x="7" y="62" width="40" height="2.5" rx="1" fill="#e8cfc0"/></svg>`;
+ const p=$("prog")||v.querySelector(".datebar");p.insertAdjacentHTML("afterend",`<div class="card sumc" id="sumCard" role="region" aria-label="${esc(t("sumReady",{m:mn}))}">${thumb}<div><h2>${t("sumReady",{m:mn})}</h2><button class="btn" id="sumOpen">${t("sumOpen")}</button></div><button class="x" id="sumX" aria-label="${esc(t("sumDismiss",{m:mn}))}">×</button></div>`);
+ $("sumOpen").onclick=()=>{const s=$("sumMonth");s.innerHTML=`<option value="${pm}"></option>`;s.value=pm;sumMode="sum";show("summary")};
+ $("sumX").onclick=()=>{S.sumDis=pm;persist();renderSumCard()}}
+{const _rtS=renderToday;renderToday=function(){const r=_rtS.apply(this,arguments);renderSumCard();return r}}
+
+// v27: dark mode (Auto follows prefers-color-scheme; Settings toggle Auto/Light/Dark)
+Object.assign(I18N.en,{thmT:"Appearance",thmAuto:"Auto",thmLight:"Light",thmDark:"Dark",thmSub:"Auto follows your phone's setting."});
+const THM_MQ=matchMedia("(prefers-color-scheme: dark)");
+function thmPref(){try{return localStorage.getItem("periTheme")||"auto"}catch(e){return "auto"}}
+function applyTheme(){const p=thmPref(),d=p==="dark"||(p==="auto"&&THM_MQ.matches);document.documentElement.dataset.theme=d?"dark":"light";document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.content=d?"#0f0f10":"#e8a99a");
+ document.querySelectorAll(".thm button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.th===p))}
+THM_MQ.addEventListener&&THM_MQ.addEventListener("change",applyTheme);
+{const st=$("v-settings"),h=st&&st.querySelector("h1");if(h){const anchor=$("expCsv")&&$("expCsv").closest(".card");(anchor||h).insertAdjacentHTML("afterend",`<div class="card" id="thmCard"><h2 class="h3">${t("thmT")}</h2><div class="thm" role="group" aria-label="${t("thmT")}">${["auto","light","dark"].map(k=>`<button data-th="${k}" aria-pressed="false">${t("thm"+k[0].toUpperCase()+k.slice(1))}</button>`).join("")}</div><p class="muted" style="margin:8px 0 0">${t("thmSub")}</p></div>`);
+ $("thmCard").onclick=ev=>{const b=ev.target.closest("button[data-th]");if(!b)return;try{localStorage.setItem("periTheme",b.dataset.th)}catch(e){}applyTheme()}}}
+applyTheme();
+
+// v27: friendly empty states with progress toward the first patterns
+Object.assign(I18N.en,{emT:"Log 7 days to see your first patterns",emSub:"Each check-in takes about 30 seconds. Your charts and calendar fill in as you go.",emN:"{x} of 7 days",emGo:"Do today's check-in",
+ logFew:"Your top symptoms show up here after a few check-ins.",patWait:"Patterns show up after about 2 weeks of check-ins. Keep going!",
+ noPeriod:"Nothing logged in this period yet. A quick check-in today starts it off.",noMonth:"No check-ins for this month yet. Your summary builds itself as you log."});
+function renderEmpty(){const v=$("v-insights");if(!v)return;const o=$("emptyCard");if(o)o.remove();const x=Object.keys(S.e).filter(k=>S.e[k]).length;if(x>=7)return;
+ const h=v.querySelector("h1")||v.firstElementChild;h.insertAdjacentHTML("afterend",`<div class="card emptyc" id="emptyCard" role="region" aria-label="${esc(t("emT"))}"><h2>${t("emT")}</h2><p class="muted" style="margin:0">${t("emSub")}</p><div class="dots" aria-hidden="true">${Array.from({length:7},(_,i)=>`<i class="${i<x?"f":""}"></i>`).join("")}</div><p class="pn">${t("emN",{x})}</p>${S.e[today()]?"":`<button class="btn block" id="emGo">${t("emGo")}</button>`}</div>`);
+ const g=$("emGo");if(g)g.onclick=()=>{cur=today();show("today")};}
+{const _riE=renderInsights;renderInsights=function(){const r=_riE.apply(this,arguments);try{renderEmpty()}catch(e){console.error(e)}return r}}
+
+// v27: short visible nav label; accessible name stays "Doctor summary" (data-al)
+I18N.en.nDoc="Summary";
+askPersist();
+boot();
+</script>
+
+
+<script data-sw="./sw.js">/* update banner */(function(){if(!("serviceWorker"in navigator)||location.protocol==="file:")return;var SW=document.currentScript.dataset.sw,want=false,done=false,reg=null;
+function T(){var he=(document.documentElement.lang||"").indexOf("he")===0;return he?{m:"גרסה חדשה זמינה",b:"רענון",x:"סגירה"}:{m:"New version available",b:"Refresh",x:"Dismiss"}}
+function busy(){var a=document.activeElement;return !!(a&&(a.tagName==="INPUT"||a.tagName==="TEXTAREA"||a.tagName==="SELECT"||a.isContentEditable))}
+function show(){if(document.getElementById("upd-bar"))return;var t=T(),d=document.createElement("div");d.id="upd-bar";d.setAttribute("role","status");d.setAttribute("aria-live","polite");
+d.style.cssText="position:fixed;left:12px;right:12px;margin:0 auto;box-sizing:border-box;width:auto;max-width:480px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:9999;display:flex;gap:8px;align-items:center;padding:10px 12px 10px 16px;border-radius:16px;background:var(--card,#fff8f2);color:var(--ink,#3c4a3b);border:1px solid var(--line,#e6dccf);box-shadow:0 6px 24px rgba(0,0,0,.15);font:inherit;font-size:15px";
+var s=document.createElement("span");s.textContent=t.m;s.style.cssText="flex:1 1 auto;min-width:0;line-height:1.3";var b=document.createElement("button");b.type="button";b.id="upd-go";b.textContent=t.b;b.style.cssText="flex:0 0 auto;white-space:nowrap;min-height:44px;padding:0 14px;border:0;border-radius:12px;background:var(--sage,var(--olive,#6f8a6e));color:#fff;font:inherit;font-weight:700;cursor:pointer";
+var x=document.createElement("button");x.type="button";x.setAttribute("aria-label",t.x);x.textContent="×";x.style.cssText="flex:0 0 auto;min-width:44px;min-height:44px;border:0;background:transparent;color:inherit;font-size:22px;cursor:pointer";
+b.onclick=function(){if(reg&&reg.waiting){want=true;reg.waiting.postMessage({type:"SKIP_WAITING"})}else{want=true;go()}};x.onclick=function(){d.remove()};d.append(s,b,x);document.body.appendChild(d)}
+if(location.hostname==="localhost"||location.hostname==="127.0.0.1")window.__updShow=show; // test hook, local only (app/tests/update_banner_test.py)
+function go(){if(done)return;try{if(sessionStorage.getItem("upd-r")&&Date.now()-sessionStorage.getItem("upd-r")<10000)return;sessionStorage.setItem("upd-r",Date.now())}catch(e){}done=true;location.reload()}
+var had=!!navigator.serviceWorker.controller;
+navigator.serviceWorker.addEventListener("controllerchange",function(){if(!had){had=true;return}if(want&&!busy())go();else show()});
+function track(w){if(!w)return;var f=function(){if(w.state==="installed"&&navigator.serviceWorker.controller)show()};f();w.addEventListener("statechange",f)}
+addEventListener("load",function(){navigator.serviceWorker.register(SW,SW.indexOf("./")===0?{scope:"./"}:undefined).then(function(r){reg=r;window.__swReg=r;if(r.waiting&&navigator.serviceWorker.controller)show();track(r.installing);r.addEventListener("updatefound",function(){track(r.installing)})}).catch(function(){})});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&reg)reg.update().catch(function(){})})})();</script>
+</body></html>
