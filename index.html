@@ -203,6 +203,7 @@ nav button{min-height:52px}
  <div class="card"><h3 data-t="howT"></h3><p data-h="howB"></p></div>
  <div class="card"><h3 data-t="privT"></h3><p data-h="privB"></p></div>
  <div class="disc" data-h="discFull"></div>
+ <p class="muted hide" id="onbTrial" data-t="onbTrial" style="text-align:center;margin:12px 4px 0"></p>
  <label style="display:flex;gap:10px;align-items:flex-start;margin:14px 2px"><input type="checkbox" id="agree" style="width:22px;height:22px;flex:none"><span data-t="agree"></span></label>
  <button class="btn block" id="start" disabled data-t="start"></button>
 </div>
@@ -1027,6 +1028,9 @@ function renderDemoCtl(){const b=$("demoBtn");if(!b)return;let r=$("demoRm");if(
 Object.assign(I18N.en,{demoRm:"Remove demo data (days you edited are kept)",demoGone:"Demo data removed. Your own entries are back."});
 Object.assign(I18N.he,{demoRm:"הסרת נתוני ההדגמה (הרישומים שלי נשמרים)",demoGone:"נתוני ההדגמה הוסרו. הרישומים שלך חזרו."});
 if(!HEBREW_ENABLED)document.querySelectorAll(".langsw").forEach(x=>{const c=x.closest(".card");(c&&c.querySelector(".langsw")===x&&c.children.length<=2?c:x).remove()});
+Object.assign(I18N.en,{onbTrial:"You get 14 days of Plus free, no card needed. It ends on its own with no charge, and daily check-ins plus your last 30 days stay free."});
+Object.assign(I18N.he,{onbTrial:"14 ימים של Plus במתנה, בלי כרטיס אשראי. התקופה מסתיימת לבד בלי חיוב, והרישום היומי ו-30 הימים האחרונים נשארים בחינם."});
+if(PAYWALL_ENABLED&&$("onbTrial"))$("onbTrial").classList.remove("hide");
 const _boot=boot;boot=function(){if(S.onb)startTrial();renderDemoCtl();_boot();gateAll()};
 const _prev=$("prevD").onclick;$("prevD").onclick=e=>{if(!hasAccess()&&addD(cur,-1)<histFloor()){openUp();return}_prev(e);gateAll()};
 const _next=$("nextD").onclick;$("nextD").onclick=e=>{_next(e);gateAll()};
