@@ -188,6 +188,15 @@ nav button{min-height:52px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <style id="v12">.legal li a{display:block;padding:11px 2px;font-weight:700;border-bottom:1.5px dashed var(--line)}.legal li:last-child a{border-bottom:0}</style>
+<style id="v27-heat">
+/* 0-3 heat scale: cream -> pink -> terracotta. Selected also gets a ring + bold (not colour alone). */
+.seg button.on[data-v="0"]{background:#fbeee6;color:#4a3328;border-color:#9a7f70}
+.seg button.on[data-v="1"]{background:#f5cdbf;color:#4a3328;border-color:#c9826d}
+.seg button.on[data-v="2"]{background:#e39a86;color:#3a251c;border-color:#b5644f}
+.seg button.on[data-v="3"]{background:#a84a33;color:#fff;border-color:#7d3322}
+.seg button.on{font-weight:800;box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink);position:relative}
+</style>
+
 </head>
 <body>
 <div id="toast" class="saved"></div>
