@@ -750,7 +750,8 @@ function closeInst(){$("inst").classList.add("hide");S.instSeen=true;persist()}
 function renderInstStat(){if($("instStat"))$("instStat").textContent=isStandalone()?t("instDone"):t("instNot")}
 $("instX").onclick=$("instOk").onclick=closeInst;$("inst").onclick=e=>{if(e.target.id==="inst")closeInst()};
 $("instBtn").onclick=openInst;
-function maybeInst(){if(S.onb&&!S.instSeen&&!isStandalone())setTimeout(()=>{if($("modal").classList.contains("hide"))openInst()},1200)}
+function instReady(){if(!S.fo){S.fo=today();persist()}const r=(typeof realDays==="function"?realDays():Object.keys(S.e).filter(d=>S.e[d]&&S.e[d].saved));return r.length>=3&&new Set(r).size>=2&&today()>S.fo} // only after real use, never on first open
+function maybeInst(){if(S.onb&&!S.instSeen&&!isStandalone()&&instReady())setTimeout(()=>{if($("modal").classList.contains("hide"))openInst()},1200)}
 
 // ---------- reminder
 const notifOK=()=>"Notification" in window&&"serviceWorker" in navigator;
