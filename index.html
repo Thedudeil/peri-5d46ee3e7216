@@ -226,6 +226,31 @@ h3,.h3{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600;color:v
 #streakTop{font-family:Caveat,cursive;font-size:20px;font-weight:700;color:var(--rose)}
 </style>
 
+<style id="v27-heatmap">
+.hmnav{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
+.hmnav b{font-family:Fraunces,Georgia,serif;font-size:17px;color:var(--ink)}
+.hmnav button{width:44px;height:44px;border-radius:50%;border:0;background:var(--roseL);color:var(--ink);font-size:20px}
+.hmnav button:disabled{opacity:.35}
+.cal.hm{gap:4px;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal.hm .wd{background:none!important;border:0!important;aspect-ratio:auto;text-align:center;font-size:11px;font-weight:700;color:var(--mute);padding:0 0 2px}
+.cal.hm .pad{visibility:hidden}
+.cal.hm .d{position:relative;aspect-ratio:1;display:flex;align-items:flex-start;justify-content:flex-start;font-size:11px;font-weight:700;padding:3px 4px;border-radius:8px;color:var(--ink);box-shadow:none}
+.cal.hm .nl{background:transparent;border:1.5px dashed var(--line);color:var(--mute)}
+.cal.hm .hm0{background:#fbeee6;border:1.5px solid #e8cfc0}
+.cal.hm .hm1{background:#f5cdbf;border:1.5px solid #f5cdbf}
+.cal.hm .hm2{background:#e39a86;border:1.5px solid #e39a86;color:#3a251c}
+.cal.hm .hm3{background:#a84a33;border:1.5px solid #a84a33;color:#fff}
+.cal.hm .bl::after{content:"";position:absolute;right:4px;bottom:4px;width:7px;height:7px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink);border:1.5px solid #fff}
+.cal.hm .td{outline:2.5px solid var(--ink);outline-offset:1px}
+.cal.hm .fu{border-style:dotted}
+.hmleg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:12px;color:var(--mute);font-weight:700}
+.hmleg .sw{display:inline-flex;gap:3px;align-items:center}
+.hmleg i{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:middle}
+.hmleg .lg0{background:#fbeee6;border:1.5px solid #e8cfc0}.hmleg .lg1{background:#f5cdbf}.hmleg .lg2{background:#e39a86}.hmleg .lg3{background:#a84a33}
+.hmempty{text-align:center;margin:8px 0 0;font-size:13px}
+.card p[data-t="calNote"]{display:none}
+</style>
+
 </head>
 <body>
 <div id="toast" class="saved"></div>
@@ -1178,6 +1203,26 @@ function renderProg(){const v=$("v-today");if(!v)return;let p=$("prog");if(!p){c
  p.innerHTML=`<div class="pt"><span>${t("progN",{x,n})}</span>${x===n?`<span>${t("progAll")}</span>`:""}</div><div class="bar" role="progressbar" aria-label="${esc(t("progN",{x,n}))}" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${x}"><i style="width:${Math.round(x/n*100)}%"></i></div>`}
 {const _rtP=renderToday;renderToday=function(){const r=_rtP.apply(this,arguments);renderProg();return r}}
 {const _sb=$("saveBtn").onclick;$("saveBtn").onclick=ev=>{_sb(ev);if(cur===today()){justDone=true;show("today");window.scrollTo(0,0)}}}
+
+// v27: month calendar heatmap with month navigation + legend (replaces the 5-week grid)
+Object.assign(I18N.en,{calT:"Your month at a glance",hmLess:"Lighter",hmMore:"Heavier",hmNone:"Not logged",hmBleed:"Bleeding",hmPrev:"Previous month",hmNext:"Next month",hmEmpty:"No check-ins this month yet.",hmAria:"{m}: {n} days logged"});
+let calM=null;
+function renderHeatmap(){const c=$("cal");if(!c)return;const now=today();if(!calM||calM>now.slice(0,7))calM=now.slice(0,7);
+ const ks=Object.keys(S.e).sort(),minM=(ks[0]||now).slice(0,7),[y,m]=calM.split("-").map(Number),first=new Date(y,m-1,1).getDay(),nd=new Date(y,m,0).getDate();
+ const mName=new Date(y,m-1,15).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+ let card=c.closest(".card"),nav=card.querySelector(".hmnav");if(!nav){c.insertAdjacentHTML("beforebegin",`<div class="hmnav"><button id="hmPrev" aria-label="${t("hmPrev")}">‹</button><b id="hmM" aria-live="polite"></b><button id="hmNext" aria-label="${t("hmNext")}">›</button></div>`);
+  c.insertAdjacentHTML("afterend",`<div class="hmleg" id="hmLeg" aria-hidden="true"><span class="sw">${t("hmLess")} <i class="cal hm" style="display:inline-block"></i></span></div><p class="muted hmempty hide" id="hmEmpty"></p>`);
+  $("hmPrev").onclick=()=>{const d=new Date(+calM.slice(0,4),+calM.slice(5)-2,15);calM=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");renderHeatmap()};
+  $("hmNext").onclick=()=>{const d=new Date(+calM.slice(0,4),+calM.slice(5),15);calM=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");renderHeatmap()}}
+ $("hmLeg").innerHTML=`<span class="sw">${t("hmLess")} <i class="lg0"></i><i class="lg1"></i><i class="lg2"></i><i class="lg3"></i> ${t("hmMore")}</span><span class="sw"><i style="border:1.5px dashed var(--line)"></i> ${t("hmNone")}</span><span class="sw"><i style="width:8px;height:8px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink)"></i> ${t("hmBleed")}</span>`;
+ $("hmM").textContent=mName;$("hmPrev").disabled=calM<=minM;$("hmNext").disabled=calM>=now.slice(0,7);
+ c.className="cal hm";let h=["S","M","T","W","T","F","S"].map(w=>`<div class="wd">${w}</div>`).join("")+'<div class="pad"></div>'.repeat(first),n=0;
+ for(let d=1;d<=nd;d++){const k=calM+"-"+String(d).padStart(2,"0"),e=S.e[k],fu=k>now;let cl="nl",lab="not logged";
+  if(e){n++;const Lv=load_(e);cl=Lv>=14?"hm3":Lv>=8?"hm2":Lv>0?"hm1":"hm0";lab=["no symptoms","lighter day","moderate day","heavier day"][+cl[2]]}
+  if(e&&isBleed(e))cl+=" bl";h+=`<div class="d ${cl}${k===now?" td":""}${fu?" fu":""}" title="${k}: ${lab}${e&&isBleed(e)?", bleeding":""}">${d}</div>`}
+ c.innerHTML=h;c.setAttribute("role","img");c.setAttribute("aria-label",t("hmAria",{m:mName,n}));
+ const em=$("hmEmpty");em.textContent=t("hmEmpty");em.classList.toggle("hide",n>0)}
+{const _ri=renderInsights;renderInsights=function(){const r=_ri.apply(this,arguments);try{renderHeatmap()}catch(e){console.error(e)}return r}}
 
 askPersist();
 boot();
