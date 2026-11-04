@@ -306,6 +306,16 @@ nav button{min-height:58px;padding:7px 0 8px}
 nav button.on span{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
 </style>
 
+<style id="v27-empty">
+.emptyc{text-align:center;padding:18px 16px!important}
+.emptyc h2{font-family:Fraunces,Georgia,serif;font-size:19px;margin:6px 0 6px;color:var(--ink);line-height:1.3}
+.emptyc .dots{display:flex;justify-content:center;gap:7px;margin:10px 0 4px}
+.emptyc .dots i{width:22px;height:22px;border-radius:50%;border:2px dashed var(--line);display:inline-block}
+.emptyc .dots i.f{background:#e39a86;border:2px solid #b5644f}
+.emptyc .pn{font-weight:800;color:var(--ink);margin:4px 0 12px}
+html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
+</style>
+
 </head>
 <body>
 <div id="toast" class="saved"></div>
@@ -1301,6 +1311,15 @@ THM_MQ.addEventListener&&THM_MQ.addEventListener("change",applyTheme);
 {const st=$("v-settings"),h=st&&st.querySelector("h1");if(h){const anchor=$("expCsv")&&$("expCsv").closest(".card");(anchor||h).insertAdjacentHTML("afterend",`<div class="card" id="thmCard"><h2 class="h3">${t("thmT")}</h2><div class="thm" role="group" aria-label="${t("thmT")}">${["auto","light","dark"].map(k=>`<button data-th="${k}" aria-pressed="false">${t("thm"+k[0].toUpperCase()+k.slice(1))}</button>`).join("")}</div><p class="muted" style="margin:8px 0 0">${t("thmSub")}</p></div>`);
  $("thmCard").onclick=ev=>{const b=ev.target.closest("button[data-th]");if(!b)return;try{localStorage.setItem("periTheme",b.dataset.th)}catch(e){}applyTheme()}}}
 applyTheme();
+
+// v27: friendly empty states with progress toward the first patterns
+Object.assign(I18N.en,{emT:"Log 7 days to see your first patterns",emSub:"Each check-in takes about 30 seconds. Your charts and calendar fill in as you go.",emN:"{x} of 7 days",emGo:"Do today's check-in",
+ logFew:"Your top symptoms show up here after a few check-ins.",patWait:"Patterns show up after about 2 weeks of check-ins. Keep going!",
+ noPeriod:"Nothing logged in this period yet. A quick check-in today starts it off.",noMonth:"No check-ins for this month yet. Your summary builds itself as you log."});
+function renderEmpty(){const v=$("v-insights");if(!v)return;const o=$("emptyCard");if(o)o.remove();const x=Object.keys(S.e).filter(k=>S.e[k]).length;if(x>=7)return;
+ const h=v.querySelector("h1")||v.firstElementChild;h.insertAdjacentHTML("afterend",`<div class="card emptyc" id="emptyCard" role="region" aria-label="${esc(t("emT"))}"><h2>${t("emT")}</h2><p class="muted" style="margin:0">${t("emSub")}</p><div class="dots" aria-hidden="true">${Array.from({length:7},(_,i)=>`<i class="${i<x?"f":""}"></i>`).join("")}</div><p class="pn">${t("emN",{x})}</p>${S.e[today()]?"":`<button class="btn block" id="emGo">${t("emGo")}</button>`}</div>`);
+ const g=$("emGo");if(g)g.onclick=()=>{cur=today();show("today")};}
+{const _riE=renderInsights;renderInsights=function(){const r=_riE.apply(this,arguments);try{renderEmpty()}catch(e){console.error(e)}return r}}
 
 askPersist();
 boot();
