@@ -836,6 +836,7 @@ function renderLetter(){
  const pats=correlations(0,ds).slice(0,3);
  const lAll=avg(E.map(load_)),top3=freq.slice(0,3),pf=per.filter(p=>p.full),ch=pf.length>1?r1(pf[pf.length-1].load-pf[0].load):null;
  const cn=cntStats(E),mcL=(S.meds||[]).map(x=>[x,E.filter(e=>(e.meds||[]).includes(x)).length]).filter(x=>x[1]);
+ let hwG="";{const Hh=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1);if(Hh.length){const ww=hrtWork(Hh[Hh.length-1]);if(ww.ok)hwG=`<p>${t("L_hw",{x:esc(Hh[Hh.length-1].x),b:r1(ww.lb),a:r1(ww.la),hb:ww.hb==null?"–":r1(ww.hb),ha:ww.ha==null?"–":r1(ww.ha)})}</p>`}}
  const H2=k=>`<h2 class="lh">${t(k)}</h2>`,kv=(k,v)=>`<tr><th scope="row">${t(k)}</th><td>${v}</td></tr>`;
  $("sumBody").innerHTML=`<div class="letter lv2">
  <table class="lhead">${kv("L_hPat",me?esc(me):"–")}${kv("L_hDr",dr?esc(dr):"–")}${kv("L_hPer",`${df(ds[0])} – ${df(ds[ds.length-1])} (${t("L_hDays",{n:ds.length})})`)}${kv("L_hMade",df(today()))}</table>
@@ -843,7 +844,7 @@ function renderLetter(){
  <p>${dr?t("L_dear",{d:esc(dr)}):t("L_dearNo")}</p>
  <p>${t("L_intro",{n:ds.length,a:df(ds[0]),b:df(ds[ds.length-1])})}</p>
  ${H2("L_sGlance")}
- <table class="sum lkv">${kv("L_gDays",ds.length)}${kv("L_gTop",top3.map(([k,c])=>`${SN(k)} (${Math.round(c/ds.length*100)}%)`).join(", ")||"–")}${kv("L_gScore",`${r1(lAll)} / 54`)}${ch==null?"":kv("L_gChg",t("L_gChgV",{a:esc(pf[0].lab),b:esc(pf[pf.length-1].lab),c:(ch>0?"+":"")+ch}))}</table>
+ <table class="sum lkv">${kv("L_gDays",ds.length)}${kv("L_gTop",top3.map(([k,c])=>`${SN(k)} (${Math.round(c/ds.length*100)}%)`).join(", ")||"–")}${kv("L_gScore",`${r1(lAll)} / 54`)}${ch==null?"":kv("L_gChg",t("L_gChgV",{a:esc(pf[0].lab),b:esc(pf[pf.length-1].lab),c:(ch>0?"+":"")+ch}))}</table>${hwG}
  ${H2("L_sSym")}
  <p style="margin-bottom:4px">${t("L_freq")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${freq.map(([k,c,md])=>`<li>${t("L_item",{s:SN(k),p:Math.round(c/ds.length*100),sev:L().sev[md]})}</li>`).join("")}</ul>
  <p style="margin-bottom:2px">${t("L_chart")}</p>${svg}
@@ -973,7 +974,7 @@ Object.assign(I18N.en,{moveT:"Movement today",exNone:"None",exWalk:"Walk",exStre
 rtT:"Gentle routines",rtNote:"Go at your own pace and stop if anything hurts or feels wrong. If you have a health condition or are new to exercise, check with your doctor first. Educational, not medical advice.",rtDone:"I did this today",rtLogged:"Added to today's movement",
 hfNow:"Hot flash now? Breathe with me",brT:"Slow breathing",brIn:"Breathe in",brOut:"Breathe out",brLog:"Also add 1 to today's hot-flash count",brStart:"Start (2 min)",brStop:"Stop",brDone:"Done. Well done for pausing.",brSub:"In for 4, out for 6. Shoulders soft. About 2 minutes.",brLeft:"{s}s left",brLogged:"Hot flash added to today",
 hrtT:"My treatment",hrtJump:"Started or changed treatment? Log it",hrtEdit:"Edit",hrtSaveE:"Save changes",hrtCancel:"Cancel",hrtSub:"Log when you start something new (e.g. HRT, a supplement, a prescription). The card below compares 4 weeks before and after.",hrtStart:"Start date",hrtType:"What (e.g. estradiol patch)",hrtDose:"Dose (optional)",hrtAdd:"Add treatment",hrtNone:"No treatments logged yet.",hrtDel:"Remove this treatment?",hrtNeedType:"Please write what the treatment is",
-hwT:"Is it working?",hwSub:"4 weeks before vs the first 4 weeks after you started {x} ({d}).",hwNeed:"Not enough data yet. This needs at least 7 logged days in the 4 weeks before and 7 in the 4 weeks after {x} ({d}). So far: {b} before, {a} after.",hwNo:"Log a treatment in “My treatment” above to see a before/after comparison here.",hwCol:"",hwBefore:"Before",hwAfter:"After",hwLoad:"Overall symptom load",hwHF:"Hot flashes a day",hwSleep:"Sleep trouble (0–3)",hwMood:"Low mood (0–3)",hwNote:"This is a simple before/after average, not proof that the treatment caused the change. Many things shift over time. Discuss it with your doctor before changing anything.",
+hwT:"Before and after",hwSub:"4 weeks before vs the first 4 weeks after you started {x} ({d}).",hwNeed:"Not enough data yet. This needs at least 7 logged days in the 4 weeks before and 7 in the 4 weeks after {x} ({d}). So far: {b} before, {a} after.",hwNo:"Log a treatment in “My treatment” above to see a before/after comparison here.",hwCol:"",hwBefore:"Before",hwAfter:"After",hwLoad:"Overall symptom load",hwHF:"Hot flashes a day",hwSleep:"Sleep trouble (0–3)",hwMood:"Low mood (0–3)",hwNote:"It shows averages, not cause. It can't tell you whether a treatment works. Many things shift over time. Discuss it with your doctor before changing anything.",
 mrsT:"Monthly self-check (MRS)",mrsSub:"The Menopause Rating Scale: 11 questions, about 2 minutes, once a month. A self-check to track change, not a diagnosis.",mrsGo:"Take this month's self-check",mrsAgain:"Retake this month's check",mrsDue:"This month's check is not done yet.",mrsDoneM:"Done this month: score {s} of 44.",mrsQ:"Over the past few weeks, how much has each of these bothered you?",mrsSave:"Save self-check",mrsNeed:"Please answer all 11 questions",mrsSaved:"Self-check saved",
 mrsLv:["None","Mild","Moderate","Severe","Very severe"],mrsItems:["Hot flushes, sweating","Heart discomfort (racing, skipping, tightness)","Sleep problems","Depressive mood (down, sad, close to tears)","Irritability (nervous, aggressive)","Anxiety (restless, panicky)","Physical and mental exhaustion (less able to do things, poor memory, concentration)","Sexual problems (less desire, activity or satisfaction)","Bladder problems (passing urine, leaking)","Vaginal dryness (dryness, burning, pain with sex)","Joint and muscle discomfort"],
 mrsTot:"Total",mrsSom:"Body",mrsPsy:"Mood & mind",mrsUro:"Bladder & vaginal",mrsTrend:"Score over time (lower = fewer complaints)",mrsNoData:"No self-checks yet.",mrsNote:"Self-check only, not a diagnosis. Scores go from 0 to 44. Share changes with your doctor.",
@@ -984,7 +985,7 @@ Object.assign(I18N.he,{moveT:"תנועה היום",exNone:"בלי",exWalk:"הל�
 rtT:"שגרות עדינות",rtNote:"בקצב שלך, ועצרי אם משהו כואב או מרגיש לא נכון. אם יש לך מצב רפואי או שאת חדשה בפעילות גופנית, התייעצי קודם עם הרופא/ה. מידע כללי, לא ייעוץ רפואי.",rtDone:"עשיתי את זה היום",rtLogged:"נוסף לתנועה של היום",
 hfNow:"גל חום עכשיו? בואי ננשום",brT:"נשימה איטית",brIn:"שאיפה",brOut:"נשיפה",brLog:"להוסיף גם 1 לספירת גלי החום של היום",brStart:"התחלה (2 דק׳)",brStop:"עצירה",brDone:"סיימת. כל הכבוד שעצרת לרגע.",brSub:"שאיפה ל-4, נשיפה ל-6. כתפיים רפויות. בערך 2 דקות.",brLeft:"נותרו {s} שנ׳",brLogged:"גל חום נוסף להיום",
 hrtT:"הטיפול שלי",hrtJump:"התחלת או שינית טיפול? רשמי כאן",hrtEdit:"עריכה",hrtSaveE:"שמירת שינויים",hrtCancel:"ביטול",hrtSub:"רשמי מתי התחלת משהו חדש (למשל טיפול הורמונלי, תוסף, מרשם). הכרטיס למטה משווה 4 שבועות לפני ואחרי.",hrtStart:"תאריך התחלה",hrtType:"מה (למשל מדבקת אסטרדיול)",hrtDose:"מינון (לא חובה)",hrtAdd:"הוספת טיפול",hrtNone:"עדיין לא נרשמו טיפולים.",hrtDel:"למחוק את הטיפול הזה?",hrtNeedType:"נא לכתוב מהו הטיפול",
-hwT:"האם זה עוזר?",hwSub:"4 שבועות לפני מול 4 השבועות הראשונים אחרי שהתחלת {x} ({d}).",hwNeed:"עדיין אין מספיק נתונים. צריך לפחות 7 ימים רשומים ב-4 השבועות שלפני ו-7 ב-4 השבועות שאחרי {x} ({d}). עד עכשיו: {b} לפני, {a} אחרי.",hwNo:"רשמי טיפול ב„הטיפול שלי” למעלה כדי לראות כאן השוואה של לפני ואחרי.",hwCol:"",hwBefore:"לפני",hwAfter:"אחרי",hwLoad:"עומס תסמינים כללי",hwHF:"גלי חום ביום",hwSleep:"קשיי שינה (0–3)",hwMood:"מצב רוח ירוד (0–3)",hwNote:"זו השוואת ממוצעים פשוטה של לפני ואחרי, לא הוכחה שהטיפול גרם לשינוי. הרבה דברים משתנים עם הזמן. שוחחי עם הרופא/ה לפני שמשנים משהו.",
+hwT:"לפני ואחרי",hwSub:"4 שבועות לפני מול 4 השבועות הראשונים אחרי שהתחלת {x} ({d}).",hwNeed:"עדיין אין מספיק נתונים. צריך לפחות 7 ימים רשומים ב-4 השבועות שלפני ו-7 ב-4 השבועות שאחרי {x} ({d}). עד עכשיו: {b} לפני, {a} אחרי.",hwNo:"רשמי טיפול ב„הטיפול שלי” למעלה כדי לראות כאן השוואה של לפני ואחרי.",hwCol:"",hwBefore:"לפני",hwAfter:"אחרי",hwLoad:"עומס תסמינים כללי",hwHF:"גלי חום ביום",hwSleep:"קשיי שינה (0–3)",hwMood:"מצב רוח ירוד (0–3)",hwNote:"מציג ממוצעים, לא סיבה. זה לא יכול לומר אם טיפול עוזר. הרבה דברים משתנים עם הזמן. שוחחי עם הרופא/ה לפני שמשנים משהו.",
 mrsT:"בדיקה עצמית חודשית (MRS)",mrsSub:"סולם דירוג גיל המעבר: 11 שאלות, כ-2 דקות, פעם בחודש. בדיקה עצמית למעקב אחרי שינוי, לא אבחנה.",mrsGo:"לבדיקה העצמית של החודש",mrsAgain:"לעשות שוב את בדיקת החודש",mrsDue:"הבדיקה של החודש עוד לא נעשתה.",mrsDoneM:"נעשתה החודש: ציון {s} מתוך 44.",mrsQ:"בשבועות האחרונים, כמה הפריע לך כל אחד מאלה?",mrsSave:"שמירת הבדיקה",mrsNeed:"נא לענות על כל 11 השאלות",mrsSaved:"הבדיקה נשמרה",
 mrsLv:["בכלל לא","קל","בינוני","חמור","חמור מאוד"],mrsItems:["גלי חום, הזעה","אי נוחות בלב (דופק מהיר, דילוגים, לחץ)","בעיות שינה","מצב רוח דיכאוני (ירוד, עצוב, על סף בכי)","עצבנות (מתח, תוקפנות)","חרדה (חוסר מנוחה, בהלה)","תשישות גופנית ונפשית (פחות כוח, זיכרון וריכוז חלשים)","בעיות מיניות (פחות חשק, פעילות או סיפוק)","בעיות בשלפוחית (במתן שתן, דליפה)","יובש בנרתיק (יובש, צריבה, כאב ביחסים)","אי נוחות במפרקים ובשרירים"],
 mrsTot:"סה״כ",mrsSom:"גוף",mrsPsy:"מצב רוח ונפש",mrsUro:"שלפוחית ונרתיק",mrsTrend:"הציון לאורך זמן (נמוך יותר = פחות תלונות)",mrsNoData:"עדיין אין בדיקות עצמיות.",mrsNote:"בדיקה עצמית בלבד, לא אבחנה. הציון בין 0 ל-44. שתפי שינויים עם הרופא/ה.",
@@ -1013,7 +1014,7 @@ const restDay=e=>!!e&&!moved(e);
 (function(){const ins=(sel,pos,html)=>document.querySelector(sel).insertAdjacentHTML(pos,html);
  ins("#cntRow","afterend",`<button class="btn block hfnow" id="hfNow" data-t="hfNow"></button>`);
  $("cntRow").closest(".card").insertAdjacentHTML("afterend",`<button class="chip" id="hrtJump" style="display:block;margin:0 auto 12px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="7.5" rx="3.8" transform="rotate(-30 12 12)"/><path d="M10 8.3l4 7.2"/></svg> <span data-t="hrtJump"></span></button><div class="card"><h3 data-t="moveT"></h3><div class="chips" id="exT"></div><div id="exMW" style="margin-top:8px"><small class="muted" data-t="exMin"></small><div class="chips" id="exM" style="margin-top:4px"></div></div><button class="btn ghost block" id="rtBtn" data-t="rtBtn" style="padding:8px;margin-top:6px"></button></div>`);
- $("corr").closest(".card").insertAdjacentHTML("afterend",`<div class="card" id="hrtCard"><h3 data-t="hrtT"></h3><p class="muted" style="margin-top:0" data-t="hrtSub"></p><div id="hrtList"></div><label class="muted" for="hrtD" data-t="hrtStart"></label><input type="date" id="hrtD" min="1990-01-01"><input type="text" id="hrtX" data-p="hrtType" style="margin-top:6px" maxlength="80"><input type="text" id="hrtDo" data-p="hrtDose" style="margin-top:6px" maxlength="40"><p id="hrtMsg" role="alert" style="color:#9c4a36;margin:6px 0 0;font-size:13.5px"></p><div style="display:flex;gap:6px"><button class="btn alt block" id="hrtAdd" data-t="hrtAdd"></button><button class="btn ghost hide" id="hrtCancel" data-t="hrtCancel"></button></div></div><div class="card"><h3 data-t="hwT"></h3><div id="hwBox"></div></div><div class="card"><h3 data-t="mvT"></h3><div id="mvBox"></div></div><div class="card"><h3 data-t="mrsT"></h3><p class="muted" style="margin-top:0" data-t="mrsSub"></p><div id="mrsBox"></div><button class="btn block" id="mrsBtn"></button><p class="muted" data-t="mrsNote"></p></div>`);
+ $("corr").closest(".card").insertAdjacentHTML("afterend",`<div class="card" id="hrtCard"><h3 data-t="hrtT"></h3><p class="muted" style="margin-top:0" data-t="hrtSub"></p><div id="hrtList"></div><label class="muted" for="hrtD" data-t="hrtStart"></label><input type="date" id="hrtD" min="1990-01-01"><input type="text" id="hrtX" data-p="hrtType" style="margin-top:6px" maxlength="80"><input type="text" id="hrtDo" data-p="hrtDose" style="margin-top:6px" maxlength="40"><p id="hrtMsg" role="alert" style="color:#9c4a36;margin:6px 0 0;font-size:13.5px"></p><div style="display:flex;gap:6px"><button class="btn alt block" id="hrtAdd" data-t="hrtAdd"></button><button class="btn ghost hide" id="hrtCancel" data-t="hrtCancel"></button></div></div><div class="card" id="hwCard"><h3 data-t="hwT"></h3><div id="hwBox"></div></div><div class="card"><h3 data-t="mvT"></h3><div id="mvBox"></div></div><div class="card"><h3 data-t="mrsT"></h3><p class="muted" style="margin-top:0" data-t="mrsSub"></p><div id="mrsBox"></div><button class="btn block" id="mrsBtn"></button><p class="muted" data-t="mrsNote"></p></div>`);
  document.body.insertAdjacentHTML("beforeend",`<div id="sheet" class="modal hide"><div class="box sheet"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><h2 id="shT" style="margin:0"></h2><button id="shX" aria-label="Close" style="border:0;background:none;font-size:24px;color:var(--mute);padding:0 4px;line-height:1">×</button></div><div id="shB"></div></div></div>`);
 })();
 function openSheet(title,html){$("shT").textContent=title;$("shB").innerHTML=html;$("sheet").classList.remove("hide")}
@@ -1024,7 +1025,16 @@ function renderMove(){const e=S.e[cur]||{},x=e.ex||{};
  $("exT").innerHTML=EXK.map(k=>`<button class="chip ${x.t===k?"on":""}" data-k="${k}">${EXN(k)}</button>`).join("");
  $("exMW").classList.toggle("hide",!x.t||x.t==="none");
  $("exM").innerHTML=EXMIN.map(m=>`<button class="chip ${x.m===m?"on":""}" data-m="${m}">${m}</button>`).join("")}
-const _rToday=renderToday;renderToday=function(){_rToday();renderMove()};
+const _rToday=renderToday;renderToday=function(){_rToday();renderMove();renderHwNudge()};
+function renderHwNudge(){const v=$("v-today");if(!v)return;v.querySelectorAll(".hwnudge").forEach(x=>x.remove());
+ const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),h=H[H.length-1];if(!h||!S.onb)return;
+ const w=hrtWork(h),nm=esc(h.x),a=w.a.length,ready=w.ok;
+ const msg=ready?t("hwNudgeReady",{x:nm}):t("hwNudge",{a:Math.min(a,7),x:nm});
+ const anchor=$("sumCard")||$("prog")||v.querySelector(".datebar")||v.querySelector("h1");
+ const html=`<div class="card hwnudge" role="status"><p style="margin:0 0 8px"><b>${t("hwT")}</b> · ${msg}</p>${ready?`<button type="button" class="btn alt block" id="hwNudgeGo">${t("hrtJump")}</button>`:""}<p class="muted" style="margin:8px 0 0;font-size:12px">${t("hwNote")}</p></div>`;
+ if(anchor)anchor.insertAdjacentHTML("afterend",html);else v.insertAdjacentHTML("afterbegin",html);
+ const go=$("hwNudgeGo");if(go)go.onclick=()=>{show("insights");setTimeout(()=>{const c=$("hwBox");if(c)c.scrollIntoView({behavior:"smooth",block:"center"})},80)}}
+
 $("exT").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur),k=b.dataset.k;e.ex=e.ex&&e.ex.t===k?undefined:{t:k,m:k==="none"?0:(e.ex&&e.ex.m)||null};if(!e.ex)delete e.ex;persist();renderToday()};
 $("exM").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;const e=entry(cur);if(!e.ex)return;e.ex.m=e.ex.m===+b.dataset.m?null:+b.dataset.m;persist();renderToday()};
 $("rtBtn").onclick=()=>{const R=RT[LANG]||RT.en;openSheet(t("rtT"),`<div class="disc" style="font-size:13px">${t("rtNote")}</div>`+R.map((r,i)=>`<h4>${r[0]} <span class="muted">· ${r[1]}</span></h4><ol>${r[2].map(s=>`<li>${s}</li>`).join("")}</ol><button class="btn alt block rtDo" data-i="${i}" style="padding:8px">${t("rtDone")}</button>`).join(""))};
@@ -1079,8 +1089,14 @@ function mvStats(ds){const M=ds.filter(d=>moved(S.e[d])).map(d=>S.e[d]),N=ds.fil
 const _rIns=renderInsights;renderInsights=function(){_rIns();renderHrt();if(!hrtEd)$("hrtAdd").textContent=t("hrtAdd");
  const H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),h=H[H.length-1];
  if(!h)$("hwBox").innerHTML=`<p class="muted">${t("hwNo")}</p>`;else{const w=hrtWork(h),nm=esc(h.x),dd=fmt(h.d,{day:"numeric",month:"short"});
-  $("hwBox").innerHTML=w.ok?`<p class="muted" style="margin-top:0">${t("hwSub",{x:nm,d:dd})}</p>`+cmpT(t("hwBefore")+` (${w.b.length})`,t("hwAfter")+` (${w.a.length})`,[[t("hwLoad"),w.lb,w.la],[t("hwHF"),w.hb,w.ha],[t("hwSleep"),w.sb,w.sa],[t("hwMood"),w.mb,w.ma]])+`<p class="muted" style="font-size:12px">${t("hwNote")}</p>`
-   :`<p class="muted">${t("hwNeed",{x:nm,d:dd,b:w.b.length,a:w.a.length})}</p>`}
+  if(!w.ok)$("hwBox").innerHTML=`<p class="muted">${t("hwNeed",{x:nm,d:dd,b:w.b.length,a:w.a.length})}</p>`;
+  else if(hasAccess())$("hwBox").innerHTML=`<p class="muted" style="margin-top:0">${t("hwSub",{x:nm,d:dd})}</p>`+cmpT(t("hwBefore")+` (${w.b.length})`,t("hwAfter")+` (${w.a.length})`,[[t("hwLoad"),w.lb,w.la],[t("hwHF"),w.hb,w.ha],[t("hwSleep"),w.sb,w.sa],[t("hwMood"),w.mb,w.ma]])+`<p class="muted" style="font-size:12px">${t("hwNote")}</p>`;
+  else{ /* Free teaser: day counts only; placeholder cells so real averages never enter the DOM (PT-002) */
+   const c1=t("hwBefore")+` (${w.b.length})`,c2=t("hwAfter")+` (${w.a.length})`;
+   const rows=[[t("hwLoad"),"••","••"],[t("hwHF"),"••","••"],[t("hwSleep"),"••","••"],[t("hwMood"),"••","••"]];
+   const tbl=`<table class="cmp"><tr><th></th><th>${c1}</th><th>${c2}</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</table>`;
+   $("hwBox").innerHTML=`<p class="muted" style="margin-top:0">${t("hwSub",{x:nm,d:dd})}</p><p class="muted" style="margin:0 0 8px">${t("hwTeaser")}</p><div class="hwLock" role="group" aria-label="${esc(t("hwT"))}"><div class="hwBlur" aria-hidden="true">${tbl}</div><button type="button" class="btn block hwUnlock">${t("hwUnlock")}</button></div><p class="muted" style="font-size:12px">${t("hwNote")}</p>`;
+   $("hwBox").querySelector(".hwUnlock").onclick=openUp}}
  const mv=mvStats(days(90).filter(d=>S.e[d]));
  $("mvBox").innerHTML=mv.ok?`<p class="muted" style="margin-top:0">${t("mvSub",{m:mv.M.length,n:mv.N.length})}</p>`+cmpT(t("mvMove"),t("mvRest"),mv.rows)+`<p class="muted" style="font-size:12px">${t("mvNote")}</p>`:`<p class="muted">${t("mvNeed",{m:mv.M.length,n:mv.N.length})}</p>`;
  const M=mrsList(),last=M[M.length-1],thisM=last&&last.d.slice(0,7)===today().slice(0,7);
@@ -1097,10 +1113,12 @@ function v6Sum(E,ds){const mv=v6Move(E),mo0=ds[0]?ds[0].slice(0,7):"",H=(S.hrt||
 function v6Let(E,ds){const mv=v6Move(E),H=(S.hrt||[]).slice().sort((a,b)=>a.d<b.d?-1:1),df=d=>new Date(d+"T12:00:00").toLocaleDateString(t("L_dateFmt"),{day:"numeric",month:"long",year:"numeric"});
  const Mr=mrsList().filter(m=>m.d>=ds[0]);let o="";
  if(mv.M.length)o+=`<p>${t("L_move",{m:mv.M.length,n:E.length,a:mv.a})}</p>`;
- if(H.length){o+=`<p style="margin-bottom:4px">${t("L_hrt")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${H.map(h=>`<li>${t("L_hrtItem",{x:esc(h.x),dose:h.dose?" ("+esc(h.dose)+")":"",d:df(h.d)})}</li>`).join("")}</ul>`;
-  const w=hrtWork(H[H.length-1]);if(w.ok)o+=`<p>${t("L_hw",{x:esc(H[H.length-1].x),b:r1(w.lb),a:r1(w.la),hb:w.hb==null?"–":r1(w.hb),ha:w.ha==null?"–":r1(w.ha)})}</p>`}
+ if(H.length){o+=`<p style="margin-bottom:4px">${t("L_hrt")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${H.map(h=>`<li>${t("L_hrtItem",{x:esc(h.x),dose:h.dose?" ("+esc(h.dose)+")":"",d:df(h.d)})}</li>`).join("")}</ul>`} /* L_hw lives in At a glance */
  if(Mr.length)o+=`<p style="margin-bottom:4px">${t("L_mrs")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${Mr.map(m=>{const s=mrsSc(m.a);return`<li>${t("sumMrsL",{d:df(m.d),s:s.s,a:s.g[0],b:s.g[1],c:s.g[2]})}</li>`}).join("")}</ul>`;
  return o}
+
+Object.assign(I18N.en,{hwUnlock:"Unlock your doctor letter",hwTeaser:"Your before and after is ready. Plus shows the numbers on screen and in your doctor letter.",hwNudge:"Before and after: {a} of 7 days logged after starting {x}",hwNudgeReady:"Before and after: enough days logged after starting {x}. Open Insights to see the comparison.",hwGlance:"Before vs after starting {x}"});
+Object.assign(I18N.he,{hwUnlock:"לפתיחת מכתב הרופא",hwTeaser:"ההשוואה של לפני ואחרי מוכנה. ב-Plus רואים את המספרים במסך ובמכתב לרופא.",hwNudge:"לפני ואחרי: {a} מתוך 7 ימים אחרי תחילת {x}",hwNudgeReady:"לפני ואחרי: יש מספיק ימים אחרי תחילת {x}. פתחי תובנות לראות את ההשוואה.",hwGlance:"לפני מול אחרי תחילת {x}"});
 
 // ---------- v14: Prime Traker Free + Plus.
 // Core App is free, no payment card: daily check-ins + the last 30 days of history. Plus: patterns/insights, doctor summary, full history + export.
@@ -1148,8 +1166,8 @@ function isPlus(){if(!S.plus)return false;if(!LICENSE_SERVER_ENABLED)return true
 function hasAccess(){return !PAYWALL_ENABLED||isPlus()||inTrial()}
 function histFloor(){return addD(seenDay(),-(FREE_HIST-1))}
 Object.assign(I18N.en,{trialChip:"Plus trial: {n} days left",trialChip1:"Plus trial: last day",trialNote:"Your free Plus trial is almost over. Check-ins and your last 30 days stay free. Plus keeps your patterns, doctor summary and full history going.",
- upT:"Your patterns are just starting to show",upSub:"The core App is free and needs no payment card: daily check-ins and your last 30 days of history. We never delete your older days; they're just tucked away until you upgrade. Plus unlocks the rest:",
- upL1:"Patterns, triggers and trends",upL2:"“Is it working?” for your treatment",upL3:"Doctor summary and letter",upL4:"Your full history, plus CSV export",upL5:"Movement insight and MRS trend",
+ upT:"Get your doctor letter",upSub:"The core App is free and needs no payment card: daily check-ins and your last 30 days of history. We never delete your older days; they're just tucked away until you upgrade. Plus unlocks the rest:",
+ upL1:"Print or save your one-page doctor letter",upL2:"Your before and after on a treatment",upL3:"Your full history beyond 30 days",upL4:"Patterns, trends, movement insight and MRS",upL5:"CSV export",
  upM:"{p} / month",upY:"{p} / year",upYs:"{m}/mo, save ~59%",upTry:"Get Plus",upFine:"Billed by Whop. Renews automatically on the plan you choose until you cancel; cancel anytime.",upCode:"I have a code",upLater:"Maybe later",codeT:"Enter your code",codePh:"PRIME-XXXX-XXXX",codeGo:"Unlock",codeBad:"That code doesn’t look right. Check the letters and try again.",codeOk:"Welcome to Plus. Everything is unlocked.",
  plusT:"Prime Traker Plus",plusOn:"Plus is active on this phone. Thank you!",plusDemo:"Demo mode: everything is unlocked.",plusTrial:"You’re on a free Plus trial: {n} days left. No card needed, nothing to cancel.",plusNoStart:"Free plan: check-ins and your last 30 days. Get Plus on Whop, then enter the code you receive.",plusSee:"See Plus",lockedTap:"Part of Plus",
  histLock:"Days older than 30 are safe and kept. Plus shows your full history.",
@@ -1170,7 +1188,7 @@ function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".
 // PT-002: locked views are never rendered; their data containers are emptied (no blur over real data).
 const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt"],"v-summary":["sumBody","sumMonth"]};
 function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el)el.innerHTML=""})}
-const _lockIns=renderInsights;renderInsights=function(){if(!hasAccess()){wipeLocked("v-insights");return}return _lockIns.apply(this,arguments)};
+const _lockIns=renderInsights;renderInsights=function(){if(!hasAccess()){wipeLocked("v-insights");_lockIns.apply(this,arguments);wipeLocked("v-insights"); /* re-wipe paid boxes after render; hrt/hw stay */ return}return _lockIns.apply(this,arguments)};
 const _lockSum=renderSummary;renderSummary=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockSum.apply(this,arguments)};
 setTimeout(()=>licRefresh(false),1500);document.addEventListener("visibilitychange",()=>{if(!document.hidden)licRefresh(false)});
 function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet();renderFaq()}
@@ -1216,10 +1234,13 @@ const _prev=$("prevD").onclick;$("prevD").onclick=e=>{if(!hasAccess()&&addD(cur,
 const _next=$("nextD").onclick;$("nextD").onclick=e=>{_next(e);gateAll()};
 const _al=applyLang;applyLang=function(){_al();if(typeof gateAll==="function"&&$("v-today"))gateAll()};
 document.head.insertAdjacentHTML("beforeend",`<style>
-.lockv .card:not(.upg):not(#helpCard),.lockv .stats,.lockv #tipBox,.lockv #weekTip,.lockv #sumBody,.lockv #sumCtl,.lockv #letCtl,.lockv .tabs2{display:none!important}
+.lockv .card:not(.upg):not(#helpCard):not(#hrtCard):not(#hwCard),.lockv .stats,.lockv #tipBox,.lockv #weekTip,.lockv #sumBody,.lockv #sumCtl,.lockv #letCtl,.lockv .tabs2{display:none!important}
 .upg{background:linear-gradient(160deg,#fff8f2,#fbe7d9);border-color:var(--blush);text-align:center;position:relative;z-index:2}
 .upg h2{margin:6px 0}.upl{list-style:none;padding:0;margin:10px 0;text-align:start}.upl li{display:flex;gap:8px;align-items:center;padding:4px 0;font-size:14.5px}
 .upbuy{display:block;text-decoration:none;text-align:center}.upbuy small{font-weight:600;opacity:.85}
+.hwLock{position:relative}.hwBlur{filter:blur(5px);user-select:none;pointer-events:none;opacity:.72}
+.hwUnlock{margin-top:10px}.hwnudge{border-color:var(--blush);background:linear-gradient(160deg,#fff8f2,#fbe7d9)}
+html[data-theme=dark] .hwnudge{background:linear-gradient(160deg,#241c1a,#1a1412)}
 .trialc{display:block;margin:2px 0 10px;background:#fbe7c8;border-color:var(--ochre);font-weight:700}
 @media print{.lockv #sumBody{display:none}.upg{display:none}}
 </style>`);
