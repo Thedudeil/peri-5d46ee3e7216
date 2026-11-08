@@ -1088,6 +1088,7 @@ $("shB").addEventListener("click",ev=>{const b=ev.target.closest(".mrsq .seg but
 function mrsChart(M){if(M.length<2)return"";const W=300,H=90,mx=44,n=M.length,px=i=>20+i*(W-40)/(n-1),py=v=>10+(1-v/mx)*(H-30);
  return `<svg viewBox="0 0 ${W} ${H}" width="100%" direction="ltr"><polyline fill="none" stroke="#6f8a6e" stroke-width="2.5" points="${M.map((m,i)=>px(i)+","+py(mrsSc(m.a).s)).join(" ")}"/>${M.map((m,i)=>`<circle cx="${px(i)}" cy="${py(mrsSc(m.a).s)}" r="4" fill="#c98b8b"/><text x="${px(i)}" y="${py(mrsSc(m.a).s)-8}" font-size="10" text-anchor="middle" fill="#3c4a3b">${mrsSc(m.a).s}</text><text x="${px(i)}" y="${H-4}" font-size="9" text-anchor="middle" fill="#7a8679">${new Date(m.d+"T12:00:00").toLocaleDateString(LOC(),{month:"short"})}</text>`).join("")}</svg>`}
 // --- insights additions
+function mvTeaser(){return `<table class="cmp"><tr><th></th><th>${t("mvMove")}</th><th>${t("mvRest")}</th></tr>${[t("hwSleep"),t("hwMood"),t("hwHF")].map(label=>`<tr><td>${label}</td><td>••</td><td>••</td></tr>`).join("")}</table>`}
 function mvStats(ds){const M=ds.filter(d=>moved(S.e[d])).map(d=>S.e[d]),N=ds.filter(d=>restDay(S.e[d])).map(d=>S.e[d]);const hf=E=>{const z=E.filter(e=>e.hf!=null);return z.length?avg(z.map(e=>e.hf)):null};
  return{M,N,ok:M.length>=5&&N.length>=5,rows:[[t("hwSleep"),avg(M.map(e=>e.s.sleep||0)),avg(N.map(e=>e.s.sleep||0))],[t("hwMood"),avg(M.map(e=>e.s.mood||0)),avg(N.map(e=>e.s.mood||0))],[t("hwHF"),hf(M),hf(N)]]}}
 const _rIns=renderInsights;renderInsights=function(){_rIns();renderHrt();if(!hrtEd)$("hrtAdd").textContent=t("hrtAdd");
@@ -1101,8 +1102,9 @@ const _rIns=renderInsights;renderInsights=function(){_rIns();renderHrt();if(!hrt
    const tbl=`<table class="cmp"><tr><th></th><th>${c1}</th><th>${c2}</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</table>`;
    $("hwBox").innerHTML=`<p class="muted" style="margin-top:0">${t("hwSub",{x:nm,d:dd})}</p><p class="muted" style="margin:0 0 8px">${t("hwTeaser")}</p><div class="hwLock" role="group" aria-label="${esc(t("hwT"))}"><div class="hwBlur" aria-hidden="true">${tbl}</div><button type="button" class="btn block hwUnlock">${t("hwUnlock")}</button></div><p class="muted" style="font-size:12px">${t("hwNote")}</p>`;
    $("hwBox").querySelector(".hwUnlock").onclick=openUp}}
- const mv=mvStats(days(90).filter(d=>S.e[d]));
+ if(hasAccess()){const mv=mvStats(days(90).filter(d=>S.e[d]));
  $("mvBox").innerHTML=mv.ok?`<p class="muted" style="margin-top:0">${t("mvSub",{m:mv.M.length,n:mv.N.length})}</p>`+cmpT(t("mvMove"),t("mvRest"),mv.rows)+`<p class="muted" style="font-size:12px">${t("mvNote")}</p>`:`<p class="muted">${t("mvNeed",{m:mv.M.length,n:mv.N.length})}</p>`;
+ }else $("mvBox").innerHTML=mvTeaser();
  const M=mrsList(),last=M[M.length-1],thisM=last&&last.d.slice(0,7)===today().slice(0,7);
  $("mrsBox").innerHTML=(M.length?`<p style="margin:0 0 4px">${thisM?t("mrsDoneM",{s:mrsSc(last.a).s}):t("mrsDue")}</p>`+(M.length>1?`<small class="muted">${t("mrsTrend")}</small>`+mrsChart(M.slice(-6)):"")+
   `<table class="cmp" style="margin-top:6px"><tr><th></th><th>${t("mrsTot")}</th><th>${t("mrsSom")}</th><th>${t("mrsPsy")}</th><th>${t("mrsUro")}</th></tr>${M.slice(-3).reverse().map(m=>{const s=mrsSc(m.a);return`<tr><td>${fmt(m.d,{day:"numeric",month:"short"})}</td><td><b>${s.s}</b></td><td>${s.g[0]}</td><td>${s.g[1]}</td><td>${s.g[2]}</td></tr>`}).join("")}</table>`:`<p class="muted">${t("mrsNoData")} ${t("mrsDue")}</p>`);
@@ -1191,7 +1193,7 @@ function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".
  if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
 // PT-002: locked views are never rendered; their data containers are emptied (no blur over real data).
 const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt"],"v-summary":["sumBody","sumMonth"]};
-function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el)el.innerHTML=""})}
+function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el)el.innerHTML=""});if(id==="v-insights"&&$("mvBox"))$("mvBox").innerHTML=mvTeaser()}
 const _lockIns=renderInsights;renderInsights=function(){if(!hasAccess()){wipeLocked("v-insights");_lockIns.apply(this,arguments);wipeLocked("v-insights"); /* re-wipe paid boxes after render; hrt/hw stay */ return}return _lockIns.apply(this,arguments)};
 const _lockSum=renderSummary;renderSummary=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockSum.apply(this,arguments)};
 setTimeout(()=>licRefresh(false),1500);document.addEventListener("visibilitychange",()=>{if(!document.hidden)licRefresh(false)});
