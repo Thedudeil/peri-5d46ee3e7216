@@ -17,6 +17,8 @@ try:
    for sel in ['header .logo','header .btn']:
     assert page.locator(sel).evaluate("e=>getComputedStyle(e).whiteSpace==='nowrap'"),f'{sel} wraps at {width}'
    assert page.evaluate("document.querySelector('header .logo').getBoundingClientRect().right+7<=document.querySelector('header .btn').getBoundingClientRect().left"),f'header collision at {width}'
+   if width>=360:
+    assert page.locator('.accent').first.evaluate("e=>e.getBoundingClientRect().height<=parseFloat(getComputedStyle(e).lineHeight)+1"),f'eyebrow wraps at {width}'
    assert not any('caveat' in u.lower() for u in requests)
    page.close()
   b.close()
