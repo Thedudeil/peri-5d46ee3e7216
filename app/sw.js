@@ -1,4 +1,4 @@
-const C='peri-v34',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
+const C='peri-v35',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('peri-')&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});

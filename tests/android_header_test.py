@@ -13,6 +13,8 @@ try:
    page=b.new_page(viewport={'width':width,'height':915},is_mobile=True,has_touch=True)
    requests=[];page.on('request',lambda r: requests.append(r.url))
    page.goto('http://localhost:8843/');page.evaluate('document.fonts.ready')
+   assert page.evaluate("[...document.querySelectorAll('figure.phone')].every(f=>f.querySelector('img') && f.querySelectorAll('.demo').length===1)"), 'each marketing image must have exactly one page badge'
+   assert page.evaluate("[...document.querySelectorAll('figure.phone')].every(f=>f.querySelector('.demo').getBoundingClientRect().bottom<=f.querySelector('img').getBoundingClientRect().top)"), 'page badge overlaps marketing image'
    assert page.evaluate("document.documentElement.scrollWidth<=innerWidth"),f'overflow at {width}'
    for sel in ['header .logo','header .btn']:
     assert page.locator(sel).evaluate("e=>getComputedStyle(e).whiteSpace==='nowrap'"),f'{sel} wraps at {width}'
