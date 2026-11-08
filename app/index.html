@@ -1156,13 +1156,13 @@ function tokPayload(tok){try{return JSON.parse(new TextDecoder().decode(ub64u(St
 let licVerified={tok:null,ok:false};
 async function tokValid(tok){try{if(!LIC_CONFIG_OK)return false;const p=String(tok).split(".");if(p.length!==2)return false;
  const k=await crypto.subtle.importKey("jwk",LICENSE_PUBKEY,{name:"Ed25519"},false,["verify"]);return await crypto.subtle.verify({name:"Ed25519"},k,ub64u(p[1]),new TextEncoder().encode(p[0]))}catch(e){return false}}
-async function licVerify(){const tok=S.plus&&S.plus.tok;if(!tok){licVerified={tok:null,ok:false};gateAll();return}if(licVerified.tok===tok)return;const ok=await tokValid(tok);if((S.plus&&S.plus.tok)!==tok){gateAll();return}licVerified={tok,ok};gateAll()}
+async function licVerify(){const tok=S.plus&&S.plus.tok;if(!tok){licVerified={tok:null,ok:false};gateAll();return}if(licVerified.tok===tok)return;const ok=await tokValid(tok);if((S.plus&&S.plus.tok)!==tok){gateAll();return}licVerified={tok,ok};gateAll(ok)}
 async function licCall(path,body){const r=await fetch(LICENSE_API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}j.status=r.status;return j}
 async function licActivate(key){if(!LIC_CONFIG_OK)return {error:"config"};const k=String(key||"").trim();const j=await licCall("/activate",{key:k,device:devId()});
  if(j.ok&&await tokValid(j.token)){S.plus={tok:j.token,exp:j.exp,chk:Date.now()};licVerified={tok:j.token,ok:true};persist();return {ok:true}}return j.ok?{error:"bad_sig"}:j}
 // PT-009/PT-041: 401/403 or an invalid replacement token revoke Plus; 429/5xx/offline retain it until expiry.
 async function licRefresh(force){if(!LICENSE_SERVER_ENABLED||!LIC_CONFIG_OK||!S.plus||!S.plus.tok)return;if(!force&&Date.now()-(S.plus.chk||0)<LIC_RECHECK_MS)return;
- try{const token=S.plus.tok,j=await licCall("/refresh",{token});if((S.plus&&S.plus.tok)!==token){gateAll();return}if(j.status===401||j.status===403){S.plus=null;licVerified={tok:null,ok:false}}else if(j.ok){const valid=await tokValid(j.token);if((S.plus&&S.plus.tok)!==token){gateAll();return}if(valid){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now();licVerified={tok:j.token,ok:true}}else{S.plus=null;licVerified={tok:null,ok:false}}} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
+ try{const token=S.plus.tok,j=await licCall("/refresh",{token});if((S.plus&&S.plus.tok)!==token){gateAll();return}if(j.status===401||j.status===403){S.plus=null;licVerified={tok:null,ok:false}}else if(j.ok){const valid=await tokValid(j.token);if((S.plus&&S.plus.tok)!==token){gateAll();return}if(valid){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now();licVerified={tok:j.token,ok:true}}else{S.plus=null;licVerified={tok:null,ok:false}}} persist();gateAll(true)}catch(e){/* offline: keep until token exp */}}
 // PT-011/SEC-012: free this device's slot (server requires this device's token; limited to 3 per 30 days).
 async function licRelease(){if(!S.plus||!S.plus.tok)return;if(!confirm("Remove Plus from this device? You can use your key on another device. Limited to 3 removals per 30 days."))return;
  let j;try{j=await licCall("/release",{token:S.plus.tok})}catch(e){toast("Can’t reach the server. Try again when you’re online.");return}
@@ -1203,23 +1203,38 @@ const _lockLetter=renderLetter;renderLetter=function(){if(!hasAccess()){wipeLock
 const _lockSum=renderSummary;renderSummary=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockSum.apply(this,arguments)};
 setTimeout(()=>licRefresh(false),1500);document.addEventListener("visibilitychange",()=>{if(!document.hidden)licRefresh(false)});
 let accessSnapshot=null,gateBusy=false,accessSyncBusy=false;
-function gateAll(){if(gateBusy)return;gateBusy=true;try{
- accessSnapshot=hasAccess();gateView("v-insights","#cntBox");gateView("v-summary","h1");
+function gateAll(refreshPaid=false){if(gateBusy)return;gateBusy=true;try{
+ const previous=accessSnapshot;accessSnapshot=hasAccess();
+ // Restore all protected views, including hidden previews, after grant/revalidation.
+ if(accessSnapshot&&(refreshPaid||previous===false)){renderInsights();renderSummary()}
+ gateView("v-insights","#cntBox");gateView("v-summary","h1");
  if(!accessSnapshot){if(cur<histFloor()){cur=today();renderToday()}if($("shB").querySelector(".rtDo"))closeSheet()}
  renderTrialChip();renderPlusSet();renderFaq();
  }finally{gateBusy=false}}
 // Same-tab state mutations, clock expiry and returning to a suspended tab all share one gate.
-function entitlementTick(){if(accessSyncBusy||gateBusy)return;accessSyncBusy=true;try{if(hasAccess()!==accessSnapshot)gateAll()}finally{accessSyncBusy=false}}
+function entitlementTick(refreshPaid=false){if(accessSyncBusy||gateBusy)return;accessSyncBusy=true;try{if(refreshPaid||hasAccess()!==accessSnapshot)gateAll(refreshPaid)}finally{accessSyncBusy=false}}
 const _accessPersist=persist;persist=function(){_accessPersist();entitlementTick()};
 if(PAYWALL_ENABLED)setInterval(entitlementTick,1000);
-window.addEventListener("focus",entitlementTick);
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)entitlementTick()});
-window.addEventListener("storage",ev=>{if(ev.storageArea!==localStorage||(ev.key!==KEY&&ev.key!==null))return;
+window.addEventListener("focus",()=>entitlementTick(true));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)entitlementTick(true)});
+let storageRevision=0;
+window.addEventListener("storage",async ev=>{if(ev.storageArea!==localStorage||(ev.key!==KEY&&ev.key!==null))return;
+ const revision=++storageRevision,raw=localStorage.getItem(KEY),previousToken=S.plus&&S.plus.tok;
  const priorTrial=S.t0,priorSeen=S.seen,next=load();
  // Removing the state/license in another tab must not manufacture a fresh trial.
  if(!next.t0)next.t0=priorTrial||addD(today(),-TRIAL_DAYS);
  if(priorSeen&&(!next.seen||priorSeen>next.seen))next.seen=priorSeen;
- S=next;licVerified={tok:null,ok:false};gateAll();renderInsights();gateAll();
+ const token=next.plus&&next.plus.tok;let verified=licVerified;
+ if(!token)verified={tok:null,ok:false};
+ else if(verified.tok!==token||!verified.ok){
+  // Stage an unknown replacement until validation completes. A still-valid current
+  // entitlement remains displayed; explicit removal above is synchronous.
+  const ok=await tokValid(token);
+  if(revision!==storageRevision||localStorage.getItem(KEY)!==raw||(S.plus&&S.plus.tok)!==previousToken)return;
+  verified={tok:token,ok};
+ }
+ // Same immutable, verified token: retain its cache, with no transient false lock.
+ S=next;licVerified=verified;gateAll(true);if(!hasAccess())renderInsights();gateAll();
 });
 $("printBtn").onclick=$("printBtn2").onclick=()=>{gateAll();if(hasAccess())window.print();else openUp()};
 function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn,.histl").forEach(x=>x.remove());if(!PAYWALL_ENABLED)return;
