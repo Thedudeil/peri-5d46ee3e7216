@@ -16,7 +16,7 @@
 <style>
 @font-face{font-family:'Fraunces';font-weight:400 700;font-display:swap;src:url(/fonts/fraunces-latin.woff2) format('woff2')}
 @font-face{font-family:'Nunito';font-weight:400 800;font-display:swap;src:url(/fonts/nunito-latin.woff2) format('woff2')}
-@font-face{font-family:'Caveat';font-weight:400 700;font-display:swap;src:url(/fonts/caveat-latin.woff2) format('woff2')}
+
 :root{--cream:#fbf7f0;--card:#fffaf4;--ink:#3c2f2a;--mute:#5f5550;--terra:#a34e36;--terraD:#8a3f2b;--rose:#f3e2df;--line:#eadfd3}
 *{box-sizing:border-box}html{scroll-behavior:smooth}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--cream);color:var(--ink);font:18px/1.6 'Nunito',-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
@@ -24,14 +24,16 @@ h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.2;margin:0 0 .5em}h1
 p{margin:0 0 1em}a{color:var(--terraD)}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;padding:8px 12px;z-index:99}
-header.top{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--ink);text-decoration:none}.logo img{width:36px;height:36px;border-radius:9px}
+header.top{gap:10px;display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.logo{white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--ink);text-decoration:none}.logo img{width:36px;height:36px;border-radius:9px}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:999px;background:var(--terra);color:#fff;font-weight:800;font-size:18px;text-decoration:none}
 .btn:hover{background:var(--terraD)}.btn:focus-visible,a:focus-visible{outline:3px solid #2b5fab;outline-offset:3px}
+.top .btn{white-space:nowrap;flex-shrink:0}
+@media(max-width:430px){.top .logo{font-size:19px;gap:7px}.top .logo img{width:30px;height:30px}.top .btn.sm{font-size:14px;padding:0 12px}}
 .btn.sm{min-height:44px;padding:0 18px;font-size:16px}
 .note{font-size:16px;color:var(--mute);margin-top:10px}
 section{padding:56px 0}section.alt{background:var(--card);border-block:1px solid var(--line)}
-.accent{font-family:'Caveat',cursive;color:var(--terra);font-size:26px;margin:0 0 4px;display:block}
+.accent{font-family:Nunito,Arial,sans-serif;font-style:italic;color:var(--terra);font-size:26px;margin:0 0 4px;display:block}
 .hero{display:grid;gap:36px;align-items:center;padding:24px 0 48px}
 @media(min-width:860px){.hero{grid-template-columns:1.1fr .9fr}.cols{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}}
 .phone{margin:0 auto;max-width:300px;position:relative}
@@ -54,7 +56,7 @@ footer{padding:36px 0 110px;font-size:16px;color:var(--mute)}footer nav{display:
 @media(max-width:859px){.hero .btn,.cta-band .btn{width:100%}}
 </style></head><body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="wrap"><header class="top"><a class="logo" href="/"><img src="/icon-192.png" alt="" width="36" height="36">Prime Traker</a><a class="btn sm" href="/app/">Open the app</a></header>
+<div class="wrap"><header class="top"><a class="logo" href="/"><img src="/icon-192.png" alt="" width="36" height="36">Prime Traker</a><a class="btn sm" href="/app/">Open app</a></header>
 <p class="back" id="back">Welcome back. Your entries are still on this phone. <a href="/app/">Go to your tracker</a></p></div>
 <main id="main">
 <div class="wrap"><div class="hero">
