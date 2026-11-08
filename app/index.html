@@ -711,7 +711,7 @@ function weekTip(){const wk=Math.floor((new Date(today()+"T12:00:00")-new Date("
  const o=LANG==="he"?2:0;$("weekTip").innerHTML=`<b>${t("weekTipT")} · ${x[o]}</b>${x[o+1]}`}
 
 // ---------- insights
-function renderInsights(){
+function renderInsights(){if(!hasAccess()){wipeLocked("v-insights");return}
  const last30=days(30).filter(d=>S.e[d]);
  const prev30=days(30,addD(today(),-30)).filter(d=>S.e[d]);
  const l30=avg(last30.map(d=>load_(S.e[d]))),p30=avg(prev30.map(d=>load_(S.e[d])));
@@ -739,7 +739,7 @@ function renderInsights(){
 $("topSym").onclick=ev=>{const i=ev.target.closest(".info");if(i)explain(i.dataset.x)};
 let rangeAll=false;document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{rangeAll=b.dataset.r==="0";if(rangeAll){const k=Object.keys(S.e).sort()[0];range=k?Math.min(3650,Math.max(30,Math.round((new Date(today()+"T12:00:00")-new Date(k+"T12:00:00"))/864e5)+1)):30}else range=+b.dataset.r;drawChart()});
 $("chartSym").onchange=drawChart;
-function drawChart(){
+function drawChart(){if(!hasAccess()){wipeLocked("v-insights");return}
  document.querySelectorAll("[data-r]").forEach(b=>{const on=b.dataset.r==="0"?rangeAll:(!rangeAll&&+b.dataset.r===range);b.className="btn "+(on?"":"alt");b.setAttribute("aria-pressed",String(on))});
  const k=$("chartSym").value||"_all",ds=days(range),W=340,H=150,P=24;
  const vals=ds.map(d=>{const e=S.e[d];if(!e)return null;if(k==="_all")return load_(e);if(k==="_st")return stressOf(e);return e.s[k]||0});
@@ -778,7 +778,7 @@ function cycles(only){const ks=only?only.slice().sort():Object.keys(S.e).sort(),
 $("modeSum").onclick=()=>{sumMode="sum";renderSummary()};$("modeLet").onclick=()=>{sumMode="let";renderSummary()};
 $("drName").oninput=e=>{S.dr=e.target.value;persist();renderLetter()};$("myName").oninput=e=>{S.me=e.target.value;persist();renderLetter()};
 $("letRange").onchange=e=>{S.lr=e.target.value;persist();renderLetter()};
-function renderSummary(){
+function renderSummary(){if(!hasAccess()){wipeLocked("v-summary");return}
  $("modeSum").className="btn "+(sumMode==="sum"?"":"alt");$("modeLet").className="btn "+(sumMode==="let"?"":"alt");
  $("sumCtl").classList.toggle("hide",sumMode!=="sum");$("letCtl").classList.toggle("hide",sumMode!=="let");
  if(sumMode==="let"){$("drName").value=S.dr||"";$("myName").value=S.me||"";$("letRange").value=S.lr||"3";renderLetter();return}
@@ -816,7 +816,7 @@ function renderSummary(){
  <p class="muted" style="margin-top:12px;font-size:11px">${t("footer")}</p>`
  :`<p class="muted">${t("noMonth")}</p>`;
 }
-function renderLetter(){
+function renderLetter(){if(!hasAccess()){wipeLocked("v-summary");return}
  const m=+(S.lr||3),all=Object.keys(S.e).sort();
  const from=m?addD(today(),-(m*30)+1):(all[0]||today());
  const ds=all.filter(d=>d>=from&&d<=today()),E=ds.map(d=>S.e[d]);
@@ -1156,13 +1156,13 @@ function tokPayload(tok){try{return JSON.parse(new TextDecoder().decode(ub64u(St
 let licVerified={tok:null,ok:false};
 async function tokValid(tok){try{if(!LIC_CONFIG_OK)return false;const p=String(tok).split(".");if(p.length!==2)return false;
  const k=await crypto.subtle.importKey("jwk",LICENSE_PUBKEY,{name:"Ed25519"},false,["verify"]);return await crypto.subtle.verify({name:"Ed25519"},k,ub64u(p[1]),new TextEncoder().encode(p[0]))}catch(e){return false}}
-async function licVerify(){const tok=S.plus&&S.plus.tok;if(!tok){licVerified={tok:null,ok:false};return}if(licVerified.tok===tok)return;const ok=await tokValid(tok);licVerified={tok,ok};gateAll()}
+async function licVerify(){const tok=S.plus&&S.plus.tok;if(!tok){licVerified={tok:null,ok:false};gateAll();return}if(licVerified.tok===tok)return;const ok=await tokValid(tok);if((S.plus&&S.plus.tok)!==tok){gateAll();return}licVerified={tok,ok};gateAll()}
 async function licCall(path,body){const r=await fetch(LICENSE_API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});let j={};try{j=await r.json()}catch(e){}j.status=r.status;return j}
 async function licActivate(key){if(!LIC_CONFIG_OK)return {error:"config"};const k=String(key||"").trim();const j=await licCall("/activate",{key:k,device:devId()});
  if(j.ok&&await tokValid(j.token)){S.plus={tok:j.token,exp:j.exp,chk:Date.now()};licVerified={tok:j.token,ok:true};persist();return {ok:true}}return j.ok?{error:"bad_sig"}:j}
-// PT-009: only a definitive 401/403 clears Plus; 429/5xx/offline keep the token until it expires.
+// PT-009/PT-041: 401/403 or an invalid replacement token revoke Plus; 429/5xx/offline retain it until expiry.
 async function licRefresh(force){if(!LICENSE_SERVER_ENABLED||!LIC_CONFIG_OK||!S.plus||!S.plus.tok)return;if(!force&&Date.now()-(S.plus.chk||0)<LIC_RECHECK_MS)return;
- try{const j=await licCall("/refresh",{token:S.plus.tok});if(j.ok&&await tokValid(j.token)){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now();licVerified={tok:j.token,ok:true}}else if(j.status===401||j.status===403){S.plus=null;licVerified={tok:null,ok:false}} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
+ try{const token=S.plus.tok,j=await licCall("/refresh",{token});if((S.plus&&S.plus.tok)!==token){gateAll();return}if(j.status===401||j.status===403){S.plus=null;licVerified={tok:null,ok:false}}else if(j.ok){const valid=await tokValid(j.token);if((S.plus&&S.plus.tok)!==token){gateAll();return}if(valid){S.plus.tok=j.token;S.plus.exp=j.exp;S.plus.chk=Date.now();licVerified={tok:j.token,ok:true}}else{S.plus=null;licVerified={tok:null,ok:false}}} persist();gateAll()}catch(e){/* offline: keep until token exp */}}
 // PT-011/SEC-012: free this device's slot (server requires this device's token; limited to 3 per 30 days).
 async function licRelease(){if(!S.plus||!S.plus.tok)return;if(!confirm("Remove Plus from this device? You can use your key on another device. Limited to 3 removals per 30 days."))return;
  let j;try{j=await licCall("/release",{token:S.plus.tok})}catch(e){toast("Can’t reach the server. Try again when you’re online.");return}
@@ -1192,12 +1192,36 @@ function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
 // PT-002: locked views are never rendered; their data containers are emptied (no blur over real data).
-const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt"],"v-summary":["sumBody","sumMonth"]};
-function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el)el.innerHTML=""});if(id==="v-insights"&&$("mvBox"))$("mvBox").innerHTML=mvTeaser()}
+const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt","hmM","hmEmpty"],"v-summary":["sumBody","sumMonth"]};
+// Scrub even hidden views when access changes; never wait for navigation.
+function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el){el.innerHTML="";el.removeAttribute("aria-label")}});if(id==="v-insights"){
+ if($("mvBox"))$("mvBox").innerHTML=mvTeaser();
+ const box=$("hwBox");if(box&&!box.querySelector(".hwLock")){const labels=[t("hwLoad"),t("hwHF"),t("hwSleep"),t("hwMood")];box.innerHTML=`<p class="muted">${t("hwTeaser")}</p><div class="hwLock"><div class="hwBlur" aria-hidden="true"><table class="cmp"><tr><th></th><th>${t("hwBefore")}</th><th>${t("hwAfter")}</th></tr>${labels.map(x=>`<tr><td>${x}</td><td>••</td><td>••</td></tr>`).join("")}</table></div><button class="btn block hwUnlock">${t("hwUnlock")}</button></div>`;box.querySelector(".hwUnlock").onclick=openUp}
+ }}
 const _lockIns=renderInsights;renderInsights=function(){if(!hasAccess()){wipeLocked("v-insights");_lockIns.apply(this,arguments);wipeLocked("v-insights"); /* re-wipe paid boxes after render; hrt/hw stay */ return}return _lockIns.apply(this,arguments)};
+const _lockLetter=renderLetter;renderLetter=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockLetter.apply(this,arguments)};
 const _lockSum=renderSummary;renderSummary=function(){if(!hasAccess()){wipeLocked("v-summary");return}return _lockSum.apply(this,arguments)};
 setTimeout(()=>licRefresh(false),1500);document.addEventListener("visibilitychange",()=>{if(!document.hidden)licRefresh(false)});
-function gateAll(){gateView("v-insights","#cntBox");gateView("v-summary","h1");renderTrialChip();renderPlusSet();renderFaq()}
+let accessSnapshot=null,gateBusy=false,accessSyncBusy=false;
+function gateAll(){if(gateBusy)return;gateBusy=true;try{
+ accessSnapshot=hasAccess();gateView("v-insights","#cntBox");gateView("v-summary","h1");
+ if(!accessSnapshot){if(cur<histFloor()){cur=today();renderToday()}if($("shB").querySelector(".rtDo"))closeSheet()}
+ renderTrialChip();renderPlusSet();renderFaq();
+ }finally{gateBusy=false}}
+// Same-tab state mutations, clock expiry and returning to a suspended tab all share one gate.
+function entitlementTick(){if(accessSyncBusy||gateBusy)return;accessSyncBusy=true;try{if(hasAccess()!==accessSnapshot)gateAll()}finally{accessSyncBusy=false}}
+const _accessPersist=persist;persist=function(){_accessPersist();entitlementTick()};
+if(PAYWALL_ENABLED)setInterval(entitlementTick,1000);
+window.addEventListener("focus",entitlementTick);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)entitlementTick()});
+window.addEventListener("storage",ev=>{if(ev.storageArea!==localStorage||(ev.key!==KEY&&ev.key!==null))return;
+ const priorTrial=S.t0,priorSeen=S.seen,next=load();
+ // Removing the state/license in another tab must not manufacture a fresh trial.
+ if(!next.t0)next.t0=priorTrial||addD(today(),-TRIAL_DAYS);
+ if(priorSeen&&(!next.seen||priorSeen>next.seen))next.seen=priorSeen;
+ S=next;licVerified={tok:null,ok:false};gateAll();renderInsights();gateAll();
+});
+$("printBtn").onclick=$("printBtn2").onclick=()=>{gateAll();if(hasAccess())window.print();else openUp()};
 function renderTrialChip(){const v=$("v-today");if(!v)return;v.querySelectorAll(".trialc,.trialn,.histl").forEach(x=>x.remove());if(!PAYWALL_ENABLED)return;
  const bar=v.querySelector(".datebar");
  if(!isPlus()&&inTrial()){const n=trialLeft();bar.insertAdjacentHTML("beforebegin",`<button class="chip trialc">${n<=1?t("trialChip1"):t("trialChip",{n})}</button>`+(n<=3?`<p class="muted trialn">${t("trialNote")}</p>`:""));v.querySelector(".trialc").onclick=openUp}
@@ -1274,7 +1298,7 @@ function renderBakNote(){const v=$("v-today");if(!v)return;v.querySelectorAll(".
  h1?h1.insertAdjacentHTML("afterend",html):v.insertAdjacentHTML("afterbegin",html);
  $("bakNow").onclick=()=>$("expCsv").click();$("bakLater").onclick=()=>{S.bakSnz=addD(today(),7);persist();renderBakNote()}}
 function renderBakStat(){let p=$("bakStat");if(!p){$("expCsv").insertAdjacentHTML("beforebegin",'<p class="muted" id="bakStat" style="margin:0 0 6px"></p>');p=$("bakStat")}p.textContent=S.lastBak?t("bakLast",{d:fmt(S.lastBak,{day:"numeric",month:"long",year:"numeric"})}):t("bakNone")}
-{const ex=$("expCsv").onclick;$("expCsv").onclick=e=>{ex(e);S.lastBak=today();delete S.bakSnz;persist();renderBakNote();renderBakStat()}}
+{const ex=$("expCsv").onclick;$("expCsv").onclick=e=>{if(!hasAccess()){gateAll();openUp();return}ex(e);S.lastBak=today();delete S.bakSnz;persist();renderBakNote();renderBakStat()}}
 // Backup card first in Settings so it's easy to find
 {const c=$("expCsv").closest(".card"),st=$("v-settings"),h=st&&st.querySelector("h1");if(c&&h)h.insertAdjacentElement("afterend",c)}
 {const _rt=renderToday;renderToday=function(){const r=_rt.apply(this,arguments);renderBakNote();return r}}
@@ -1299,7 +1323,7 @@ function renderProg(){const v=$("v-today");if(!v)return;let p=$("prog");if(!p){c
 // v27: month calendar heatmap with month navigation + legend (replaces the 5-week grid)
 Object.assign(I18N.en,{calT:"Your month at a glance",hmLess:"Lighter",hmMore:"Heavier",hmNone:"Not logged",hmBleed:"Bleeding",hmPrev:"Previous month",hmNext:"Next month",hmEmpty:"No check-ins this month yet.",hmAria:"{m}: {n} days logged"});
 let calM=null;
-function renderHeatmap(){const c=$("cal");if(!c)return;const now=today();if(!calM||calM>now.slice(0,7))calM=now.slice(0,7);
+function renderHeatmap(){if(!hasAccess()){wipeLocked("v-insights");return}const c=$("cal");if(!c)return;const now=today();if(!calM||calM>now.slice(0,7))calM=now.slice(0,7);
  const ks=Object.keys(S.e).sort(),minM=(ks[0]||now).slice(0,7),[y,m]=calM.split("-").map(Number),first=new Date(y,m-1,1).getDay(),nd=new Date(y,m,0).getDate();
  const mName=new Date(y,m-1,15).toLocaleDateString("en-US",{month:"long",year:"numeric"});
  let card=c.closest(".card"),nav=card.querySelector(".hmnav");if(!nav){c.insertAdjacentHTML("beforebegin",`<div class="hmnav"><button id="hmPrev" aria-label="${t("hmPrev")}">‹</button><b id="hmM" aria-live="polite"></b><button id="hmNext" aria-label="${t("hmNext")}">›</button></div>`);
