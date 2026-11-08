@@ -316,6 +316,10 @@ nav button.on span{text-decoration:underline;text-underline-offset:3px;text-deco
 html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
 </style>
 
+<style>
+/* Give the check-in title and streak their own rows on phones. */
+@media(max-width:480px){#v-today>.top{flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:14px}#v-today>.top h1{font-size:clamp(22px,6vw,28px);line-height:1.2;margin:0}#v-today #streakTop{font-size:15px;line-height:1.25;white-space:nowrap}}
+</style>
 </head>
 <body>
 <div id="toast" class="saved"></div>
