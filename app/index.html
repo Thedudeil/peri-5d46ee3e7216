@@ -236,13 +236,13 @@ h3,.h3{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600;color:v
 .cal.hm .wd{background:none!important;border:0!important;aspect-ratio:auto;text-align:center;font-size:11px;font-weight:700;color:var(--mute);padding:0 0 2px}
 .cal.hm .pad{visibility:hidden}
 .cal.hm .d{position:relative;aspect-ratio:1;display:flex;align-items:flex-start;justify-content:flex-start;font-size:11px;font-weight:700;padding:3px 4px;border-radius:8px;color:var(--ink);box-shadow:none}
-.cal.hm .nl{background:transparent;border:1.5px dashed var(--line);color:var(--mute)}
-.cal.hm .hm0{background:#fbeee6;border:1.5px solid #e8cfc0}
-.cal.hm .hm1{background:#f5cdbf;border:1.5px solid #f5cdbf}
-.cal.hm .hm2{background:#e39a86;border:1.5px solid #e39a86;color:#3a251c}
-.cal.hm .hm3{background:#a84a33;border:1.5px solid #a84a33;color:#fff}
-.cal.hm .bl::after{content:"";position:absolute;right:4px;bottom:4px;width:7px;height:7px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink);border:1.5px solid #fff}
-.cal.hm .td{outline:2.5px solid var(--ink);outline-offset:1px}
+.cal.hm .nl,.hmxcell.nl{background:transparent;border:1.5px dashed var(--line);color:var(--mute)}
+.cal.hm .hm0,.hmxcell.hm0{background:#fbeee6;border:1.5px solid #e8cfc0}
+.cal.hm .hm1,.hmxcell.hm1{background:#f5cdbf;border:1.5px solid #f5cdbf}
+.cal.hm .hm2,.hmxcell.hm2{background:#e39a86;border:1.5px solid #e39a86;color:#3a251c}
+.cal.hm .hm3,.hmxcell.hm3{background:#a84a33;border:1.5px solid #a84a33;color:#fff}
+.cal.hm .bl::after,.hmxcell.bl::after{content:"";position:absolute;right:1px;bottom:1px;width:6px;height:6px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink);border:1.5px solid #fff}
+.cal.hm .td,.hmxcol.td .hmxcell{outline:2px solid var(--ink);outline-offset:1px}
 .cal.hm .fu{border-style:dotted}
 .hmleg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:12px;color:var(--mute);font-weight:700}
 .hmleg .sw{display:inline-flex;gap:3px;align-items:center}
@@ -258,6 +258,37 @@ h3,.h3{font-family:Fraunces,Georgia,serif;font-size:18px;font-weight:600;color:v
 .sumc h2{font-family:Fraunces,Georgia,serif;font-size:17px;margin:0 0 6px;color:var(--ink);line-height:1.25}
 .sumc .btn{padding:9px 14px;min-height:44px}
 .sumc .x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:0;background:none;font-size:22px;color:var(--mute);border-radius:50%}
+</style>
+
+<style id="v28-visitprep">
+input[type=date]{border:1.5px solid var(--sageL);border-radius:10px;padding:9px;font:inherit;background:#fffdf9;color:var(--ink);width:100%}
+html[data-theme=dark] input[type=date]{color-scheme:dark}
+.vpq{display:flex;flex-direction:column;gap:8px}
+.vpq .btn{align-self:flex-start;padding:8px 14px;font-size:13.5px}
+.vpq p{margin:0}
+.vprow{display:flex;gap:6px;align-items:center;margin-top:4px}
+.qpick .qedit{display:flex;gap:6px;flex:1}
+.qpick .qedit input{flex:1}
+.qpick .qord{border:0;background:none;color:var(--mute);font-size:15px;padding:0 3px;min-width:28px;min-height:28px}
+.qpick label.qc{align-items:center}
+</style>
+
+<style id="v28-heatmapx">
+.hmxOuter{display:flex;gap:4px;align-items:flex-start;margin-top:6px}
+.hmxLabels{flex:0 0 auto;display:flex;flex-direction:column;padding-top:20px}
+.hmxrowlabel{height:22px;display:flex;align-items:center;font-size:10.5px;color:var(--mute);white-space:nowrap;padding-inline-end:6px;max-width:92px;overflow:hidden;text-overflow:ellipsis}
+.hmxScroll{overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.hmxDates{display:flex;height:18px;margin-bottom:2px}
+.hmxDates i{flex:0 0 auto;width:14px;font-style:normal;font-size:9px;color:var(--mute);text-align:center;white-space:nowrap}
+.hmxCols{display:flex}
+.hmxcol{display:flex;flex-direction:column;flex:0 0 auto;cursor:pointer;width:14px;border-radius:3px}
+.hmxcol:focus-visible{outline:2.5px solid var(--ink);outline-offset:1px}
+.hmxcell{height:20px;border-radius:2px;margin:0 1px 2px}
+.hmxEmpty{text-align:center;margin:8px 0 0;font-size:13px}
+.vpempty{text-align:center;font-size:13.5px}
+/* the generic .letter.lv2 svg print cap (80px, for the single-row bar charts) would
+   squash this denser multi-row grid illegibly; this selector is more specific so it wins. */
+@media print{.letter.lv2 svg.hmxletter{max-height:220px}}
 </style>
 
 <script>try{(function(){var p=localStorage.getItem("periTheme")||"auto",d=p==="dark"||(p==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light"})()}catch(e){}</script>
@@ -279,12 +310,12 @@ html[data-theme=dark] .seg button.on[data-v="1"]{background:#7a4a3e;color:#fff4e
 html[data-theme=dark] .seg button.on[data-v="2"]{background:#d98a73;color:#1f1512;border-color:#d98a73}
 html[data-theme=dark] .seg button.on[data-v="3"]{background:#f4b49b;color:#1f1512;border-color:#fff}
 html[data-theme=dark] .seg button.on{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink)}
-html[data-theme=dark] .cal.hm .hm0{background:#2c2c30;border-color:#3a3a40;color:var(--ink)}
-html[data-theme=dark] .cal.hm .hm1{background:#7a4a3e;border-color:#7a4a3e;color:#fff4ec}
-html[data-theme=dark] .cal.hm .hm2{background:#d98a73;border-color:#d98a73;color:#1f1512}
-html[data-theme=dark] .cal.hm .hm3{background:#f4b49b;border-color:#f4b49b;color:#1f1512}
-html[data-theme=dark] .cal.hm .bl::after{border-color:#1f1512;background:#1f1512}
-html[data-theme=dark] .cal.hm .hm0.bl::after,html[data-theme=dark] .cal.hm .hm1.bl::after{background:#fff4ec}
+html[data-theme=dark] .cal.hm .hm0,html[data-theme=dark] .hmxcell.hm0{background:#2c2c30;border-color:#3a3a40;color:var(--ink)}
+html[data-theme=dark] .cal.hm .hm1,html[data-theme=dark] .hmxcell.hm1{background:#7a4a3e;border-color:#7a4a3e;color:#fff4ec}
+html[data-theme=dark] .cal.hm .hm2,html[data-theme=dark] .hmxcell.hm2{background:#d98a73;border-color:#d98a73;color:#1f1512}
+html[data-theme=dark] .cal.hm .hm3,html[data-theme=dark] .hmxcell.hm3{background:#f4b49b;border-color:#f4b49b;color:#1f1512}
+html[data-theme=dark] .cal.hm .bl::after,html[data-theme=dark] .hmxcell.bl::after{border-color:#1f1512;background:#1f1512}
+html[data-theme=dark] .cal.hm .hm0.bl::after,html[data-theme=dark] .cal.hm .hm1.bl::after,html[data-theme=dark] .hmxcell.hm0.bl::after,html[data-theme=dark] .hmxcell.hm1.bl::after{background:#fff4ec}
 html[data-theme=dark] .hmleg .lg0{background:#2c2c30;border-color:#3a3a40}html[data-theme=dark] .hmleg .lg1{background:#7a4a3e}html[data-theme=dark] .hmleg .lg2{background:#d98a73}html[data-theme=dark] .hmleg .lg3{background:#f4b49b}
 html[data-theme=dark] #prog .bar i{background:linear-gradient(90deg,#7a4a3e,#d98a73,#f4b49b)}
 html[data-theme=dark] .donec .ck{background:#f4b49b;color:#1f1512}
@@ -294,7 +325,7 @@ html[data-theme=dark] .tipw b,html[data-theme=dark] #weekTip b{color:#e6b35e}
 html[data-theme=dark] .sum th{background:#8a4433!important;color:#fff!important}
 html[data-theme=dark] .afftag{background:#232326!important;color:var(--mute)!important}
 html[data-theme=dark] .aff p{color:var(--mute)!important}
-html[data-theme=dark] .cal.hm .nl{color:var(--mute)}
+html[data-theme=dark] .cal.hm .nl,html[data-theme=dark] .hmxcell.nl{color:var(--mute)}
 .thm button{flex:1;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:15px}
 .thm button[aria-pressed=true]{border-color:var(--ink);background:var(--roseL)}
 @media print{html[data-theme=dark]{color-scheme:light;--cream:#fbeee6;--card:#fff8f2;--line:#ecd6c8;--ink:#4a3328;--mute:#6e5547;--rose:#9c4a36;--roseL:#f8e0d6;--blush:#e8a99a;--sage:#5b6b2f;--sageL:#eef0dc}html[data-theme=dark] body,html[data-theme=dark] .sum{background:#fff!important;color:#4a3328}}
@@ -443,6 +474,13 @@ html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
    <p class="muted" data-t="patNote"></p></div>
   <div class="card"><h2 class="h3" data-t="cycleT"></h2><div id="cycle"></div></div>
   <div class="card"><h2 class="h3" data-t="calT"></h2><div class="cal" id="cal"></div><p class="muted" data-t="calNote"></p></div>
+  <div class="card" id="hmxCard"><h2 class="h3" data-t="hmxT"></h2><p class="muted" style="margin-top:0" data-t="hmxSub"></p>
+   <div class="tabs2" id="hmxRange"><button class="btn alt" data-hr="30">30</button><button class="btn alt" data-hr="90">90</button><button class="btn alt" data-hr="180">180</button></div>
+   <div id="hmxGrid"></div>
+   <button class="btn ghost block" id="hmxMore" style="padding:8px"></button>
+   <div class="hmleg" id="hmxLeg" aria-hidden="true"></div>
+   <p class="muted" id="hmxNote" style="font-size:12px"></p>
+  </div>
   <div class="card" id="helpCard"><h2 class="h3" data-t="helpT"></h2><p class="muted" style="margin-top:0" data-t="helpSub"></p><div id="helpList"></div>
    <p class="affdisc" data-t="affShort"></p></div>
  </section>
@@ -450,11 +488,18 @@ html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
  <!-- SUMMARY -->
  <section id="v-summary" class="view hide">
   <div class="noprint"><h1 data-t="docT"></h1>
+   <div class="card" id="vpCard"><h2 class="h3" data-t="vpT"></h2>
+    <p class="muted" style="margin-top:0" data-t="vpSub"></p>
+    <label for="vpDate" data-t="vpDateL"></label>
+    <input type="date" id="vpDate">
+    <div id="vpOut" style="margin-top:10px"></div>
+   </div>
    <div class="tabs2"><button class="btn" id="modeSum" data-t="modeSum"></button><button class="btn alt" id="modeLet" data-t="modeLet"></button></div>
    <div id="sumCtl" style="display:flex;gap:6px"><select id="sumMonth"></select><button class="btn" id="printBtn" data-t="print"></button></div>
    <div id="letCtl" class="hide">
     <div class="row2"><input type="text" id="drName" data-p="drPh" maxlength="60"><input type="text" id="myName" data-p="mePh" maxlength="60"></div>
     <div style="display:flex;gap:6px"><select id="letRange"><option value="1" data-t="r1"></option><option value="3" data-t="r3"></option><option value="6" data-t="r6"></option><option value="0" data-t="rAll"></option></select><button class="btn" id="printBtn2" data-t="print"></button></div>
+    <label style="display:flex;gap:8px;align-items:flex-start;margin:10px 2px 0"><input type="checkbox" id="letHmChk" style="width:20px;height:20px;flex:none;margin-top:1px"><span data-t="letHmChk"></span></label>
    </div>
    <p class="muted" data-t="printHelp"></p></div>
   <div class="sum" id="sumBody"></div>
@@ -864,7 +909,7 @@ $("letRange").onchange=e=>{S.lr=e.target.value;persist();renderLetter()};
 function renderSummary(){if(!hasAccess()){wipeLocked("v-summary");return}
  $("modeSum").className="btn "+(sumMode==="sum"?"":"alt");$("modeLet").className="btn "+(sumMode==="let"?"":"alt");
  $("sumCtl").classList.toggle("hide",sumMode!=="sum");$("letCtl").classList.toggle("hide",sumMode!=="let");
- if(sumMode==="let"){$("drName").value=S.dr||"";$("myName").value=S.me||"";$("letRange").value=S.lr||"3";renderLetter();return}
+ if(sumMode==="let"){$("drName").value=S.dr||"";$("myName").value=S.me||"";$("letRange").value=S.lr||"3";$("letHmChk").checked=!!S.letHm;renderLetter();return}
  const sel=$("sumMonth"),ms=[...new Set([today().slice(0,7),...Object.keys(S.e).map(d=>d.slice(0,7))])].sort().reverse();
  const cnt=m=>Object.keys(S.e).filter(d=>d.startsWith(m)).length;
  const keep=sel.value&&ms.includes(sel.value)?sel.value:(cnt(ms[0])>=7||!ms[1]?ms[0]:ms[1]);
@@ -940,6 +985,7 @@ function renderLetter(){if(!hasAccess()){wipeLocked("v-summary");return}
  <p>${t("L_ss",{s:r1(avg(E.map(e=>e.s.sleep||0))),t:sv.length?r1(avg(sv)):"–"})}</p>
  ${(cn.hn?`<p>${t("L_cnt",{a:r1(cn.ha),n:cn.hn})}</p>`:"")+(cn.sn?`<p>${t("L_slh",{a:r1(cn.sa),n:cn.sn})}</p>`:"")}
  ${pats.length?`<p style="margin-bottom:4px">${t("L_pats")}</p><ul style="margin:0 0 10px;padding-inline-start:20px">${pats.map(p=>`<li>${LANG==="en"?p[1].replace(/\byour\b/g,"my").replace(/\bYour\b/g,"My").replace(/\byou\b/g,"I"):p[1]}</li>`).join("")}</ul>`:""}
+ ${S.letHm&&ds.length?H2("L_sHm")+letterHeatmapHTML(ds):""}
  ${H2("L_sCyc")}
  <p>${cyc}</p>
  ${H2("L_sTrt")}
@@ -954,20 +1000,42 @@ function renderLetter(){if(!hasAccess()){wipeLocked("v-summary");return}
  <p class="muted" style="margin-top:14px;font-size:11px;font-family:-apple-system,Segoe UI,Roboto,sans-serif">${t("footer")}</p></div>`;
 }
 function qSel(){return [...(S.qs||[]).filter(i=>i>=0&&i<8).sort((a,b)=>a-b).map(i=>L().Q[i]),...(S.qc||[])]}
-function qHTML(lines){const sel=qSel(),Q=L().Q;
+// Shared validation for any question text the user types, whether added fresh or edited in place.
+// skipIdx excludes that index from the duplicate check (so editing a question to its own text, or
+// a case-only change, isn't rejected as a duplicate of itself) and from the 20-question cap.
+function qcValidate(v,skipIdx){
+ if(!v)return t("qErrBlank");
+ if(v.length>200)return t("qErrLong");
+ if((S.qc||[]).some((q,i)=>i!==skipIdx&&q.toLowerCase()===v.toLowerCase()))return t("qErrDup");
+ if(skipIdx==null&&(S.qc||[]).length>=20)return t("qErrMax");
+ return ""}
+function qcMove(i,dir){const j=i+dir;if(!S.qc||j<0||j>=S.qc.length)return;const x=S.qc.splice(i,1)[0];S.qc.splice(j,0,x);persist();qRefresh()}
+let qcEdit=null;
+function qHTML(lines){const sel=qSel(),Q=L().Q,qc=S.qc||[];
  const pick=`<div class="qpick"><p class="muted" style="margin:2px 0 4px">${t("qPickH")}</p>${Q.map((q,i)=>`<label><input type="checkbox" data-q="${i}" ${(S.qs||[]).includes(i)?"checked":""}><span>${q}</span></label>`).join("")}
- ${(S.qc||[]).map((q,i)=>`<label><input type="checkbox" checked disabled><span style="flex:1">${esc(q)}</span><button class="x" data-cx="${i}" aria-label="Remove question">×</button></label>`).join("")}
+ ${qc.map((q,i)=>qcEdit===i?`<div class="qedit"><input type="text" class="qEditIn" maxlength="200" value="${esc(q)}" aria-label="${esc(t("qEditA"))}"></div><div class="vprow"><button type="button" class="btn alt" data-qse="${i}" style="padding:7px 12px;font-size:13px">${t("qSave")}</button><button type="button" class="btn ghost" data-qce="${i}" style="padding:7px 12px;font-size:13px">${t("qCancel")}</button></div>`
+  :`<label class="qc"><input type="checkbox" checked disabled><span style="flex:1">${esc(q)}</span><button type="button" class="qord" data-qup="${i}" ${i===0?"disabled":""} aria-label="${esc(t("qUp"))}">↑</button><button type="button" class="qord" data-qdn="${i}" ${i===qc.length-1?"disabled":""} aria-label="${esc(t("qDn"))}">↓</button><button type="button" class="x" data-qe="${i}" aria-label="${esc(t("qEditA"))}">✎</button><button type="button" class="x" data-cx="${i}" aria-label="${esc(t("qDel"))}">×</button></label>`).join("")}
  <div class="cq"><input type="text" class="qIn" maxlength="200" data-p="qPh" placeholder="${esc(t("qPh"))}"><button class="btn alt qAdd">${t("qAdd")}</button></div></div>`;
  const pr=lines?`<ul class="qprint">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ul>`+(sel.length?"":'<div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div><div style="border-bottom:1px solid #c9d2c6;height:22px"></div>')
   :(sel.length?`<p style="margin-bottom:4px">${t("L_qs")}</p><ol style="margin:0 0 10px;padding-inline-start:20px">${sel.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>`:"");
  return pick+pr}
 function qRefresh(){const y=scrollY;renderSummary();scrollTo(0,y)}
+function qMsg(a,m){let p=a.parentNode.querySelector(".qMsg");if(!p){a.parentNode.insertAdjacentHTML("afterend",'<p class="qMsg" role="alert" style="color:#9c4a36;margin:4px 0;font-size:13.5px"></p>');p=a.parentNode.nextElementSibling}p.textContent=m}
 $("sumBody").addEventListener("change",ev=>{const c=ev.target.closest("[data-q]");if(!c)return;const i=+c.dataset.q;S.qs=(S.qs||[]).filter(x=>x!==i);if(c.checked)S.qs.push(i);persist();qRefresh()});
-$("sumBody").addEventListener("click",ev=>{const x=ev.target.closest("[data-cx]");if(x){if(!confirm("Remove this question?"))return;S.qc.splice(+x.dataset.cx,1);persist();qRefresh();return}
- const a=ev.target.closest(".qAdd");if(a){const inp=a.parentNode.querySelector(".qIn"),v=inp.value.trim().replace(/\s+/g," ");const qm=m=>{let p=a.parentNode.querySelector(".qMsg");if(!p){a.parentNode.insertAdjacentHTML("afterend",'<p class="qMsg" role="alert" style="color:#9c4a36;margin:4px 0;font-size:13.5px"></p>');p=a.parentNode.nextElementSibling}p.textContent=m};
- if(!v){qm("Type your question first.");inp.focus();return}if(v.length>200){qm("Keep questions to 200 characters or fewer.");return}if((S.qc||[]).some(q=>q.toLowerCase()===v.toLowerCase())){qm("You’ve already added that question.");return}if((S.qc||[]).length>=20){qm("You can add up to 20 of your own questions.");return}
- (S.qc=S.qc||[]).push(v);persist();qRefresh()}});
-$("sumBody").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&ev.target.classList.contains("qIn")){ev.preventDefault();ev.target.parentNode.querySelector(".qAdd").click()}});
+$("sumBody").addEventListener("click",ev=>{
+ const up=ev.target.closest("[data-qup]");if(up){qcMove(+up.dataset.qup,-1);return}
+ const dn=ev.target.closest("[data-qdn]");if(dn){qcMove(+dn.dataset.qdn,1);return}
+ const qe=ev.target.closest("[data-qe]");if(qe){qcEdit=+qe.dataset.qe;qRefresh();setTimeout(()=>{const el=document.querySelector(".qEditIn");if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}},0);return}
+ const qce=ev.target.closest("[data-qce]");if(qce){qcEdit=null;qRefresh();return}
+ const qse=ev.target.closest("[data-qse]");if(qse){const i=+qse.dataset.qse,inp=document.querySelector(".qEditIn"),v=inp.value.trim().replace(/\s+/g," "),er=qcValidate(v,i);
+  if(er){qMsg(qse,er);inp.focus();return}S.qc[i]=v;qcEdit=null;persist();qRefresh();return}
+ const x=ev.target.closest("[data-cx]");if(x){if(!confirm(t("qDelConfirm")))return;S.qc.splice(+x.dataset.cx,1);if(qcEdit===+x.dataset.cx)qcEdit=null;persist();qRefresh();return}
+ const a=ev.target.closest(".qAdd");if(a){const inp=a.parentNode.querySelector(".qIn"),v=inp.value.trim().replace(/\s+/g," "),er=qcValidate(v,null);
+  if(er){qMsg(a,er);inp.focus();return}
+  (S.qc=S.qc||[]).push(v);persist();qRefresh()}});
+$("sumBody").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&ev.target.classList.contains("qIn")){ev.preventDefault();ev.target.parentNode.querySelector(".qAdd").click()}
+ if(ev.key==="Enter"&&ev.target.classList.contains("qEditIn")){ev.preventDefault();const i=qcEdit;const inp=ev.target,v=inp.value.trim().replace(/\s+/g," "),er=qcValidate(v,i);if(er){qMsg(inp,er);return}S.qc[i]=v;qcEdit=null;persist();qRefresh()}
+ if(ev.key==="Escape"&&ev.target.classList.contains("qEditIn")){qcEdit=null;qRefresh()}});
 $("sumMonth").onchange=renderSummary;
 $("printBtn").onclick=$("printBtn2").onclick=()=>window.print();
 
@@ -1275,7 +1343,7 @@ function openUp(){openSheet(t("plusT"),upCardHTML());bindUp($("shB"))}
 function gateView(id,anchorSel){const v=$(id);if(!v)return;v.querySelectorAll(".upg").forEach(x=>x.remove());const lock=!hasAccess();v.classList.toggle("lockv",lock);
  if(lock){wipeLocked(id);const a=v.querySelector(anchorSel);a.insertAdjacentHTML("afterend",upCardHTML());bindUp(v)}}
 // PT-002: locked views are never rendered; their data containers are emptied (no blur over real data).
-const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt","hmM","hmEmpty"],"v-summary":["sumBody","sumMonth"]};
+const LOCK_BOX={"v-insights":["statBox","cntBox","weekTip","chart","topSym","corr","cycle","cal","tipTxt","hmM","hmEmpty","hmxGrid","hmxNote","hmxLeg"],"v-summary":["sumBody","sumMonth","vpOut"]};
 // Scrub even hidden views when access changes; never wait for navigation.
 function wipeLocked(id){(LOCK_BOX[id]||[]).forEach(x=>{const el=$(x);if(el){el.innerHTML="";el.removeAttribute("aria-label")}});if(id==="v-insights"){
  if($("mvBox"))$("mvBox").innerHTML=mvTeaser();
@@ -1472,6 +1540,146 @@ function renderEmpty(){const v=$("v-insights");if(!v)return;const o=$("emptyCard
 
 // v27: short visible nav label; accessible name stays "Doctor summary" (data-al)
 I18N.en.nDoc="Summary";
+
+// ---------- v28: visit prep (data-driven questions, neutral observations only, never diagnosis)
+Object.assign(I18N.en,{
+qErrBlank:"Type your question first.",qErrLong:"Keep questions to 200 characters or fewer.",qErrDup:"You’ve already added that question.",qErrMax:"You can add up to 20 of your own questions.",
+qUp:"Move question up",qDn:"Move question down",qEditA:"Edit question",qDel:"Remove question",qSave:"Save",qCancel:"Cancel",qDelConfirm:"Remove this question?",
+vpT:"Prepare for your next visit",vpSub:"Pick the date of your last visit. We’ll look at your own logs since then and suggest a few neutral questions, based only on your data. Not medical advice.",vpDateL:"Date of my last visit",
+vpAdd:"Add to my questions",vpAdded:"Added",vpAddedMsg:"Added to your questions for the doctor letter.",
+vpEmptyNoData:"Log a few check-ins before and after this date to see observations here, or load demo data in Settings.",
+vpEmptyNoChange:"No clear changes to flag yet between the two periods. That can be a good sign, or just mean there isn’t enough data yet.",
+vpFreq:"{s} went from about {a} to {b} day(s) a week since your last visit on {d}. Could this be worth asking about?",
+vpSleepSev:"Sleep trouble went from {a} to {b} (out of 3) since your last visit on {d}. Could this be related to anything that’s changed?",
+vpSleepHrs:"Average sleep went from about {a} to {b} hours a night since your last visit on {d}. Could this be worth mentioning?",
+vpMood:"Low mood went from {a} to {b} (out of 3) since your last visit on {d}. Could this be worth discussing?",
+vpMed:"Since starting {m} on {d}, {s} went from {a} to {b} (out of 3). Could these be related?",
+vpTop:"{s} was logged on {n} of {m} day(s) ({p}%) since your last visit on {d}. Is this worth discussing?",
+vpInvalid:"Please pick a valid date that isn’t in the future.",
+hmxT:"Symptom heatmap",hmxSub:"Severity by day, one row per symptom. Tap a day to see what was logged.",
+hmxMore:"Show all symptoms ({n})",hmxFewer:"Show fewer symptoms",
+hmxNote:"Showing the last {n} days. You have {t} day(s) logged in total; older entries are kept on this phone, not deleted.",
+hmxEmpty:"No check-ins logged in this range yet.",hmxPeriod:"Period",hmxDayNone:"Nothing logged this day.",hmxCellNone:"not logged",
+letHmChk:"Include the symptom heatmap",
+L_sHm:"Symptom heatmap",L_hmNote:"Darker = higher severity that day (0 none to 3 severe). A marked corner means bleeding that day. Last {n} day(s) shown."
+});
+Object.assign(I18N.he,{
+qErrBlank:"נא לכתוב שאלה קודם.",qErrLong:"יש להגביל את השאלה ל-200 תווים.",qErrDup:"השאלה הזו כבר נוספה.",qErrMax:"אפשר להוסיף עד 20 שאלות משלך.",
+qUp:"הזזת השאלה למעלה",qDn:"הזזת השאלה למטה",qEditA:"עריכת השאלה",qDel:"הסרת השאלה",qSave:"שמירה",qCancel:"ביטול",qDelConfirm:"להסיר את השאלה הזו?",
+vpT:"הכנה לביקור הבא",vpSub:"בחרי את תאריך הביקור האחרון. נבדוק את הרישומים שלך מאז ונציע כמה שאלות נייטרליות, רק על סמך הנתונים שלך. לא ייעוץ רפואי.",vpDateL:"תאריך הביקור האחרון שלי",
+vpAdd:"הוספה לשאלות שלי",vpAdded:"נוסף",vpAddedMsg:"נוסף לשאלות למכתב לרופא.",
+vpEmptyNoData:"אפשר לעשות כמה צ'ק-אינים לפני ואחרי התאריך הזה כדי לראות כאן תובנות, או לטעון נתוני דוגמה בהגדרות.",
+vpEmptyNoChange:"אין עדיין שינוי בולט לציון בין שתי התקופות. זה יכול להיות סימן טוב, או שפשוט אין עדיין מספיק נתונים.",
+vpFreq:"{s} עבר מכ-{a} ל-{b} ימים בשבוע מאז הביקור האחרון ב-{d}. אולי שווה לשאול על זה?",
+vpSleepSev:"קשיי השינה עברו מ-{a} ל-{b} (מתוך 3) מאז הביקור האחרון ב-{d}. יכול להיות שזה קשור למשהו שהשתנה?",
+vpSleepHrs:"השינה הממוצעת עברה מכ-{a} ל-{b} שעות בלילה מאז הביקור האחרון ב-{d}. אולי שווה להזכיר את זה?",
+vpMood:"מצב הרוח הירוד עבר מ-{a} ל-{b} (מתוך 3) מאז הביקור האחרון ב-{d}. אולי שווה לדבר על זה?",
+vpMed:"מאז שהתחלת {m} ב-{d}, {s} עבר מ-{a} ל-{b} (מתוך 3). יכול להיות שיש קשר?",
+vpTop:"{s} תועד ב-{n} מתוך {m} ימים ({p}%) מאז הביקור האחרון ב-{d}. שווה לדבר על זה?",
+vpInvalid:"נא לבחור תאריך תקין שאינו בעתיד.",
+hmxT:"מפת חום של תסמינים",hmxSub:"חוזק התסמין לפי יום, שורה לכל תסמין. הקשה על יום מציגה מה נרשם בו.",
+hmxMore:"הצגת כל התסמינים ({n})",hmxFewer:"פחות תסמינים",
+hmxNote:"מוצגים {n} הימים האחרונים. בסך הכול יש {t} ימים מתועדים; רישומים ישנים יותר נשמרים בטלפון ולא נמחקים.",
+hmxEmpty:"אין עדיין צ'ק-אינים בתקופה הזו.",hmxPeriod:"וסת",hmxDayNone:"שום דבר לא תועד ביום הזה.",hmxCellNone:"לא תועד",
+letHmChk:"הכללת מפת חום של התסמינים",
+L_sHm:"מפת חום של תסמינים",L_hmNote:"כהה יותר = חוזק גבוה יותר באותו יום (0 בכלל לא עד 3 חזק). סימון בפינה הוא יום עם דימום. מוצגים {n} הימים האחרונים."
+});
+function vpDefaultDate(){return addD(today(),-90)}
+function vpWindows(vd){
+ const lenAfter=Math.max(1,dayDiff(vd,today())+1),afterDs=days(lenAfter,today()),beforeDs=days(lenAfter,addD(vd,-1));
+ return{beforeDs,afterDs,beforeE:beforeDs.filter(d=>S.e[d]).map(d=>S.e[d]),afterE:afterDs.filter(d=>S.e[d]).map(d=>S.e[d])}}
+const vpFreqWk=(E,key)=>E.length?E.filter(e=>(e.s[key]||0)>0).length/(E.length/7):null;
+function vpBuild(vd){
+ const w=vpWindows(vd),b=w.beforeE,a=w.afterE,out=[],vdf=fmt(vd,{day:"numeric",month:"short",year:"numeric"}),push=(mag,text)=>out.push({mag,text});
+ if(b.length>=4&&a.length>=4){
+  ["hot","sweat"].forEach(k=>{const fb=vpFreqWk(b,k),fa=vpFreqWk(a,k);if(fb!=null&&fa!=null&&Math.abs(fa-fb)>=1)push(Math.abs(fa-fb),t("vpFreq",{s:SN(k),a:r1(fb),b:r1(fa),d:vdf}))});
+  const sb=avg(b.map(e=>e.s.sleep||0)),sa=avg(a.map(e=>e.s.sleep||0));if(Math.abs(sa-sb)>=.5)push(Math.abs(sa-sb),t("vpSleepSev",{a:r1(sb),b:r1(sa),d:vdf}));
+  const mb=avg(b.map(e=>e.s.mood||0)),ma=avg(a.map(e=>e.s.mood||0));if(Math.abs(ma-mb)>=.5)push(Math.abs(ma-mb),t("vpMood",{a:r1(mb),b:r1(ma),d:vdf}));
+  const hb=b.filter(e=>e.hs!=null),ha=a.filter(e=>e.hs!=null);
+  if(hb.length>=3&&ha.length>=3){const hab=avg(hb.map(e=>e.hs)),haa=avg(ha.map(e=>e.hs));if(Math.abs(haa-hab)>=1)push(Math.abs(haa-hab),t("vpSleepHrs",{a:r1(hab),b:r1(haa),d:vdf}))}
+ }
+ const starts=[];
+ (S.hrt||[]).forEach(h=>{if(h.d>=vd&&h.d<=today())starts.push({d:h.d,x:h.x})});
+ (S.meds||[]).forEach(m=>{if((S.hrt||[]).some(h=>h.x===m))return;const ds2=Object.keys(S.e).filter(d=>(S.e[d].meds||[]).includes(m)).sort();if(ds2.length&&ds2[0]>=vd&&ds2[0]<=today())starts.push({d:ds2[0],x:m})});
+ starts.forEach(st=>{
+  const win=21,bb=days(win,addD(st.d,-1)).filter(d=>S.e[d]).map(d=>S.e[d]),aa=days(win,addD(st.d,win-1)).filter(d=>d<=today()&&S.e[d]).map(d=>S.e[d]);
+  if(bb.length<4||aa.length<4)return;
+  let best=null;SYMK.forEach(k=>{const vb=avg(bb.map(e=>e.s[k]||0)),va=avg(aa.map(e=>e.s[k]||0)),dd=Math.abs(va-vb);if(dd>=.5&&(!best||dd>best.dd))best={k,vb,va,dd}});
+  if(best)push(best.dd+2,t("vpMed",{m:esc(st.x),s:SN(best.k).toLowerCase(),a:r1(best.vb),b:r1(best.va),d:fmt(st.d,{day:"numeric",month:"short",year:"numeric"})}))
+ });
+ if(a.length>=5){const tops=SYMK.map(k=>[k,a.filter(e=>(e.s[k]||0)>0).length]).filter(x=>x[1]/a.length>=.5&&x[1]>=5).sort((x,y)=>y[1]-x[1]);
+  if(tops.length){const[k,n]=tops[0];push(1.5,t("vpTop",{s:SN(k),n,m:a.length,p:Math.round(n/a.length*100),d:vdf}))}}
+ return out.sort((x,y)=>y.mag-x.mag).slice(0,6).map(x=>x.text)}
+function renderVp(){if(!hasAccess()){$("vpOut").innerHTML="";return}
+ const inp=$("vpDate");inp.min="1990-01-01";inp.max=today();if(!inp.value)inp.value=S.vpDate||vpDefaultDate();
+ const vd=inp.value;
+ if(!realD(vd)||vd>today()){$("vpOut").innerHTML=`<p class="muted vpempty" role="alert">${t("vpInvalid")}</p>`;return}
+ S.vpDate=vd;persist();
+ const w=vpWindows(vd);
+ if(!w.beforeE.length&&!w.afterE.length){$("vpOut").innerHTML=`<p class="muted vpempty">${t("vpEmptyNoData")}</p>`;return}
+ const obs=vpBuild(vd);
+ $("vpOut").innerHTML=obs.length?`<div class="vpq">${obs.map((q,i)=>`<div class="ins"><p>${esc(q)}</p><button type="button" class="btn alt vpAddBtn" data-vp="${i}">${t("vpAdd")}</button></div>`).join("")}</div>`:`<p class="muted vpempty">${t("vpEmptyNoChange")}</p>`;
+ $("vpOut").dataset.obs=JSON.stringify(obs)}
+$("vpCard").addEventListener("click",ev=>{const b=ev.target.closest(".vpAddBtn");if(!b)return;
+ let obs=[];try{obs=JSON.parse($("vpOut").dataset.obs||"[]")}catch(e){}
+ const text=obs[+b.dataset.vp];if(text==null)return;
+ const er=qcValidate(text,null);if(er){toast(er);return}
+ (S.qc=S.qc||[]).push(text);persist();b.disabled=true;b.textContent=t("vpAdded");toast(t("vpAddedMsg"))});
+$("vpDate").onchange=()=>renderVp();
+{const _rSumVp=renderSummary;renderSummary=function(){const r=_rSumVp.apply(this,arguments);try{renderVp()}catch(e){console.error(e)}return r}}
+
+// ---------- v28: multi-symptom heatmap (own card in Insights; optional static image in the letter)
+let hmxRange=null,hmxAll=false;
+function hmxSymKeys(){return hmxAll?SYMK:SYMK.slice(0,CORE)}
+function hmxCls(v){return v==null?"nl":"hm"+Math.max(0,Math.min(3,Math.round(v)))}
+function hmxDayDetail(d){const e=S.e[d];
+ const rows=e?SYMK.filter(k=>(e.s[k]||0)>0).map(k=>`<div class="sym"><span>${SN(k)}</span><b>${e.s[k]}</b></div>`).join(""):"";
+ const extra=[];if(e){
+  if(e.st!=null)extra.push(`<p>${SN("stress")}: <b>${e.st}</b></p>`);
+  if(isBleed(e))extra.push(`<p>${t("bleeding")}: <b>${BN(e.bleed)}</b></p>`);
+  if(e.hf!=null)extra.push(`<p>${t("hfC")}: <b>${e.hf}</b></p>`);
+  if(e.hs!=null)extra.push(`<p>${t("slH")}: <b>${e.hs}${t("hShort")}</b></p>`);
+  if((e.meds||[]).length)extra.push(`<p>${t("meds")}: ${e.meds.map(esc).join(", ")}</p>`);
+  if(e.notes)extra.push(`<p>${t("notes")}: ${esc(e.notes)}</p>`)}
+ return (rows?`<div>${rows}</div>`:"")+extra.join("")||`<p class="muted">${t("hmxDayNone")}</p>`}
+function renderHeatmapX(){if(!hasAccess()){wipeLocked("v-insights");return}
+ const n=hmxRange=hmxRange||S.hmxRange||90,keys=hmxSymKeys(),ds=days(n),totalLogged=Object.keys(S.e).length;
+ document.querySelectorAll("#hmxRange [data-hr]").forEach(b=>{const on=+b.dataset.hr===n;b.className="btn "+(on?"":"alt");b.setAttribute("aria-pressed",String(on))});
+ $("hmxMore").textContent=hmxAll?t("hmxFewer"):t("hmxMore",{n:SYMK.length-CORE});
+ const rows=[["period",t("hmxPeriod")],...keys.map(k=>[k,SN(k)])];
+ const dateRow=ds.map((d,i)=>{const dd=new Date(d+"T12:00:00"),show=n<=31||dd.getDate()===1||i===0||i===ds.length-1;return `<i>${show?dd.getDate():""}</i>`}).join("");
+ const colHtml=ds.map(d=>{const e=S.e[d];
+  const cells=rows.map(([k,lab])=>{let cls,valText;
+   if(k==="period"){const bl=e&&isBleed(e);cls=bl?"hm3":(e?"hm0":"nl");valText=e?(bl?BN(e.bleed):t("hmxCellNone")):t("hmxCellNone")}
+   else{const v=e?e.s[k]:null;cls=hmxCls(v);valText=v==null?t("hmxCellNone"):String(v)}
+   const blCls=(k==="period"&&e&&isBleed(e))?" bl":"";
+   return `<div class="hmxcell ${cls}${blCls}" title="${esc(lab)}, ${esc(fmt(d,{month:"short",day:"numeric"}))}: ${esc(valText)}"></div>`}).join("");
+  return `<div class="hmxcol${d===today()?" td":""}" data-d="${d}" tabindex="0" role="button" aria-label="${esc(fmt(d,{weekday:"short",month:"short",day:"numeric"}))}">${cells}</div>`}).join("");
+ $("hmxGrid").innerHTML=`<div class="hmxOuter" role="group" aria-label="${esc(t("hmxT"))}">
+  <div class="hmxLabels">${rows.map(([,l])=>`<div class="hmxrowlabel">${esc(l)}</div>`).join("")}</div>
+  <div class="hmxScroll" id="hmxScrollW"><div class="hmxDates">${dateRow}</div><div class="hmxCols">${colHtml}</div></div></div>`;
+ const sc=$("hmxScrollW");if(sc)sc.scrollLeft=sc.scrollWidth;
+ $("hmxLeg").innerHTML=`<span class="sw">${t("hmLess")} <i class="lg0"></i><i class="lg1"></i><i class="lg2"></i><i class="lg3"></i> ${t("hmMore")}</span><span class="sw"><i style="border:1.5px dashed var(--line)"></i> ${t("hmNone")}</span><span class="sw"><i style="width:8px;height:8px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink)"></i> ${t("hmBleed")}</span>`;
+ $("hmxNote").textContent=t("hmxNote",{n,t:totalLogged})}
+$("hmxGrid").addEventListener("click",ev=>{const c=ev.target.closest(".hmxcol");if(!c)return;openSheet(fmt(c.dataset.d,{weekday:"long",month:"long",day:"numeric",year:"numeric"}),hmxDayDetail(c.dataset.d))});
+$("hmxGrid").addEventListener("keydown",ev=>{if(ev.key!=="Enter"&&ev.key!==" ")return;const c=ev.target.closest(".hmxcol");if(!c)return;ev.preventDefault();openSheet(fmt(c.dataset.d,{weekday:"long",month:"long",day:"numeric",year:"numeric"}),hmxDayDetail(c.dataset.d))});
+$("hmxRange").addEventListener("click",ev=>{const b=ev.target.closest("[data-hr]");if(!b)return;hmxRange=S.hmxRange=+b.dataset.hr;persist();renderHeatmapX()});
+$("hmxMore").onclick=()=>{hmxAll=!hmxAll;renderHeatmapX()};
+{const _riX=renderInsights;renderInsights=function(){const r=_riX.apply(this,arguments);try{renderHeatmapX()}catch(e){console.error(e)}return r}}
+function letterHeatmapHTML(ds){const MAXD=180,use=ds.length>MAXD?ds.slice(-MAXD):ds,keys=SYMK.slice(0,CORE);
+ const rows=[["period",t("hmxPeriod")],...keys.map(k=>[k,SN(k)])];
+ const cw=Math.max(2,Math.min(6,Math.floor(640/use.length))),ch=12,gap=1,W=use.length*(cw+gap)+120,H=rows.length*(ch+gap)+10;
+ const COL={nl:"#f3efe8",hm0:"#fbeee6",hm1:"#f5cdbf",hm2:"#e39a86",hm3:"#a84a33"};
+ let svg=`<svg class="hmxletter" viewBox="0 0 ${W} ${H}" width="100%" style="max-width:640px" direction="ltr" role="img" aria-label="${esc(t("L_sHm"))}">`;
+ rows.forEach(([k,lab],ri)=>{svg+=`<text x="0" y="${10+ri*(ch+gap)+9}" font-size="8.5" fill="#4a3328">${esc(lab)}</text>`;
+  use.forEach((d,ci)=>{const e=S.e[d];let cls;
+   if(k==="period")cls=e&&isBleed(e)?"hm3":(e?"hm0":"nl");
+   else{const v=e?e.s[k]:null;cls=v==null?"nl":"hm"+Math.max(0,Math.min(3,Math.round(v)))}
+   svg+=`<rect x="${120+ci*(cw+gap)}" y="${ri*(ch+gap)}" width="${cw}" height="${ch}" rx="1" fill="${COL[cls]}"/>`})});
+ svg+="</svg>";
+ return `<p class="lnote">${t("L_hmNote",{n:use.length})}</p>${svg}`}
+$("letHmChk").onchange=e=>{S.letHm=e.target.checked;persist();renderLetter()};
+
 askPersist();
 boot();
 </script>
