@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#6f8a6e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -297,6 +298,76 @@ html[data-theme=dark] .cal.hm .nl{color:var(--mute)}
 .thm button{flex:1;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:15px}
 .thm button[aria-pressed=true]{border-color:var(--ink);background:var(--roseL)}
 @media print{html[data-theme=dark]{color-scheme:light;--cream:#fbeee6;--card:#fff8f2;--line:#ecd6c8;--ink:#4a3328;--mute:#6e5547;--rose:#9c4a36;--roseL:#f8e0d6;--blush:#e8a99a;--sage:#5b6b2f;--sageL:#eef0dc}html[data-theme=dark] body,html[data-theme=dark] .sum{background:#fff!important;color:#4a3328}}
+</style>
+
+<style id="v41-letter">
+/* Doctor letter is a paper document: light page, dark ink, in every theme and in print.
+   Label cells were painted by html[data-theme=dark] .sum th {background:#8a4433}, which
+   beat .letter .lhead/.lkv th {background:none} because the letter lives in #sumBody.sum. */
+html,html[data-theme=light]{color-scheme:light}
+.letter,
+.sum:has(>.letter),
+html[data-theme=dark] .sum:has(>.letter){
+  color-scheme:light;
+  background:#fffaf5!important;
+  color:#4a3328!important;
+}
+.letter table.sum,
+html[data-theme=dark] .letter table.sum,
+html[data-theme=dark] .sum .letter .sum{
+  background:transparent!important;
+  color:#4a3328!important;
+  border-radius:0;
+  padding:0;
+  box-shadow:none;
+  margin:6px 0;
+}
+.letter h2.lh,.letter p,.letter li,.letter td,.letter th{color:#4a3328}
+.letter h2.lh{border-bottom-color:#ecd6c8}
+.letter .lnote,.letter .muted{color:#6e5547!important}
+.letter .lhead th,.letter .lkv th,
+html[data-theme=dark] .sum .letter .lhead th,
+html[data-theme=dark] .sum .letter .lkv th{
+  background:transparent!important;
+  color:#4a3328!important;
+  font-weight:700;
+}
+.letter .lhead td,.letter .lkv td,
+html[data-theme=dark] .sum .letter .lhead td,
+html[data-theme=dark] .sum .letter .lkv td{
+  background:transparent!important;
+  color:#4a3328!important;
+  border-bottom:1px solid #ecd6c8;
+}
+.letter .ltbl th,
+html[data-theme=dark] .sum .letter .ltbl th{
+  background:#f8e0d6!important;
+  color:#4a3328!important;
+  font-weight:700;
+}
+.letter .ltbl td,
+html[data-theme=dark] .sum .letter .ltbl td{
+  background:transparent!important;
+  color:#4a3328!important;
+  border-bottom:1px solid #ecd6c8;
+}
+@media print{
+  .letter,.sum:has(>.letter),html[data-theme=dark] .sum:has(>.letter){
+    color-scheme:light;
+    background:#fff!important;
+    color:#4a3328!important;
+  }
+  .letter .lhead th,.letter .lkv th,
+  html[data-theme=dark] .sum .letter .lhead th,
+  html[data-theme=dark] .sum .letter .lkv th{
+    background:transparent!important;
+    color:#4a3328!important;
+  }
+  .letter .ltbl th,html[data-theme=dark] .sum .letter .ltbl th{
+    background:#f8e0d6!important;
+    color:#4a3328!important;
+  }
+}
 </style>
 
 <style id="v27-nav">
