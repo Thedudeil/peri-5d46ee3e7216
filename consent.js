@@ -122,7 +122,7 @@ function ensureStyle(){
   var css=document.createElement("style");
   css.id="pt-consent-css";
   css.textContent=
-    "#pt-consent-bar{position:fixed;left:0;right:0;bottom:0;z-index:16;box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 12px;background:var(--card,#fff8f2);color:var(--ink,#4a3328);border-top:2px solid var(--line,#ecd6c8);box-shadow:0 -4px 18px rgba(74,51,40,.10);font:14.5px/1.4 Nunito,system-ui,sans-serif}"+
+    "#pt-consent-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 12px;background:var(--card,#fff8f2);color:var(--ink,#4a3328);border-top:2px solid var(--line,#ecd6c8);box-shadow:0 -4px 18px rgba(74,51,40,.10);font:14.5px/1.4 Nunito,system-ui,sans-serif}"+
     "#pt-consent-bar[hidden]{display:none!important}"+
     "#pt-consent-text{margin:0;flex:1 1 200px;min-width:0}"+
     "#pt-consent-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}"+

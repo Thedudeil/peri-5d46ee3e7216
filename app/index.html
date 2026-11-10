@@ -1541,7 +1541,7 @@ Object.assign(I18N.en,{thmT:"Appearance",thmAuto:"Auto",thmLight:"Light",thmDark
 const THM_MQ=matchMedia("(prefers-color-scheme: dark)");
 function thmPref(){try{return localStorage.getItem("periTheme")||"auto"}catch(e){return "auto"}}
 function applyTheme(){const p=thmPref(),d=p==="dark"||(p==="auto"&&THM_MQ.matches);document.documentElement.dataset.theme=d?"dark":"light";document.querySelectorAll('meta[name=theme-color]').forEach(m=>m.content=d?"#0f0f10":"#e8a99a");
- document.querySelectorAll(".thm button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.th===p))}
+ document.querySelectorAll("#thmCard .thm button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.th===p))}
 THM_MQ.addEventListener&&THM_MQ.addEventListener("change",applyTheme);
 {const st=$("v-settings"),h=st&&st.querySelector("h1");if(h){const anchor=$("expCsv")&&$("expCsv").closest(".card");(anchor||h).insertAdjacentHTML("afterend",`<div class="card" id="thmCard"><h2 class="h3">${t("thmT")}</h2><div class="thm" role="group" aria-label="${t("thmT")}">${["auto","light","dark"].map(k=>`<button data-th="${k}" aria-pressed="false">${t("thm"+k[0].toUpperCase()+k.slice(1))}</button>`).join("")}</div><p class="muted" style="margin:8px 0 0">${t("thmSub")}</p></div>`);
  $("thmCard").onclick=ev=>{const b=ev.target.closest("button[data-th]");if(!b)return;try{localStorage.setItem("periTheme",b.dataset.th)}catch(e){}applyTheme()}}}
