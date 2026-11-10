@@ -187,7 +187,7 @@ function corr(){const MIN=5,rows=Object.keys(S.n).filter(m=>S.r[addD(m,-1)]).map
 function show(v){document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hide",s.id!=="v-"+v));document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));if(v==="nights")nights();if(v==="before"){before();corr()}if(v==="eve")evening();scrollTo(0,0)}
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
 $("exp").onclick=()=>{const ds=[...new Set([...Object.keys(S.n),...Object.keys(S.s),...Object.keys(S.r).map(k=>addD(k,1))])].sort(),yn=x=>x===true?"yes":x===false?"no":"";const rows=[["morning_of","sleep_quality_1to5","wakings","sweats_0to3","tags","caffeine_after_2pm","alcohol","cool_room","screens_off","stress_1to5","sweat_episodes"],...ds.map(d=>{const e=S.n[d]||{t:[]},r=S.r[addD(d,-1)],x=S.s[d]||[];return[d,e.q??"",e.w??"",e.h??"",e.t.join(";"),r?yn(r.caf):"",r?yn(r.alc):"",r?yn(r.cool):"",r?yn(r.scr):"",r&&r.st!=null?r.st:"",x.map(o=>hl(o.hr).replace(" ","")+" "+SEV[o.sev-1].toLowerCase()).join(";")]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(v=>{v=String(v??"");if(/^[=+\-@\t\r]/.test(v))v="'"+v;return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(",")).join("\n")],{type:"text/csv"}));a.download="prime-nights.csv";a.click()};
-$("wipe").onclick=()=>{if(confirm("Delete every night saved on this phone? This can't be undone.")){S={n:{},r:{},s:{}};save();load();render();toast("Deleted")}};
+$("wipe").onclick=()=>{if(confirm("Delete every night saved on this phone? This can't be undone.")){S={n:{},r:{},s:{}};save();try{if(window.PTConsent)PTConsent.reset();else localStorage.removeItem("ptVisitCounting")}catch(x){}load();render();toast("Deleted")}};
 load();render();
 
 </script><script data-sw="./sw.js">/* update banner */(function(){if(!("serviceWorker"in navigator)||location.protocol==="file:")return;var SW=document.currentScript.dataset.sw,want=false,done=false,reg=null;
@@ -204,4 +204,5 @@ navigator.serviceWorker.addEventListener("controllerchange",function(){if(!had){
 function track(w){if(!w)return;var f=function(){if(w.state==="installed"&&navigator.serviceWorker.controller)show()};f();w.addEventListener("statechange",f)}
 addEventListener("load",function(){navigator.serviceWorker.register(SW,SW.indexOf("./")===0?{scope:"./"}:undefined).then(function(r){reg=r;window.__swReg=r;if(r.waiting&&navigator.serviceWorker.controller)show();track(r.installing);r.addEventListener("updatefound",function(){track(r.installing)})}).catch(function(){})});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&reg)reg.update().catch(function(){})})})();</script>
+<script src="../consent.js"></script>
 </body></html>

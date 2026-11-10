@@ -3,7 +3,7 @@
 // This version: takes over at once, deletes old root app caches, unregisters itself, and reloads open windows
 // so they get the network copy (landing page, which sends home-screen launches on to /app/).
 // It never touches localStorage, so her entries (key periTracker.v1, same origin) are untouched.
-const KEEP=['peri-v45'];// the /app/ SW's cache; nights-*/strong-* are not peri-* so untouched
+const KEEP=['peri-v46'];// the /app/ SW's cache; nights-*/strong-* are not peri-* so untouched
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{
  const k=await caches.keys();await Promise.all(k.filter(x=>x.startsWith('peri-')&&!KEEP.includes(x)).map(x=>caches.delete(x)));

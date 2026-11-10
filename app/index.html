@@ -1135,6 +1135,7 @@ $("demoBtn").onclick=()=>{if(Object.keys(S.e).length&&!confirm(t("demoMix")))ret
 $("clearBtn").onclick=()=>{if(confirm(t("clearQ"))){
   const keep={onb:true,lang:S.lang,plus:S.plus,t0:S.t0,dev:S.dev}; // keep paid code, device ID + trial date only
   try{localStorage.removeItem(KEY)}catch(x){}
+  try{if(window.PTConsent)PTConsent.reset();else localStorage.removeItem("ptVisitCounting")}catch(x){}
   S=Object.assign({e:{},meds:["Magnesium","Vitamin D"],remOn:false},keep);
   clearTimeout(remTimer);remTimer=null; // cancel any scheduled reminder
   persist();
@@ -1727,4 +1728,5 @@ navigator.serviceWorker.addEventListener("controllerchange",function(){if(!had){
 function track(w){if(!w)return;var f=function(){if(w.state==="installed"&&navigator.serviceWorker.controller)show()};f();w.addEventListener("statechange",f)}
 addEventListener("load",function(){navigator.serviceWorker.register(SW,SW.indexOf("./")===0?{scope:"./"}:undefined).then(function(r){reg=r;window.__swReg=r;if(r.waiting&&navigator.serviceWorker.controller)show();track(r.installing);r.addEventListener("updatefound",function(){track(r.installing)})}).catch(function(){})});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&reg)reg.update().catch(function(){})})})();</script>
+<script src="../consent.js"></script>
 </body></html>

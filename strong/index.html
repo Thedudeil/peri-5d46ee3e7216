@@ -201,7 +201,7 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.
 const csv=x=>{if(x===null||x===undefined)return"";x=String(x);if(/^[=+\-@\t\r]/.test(x))x="'"+x;return /[",\n]/.test(x)?`"${x.replace(/"/g,'""')}"`:x};
 $("exp").onclick=()=>{const yn=x=>x===true?"yes":x===false?"no":"";const rows=[["date","strength_session","types","minutes","protein_servings","calcium_servings","vitamin_d","energy_1to5","joint_aches_0to3"],...Object.keys(S.d).sort().map(d=>{const e=S.d[d];return[d,yn(e.s),(e.ty||[]).map(k=>TL[k]||k).join(";"),e.m,e.p===4?"4+":e.p,e.c===3?"3+":e.c,yn(e.v),e.e,e.j]})];const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(csv).join(",")).join("\n")],{type:"text/csv"}));a.download="prime-strong.csv";a.click();
  const xr=[["date","move","weight_kg","reps"],...Object.keys(S.x).sort().flatMap(d=>S.x[d].map(o=>[d,MV[o.mv][0],o.kg,o.r]))];if(xr.length>1)setTimeout(()=>{const b=document.createElement("a");b.href=URL.createObjectURL(new Blob([xr.map(r=>r.map(csv).join(",")).join("\n")],{type:"text/csv"}));b.download="prime-strong-sets.csv";b.click()},400)};
-$("wipe").onclick=()=>{if(confirm("Delete everything saved on this phone? This can't be undone.")){S={d:{},goal:2,pw:1,x:{}};save();day=today();load();render();toast("Deleted")}};
+$("wipe").onclick=()=>{if(confirm("Delete everything saved on this phone? This can't be undone.")){S={d:{},goal:2,pw:1,x:{}};save();try{if(window.PTConsent)PTConsent.reset();else localStorage.removeItem("ptVisitCounting")}catch(x){}day=today();load();render();toast("Deleted")}};
 load();render();
 
 </script><script data-sw="./sw.js">/* update banner */(function(){if(!("serviceWorker"in navigator)||location.protocol==="file:")return;var SW=document.currentScript.dataset.sw,want=false,done=false,reg=null;
@@ -218,4 +218,5 @@ navigator.serviceWorker.addEventListener("controllerchange",function(){if(!had){
 function track(w){if(!w)return;var f=function(){if(w.state==="installed"&&navigator.serviceWorker.controller)show()};f();w.addEventListener("statechange",f)}
 addEventListener("load",function(){navigator.serviceWorker.register(SW,SW.indexOf("./")===0?{scope:"./"}:undefined).then(function(r){reg=r;window.__swReg=r;if(r.waiting&&navigator.serviceWorker.controller)show();track(r.installing);r.addEventListener("updatefound",function(){track(r.installing)})}).catch(function(){})});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&reg)reg.update().catch(function(){})})})();</script>
+<script src="../consent.js"></script>
 </body></html>

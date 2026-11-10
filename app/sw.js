@@ -1,10 +1,8 @@
-// peri-v45 (PT-056/057): one above live peri-v44 so this ship gets a fresh cache. The consent branch
-// (paywall-1105 @ ce26c89, peri-v43) is still unmerged; if it ships after this, bump that branch to peri-v46+
-// and update root sw.js KEEP to match. The two ships must never share a cache name.
-// OPT: files precached only if they exist. consent.js ships with the consent branch, not this one; a 404 inside
+// peri-v46: consent branch rebased onto origin/main 54c70e8 (peri-v45 / PT-056/057).
+// OPT: files precached only if they exist. consent.js ships on this branch; a 404 inside
 // cache.addAll would fail the whole install, so each OPT file is cached on its own and a failure is skipped.
 const OPT=['../consent.js'];
-const C='peri-v45',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
+const C='peri-v46',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A).then(()=>Promise.all(OPT.map(u=>c.add(u).catch(()=>{}))))))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('peri-')&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
