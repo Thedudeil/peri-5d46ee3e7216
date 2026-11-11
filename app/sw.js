@@ -1,5 +1,9 @@
-const C='peri-v43',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
-self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)))});
+// peri-v44 (PT-051): one above the consent branch (ce26c89, peri-v43) so the two ships never share a cache name.
+// OPT: files precached only if they exist. consent.js ships with the consent branch, not this one; a 404 inside
+// cache.addAll would fail the whole install, so each OPT file is cached on its own and a failure is skipped.
+const OPT=['../consent.js'];
+const C='peri-v44',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A).then(()=>Promise.all(OPT.map(u=>c.add(u).catch(()=>{}))))))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('peri-')&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;{const u=new URL(e.request.url);if(u.origin!==location.origin)return}e.respondWith(fetch(e.request).then(r=>{const cp=r.clone();caches.open(C).then(c=>c.put(e.request,cp));return r}).catch(()=>caches.match(e.request,{ignoreSearch:true})))});
