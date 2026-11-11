@@ -276,7 +276,7 @@ html[data-theme=dark] input[type=date]{color-scheme:dark}
 <style id="v28-heatmapx">
 .hmxOuter{display:flex;gap:4px;align-items:flex-start;margin-top:6px}
 .hmxLabels{flex:0 0 auto;display:flex;flex-direction:column;padding-top:20px}
-.hmxrowlabel{height:22px;display:flex;align-items:center;font-size:10.5px;color:var(--mute);white-space:nowrap;padding-inline-end:6px;max-width:92px;overflow:hidden;text-overflow:ellipsis}
+.hmxrowlabel{height:22px;display:flex;align-items:center;font-size:10.5px;line-height:1;color:var(--mute);white-space:normal;overflow-wrap:break-word;padding-inline-end:6px;max-width:96px;overflow:visible}
 .hmxScroll{overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
 .hmxDates{display:flex;height:18px;margin-bottom:2px}
 .hmxDates i{flex:0 0 auto;width:14px;font-style:normal;font-size:9px;color:var(--mute);text-align:center;white-space:nowrap}
@@ -326,6 +326,21 @@ html[data-theme=dark] .sum th{background:#8a4433!important;color:#fff!important}
 html[data-theme=dark] .afftag{background:#232326!important;color:var(--mute)!important}
 html[data-theme=dark] .aff p{color:var(--mute)!important}
 html[data-theme=dark] .cal.hm .nl,html[data-theme=dark] .hmxcell.nl{color:var(--mute)}
+/* PT-054 (peri-v44): heatmap steps. Four steps cannot all be 3:1 apart by colour alone (the luminance range is too short),
+   so each step also changes the filled height of the cell: 0 = outlined empty box, 1 = bottom third, 2 = two thirds, 3 = full.
+   Every fill and outline is >=3:1 against the card and against the unfilled part of its own cell (measured, see QA pt1111). */
+.hmxcell.nl{border:1.5px dashed #9a7f70;background:transparent}
+.hmxcell.hm0{background:#fbeee6;border:1.5px solid #9a7f70}
+.hmxcell.hm1{background:linear-gradient(to top,#c0654c 34%,transparent 34%);border:1.5px solid #c0654c}
+.hmxcell.hm2{background:linear-gradient(to top,#a84a33 67%,transparent 67%);border:1.5px solid #a84a33}
+.hmxcell.hm3{background:#7a2f1e;border:1.5px solid #7a2f1e}
+html[data-theme=dark] .hmxcell.nl{border:1.5px dashed #8a8a90;background:transparent}
+html[data-theme=dark] .hmxcell.hm0{background:#2c2c30;border:1.5px solid #8a8a90}
+html[data-theme=dark] .hmxcell.hm1{background:linear-gradient(to top,#c9765f 34%,transparent 34%);border:1.5px solid #c9765f}
+html[data-theme=dark] .hmxcell.hm2{background:linear-gradient(to top,#e8957c 67%,transparent 67%);border:1.5px solid #e8957c}
+html[data-theme=dark] .hmxcell.hm3{background:#ffc9b3;border:1.5px solid #ffc9b3}
+.hmxDates,.hmxCols{padding:0 4px} /* room for today's outline at the scroll ends */
+.hmleg .hmxcell{width:11px;height:16px;margin:0;border-radius:2px;box-sizing:border-box}
 .thm button{flex:1;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:15px}
 .thm button[aria-pressed=true]{border-color:var(--ink);background:var(--roseL)}
 @media print{html[data-theme=dark]{color-scheme:light;--cream:#fbeee6;--card:#fff8f2;--line:#ecd6c8;--ink:#4a3328;--mute:#6e5547;--rose:#9c4a36;--roseL:#f8e0d6;--blush:#e8a99a;--sage:#5b6b2f;--sageL:#eef0dc}html[data-theme=dark] body,html[data-theme=dark] .sum{background:#fff!important;color:#4a3328}}
@@ -1632,6 +1647,7 @@ $("vpDate").onchange=()=>renderVp();
 // ---------- v28: multi-symptom heatmap (own card in Insights; optional static image in the letter)
 let hmxRange=null,hmxAll=false;
 function hmxSymKeys(){return hmxAll?SYMK:SYMK.slice(0,CORE)}
+function hmxLvl(v){const r=Math.max(0,Math.min(3,Math.round(v)));return `${v} (${L().sev[r]})`}
 function hmxCls(v){return v==null?"nl":"hm"+Math.max(0,Math.min(3,Math.round(v)))}
 function hmxDayDetail(d){const e=S.e[d];
  const rows=e?SYMK.filter(k=>(e.s[k]||0)>0).map(k=>`<div class="sym"><span>${SN(k)}</span><b>${e.s[k]}</b></div>`).join(""):"";
@@ -1643,24 +1659,32 @@ function hmxDayDetail(d){const e=S.e[d];
   if((e.meds||[]).length)extra.push(`<p>${t("meds")}: ${e.meds.map(esc).join(", ")}</p>`);
   if(e.notes)extra.push(`<p>${t("notes")}: ${esc(e.notes)}</p>`)}
  return (rows?`<div>${rows}</div>`:"")+extra.join("")||`<p class="muted">${t("hmxDayNone")}</p>`}
+// PT-052: today is the last column. In LTR it sits at the right end, in RTL at the left end. Setting scrollLeft
+// to +/-scrollWidth clamps to that end in every engine (RTL: Chrome/Safari/Firefox use 0..negative, legacy WebKit 0..positive
+// where 0 is already the left end), then a relative scrollBy (convention-free) brings today's column fully into view.
+function hmxToToday(){const sc=$("hmxScrollW");if(!sc)return;const rtl=getComputedStyle(sc).direction==="rtl";
+ sc.scrollLeft=rtl?-sc.scrollWidth:sc.scrollWidth;
+ const col=sc.querySelector(".hmxcol.td");if(!col||!sc.clientWidth)return;const a=sc.getBoundingClientRect(),b=col.getBoundingClientRect();
+ if(b.left<a.left)sc.scrollBy({left:b.left-a.left});else if(b.right>a.right)sc.scrollBy({left:b.right-a.right})}
 function renderHeatmapX(){if(!hasAccess()){wipeLocked("v-insights");return}
  const n=hmxRange=hmxRange||S.hmxRange||90,keys=hmxSymKeys(),ds=days(n),totalLogged=Object.keys(S.e).length;
  document.querySelectorAll("#hmxRange [data-hr]").forEach(b=>{const on=+b.dataset.hr===n;b.className="btn "+(on?"":"alt");b.setAttribute("aria-pressed",String(on))});
  $("hmxMore").textContent=hmxAll?t("hmxFewer"):t("hmxMore",{n:SYMK.length-CORE});
  const rows=[["period",t("hmxPeriod")],...keys.map(k=>[k,SN(k)])];
  const dateRow=ds.map((d,i)=>{const dd=new Date(d+"T12:00:00"),show=n<=31||dd.getDate()===1||i===0||i===ds.length-1;return `<i>${show?dd.getDate():""}</i>`}).join("");
- const colHtml=ds.map(d=>{const e=S.e[d];
+ const colHtml=ds.map(d=>{const e=S.e[d],parts=[];
   const cells=rows.map(([k,lab])=>{let cls,valText;
-   if(k==="period"){const bl=e&&isBleed(e);cls=bl?"hm3":(e?"hm0":"nl");valText=e?(bl?BN(e.bleed):t("hmxCellNone")):t("hmxCellNone")}
-   else{const v=e?e.s[k]:null;cls=hmxCls(v);valText=v==null?t("hmxCellNone"):String(v)}
-   const blCls=(k==="period"&&e&&isBleed(e))?" bl":"";
+   if(k==="period"){const bl=e&&isBleed(e);cls=bl?"hm3":(e?"hm0":"nl");valText=e?BN(bl?e.bleed:"none"):t("hmxCellNone")} // PT-053: logged, no bleed = "None", not "not logged"
+   else{const v=e?e.s[k]:null;cls=hmxCls(v);valText=v==null?t("hmxCellNone"):hmxLvl(v)}
+   const blCls=(k==="period"&&e&&isBleed(e))?" bl":"";parts.push(`${lab}: ${valText}`);
    return `<div class="hmxcell ${cls}${blCls}" title="${esc(lab)}, ${esc(fmt(d,{month:"short",day:"numeric"}))}: ${esc(valText)}"></div>`}).join("");
-  return `<div class="hmxcol${d===today()?" td":""}" data-d="${d}" tabindex="0" role="button" aria-label="${esc(fmt(d,{weekday:"short",month:"short",day:"numeric"}))}">${cells}</div>`}).join("");
+  const dl=fmt(d,{weekday:"short",month:"short",day:"numeric"}),aria=e?`${dl}. ${parts.join("; ")}`:`${dl}: ${t("hmNone")}`; // PT-054: full accessible name
+  return `<div class="hmxcol${d===today()?" td":""}" data-d="${d}" tabindex="0" role="button" aria-label="${esc(aria)}">${cells}</div>`}).join("");
  $("hmxGrid").innerHTML=`<div class="hmxOuter" role="group" aria-label="${esc(t("hmxT"))}">
   <div class="hmxLabels">${rows.map(([,l])=>`<div class="hmxrowlabel">${esc(l)}</div>`).join("")}</div>
   <div class="hmxScroll" id="hmxScrollW"><div class="hmxDates">${dateRow}</div><div class="hmxCols">${colHtml}</div></div></div>`;
- const sc=$("hmxScrollW");if(sc)sc.scrollLeft=sc.scrollWidth;
- $("hmxLeg").innerHTML=`<span class="sw">${t("hmLess")} <i class="lg0"></i><i class="lg1"></i><i class="lg2"></i><i class="lg3"></i> ${t("hmMore")}</span><span class="sw"><i style="border:1.5px dashed var(--line)"></i> ${t("hmNone")}</span><span class="sw"><i style="width:8px;height:8px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink)"></i> ${t("hmBleed")}</span>`;
+ hmxToToday();
+ $("hmxLeg").innerHTML=`<span class="sw">${t("hmLess")} <i class="hmxcell hm0"></i><i class="hmxcell hm1"></i><i class="hmxcell hm2"></i><i class="hmxcell hm3"></i> ${t("hmMore")}</span><span class="sw"><i class="hmxcell nl"></i> ${t("hmNone")}</span><span class="sw"><i style="width:8px;height:8px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--ink)"></i> ${t("hmBleed")}</span>`;
  $("hmxNote").textContent=t("hmxNote",{n,t:totalLogged})}
 $("hmxGrid").addEventListener("click",ev=>{const c=ev.target.closest(".hmxcol");if(!c)return;openSheet(fmt(c.dataset.d,{weekday:"long",month:"long",day:"numeric",year:"numeric"}),hmxDayDetail(c.dataset.d))});
 $("hmxGrid").addEventListener("keydown",ev=>{if(ev.key!=="Enter"&&ev.key!==" ")return;const c=ev.target.closest(".hmxcol");if(!c)return;ev.preventDefault();openSheet(fmt(c.dataset.d,{weekday:"long",month:"long",day:"numeric",year:"numeric"}),hmxDayDetail(c.dataset.d))});
@@ -1670,13 +1694,14 @@ $("hmxMore").onclick=()=>{hmxAll=!hmxAll;renderHeatmapX()};
 function letterHeatmapHTML(ds){const MAXD=180,use=ds.length>MAXD?ds.slice(-MAXD):ds,keys=SYMK.slice(0,CORE);
  const rows=[["period",t("hmxPeriod")],...keys.map(k=>[k,SN(k)])];
  const cw=Math.max(2,Math.min(6,Math.floor(640/use.length))),ch=12,gap=1,W=use.length*(cw+gap)+120,H=rows.length*(ch+gap)+10;
- const COL={nl:"#f3efe8",hm0:"#fbeee6",hm1:"#f5cdbf",hm2:"#e39a86",hm3:"#a84a33"};
+ const COL={nl:"#f3efe8",hm0:"#fbeee6",hm1:"#c0654c",hm2:"#a84a33",hm3:"#7a2f1e"},FR={hm1:1/3,hm2:2/3,hm3:1}; // PT-054: darker and taller per step
  let svg=`<svg class="hmxletter" viewBox="0 0 ${W} ${H}" width="100%" style="max-width:640px" direction="ltr" role="img" aria-label="${esc(t("L_sHm"))}">`;
- rows.forEach(([k,lab],ri)=>{svg+=`<text x="0" y="${10+ri*(ch+gap)+9}" font-size="8.5" fill="#4a3328">${esc(lab)}</text>`;
+ rows.forEach(([k,lab],ri)=>{svg+=`<text x="0" y="${ri*(ch+gap)+9.5}" font-size="8.5" fill="#4a3328">${esc(lab)}</text>`;
   use.forEach((d,ci)=>{const e=S.e[d];let cls;
    if(k==="period")cls=e&&isBleed(e)?"hm3":(e?"hm0":"nl");
    else{const v=e?e.s[k]:null;cls=v==null?"nl":"hm"+Math.max(0,Math.min(3,Math.round(v)))}
-   svg+=`<rect x="${120+ci*(cw+gap)}" y="${ri*(ch+gap)}" width="${cw}" height="${ch}" rx="1" fill="${COL[cls]}"/>`})});
+   const x=120+ci*(cw+gap),y=ri*(ch+gap);svg+=`<rect x="${x}" y="${y}" width="${cw}" height="${ch}" rx="1" fill="${FR[cls]?"#fbeee6":COL[cls]}"/>`;
+   if(FR[cls]){const h=Math.round(ch*FR[cls]*10)/10;svg+=`<rect x="${x}" y="${y+ch-h}" width="${cw}" height="${h}" rx="1" fill="${COL[cls]}"/>`}})});
  svg+="</svg>";
  return `<p class="lnote">${t("L_hmNote",{n:use.length})}</p>${svg}`}
 $("letHmChk").onchange=e=>{S.letHm=e.target.checked;persist();renderLetter()};
