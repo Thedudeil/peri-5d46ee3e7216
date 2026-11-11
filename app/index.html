@@ -1488,6 +1488,7 @@ function renderProg(){const v=$("v-today");if(!v)return;let p=$("prog");if(!p){c
 
 // v27: month calendar heatmap with month navigation + legend (replaces the 5-week grid)
 Object.assign(I18N.en,{calT:"Your month at a glance",hmLess:"Lighter",hmMore:"Heavier",hmNone:"Not logged",hmBleed:"Bleeding",hmPrev:"Previous month",hmNext:"Next month",hmEmpty:"No check-ins this month yet.",hmAria:"{m}: {n} days logged"});
+Object.assign(I18N.he,{hmLess:"קל יותר",hmMore:"חזק יותר",hmNone:"לא תועד",hmBleed:"דימום"}); // PT-050: legend keys in Hebrew (Legal review 2026-11-11)
 let calM=null;
 function renderHeatmap(){if(!hasAccess()){wipeLocked("v-insights");return}const c=$("cal");if(!c)return;const now=today();if(!calM||calM>now.slice(0,7))calM=now.slice(0,7);
  const ks=Object.keys(S.e).sort(),minM=(ks[0]||now).slice(0,7),[y,m]=calM.split("-").map(Number),first=new Date(y,m-1,1).getDay(),nd=new Date(y,m,0).getDate();
@@ -1548,12 +1549,12 @@ qUp:"Move question up",qDn:"Move question down",qEditA:"Edit question",qDel:"Rem
 vpT:"Prepare for your next visit",vpSub:"Pick the date of your last visit. We’ll look at your own logs since then and suggest a few neutral questions, based only on your data. Not medical advice.",vpDateL:"Date of my last visit",
 vpAdd:"Add to my questions",vpAdded:"Added",vpAddedMsg:"Added to your questions for the doctor letter.",
 vpEmptyNoData:"Log a few check-ins before and after this date to see observations here, or load demo data in Settings.",
-vpEmptyNoChange:"No clear changes to flag yet between the two periods. That can be a good sign, or just mean there isn’t enough data yet.",
+vpEmptyNoChange:"No clear changes to flag between the two periods yet. This only compares your own logs, so bring up anything else you’ve noticed.",
 vpFreq:"{s} went from about {a} to {b} day(s) a week since your last visit on {d}. Could this be worth asking about?",
-vpSleepSev:"Sleep trouble went from {a} to {b} (out of 3) since your last visit on {d}. Could this be related to anything that’s changed?",
+vpSleepSev:"Sleep trouble went from {a} to {b} (out of 3) since your last visit on {d}. Could this be worth asking about?",
 vpSleepHrs:"Average sleep went from about {a} to {b} hours a night since your last visit on {d}. Could this be worth mentioning?",
 vpMood:"Low mood went from {a} to {b} (out of 3) since your last visit on {d}. Could this be worth discussing?",
-vpMed:"Since starting {m} on {d}, {s} went from {a} to {b} (out of 3). Could these be related?",
+vpMed:"Since starting {m} on {d}, {s} went from {a} to {b} (out of 3). Could this be worth asking about?",
 vpTop:"{s} was logged on {n} of {m} day(s) ({p}%) since your last visit on {d}. Is this worth discussing?",
 vpInvalid:"Please pick a valid date that isn’t in the future.",
 hmxT:"Symptom heatmap",hmxSub:"Severity by day, one row per symptom. Tap a day to see what was logged.",
@@ -1568,17 +1569,17 @@ qErrBlank:"נא לכתוב שאלה קודם.",qErrLong:"יש להגביל את 
 qUp:"הזזת השאלה למעלה",qDn:"הזזת השאלה למטה",qEditA:"עריכת השאלה",qDel:"הסרת השאלה",qSave:"שמירה",qCancel:"ביטול",qDelConfirm:"להסיר את השאלה הזו?",
 vpT:"הכנה לביקור הבא",vpSub:"בחרי את תאריך הביקור האחרון. נבדוק את הרישומים שלך מאז ונציע כמה שאלות נייטרליות, רק על סמך הנתונים שלך. לא ייעוץ רפואי.",vpDateL:"תאריך הביקור האחרון שלי",
 vpAdd:"הוספה לשאלות שלי",vpAdded:"נוסף",vpAddedMsg:"נוסף לשאלות למכתב לרופא.",
-vpEmptyNoData:"אפשר לעשות כמה צ'ק-אינים לפני ואחרי התאריך הזה כדי לראות כאן תובנות, או לטעון נתוני דוגמה בהגדרות.",
-vpEmptyNoChange:"אין עדיין שינוי בולט לציון בין שתי התקופות. זה יכול להיות סימן טוב, או שפשוט אין עדיין מספיק נתונים.",
-vpFreq:"{s} עבר מכ-{a} ל-{b} ימים בשבוע מאז הביקור האחרון ב-{d}. אולי שווה לשאול על זה?",
-vpSleepSev:"קשיי השינה עברו מ-{a} ל-{b} (מתוך 3) מאז הביקור האחרון ב-{d}. יכול להיות שזה קשור למשהו שהשתנה?",
+vpEmptyNoData:"אפשר לעשות כמה צ'ק-אינים לפני ואחרי התאריך הזה כדי לראות כאן הצעות לשאלות, או לטעון נתוני דוגמה בהגדרות.",
+vpEmptyNoChange:"אין עדיין שינוי בולט לציון בין שתי התקופות. ההשוואה מבוססת רק על הרישומים שלך, אז כדאי להעלות גם כל דבר אחר ששמת לב אליו.",
+vpFreq:"התדירות של {s} השתנתה מכ-{a} ל-{b} ימים בשבוע מאז הביקור האחרון ב-{d}. אולי שווה לשאול על זה?",
+vpSleepSev:"קשיי השינה עברו מ-{a} ל-{b} (מתוך 3) מאז הביקור האחרון ב-{d}. אולי שווה לשאול על זה?",
 vpSleepHrs:"השינה הממוצעת עברה מכ-{a} ל-{b} שעות בלילה מאז הביקור האחרון ב-{d}. אולי שווה להזכיר את זה?",
 vpMood:"מצב הרוח הירוד עבר מ-{a} ל-{b} (מתוך 3) מאז הביקור האחרון ב-{d}. אולי שווה לדבר על זה?",
-vpMed:"מאז שהתחלת {m} ב-{d}, {s} עבר מ-{a} ל-{b} (מתוך 3). יכול להיות שיש קשר?",
-vpTop:"{s} תועד ב-{n} מתוך {m} ימים ({p}%) מאז הביקור האחרון ב-{d}. שווה לדבר על זה?",
+vpMed:"מאז שהתחלת {m} ב-{d}, העוצמה של {s} השתנתה מ-{a} ל-{b} (מתוך 3). אולי שווה לשאול על זה?",
+vpTop:"{s}: נרשם ב-{n} מתוך {m} ימים ({p}%) מאז הביקור האחרון ב-{d}. שווה לדבר על זה?",
 vpInvalid:"נא לבחור תאריך תקין שאינו בעתיד.",
 hmxT:"מפת חום של תסמינים",hmxSub:"חוזק התסמין לפי יום, שורה לכל תסמין. הקשה על יום מציגה מה נרשם בו.",
-hmxMore:"הצגת כל התסמינים ({n})",hmxFewer:"פחות תסמינים",
+hmxMore:"הצגת כל התסמינים ({n})",hmxFewer:"הצגת פחות תסמינים",
 hmxNote:"מוצגים {n} הימים האחרונים. בסך הכול יש {t} ימים מתועדים; רישומים ישנים יותר נשמרים בטלפון ולא נמחקים.",
 hmxEmpty:"אין עדיין צ'ק-אינים בתקופה הזו.",hmxPeriod:"וסת",hmxDayNone:"שום דבר לא תועד ביום הזה.",hmxCellNone:"לא תועד",
 letHmChk:"הכללת מפת חום של התסמינים",
