@@ -1,12 +1,11 @@
 /* Prime Traker visit-counting consent (Legal option A, 10 Nov 2026).
-   Loads Cloudflare Web Analytics only after Allow, never if the token is empty.
-   TODO: paste the site token from the Cloudflare Web Analytics JS snippet into CF_BEACON_TOKEN.
-   Leave it empty until Avi provides the snippet. An empty token must never inject the beacon. */
+   Loads Cloudflare Web Analytics only after Allow. An empty token must never inject the beacon.
+   CF_BEACON_TOKEN is the public Web Analytics site token (visible in the page after Allow). */
 (function(){
 "use strict";
 
-// TODO: paste the Cloudflare Web Analytics site token here (from the dashboard snippet).
-var CF_BEACON_TOKEN = "";
+// Public Cloudflare Web Analytics site token for primetraker.com. Safe to ship; it is visible in the page after Allow.
+var CF_BEACON_TOKEN = "19d3304165454980a6e2b9eff43d535d";
 
 var STORE_KEY = "ptVisitCounting";
 var BEACON_SRC = "https://static.cloudflareinsights.com/beacon.min.js";
