@@ -274,10 +274,10 @@ html[data-theme=dark] input[type=date]{color-scheme:dark}
 </style>
 
 <style id="v28-heatmapx">
-.hmxOuter{display:flex;gap:4px;align-items:flex-start;margin-top:6px}
+.hmxOuter{display:flex;gap:4px;align-items:flex-start;margin-top:6px;min-width:0}
 .hmxLabels{flex:0 0 auto;display:flex;flex-direction:column;padding-top:20px}
 .hmxrowlabel{height:22px;display:flex;align-items:center;font-size:10.5px;line-height:1;color:var(--mute);white-space:normal;overflow-wrap:break-word;padding-inline-end:6px;max-width:96px;overflow:visible}
-.hmxScroll{overflow-x:auto;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.hmxScroll{overflow-x:auto;flex:1;min-width:0;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
 .hmxDates{display:flex;height:18px;margin-bottom:2px}
 .hmxDates i{flex:0 0 auto;width:14px;font-style:normal;font-size:9px;color:var(--mute);text-align:center;white-space:nowrap}
 .hmxCols{display:flex}
@@ -339,7 +339,8 @@ html[data-theme=dark] .hmxcell.hm0{background:#2c2c30;border:1.5px solid #8a8a90
 html[data-theme=dark] .hmxcell.hm1{background:linear-gradient(to top,#c9765f 34%,transparent 34%);border:1.5px solid #c9765f}
 html[data-theme=dark] .hmxcell.hm2{background:linear-gradient(to top,#e8957c 67%,transparent 67%);border:1.5px solid #e8957c}
 html[data-theme=dark] .hmxcell.hm3{background:#ffc9b3;border:1.5px solid #ffc9b3}
-.hmxDates,.hmxCols{padding:0 4px} /* room for today's outline at the scroll ends */
+#hmxGrid{contain:layout} /* PT-057: stop the strip's scrollable overflow inflating the document width by 1px in LTR Chromium */
+.hmxDates,.hmxCols{padding:0 4px;width:max-content;box-sizing:content-box} /* room for today's outline at the scroll ends */
 .hmleg .hmxcell{width:11px;height:16px;margin:0;border-radius:2px;box-sizing:border-box}
 .thm button{flex:1;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:15px}
 .thm button[aria-pressed=true]{border-color:var(--ink);background:var(--roseL)}
@@ -1621,7 +1622,7 @@ function vpBuild(vd){
   const win=21,bb=days(win,addD(st.d,-1)).filter(d=>S.e[d]).map(d=>S.e[d]),aa=days(win,addD(st.d,win-1)).filter(d=>d<=today()&&S.e[d]).map(d=>S.e[d]);
   if(bb.length<4||aa.length<4)return;
   let best=null;SYMK.forEach(k=>{const vb=avg(bb.map(e=>e.s[k]||0)),va=avg(aa.map(e=>e.s[k]||0)),dd=Math.abs(va-vb);if(dd>=.5&&(!best||dd>best.dd))best={k,vb,va,dd}});
-  if(best)push(best.dd+2,t("vpMed",{m:esc(st.x),s:SN(best.k).toLowerCase(),a:r1(best.vb),b:r1(best.va),d:fmt(st.d,{day:"numeric",month:"short",year:"numeric"})}))
+  if(best)push(best.dd+2,t("vpMed",{m:st.x,s:SN(best.k).toLowerCase(),a:r1(best.vb),b:r1(best.va),d:fmt(st.d,{day:"numeric",month:"short",year:"numeric"})}))
  });
  if(a.length>=5){const tops=SYMK.map(k=>[k,a.filter(e=>(e.s[k]||0)>0).length]).filter(x=>x[1]/a.length>=.5&&x[1]>=5).sort((x,y)=>y[1]-x[1]);
   if(tops.length){const[k,n]=tops[0];push(1.5,t("vpTop",{s:SN(k),n,m:a.length,p:Math.round(n/a.length*100),d:vdf}))}}
