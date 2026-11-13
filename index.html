@@ -106,7 +106,12 @@ header.top .top-inner{display:flex;align-items:center;justify-content:space-betw
 .phone-frame .island{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:78px;height:22px;background:#0a0a0a;border-radius:14px;z-index:3;pointer-events:none}
 .phone-frame img{width:100%;height:auto;display:block;border-radius:32px;background:#fbeee6;vertical-align:middle}
 .demo{position:absolute;top:-36px;right:0;background:var(--bezel);color:#fff;font-size:12px;font-weight:800;letter-spacing:.05em;padding:5px 11px;border-radius:999px;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.demo.demo-long{white-space:normal;max-width:100%;width:max-content;text-align:center;line-height:1.3;font-size:11px;font-weight:700;letter-spacing:.02em;padding:6px 11px;border-radius:14px;top:-56px}
+.hero .phone{margin-top:60px}
 figcaption{font-size:15px;color:var(--mute);text-align:center;margin-top:10px}
+
+/* AI-origin caption on/under the hero portrait; ink on cream meets WCAG AA */
+.photo-caption{margin:10px 0 0;padding:0;font-family:Nunito,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:.01em;line-height:1.35;color:var(--ink);text-align:center}
 
 /* Arched photo, running up and to the right edge */
 .portrait{position:relative;margin:0 auto;width:100%}
@@ -126,11 +131,13 @@ figcaption{font-size:15px;color:var(--mute);text-align:center;margin-top:10px}
   .hero-grid{display:block;max-width:none;margin:0;padding:6px 28px 12px 40px;position:relative;z-index:3;min-height:480px}
   .hero-copy{max-width:min(520px,40vw);padding-top:6px;padding-bottom:12px;position:relative;z-index:3}
   .hero-phone{position:absolute;left:53%;top:10px;transform:translateX(-50%);z-index:4;margin:0}
-  .phone{margin:36px 0 0;width:182px}
+  .phone{margin:60px 0 0;width:182px}
   .leaves-left{display:block;position:absolute;left:0;bottom:8px;width:min(200px,16vw);opacity:.62;z-index:1;transform:rotate(-14deg);transform-origin:left bottom;pointer-events:none}
-  .float-card{left:28%;bottom:12%;z-index:5;padding:10px 14px 10px 12px}
+  .float-card{left:28%;bottom:14%;z-index:5;padding:10px 14px 10px 12px}
   .float-card .ic{width:38px;height:38px}
   .float-card p{font-size:14.5px}
+  .photo-caption{position:absolute;right:14px;bottom:10px;left:auto;margin:0;max-width:none;white-space:nowrap;text-align:right;background:rgba(246,238,230,.96);color:#3a241c;padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:600;z-index:4;line-height:1.3;box-shadow:0 1px 4px rgba(60,40,30,.12)}
+  .hero .phone,.hero-phone .phone{margin-top:60px}
 }
 @media(min-width:980px) and (max-width:1279px){
   .hero-copy{max-width:min(440px,36vw);padding-top:4px}
@@ -149,6 +156,7 @@ figcaption{font-size:15px;color:var(--mute);text-align:center;margin-top:10px}
   .phone{width:min(230px,46vw);margin:36px 0 0}
   .portrait{height:100%;min-height:420px}
   .portrait .arch{border-radius:50% 50% 0 0 / 48% 48% 0 0;height:100%;min-height:420px}
+  .photo-caption{position:absolute;right:12px;bottom:10px;left:auto;margin:0;max-width:none;white-space:nowrap;text-align:right;background:rgba(246,238,230,.96);color:#3a241c;padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:600;z-index:4;line-height:1.3;box-shadow:0 1px 4px rgba(60,40,30,.12)}
 }
 @media(max-width:719px){
   .hero{padding:8px 22px 0;display:flex;flex-direction:column}
@@ -156,8 +164,9 @@ figcaption{font-size:15px;color:var(--mute);text-align:center;margin-top:10px}
   .hero-photo{order:2}
   .portrait{max-width:380px;margin:12px auto 0}
   .portrait .arch{aspect-ratio:3/4;height:auto;border-radius:50% 50% 16px 16px / 38% 38% 16px 16px}
-  .float-card{left:8px;bottom:12%}
+  .float-card{left:8px;bottom:14%}
   .phone{width:min(248px,74vw)}
+  .photo-caption{position:static;max-width:none;background:none;box-shadow:none;padding:0;margin:10px 0 4px;text-align:center;color:var(--ink);font-size:12px}
 }
 @media(max-width:599px){.hero-actions .btn,.cta-band .btn{width:100%}.hero-copy .btn{width:100%}}
 
@@ -305,7 +314,7 @@ footer p{margin:0 0 .6em}
               width="390" height="876"
               alt="Prime Traker daily check-in showing a monthly summary card, a treatment-change prompt, and a 0 to 3 symptom scale (demo data)">
           </div>
-          <span class="demo">Demo data</span>
+          <span class="demo demo-long">Demo data. Example only, not a real user or result.</span>
         </figure>
       </div>
     </div>
@@ -318,7 +327,7 @@ footer p{margin:0 0 .6em}
           srcset="/img/hero-woman-480.webp 480w, /img/hero-woman.webp 864w"
           sizes="(max-width: 719px) 88vw, (max-width: 979px) 48vw, 50vw"
           width="864" height="1152"
-          alt="A smiling woman in midlife sits by a sunlit window with a notebook, chin resting on her hand"
+          alt="Illustrative AI-generated image of a smiling woman in midlife sitting by a sunlit window with a notebook, chin resting on her hand"
           fetchpriority="high">
         <div class="float-card">
           <span class="ic" aria-hidden="true">
@@ -326,6 +335,7 @@ footer p{margin:0 0 .6em}
           </span>
           <p>Your notes,<br>ready to share</p>
         </div>
+        <p class="photo-caption">Illustrative image, AI-generated.</p>
       </div>
     </div>
     <img class="leaves-left" src="/img/botanical-leafsprig.webp" width="597" height="700" alt="" aria-hidden="true">
