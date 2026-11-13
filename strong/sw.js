@@ -1,4 +1,4 @@
-const C='strong-v7',A=['./','index.html','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','icon-maskable-512.png','privacy.html','terms.html','../consent.js','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
+const C='strong-v8',A=['./','index.html','manifest.webmanifest','icon.svg','icon-180.png','icon-192.png','icon-512.png','icon-maskable-512.png','privacy.html','terms.html','../consent.js','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('strong-')&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
