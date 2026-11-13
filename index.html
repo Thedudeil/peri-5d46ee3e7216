@@ -124,6 +124,8 @@ figcaption{font-size:15px;color:var(--mute);text-align:center;margin-top:10px}
 
 @media(min-width:980px){
   header.top .top-inner{padding-top:10px;padding-bottom:6px}
+  /* Header is outside .stage; keep the photo/phone origin at the page top. */
+  .stage{margin-top:-60px;padding-top:60px}
   .hero{position:static;min-height:0;padding:0}
   .hero-photo{position:absolute;top:0;right:0;width:min(50%,720px);bottom:0;z-index:1;margin:0}
   .hero-photo .portrait{height:100%}
@@ -248,8 +250,7 @@ footer p{margin:0 0 .6em}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="stage">
-  <header class="top">
+<header class="top">
     <div class="wrap top-inner">
       <a class="logo" href="/">
         <svg class="sun" viewBox="0 0 64 40" aria-hidden="true" focusable="false">
@@ -277,9 +278,10 @@ footer p{margin:0 0 .6em}
       <a class="btn sm" href="/app/">Open app</a>
     </div>
   </header>
+<main id="main">
+  <div class="stage">
   <div class="wrap"><p class="back" id="back">Welcome back. Your entries are still on this phone. <a href="/app/">Go to your tracker</a></p></div>
 
-  <main id="main">
   <div class="hero">
     <div class="hero-grid">
       <div class="hero-copy">
