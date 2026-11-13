@@ -1,2 +1,4 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /app/
+Sitemap: https://primetraker.com/sitemap.xml
