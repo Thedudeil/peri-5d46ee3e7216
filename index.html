@@ -22,145 +22,180 @@
 @font-face{font-family:'Nunito';font-weight:400 800;font-display:swap;src:url(/fonts/nunito-latin.woff2) format('woff2')}
 
 :root{
-  --cream:#fbf7f0;--card:#fffaf4;--ink:#3c2f2a;--mute:#5f5550;--terra:#a34e36;--terraD:#8a3f2b;
-  --rose:#f3e2df;--line:#eadfd3;--sage:#5d6a4a;--sageBg:#e4ead9;--sageInk:#2f3828;
-  --focus:#2b5fab;--bezel:#2b2523;
+  --cream:#f6eee6;--card:#fbf6f0;--ink:#3a241c;--mute:#5c4a40;--terra:#96482e;--terraD:#7e3c26;
+  --rose:#f3e2df;--line:#e5d8cc;--sage:#d4d2c0;--sageInk:#3a241c;--focus:#2b5fab;--bezel:#1c1a19;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+html,body{overflow-x:hidden}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
-html,body{overflow-x:hidden}
 body{margin:0;background:var(--cream);color:var(--ink);font:18px/1.6 'Nunito',-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.2;margin:0 0 .5em;font-weight:600}
-h1{font-size:clamp(36px,5.4vw,62px);letter-spacing:-.02em;line-height:1.12;margin:0 0 16px}
-h2{font-size:clamp(28px,4vw,42px)}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.15;margin:0 0 .5em;font-weight:600}
+h1{font-size:clamp(36px,3.7vw,58px);letter-spacing:-.03em;line-height:1.08;margin:0 0 18px;font-weight:600}
+h2{font-size:clamp(28px,4.2vw,46px)}
 h3{font-size:22px}
 p{margin:0 0 1em}
 a{color:var(--terraD)}
 img{max-width:100%;height:auto}
-.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
 .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;padding:8px 12px;z-index:99}
 
+/* Sunrise mark */
+.sun{display:block;flex-shrink:0;color:var(--terra);width:46px;height:30px}
+.logo{white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:12px;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:26px;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.logo.sm{font-size:20px;gap:10px}
+.logo.sm .sun{width:36px;height:24px}
+
 /* —— Nav —— */
-header.top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 20px;padding:16px 0 8px}
-.logo{white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:10px;font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:22px;color:var(--ink);text-decoration:none}
-.logo img{width:36px;height:36px;border-radius:9px}
-.nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0;padding:0;list-style:none}
-.nav-links a{color:var(--ink);text-decoration:none;font-weight:700;font-size:16px;padding:6px 0}
-@media(min-width:720px) and (max-width:900px){.nav-links{gap:6px 14px}.nav-links a{font-size:15px}}
+.stage{position:relative}
+header.top{position:relative;z-index:6}
+header.top .top-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 20px;padding:18px 0 10px}
+.nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:6px 28px;margin:0;padding:0;list-style:none}
+.nav-links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:16.5px;padding:6px 0}
 .nav-links a:hover{color:var(--terraD);text-decoration:underline;text-underline-offset:4px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 26px;border-radius:999px;background:var(--terra);color:#fff;font-weight:800;font-size:18px;text-decoration:none;border:0;cursor:pointer;line-height:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;background:var(--terra);color:#fff;font-weight:700;font-size:17px;text-decoration:none;border:0;cursor:pointer;line-height:1;font-family:Nunito,sans-serif}
 .btn:hover{background:var(--terraD);color:#fff}
 .btn:focus-visible,a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .top .btn{white-space:nowrap;flex-shrink:0}
-.btn.sm{min-height:44px;padding:0 18px;font-size:16px}
-.btn-arrow{font-weight:800;translate:0 -1px}
-.link-quiet{color:var(--terraD);font-weight:800;font-size:17px;text-underline-offset:3px}
-.link-quiet:hover{color:var(--terra)}
+.btn.sm{min-height:44px;padding:0 20px;font-size:15.5px}
+.btn-arrow{font-weight:700;font-size:1.05em}
+.link-quiet{color:var(--ink);font-weight:700;font-size:17px;text-underline-offset:4px;text-decoration-thickness:1.2px}
+.link-quiet:hover{color:var(--terraD)}
 @media(max-width:430px){
-  .top .logo{font-size:19px;gap:7px}
-  .top .logo img{width:30px;height:30px}
+  .top .logo{font-size:20px;gap:8px}
+  .top .logo .sun{width:34px;height:22px}
   .top .btn.sm{font-size:14px;padding:0 14px}
 }
-@media(max-width:350px){header.top{gap:8px}}
+@media(max-width:350px){header.top .top-inner{gap:8px}}
 @media(max-width:719px){
-  header.top{padding-bottom:4px}
+  header.top .top-inner{padding-bottom:4px}
   header.top nav{flex:1 1 100%;order:3}
-  .nav-links{justify-content:flex-start;gap:8px 18px;padding:4px 0 8px;border-bottom:1px solid var(--line)}
+  .nav-links{justify-content:flex-start;gap:8px 18px;padding:4px 0 10px;border-bottom:1px solid var(--line)}
   .nav-links a{font-size:15px}
 }
+@media(min-width:720px) and (max-width:900px){.nav-links{gap:6px 16px}.nav-links a{font-size:15px}}
 
 /* —— Hero —— */
-.hero-wrap{position:relative;padding:12px 0 56px;overflow:hidden}
-.botanical-bg{position:absolute;inset:-20px 0 auto;height:820px;pointer-events:none;z-index:0;overflow:hidden}
-.botanical-bg svg{width:100%;height:100%;display:block}
-.hero{position:relative;z-index:1;display:grid;gap:36px;align-items:center;padding:16px 0 8px}
-.eyebrow{display:block;font-family:Nunito,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin:0 0 14px}
-.hero-copy p.lead{font-size:clamp(17px,2vw,20px);color:var(--ink);line-height:1.55;max-width:34em;margin:0 0 26px}
-.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin:0 0 22px}
-@media(min-width:980px){.hero-actions{flex-wrap:nowrap}.hero-actions .btn{padding:0 22px;white-space:nowrap}.link-quiet{white-space:nowrap}}
-.trust{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0;padding:0;list-style:none;color:var(--mute);font-size:15px;font-weight:700}
+.hero{position:relative;padding:8px 0 0;z-index:2}
+.hero-photo{position:relative}
+.hero-grid{position:relative;z-index:3}
+.eyebrow{display:inline-flex;align-items:center;gap:14px;font-family:Nunito,Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin:0 0 16px}
+.eyebrow::after{content:"";display:block;width:42px;height:1px;background:var(--terra);opacity:.7;flex-shrink:0}
+.hero-copy p.lead{font-size:clamp(17px,1.9vw,20px);color:var(--ink);line-height:1.55;max-width:22em;margin:0 0 28px}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:0 0 22px}
+@media(min-width:980px){.hero-actions{flex-wrap:nowrap}.hero-actions .btn{padding:0 24px;white-space:nowrap;min-height:54px}.link-quiet{white-space:nowrap}}
+.trust{display:flex;flex-wrap:wrap;align-items:center;gap:10px 0;margin:0;padding:0;list-style:none;color:var(--ink);font-size:15.5px;font-weight:600}
 .trust li{display:flex;align-items:center;gap:8px}
-.trust svg{flex-shrink:0}
+.trust .sep{width:1px;height:16px;background:var(--ink);opacity:.35;margin:0 16px;padding:0;flex-shrink:0}
+.trust svg{flex-shrink:0;color:var(--ink)}
 
-/* Phone */
-.phone{position:relative;margin:36px auto 0;width:min(290px,78vw)}
-.phone-frame{background:var(--bezel);border-radius:36px;padding:14px 11px 18px;box-shadow:0 28px 56px rgba(60,40,30,.22),0 0 0 1px rgba(43,37,35,.25)}
-.phone-frame::before{content:"";display:block;width:86px;height:9px;background:#1a1615;border-radius:0 0 11px 11px;margin:0 auto 10px}
-.phone-frame img{width:100%;height:auto;display:block;border-radius:26px;background:#fbeee6;vertical-align:middle}
-.demo{position:absolute;top:-32px;right:0;background:var(--bezel);color:#fff;font-size:12px;font-weight:800;letter-spacing:.05em;padding:5px 11px;border-radius:999px;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+/* Phone — narrower, iPhone-like, overlaps photo */
+.phone{position:relative;margin:36px auto 0;width:min(248px,72vw)}
+.phone-frame{background:var(--bezel);border-radius:42px;padding:11px 9px 12px;box-shadow:0 28px 60px rgba(60,40,30,.22),0 0 0 1px rgba(0,0,0,.18);position:relative}
+.phone-frame .island{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:78px;height:22px;background:#0a0a0a;border-radius:14px;z-index:3;pointer-events:none}
+.phone-frame img{width:100%;height:auto;display:block;border-radius:32px;background:#fbeee6;vertical-align:middle}
+.demo{position:absolute;top:-36px;right:0;background:var(--bezel);color:#fff;font-size:12px;font-weight:800;letter-spacing:.05em;padding:5px 11px;border-radius:999px;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 figcaption{font-size:15px;color:var(--mute);text-align:center;margin-top:10px}
 
-/* Arched photo */
-.portrait{position:relative;margin:0 auto;width:min(420px,100%);max-width:100%}
-.portrait .arch{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 18%;border-radius:50% 50% 28px 28px / 36% 36% 28px 28px;box-shadow:0 22px 48px rgba(60,40,30,.16);background:var(--rose)}
-.float-card{position:absolute;left:-12px;bottom:18%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px 12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 28px rgba(60,40,30,.14);max-width:calc(100% - 24px)}
-.float-card .ic{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:var(--rose);display:grid;place-items:center;color:var(--terraD)}
-.float-card p{margin:0;font-weight:800;font-size:15px;line-height:1.3;color:var(--ink)}
+/* Arched photo, running up and to the right edge */
+.portrait{position:relative;margin:0 auto;width:100%}
+.portrait .arch{display:block;width:100%;height:100%;object-fit:cover;object-position:58% 18%;border-radius:50% 50% 8px 8px / 42% 42% 8px 8px;box-shadow:0 18px 40px rgba(60,40,30,.12);background:var(--rose)}
+.float-card{position:absolute;left:4%;bottom:16%;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px 14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 28px rgba(60,40,30,.12);max-width:calc(100% - 28px)}
+.float-card .ic{flex-shrink:0;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--terra);background:transparent;display:grid;place-items:center;color:var(--terra)}
+.float-card p{margin:0;font-weight:700;font-size:16px;line-height:1.25;color:var(--ink)}
+
+.leaves-left{display:none;pointer-events:none}
 
 @media(min-width:980px){
-  .hero{grid-template-columns:minmax(280px,1.05fr) minmax(240px,.82fr) minmax(260px,.95fr);gap:28px 32px;align-items:center;padding:28px 0 20px}
-  .hero-copy{padding-right:8px}
-  .phone{margin:36px auto 8px}
-  .portrait{margin-inline:auto 0;width:100%}
+  .hero{position:static;min-height:700px;padding:4px 0 0}
+  .hero-photo{position:absolute;top:0;right:0;width:min(52%,800px);bottom:0;z-index:1;margin:0}
+  .hero-photo .portrait{height:100%}
+  .hero-photo .arch{border-radius:50% 50% 0 0 / 44% 44% 0 0;box-shadow:none;height:100%;object-position:62% 14%}
+  .hero-grid{display:block;max-width:none;margin:0;padding:36px 28px 64px 48px;position:relative;z-index:3;min-height:680px}
+  .hero-copy{max-width:min(540px,42vw);padding-top:36px;position:relative;z-index:3}
+  .hero-phone{position:absolute;left:54%;top:56px;transform:translateX(-50%);z-index:4;margin:0}
+  .phone{margin:36px 0 0;width:228px}
+  .leaves-left{display:block;position:absolute;left:0;bottom:28px;width:min(230px,18vw);opacity:.62;z-index:1;transform:rotate(-14deg);transform-origin:left bottom;pointer-events:none}
+.float-card{left:28%;bottom:15%;z-index:5}
+}
+@media(min-width:980px) and (max-width:1279px){
+  .hero-copy{max-width:min(460px,36vw);padding-top:24px}
+  .hero-phone{left:56%;top:48px}
+  .phone{width:210px}
+  .hero-copy h1{font-size:clamp(34px,3.5vw,48px)}
+  .hero-copy p.lead{font-size:17px;max-width:20em}
 }
 @media(min-width:720px) and (max-width:979px){
-  .hero{grid-template-columns:1fr 1fr;grid-template-areas:"copy copy" "phone photo";gap:32px 28px}
-  .hero-copy{grid-area:copy;max-width:36em}
-  .hero-phone{grid-area:phone}
-  .hero-photo{grid-area:photo;align-self:end}
-  .portrait{max-width:380px}
+  .hero{padding-bottom:0;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"copy copy" "phone photo";gap:20px 16px;padding:16px 28px 0;align-items:end}
+  .hero-grid{display:contents}
+  .hero-copy{grid-area:copy;max-width:38em}
+  .hero-phone{grid-area:phone;z-index:4;justify-self:end;margin-right:-28px}
+  .hero-photo{grid-area:photo;z-index:1}
+  .phone{width:min(230px,46vw);margin:36px 0 0}
+  .portrait{height:100%;min-height:420px}
+  .portrait .arch{border-radius:50% 50% 0 0 / 48% 48% 0 0;height:100%;min-height:420px}
 }
 @media(max-width:719px){
-  .hero{gap:32px;padding:8px 0 12px}
-  .portrait{max-width:340px;margin-top:8px}
-  .float-card{left:8px;right:auto;bottom:14%;max-width:calc(100% - 36px)}
+  .hero{padding:8px 0 0;display:flex;flex-direction:column}
+  .hero-grid{display:flex;flex-direction:column;gap:12px;padding-bottom:8px;order:1}
+  .hero-photo{order:2}
+  .portrait{max-width:380px;margin:12px auto 0}
+  .portrait .arch{aspect-ratio:3/4;height:auto;border-radius:50% 50% 16px 16px / 38% 38% 16px 16px}
+  .float-card{left:8px;bottom:12%}
+  .phone{width:min(248px,74vw)}
 }
-@media(max-width:599px){
-  .hero-actions .btn,.cta-band .btn{width:100%}
-}
+@media(max-width:599px){.hero-actions .btn,.cta-band .btn{width:100%}.hero-copy .btn{width:100%}}
 
 /* Sage band */
-.sage{background:var(--sageBg);color:var(--sageInk);padding:22px 0;border-block:1px solid #d5ddd0}
-.sage .band{display:flex;align-items:center;justify-content:center;gap:14px 18px;text-align:start;margin:0;font-size:clamp(16px,2.1vw,19px);font-weight:700;line-height:1.45;max-width:820px;margin-inline:auto}
-.sage .band svg{flex-shrink:0;color:var(--sage)}
-@media(max-width:560px){.sage .band{align-items:flex-start}}
+.sage{background:var(--sage);color:var(--sageInk);padding:34px 0;position:relative;overflow:hidden;z-index:3}
+.sage .band{display:flex;align-items:center;justify-content:center;gap:18px;text-align:start;margin:0 auto;max-width:900px;position:relative;z-index:2}
+.sage .band svg{flex-shrink:0;color:var(--ink)}
+.sage .sage-div{width:1px;height:32px;background:var(--ink);opacity:.35;flex-shrink:0}
+.sage-copy{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.sage-lead{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(20px,2.5vw,28px);line-height:1.25;margin:0}
+.sage-sub{font-family:Nunito,sans-serif;font-weight:500;font-size:clamp(14px,1.55vw,17px);color:var(--ink);opacity:.8;margin:0}
+.sage-leaf{position:absolute;right:-8px;top:50%;transform:translateY(-40%) rotate(16deg);width:min(260px,30vw);opacity:.75;pointer-events:none;z-index:1}
+@media(max-width:640px){
+  .sage{padding:20px 0 22px}
+  .sage .band{align-items:flex-start;justify-content:flex-start}
+  .sage-leaf{width:120px;opacity:.5;right:-20px}
+}
 
-/* Sections */
+/* How-it-works */
+.how{padding:64px 0 48px;position:relative}
+.how-head{text-align:center;margin:0 auto 40px}
+.how-head h2{margin:0;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.trio{display:grid;gap:18px}
+@media(min-width:860px){.trio{grid-template-columns:repeat(3,1fr);gap:22px}}
+.how-card{background:transparent;border:1px solid var(--line);border-radius:22px;padding:22px 22px 24px;display:grid;grid-template-columns:100px 1fr;grid-template-rows:auto auto auto;column-gap:16px;row-gap:0;align-items:center;min-height:100%}
+.how-art{grid-row:1 / span 3;grid-column:1;display:flex;align-items:center;justify-content:center;min-height:120px;margin:0}
+.how-art img{max-height:128px;width:auto;max-width:100%;object-fit:contain}
+.how-card .num{grid-column:2;grid-row:1;font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:600;font-size:16px;color:var(--terra);margin:0 0 2px;letter-spacing:.02em}
+.how-card h3{grid-column:2;grid-row:2;margin:0 0 4px;font-size:22px;font-weight:600;letter-spacing:-.02em}
+.how-card p{grid-column:2;grid-row:3;margin:0;color:var(--ink);font-size:15.5px;line-height:1.45;font-weight:500}
+.tool-line{display:flex;align-items:center;gap:22px;margin:36px auto 0;max-width:640px;font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:15.5px;color:var(--mute);text-align:center}
+.tool-line::before,.tool-line::after{content:"";flex:1;height:1px;background:#d4c6b8}
+
+/* Existing content, restyled */
 section{padding:64px 0}
 section.alt{background:var(--card);border-block:1px solid var(--line)}
 .note{font-size:16px;color:var(--mute);margin-top:10px}
 .accent{font-family:Nunito,Arial,sans-serif;font-style:italic;color:var(--terra);font-size:clamp(13px,4.2vw,18px);line-height:1.25;margin:0 0 8px;display:block}
-
-/* How-it-works cards */
-.how-head{text-align:center;max-width:22em;margin:0 auto 40px}
-.how-head h2{margin-bottom:0}
-.trio{display:grid;gap:22px}
-@media(min-width:860px){.trio{grid-template-columns:repeat(3,1fr);gap:24px}}
-.how-card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px 22px 28px;display:flex;flex-direction:column;align-items:stretch;min-height:100%;box-shadow:0 8px 24px rgba(60,40,30,.04)}
-section.alt .how-card{background:var(--cream)}
-.how-art{display:flex;align-items:center;justify-content:center;min-height:180px;height:220px;margin:0 0 4px;overflow:hidden}
-.how-art img{max-height:210px;width:auto;max-width:92%;object-fit:contain}
-.how-card .num{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:15px;letter-spacing:.12em;color:var(--terra);margin:0 0 6px}
-.how-card h3{margin:0 0 8px;font-size:24px}
-.how-card p{margin:0;color:var(--ink);font-size:16.5px}
-
-/* Existing content, restyled */
 .cols{display:grid;gap:36px;align-items:center}
 @media(min-width:860px){
   .cols{grid-template-columns:1fr 1fr;gap:48px}
   .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 }
-.phone.shot{margin:36px auto 0;max-width:300px}
-.phone.shot .phone-frame{padding:10px 8px 12px;border-radius:32px}
-.phone.shot .phone-frame::before{width:70px;height:7px;margin-bottom:8px}
-.phone.shot .phone-frame img{border-radius:22px}
-.phone.flat{margin:36px auto 0;max-width:360px;position:relative}
+.phone.shot{margin:36px auto 0;max-width:260px;width:100%}
+.phone.shot .phone-frame{padding:10px 8px 12px;border-radius:36px}
+.phone.shot .island{width:64px;height:16px;top:14px}
+.phone.shot .phone-frame img{border-radius:26px}
+.phone.flat{margin:36px auto 0;max-width:360px;position:relative;width:100%}
 .phone.flat img{width:100%;height:auto;display:block;border-radius:16px;border:1px solid var(--line);box-shadow:0 12px 28px rgba(60,40,30,.1);background:#fff}
-.phone.flat .demo,.phone.shot .demo{top:-32px;right:0}
+.phone.flat .demo,.phone.shot .demo{top:-36px;right:0}
 
 .prob{list-style:none;padding:0;margin:0;display:grid;gap:14px}
 .prob li{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;font-weight:700}
@@ -168,7 +203,7 @@ section.alt .prob li{background:var(--cream)}
 .step{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 20px 24px;margin-bottom:20px}
 section.alt .step{background:var(--cream)}
 .step b.n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--rose);color:var(--terraD);margin-right:8px;font-family:'Fraunces',Georgia,serif;font-weight:700}
-.step .phone{max-width:240px;margin-top:14px}
+.step .phone{max-width:240px;margin-top:14px;width:auto}
 ul.ticks{padding-left:1.2em}ul.ticks li{margin:.35em 0}
 .story{max-width:720px}
 details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin:0 0 12px}
@@ -179,61 +214,56 @@ details p{margin:.6em 0 0}
 .cta-band p{color:var(--mute)}
 .cta-band .btn{margin-top:6px}
 
-footer{padding:36px 0 110px;font-size:16px;color:var(--mute)}
+footer{padding:40px 0 110px;font-size:16px;color:var(--mute)}
+footer .footer-brand{margin:0 0 18px}
 footer nav{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px}
 footer p{margin:0 0 .6em}
 .back{display:none;background:var(--rose);border-radius:16px;padding:12px 16px;margin:6px 0 0;font-size:17px}
-.sticky{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(251,247,240,.96);border-top:1px solid var(--line);display:flex;justify-content:center;transform:translateY(110%);transition:transform .2s;z-index:20}
+.sticky{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(246,238,230,.96);border-top:1px solid var(--line);display:flex;justify-content:center;transform:translateY(110%);transition:transform .2s;z-index:20}
 .sticky.on{transform:none}
 .sticky .btn{width:100%;max-width:480px}
-@media(min-width:860px){.sticky{display:none}footer{padding-bottom:40px}}
-@media(max-width:599px){.hero-copy .btn{width:100%}}
+@media(min-width:860px){.sticky{display:none}footer{padding-bottom:48px}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<div class="wrap">
+<div class="stage">
   <header class="top">
-    <a class="logo" href="/"><img src="/icon-192.png" alt="" width="36" height="36">Prime Traker</a>
-    <nav aria-label="Primary">
-      <ul class="nav-links">
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#privacy">Your privacy</a></li>
-        <li><a href="#faq">FAQs</a></li>
-      </ul>
-    </nav>
-    <a class="btn sm" href="/app/">Open app</a>
+    <div class="wrap top-inner">
+      <a class="logo" href="/">
+        <svg class="sun" viewBox="0 0 64 40" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none">
+            <line x1="32" y1="13.2" x2="32" y2="2"/>
+            <line x1="24.2" y1="15.2" x2="18.6" y2="5.6"/>
+            <line x1="39.8" y1="15.2" x2="45.4" y2="5.6"/>
+            <line x1="18.4" y1="20.4" x2="8.6" y2="13.2"/>
+            <line x1="45.6" y1="20.4" x2="55.4" y2="13.2"/>
+            <line x1="16.6" y1="26.2" x2="6.2" y2="23.4"/>
+            <line x1="47.4" y1="26.2" x2="57.8" y2="23.4"/>
+          </g>
+          <path fill="currentColor" d="M20.2 27.8A12 12 0 0 1 43.8 27.8Z"/>
+          <path fill="currentColor" d="M2 31C16 22.2 48 22.2 62 31C48 26.6 16 26.6 2 31Z"/>
+        </svg>
+        Prime Traker
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#privacy">Your privacy</a></li>
+          <li><a href="#faq">FAQs</a></li>
+        </ul>
+      </nav>
+      <a class="btn sm" href="/app/">Open app</a>
+    </div>
   </header>
-  <p class="back" id="back">Welcome back. Your entries are still on this phone. <a href="/app/">Go to your tracker</a></p>
-</div>
+  <div class="wrap"><p class="back" id="back">Welcome back. Your entries are still on this phone. <a href="/app/">Go to your tracker</a></p></div>
 
-<main id="main">
-<div class="hero-wrap">
-  <!-- Decorative botanical line art. Hidden from AT. -->
-  <div class="botanical-bg" aria-hidden="true">
-    <svg viewBox="0 0 1180 820" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-      <g opacity=".28" stroke="#5d6a4a" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M1020 40c20 90 18 170-8 260-22 76-68 150-40 230"/>
-        <path d="M1014 110c28-8 54-4 72 18M1008 168c32-14 66-8 86 20M996 230c36-12 74 2 88 28M978 300c34-16 78-4 92 26M962 372c30-14 70 4 80 28"/>
-        <path d="M1040 130c18 16 22 38 10 58M1070 200c14 18 12 42-6 58M1080 280c12 20 6 44-14 58M1060 360c16 16 14 40-2 56"/>
-        <path d="M160 30c-16 80-8 160 20 236 24 66 62 128 36 208"/>
-        <path d="M164 96c-28-10-56-2-70 20M172 160c-34-12-68-2-84 24M188 228c-36-10-74 8-86 32M210 302c-32-14-76 2-88 28"/>
-        <path d="M138 118c-16 16-18 38-6 56M112 188c-12 18-8 42 10 56M104 268c-10 20-2 44 18 56"/>
-      </g>
-      <g opacity=".16" fill="#a34e36">
-        <ellipse cx="1088" cy="214" rx="9" ry="16" transform="rotate(-28 1088 214)"/>
-        <ellipse cx="1110" cy="298" rx="8" ry="15" transform="rotate(18 1110 298)"/>
-        <ellipse cx="96" cy="176" rx="8" ry="15" transform="rotate(32 96 176)"/>
-        <ellipse cx="86" cy="258" rx="9" ry="16" transform="rotate(-20 86 258)"/>
-      </g>
-    </svg>
-  </div>
-
-  <div class="wrap">
-    <div class="hero">
+  <main id="main">
+  <div class="hero">
+    <div class="hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Perimenopause &amp; menopause</span>
-        <h1>Less guessing. More understanding.</h1>
+        <h1>Less guessing.<br>More understanding.</h1>
         <p class="lead">A simple daily check-in. A clearer picture to bring to your next appointment.</p>
         <div class="hero-actions">
           <a class="btn" id="heroCta" href="/app/">Start my check-in <span class="btn-arrow" aria-hidden="true">→</span></a>
@@ -241,11 +271,12 @@ footer p{margin:0 0 .6em}
         </div>
         <ul class="trust">
           <li>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7.25" stroke="currentColor" stroke-width="1.5"/><path d="M9 5.5V9l2.5 1.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="11" r="6.25" stroke="currentColor" stroke-width="1.5"/><path d="M10 8.2V11l2 1.3M8 3.2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             About 30 seconds a day
           </li>
+          <li class="sep" aria-hidden="true"></li>
           <li>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7.25" stroke="currentColor" stroke-width="1.5"/><path d="M5.8 9.2 8 11.3l4.4-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.4c0 0-6.2-3.8-6.2-9A3.8 3.8 0 0 1 10 4.4a3.8 3.8 0 0 1 6.2 4c0 5.2-6.2 9-6.2 9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 17.2V7.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             No account needed
           </li>
         </ul>
@@ -254,50 +285,57 @@ footer p{margin:0 0 .6em}
       <div class="hero-phone">
         <figure class="phone">
           <div class="phone-frame">
+            <span class="island" aria-hidden="true"></span>
             <img
               src="/img/checkin-hero-390.webp"
               srcset="/img/checkin-hero-390.webp 390w, /img/checkin-hero.webp 780w"
-              sizes="(max-width: 719px) 78vw, 290px"
-              width="390" height="844"
-              alt="Prime Traker daily check-in, with a 0 to 3 scale for each symptom (demo data)">
+              sizes="(max-width: 719px) 74vw, 248px"
+              width="390" height="876"
+              alt="Prime Traker daily check-in showing a monthly summary card, a treatment-change prompt, and a 0 to 3 symptom scale (demo data)">
           </div>
           <span class="demo">Demo data</span>
         </figure>
       </div>
-
-      <div class="hero-photo">
-        <!-- Hero photograph is an original AI-generated image, 13 November 2026. -->
-        <div class="portrait">
-          <img
-            class="arch"
-            src="/img/hero-woman.webp"
-            srcset="/img/hero-woman-480.webp 480w, /img/hero-woman.webp 864w"
-            sizes="(max-width: 719px) 88vw, (max-width: 979px) 45vw, 420px"
-            width="864" height="1152"
-            alt="A smiling woman in midlife sits by a sunlit window, holding a notebook"
-            fetchpriority="high">
-          <div class="float-card">
-            <span class="ic" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 2.5h6.2L14.5 6v9.5H5V2.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M11.2 2.5V6h3.3M7 9.2h4.2M7 12h4.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-            </span>
-            <p>Your notes, ready to share</p>
-          </div>
+    </div>
+    <!-- Hero photograph is an original AI-generated image, 13 November 2026. -->
+    <div class="hero-photo">
+      <div class="portrait">
+        <img
+          class="arch"
+          src="/img/hero-woman.webp"
+          srcset="/img/hero-woman-480.webp 480w, /img/hero-woman.webp 864w"
+          sizes="(max-width: 719px) 88vw, (max-width: 979px) 48vw, 50vw"
+          width="864" height="1152"
+          alt="A smiling woman in midlife sits by a sunlit window with a notebook, chin resting on her hand"
+          fetchpriority="high">
+        <div class="float-card">
+          <span class="ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6.2 3.2h7.2L16.8 7v11.6H6.2V3.2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13.2 3.2V7h4.2M8.4 10.6h6M8.4 13.8h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <p>Your notes,<br>ready to share</p>
         </div>
       </div>
     </div>
+    <img class="leaves-left" src="/img/botanical-leafsprig.webp" width="597" height="700" alt="" aria-hidden="true">
+
   </div>
 </div>
 
 <section class="sage">
   <div class="wrap">
     <p class="band">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="6" y="12" width="16" height="12" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M9.5 12V9.2a4.5 4.5 0 0 1 9 0V12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="14" cy="18" r="1.4" fill="currentColor"/></svg>
-      <span>Personal notes. Kept on your phone. Export a backup whenever you need.</span>
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="7" y="12.5" width="14" height="11" rx="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M10 12.5V9.6a4 4 0 0 1 8 0v2.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span class="sage-div" aria-hidden="true"></span>
+      <span class="sage-copy">
+        <span class="sage-lead">Personal notes. Kept on your phone.</span>
+        <span class="sage-sub">Export a backup whenever you need.</span>
+      </span>
     </p>
   </div>
+  <img class="sage-leaf" src="/img/botanical-leafsprig.webp" width="597" height="700" alt="" aria-hidden="true">
 </section>
 
-<section class="alt" id="how">
+<section class="how" id="how">
   <div class="wrap">
     <div class="how-head">
       <h2>A little check-in. A clearer conversation.</h2>
@@ -305,29 +343,30 @@ footer p{margin:0 0 .6em}
     <div class="trio">
       <article class="how-card">
         <div class="how-art">
-          <img src="/img/botanical-flower.webp" width="328" height="465" alt="" loading="lazy">
+          <img src="/img/botanical-coneflower.webp" width="611" height="700" alt="" loading="lazy">
         </div>
         <p class="num">01</p>
         <h3>Check in daily</h3>
-        <p>Tap 0–3 for each symptom — none, mild, moderate or severe. About 30 seconds.</p>
+        <p>Log what you notice in a few taps.</p>
       </article>
       <article class="how-card">
         <div class="how-art">
-          <img src="/img/botanical-vine.webp" width="407" height="551" alt="" loading="lazy">
+          <img src="/img/botanical-leafsprig.webp" width="597" height="700" alt="" loading="lazy">
         </div>
         <p class="num">02</p>
         <h3>Notice patterns</h3>
-        <p>A calendar shows each day’s overall symptom level. These are simple averages from your own entries, not proof of cause.</p>
+        <p>See your entries come together over time.</p>
       </article>
       <article class="how-card">
         <div class="how-art">
-          <img src="/img/botanical-bouquet.webp" width="340" height="625" alt="" loading="lazy">
+          <img src="/img/botanical-checklist.webp" width="687" height="661" alt="" loading="lazy">
         </div>
         <p class="num">03</p>
         <h3>Bring your summary</h3>
-        <p>Print a one-page summary, or save it as a PDF, to take to your appointment.</p>
+        <p>Print or save a one-page note for your doctor.</p>
       </article>
     </div>
+    <p class="tool-line">An organizing tool, not medical advice.</p>
   </div>
 </section>
 
@@ -353,8 +392,8 @@ footer p{margin:0 0 .6em}
   <div class="wrap">
     <h2>See it in the app</h2>
     <div class="three">
-      <div class="step"><h3><b class="n">1</b>Tap 0–3 per symptom</h3><p>Hot flashes, sleep, mood, energy and more. None, mild, moderate or severe. About 30 seconds a day.</p><figure class="phone shot"><div class="phone-frame"><img src="/img/checkin.webp" loading="lazy" width="390" height="844" alt="Daily check-in screen with a 0 to 3 scale for each symptom (demo data)"></div><span class="demo">Demo data</span></figure></div>
-      <div class="step"><h3><b class="n">2</b>Watch your month take shape</h3><p>A calendar shows each day’s overall symptom level at a glance.</p><figure class="phone shot"><div class="phone-frame"><img src="/img/heatmap.webp" loading="lazy" width="390" height="844" alt="Month calendar coloured by daily symptom level (demo data)"></div><span class="demo">Demo data</span></figure></div>
+      <div class="step"><h3><b class="n">1</b>Tap 0–3 per symptom</h3><p>Hot flashes, sleep, mood, energy and more. None, mild, moderate or severe. About 30 seconds a day.</p><figure class="phone shot"><div class="phone-frame"><span class="island" aria-hidden="true"></span><img src="/img/checkin.webp" loading="lazy" width="390" height="844" alt="Daily check-in screen with a 0 to 3 scale for each symptom (demo data)"></div><span class="demo">Demo data</span></figure></div>
+      <div class="step"><h3><b class="n">2</b>Watch your month take shape</h3><p>A calendar shows each day’s overall symptom level at a glance.</p><figure class="phone shot"><div class="phone-frame"><span class="island" aria-hidden="true"></span><img src="/img/heatmap.webp" loading="lazy" width="390" height="844" alt="Month calendar coloured by daily symptom level (demo data)"></div><span class="demo">Demo data</span></figure></div>
       <div class="step"><h3><b class="n">3</b>Print your doctor summary</h3><p>Pick a month, or the last few, and print it or save it as a PDF.</p><figure class="phone flat"><img src="/img/letter.webp" loading="lazy" width="390" height="488" alt="Top of a sample doctor letter marked demo data (demo data)"><span class="demo">Demo data</span></figure></div>
     </div>
   </div>
@@ -430,6 +469,22 @@ footer p{margin:0 0 .6em}
 
 <footer>
   <div class="wrap">
+    <a class="logo sm footer-brand" href="/">
+      <svg class="sun" viewBox="0 0 64 40" aria-hidden="true" focusable="false">
+        <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none">
+          <line x1="32" y1="13.2" x2="32" y2="2"/>
+          <line x1="24.2" y1="15.2" x2="18.6" y2="5.6"/>
+          <line x1="39.8" y1="15.2" x2="45.4" y2="5.6"/>
+          <line x1="18.4" y1="20.4" x2="8.6" y2="13.2"/>
+          <line x1="45.6" y1="20.4" x2="55.4" y2="13.2"/>
+          <line x1="16.6" y1="26.2" x2="6.2" y2="23.4"/>
+          <line x1="47.4" y1="26.2" x2="57.8" y2="23.4"/>
+        </g>
+        <path fill="currentColor" d="M20.2 27.8A12 12 0 0 1 43.8 27.8Z"/>
+        <path fill="currentColor" d="M2 31C16 22.2 48 22.2 62 31C48 26.6 16 26.6 2 31Z"/>
+      </svg>
+      Prime Traker
+    </a>
     <nav aria-label="Help and legal">
       <a href="/app/">Open the app</a>
       <a href="/privacy.html">Privacy Policy</a>
