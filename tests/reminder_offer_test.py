@@ -92,8 +92,8 @@ try:
         ck(pg.locator("#remOfferOn").inner_text() == "Turn on reminder", "primary button EN")
         ck(pg.locator("#remOfferIcs").inner_text() == "Add to my calendar instead", "ICS button EN")
         ck(pg.locator("#remOfferNo").inner_text() == "No thanks", "No thanks EN")
-        ck("Home Screen" in pg.locator("#remOfferNote").inner_text() and "16.4" in pg.locator("#remOfferNote").inner_text(),
-           "short honest note mentions Home Screen and iOS 16.4")
+        note = pg.locator("#remOfferNote").inner_text().replace("\n"," ").strip()
+        ck(note == "Reminders from this app only arrive while it's open or running in the background, and on iPhone they need iOS 16.4 or later with the app on your Home Screen. For a reminder that always arrives, add it to your calendar.", "HIGH-1 remOfferNote EN exact: "+note)
         ck(pg.locator("#remOfferTime").input_value() == "20:30", "time defaults to 20:30")
         ck(pg.evaluate("S.remOffer") in (None, "undefined") or pg.evaluate("S.remOffer") is None,
            "dismissal not stored until she answers: " + str(pg.evaluate("S.remOffer")))
@@ -214,7 +214,7 @@ try:
         pg.evaluate("show('today')")
         pg.wait_for_timeout(150)
         ck(banner_visible(pg), "banner shows after 18:00 with no reminder and no entry")
-        ck(pg.locator("#missedBan p").inner_text() == "You haven't checked in today", "banner copy EN")
+        ck(pg.locator("#missedBan p").inner_text() == "No check-in yet today", "banner copy EN")
         ck(pg.locator("#missedBanGo").inner_text() == "Check in now", "Check in now EN")
         # Check in now scrolls toward the form
         pg.evaluate("window.scrollTo(0, document.body.scrollHeight)")
@@ -284,7 +284,7 @@ try:
         ck(he["ics"] == "להוסיף ליומן במקום", f"HE ICS: {he['ics']}")
         ck(he["no"] == "לא תודה", f"HE no: {he['no']}")
         ck(he["on"] == "הפעלת תזכורת", f"HE turn on (existing remOnB): {he['on']}")
-        ck("מסך הבית" in he["note"] and "16.4" in he["note"], f"HE honest note: {he['note']}")
+        ck(he["note"].replace("\n"," ").strip() == 'תזכורות מהאפליקציה מגיעות רק כשהיא פתוחה או פועלת ברקע, ובאייפון צריך iOS 16.4 ומעלה והאפליקציה במסך הבית. לתזכורת שתמיד מגיעה, עדיף להוסיף אותה ליומן.', f"HIGH-1 remOfferNote HE exact: {he['note']}")
         ck(he["offerDir"] == "rtl", f"offer direction: {he['offerDir']}")
         # banner in Hebrew
         pg.evaluate("() => { delete S.e[today()]; delete S.remBanDis; S.remOn=false; persist(); }")
@@ -297,9 +297,115 @@ try:
           go: (document.getElementById('missedBanGo')||{}).innerText||'',
           dir: document.getElementById('missedBan') ? getComputedStyle(document.getElementById('missedBan')).direction : null
         })""")
-        ck(bh["vis"] and bh["text"] == "עוד לא עשית צ'ק-אין היום", f"HE banner: {bh}")
+        ck(bh["vis"] and bh["text"] == "עוד אין צ'ק-אין היום", f"HE banner: {bh}")
         ck(bh["go"] == "לצ'ק-אין עכשיו", f"HE check-in now: {bh}")
         ck(bh["dir"] == "rtl", f"banner RTL: {bh}")
+        # HE Done card, progress, severity, streak, no mirrored EN punctuation
+        pg.evaluate("""() => {
+          S.e = {}; S.e[today()] = {s:{}, bleed:'none', trig:[], meds:[], notes:'', saved:true};
+          delete S.remOffer; S.remOffer = 'done'; delete S.remBanDis; S.remOn = false;
+          justDone = true; LANG = 'he'; applyLang(); show('today');
+        }""")
+        pg.wait_for_timeout(300)
+        done = pg.evaluate("""() => {
+          const c = document.querySelector('.donec');
+          const txt = (c && c.innerText) || '';
+          const h2 = (c && c.querySelector('h2') && c.querySelector('h2').innerText) || '';
+          const sub = (c && c.querySelector('.muted') && c.querySelector('.muted').innerText) || '';
+          const stk = (c && c.querySelector('.stk') && c.querySelector('.stk').innerText) || '';
+          const see = (document.getElementById('doneSee') && document.getElementById('doneSee').innerText) || '';
+          const dir = c ? (c.getAttribute('dir') || getComputedStyle(c).direction) : null;
+          return {txt, h2, sub, stk, see, dir, startsWithDot: /^[.]/.test(sub) || /^[.]/.test(stk)};
+        }""")
+        ck(done["h2"] == "סיימת להיום ✓", f"HE doneT: {done['h2']}")
+        ck(done["sub"] == "יופי שלקחת רגע לעצמך.", f"HE doneSub: {done['sub']}")
+        ck(done["stk"] == "יום 1. התחלה נהדרת.", f"HE streak1: {done['stk']}")
+        ck(done["see"] == "לראות את הדפוסים שלך", f"HE doneSee: {done['see']}")
+        ck(done["dir"] == "rtl", f"done card dir: {done['dir']}")
+        ck(not done["startsWithDot"], f"no mirrored leading period: {done}")
+        # severity labels + progress when not done
+        pg.evaluate("""() => {
+          justDone = false;
+          delete S.e[today()];
+          LANG = 'he'; applyLang(); show('today');
+        }""")
+        pg.wait_for_timeout(250)
+        labs = pg.evaluate("""() => {
+          const labels = [...document.querySelectorAll('#symList .seglg i')].map(i => i.innerText.trim());
+          const prog = (document.querySelector('#prog .pt') || {}).innerText || '';
+          const pdir = document.querySelector('#prog .pt') ? document.querySelector('#prog .pt').getAttribute('dir') : null;
+          return {labels, prog, pdir};
+        }""")
+        ck(labs["labels"] == ["בכלל לא", "קל", "בינוני", "חזק"], f"HE severity labels: {labs['labels']}")
+        ck("0 מתוך 11 תועדו" in labs["prog"].replace("\n"," "), f"HE progN: {labs['prog']}")
+        ck(labs["pdir"] == "rtl", f"prog dir: {labs}")
+        ctx.close()
+
+        # ---- 9. iOS: calendar is the primary button, Turn on is secondary ----
+        print("======= iOS button order =======")
+        ctx = b.new_context(viewport={"width": 390, "height": 844},
+                            user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 16_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1")
+        ctx.add_init_script(NOTIF_INIT)
+        pg = ctx.new_page()
+        pg.goto(BASE + "/app/", wait_until="domcontentloaded")
+        boot(pg)
+        save_today(pg)
+        ios = pg.evaluate("""() => {
+          const on = document.getElementById('remOfferOn');
+          const ics = document.getElementById('remOfferIcs');
+          const order = [...document.querySelectorAll('#remOffer button')].map(b => b.id);
+          return {
+            isIOS: !!(window.__remOffer && __remOffer.isIOS && __remOffer.isIOS()),
+            onCls: on && on.className,
+            icsCls: ics && ics.className,
+            order,
+            icsFirst: ics && on && !!(ics.compareDocumentPosition(on) & Node.DOCUMENT_POSITION_FOLLOWING)
+          };
+        }""")
+        ck(ios["isIOS"], f"isIOS detects iPhone UA: {ios}")
+        ck(" ".join((ios["icsCls"] or "").split()) == "btn block", f"ICS is primary on iOS: {ios}")
+        ck("alt" in (ios["onCls"] or ""), f"Turn on is secondary on iOS: {ios}")
+        ck(ios["icsFirst"] and ios["order"][0] == "remOfferIcs", f"calendar comes first on iOS: {ios}")
+        ctx.close()
+
+        # ---- 10. EN streak singular; nBody / icsTitle; injectable today() ----
+        print("======= streak, nBody, clock =======")
+        ctx = b.new_context(viewport={"width": 390, "height": 844})
+        ctx.add_init_script(NOTIF_INIT)
+        pg = ctx.new_page()
+        pg.goto(BASE + "/app/", wait_until="domcontentloaded")
+        boot(pg)
+        save_today(pg)
+        st = pg.evaluate("""() => ({
+          top: (document.getElementById('streakTop')||{}).innerText||'',
+          done: (document.querySelector('.donec .stk')||{}).innerText||'',
+          nBody: t('nBody'),
+          nBodyHe: I18N.he.nBody,
+          icsEn: I18N.en.icsTitle,
+          icsHe: I18N.he.icsTitle
+        })""")
+        ck(st["top"] == "1 day in a row", f"EN singular streak: {st['top']!r}")
+        ck(st["done"] == "Day 1. A great start.", f"EN Day 1 copy unchanged: {st['done']!r}")
+        ck(st["nBody"] == "30 seconds to log how today went.", f"nBody EN: {st['nBody']}")
+        ck(st["nBodyHe"] == "30 שניות לתעד איך עבר היום.", f"nBody HE: {st['nBodyHe']}")
+        ck(st["icsEn"] == "Prime Traker check-in", f"icsTitle EN unchanged: {st['icsEn']}")
+        ck(st["icsHe"] == "צ'ק-אין ב-Prime Traker", f"icsTitle HE: {st['icsHe']}")
+        # injectable clock: fake tomorrow evening; today() and the banner follow it
+        clock = pg.evaluate("""() => {
+          const d = new Date(); d.setDate(d.getDate()+1); d.setHours(21,0,0,0);
+          window.__remNow = d.getTime();
+          const iso = today();
+          const real = (function(){const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')})();
+          return {iso, real, nowIsFake: now().getTime()===window.__remNow, sameAsReal: iso===real};
+        }""")
+        ck(clock["nowIsFake"] and not clock["sameAsReal"], f"today() follows __remNow: {clock}")
+        pg.evaluate("""() => {
+          S.e = {}; delete S.remBanDis; S.remOn = false; S.onb = true; persist();
+          cur = today();
+          show('today');
+        }""")
+        pg.wait_for_timeout(200)
+        ck(banner_visible(pg), "banner can use a fully faked today() (onboarded, zero check-ins is intended)")
         ctx.close()
         b.close()
 finally:

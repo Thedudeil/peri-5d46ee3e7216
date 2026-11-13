@@ -616,7 +616,7 @@ gCool:"Hot flashes & night sweats",gSleep:"Sleep trouble & fatigue",gAche:"Joint
 setT:"Settings & data",langT:"Language",remT:"Daily reminder",remAt:"Remind me at",remOnB:"Turn on reminder",remOffB:"Turn off reminder",remStOn:"On: a gentle nudge at {t}, skipped on days you've already checked in.",remStOff:"Off.",remDenied:"Notifications are blocked for this site. You can allow them in your browser settings, or use the calendar reminder below.",remUnsup:"This browser doesn't support web notifications. Use the calendar reminder below instead.",
 remHonest:"<b>Honest note:</b> web app reminders only arrive reliably while the app or browser is open or running in the background. On iPhone they need iOS 16.4 or later and the app added to your Home Screen. For a reminder that always arrives, add it to your calendar.",
 ics:"Add daily reminder to my calendar",icsNote:"Downloads a calendar file with a repeating daily reminder. Open it to add it to your phone's calendar.",
-nTitle:"Time for your check-in",nBody:"30 seconds to log how today went. Your future self (and your doctor) will thank you.",icsTitle:"Prime Traker check-in",icsDesc:"30 seconds to log how today went.",
+nTitle:"Time for your check-in",nBody:"30 seconds to log how today went.",icsTitle:"Prime Traker check-in",icsDesc:"30 seconds to log how today went.",
 backupT:"Backup",backupSub:"Your data lives only on this phone. Export a CSV now and then to keep it safe.",exp:"Export backup (CSV)",imp:"Import backup (CSV)",tryT:"Try it out",demo:"Load 60 days of demo data",clear:"Clear all data",aboutT:"About",
 discShort:"This app is an organizing tool, not medical advice. It does not diagnose, treat, or recommend any treatment. Always consult a qualified healthcare provider.",reOnb:"View welcome screen",
 nToday:"Check-in",nIns:"Insights",nDoc:"Doctor summary",nComfort:"Comfort",nSet:"Settings",
@@ -667,7 +667,7 @@ gCool:"גלי חום והזעות לילה",gSleep:"קשיי שינה ועייפ
 setT:"הגדרות ונתונים",langT:"שפה",remT:"תזכורת יומית",remAt:"להזכיר לי ב-",remOnB:"הפעלת תזכורת",remOffB:"כיבוי התזכורת",remStOn:"פעילה: תזכורת עדינה ב-{t}, ולא בימים שכבר עשית צ'ק-אין.",remStOff:"כבויה.",remDenied:"ההתראות חסומות באתר הזה. אפשר לאשר אותן בהגדרות הדפדפן, או להשתמש בתזכורת ביומן למטה.",remUnsup:"הדפדפן הזה לא תומך בהתראות. אפשר להשתמש בתזכורת ביומן למטה.",
 remHonest:"<b>בכנות:</b> תזכורות של אפליקציית רשת מגיעות באופן אמין רק כשהאפליקציה או הדפדפן פתוחים או פועלים ברקע. באייפון צריך iOS 16.4 ומעלה, ושהאפליקציה תהיה מותקנת במסך הבית. לתזכורת שתמיד מגיעה, עדיף להוסיף אותה ליומן.",
 ics:"הוספת תזכורת יומית ליומן",icsNote:"יורד קובץ יומן עם תזכורת שחוזרת כל יום. פותחים אותו כדי להוסיף ליומן בטלפון.",
-nTitle:"הגיע הזמן לצ'ק-אין",nBody:"30 שניות לתעד איך עבר היום. את (והרופא שלך) תודי לעצמך אחר כך.",icsTitle:"צ'ק-אין במעקב גיל המעבר",icsDesc:"30 שניות לתעד איך עבר היום.",
+nTitle:"הגיע הזמן לצ'ק-אין",nBody:"30 שניות לתעד איך עבר היום.",icsTitle:"צ'ק-אין ב-Prime Traker",icsDesc:"30 שניות לתעד איך עבר היום.",
 backupT:"גיבוי",backupSub:"הנתונים שלך נשמרים רק בטלפון הזה. מדי פעם כדאי לייצא קובץ CSV לשמירה.",exp:"ייצוא גיבוי (CSV)",imp:"ייבוא גיבוי (CSV)",tryT:"לנסות",demo:"טעינת 60 ימים של נתוני דוגמה",clear:"מחיקת כל הנתונים",aboutT:"אודות",
 discShort:"האפליקציה היא כלי לארגון מידע ולא ייעוץ רפואי. היא לא מאבחנת, לא מטפלת ולא ממליצה על טיפול. תמיד כדאי להתייעץ עם איש מקצוע.",reOnb:"למסך הפתיחה",
 nToday:"צ'ק-אין",nIns:"תובנות",nDoc:"סיכום לרופא",nComfort:"נוחות",nSet:"הגדרות",
@@ -753,7 +753,8 @@ function t(k,o){let s=L()[k]??I18N.en[k]??k;if(o)for(const x in o)s=s.split("{"+
 const SN=k=>SYMN[LANG][k],TN=k=>TRIGN[LANG][k],BN=k=>BLEEDN[LANG][k];
 const LOC=()=>LANG==="he"?"he-IL":"en-US";
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function today(){return iso(new Date())}
+function now(){return typeof __remNow==="number"?new Date(__remNow):new Date()}
+function today(){return iso(now())}
 function addD(s,n){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)}
 function fmt(s,o){return new Date(s+"T12:00:00").toLocaleDateString(LOC(),o||{weekday:"short",month:"short",day:"numeric"})}
 const $=id=>document.getElementById(id);
@@ -823,7 +824,7 @@ function renderToday(){
  $("trigC").innerHTML=TRIGK.filter(k=>k!=="stress").map(k=>`<button class="chip ${e.trig.includes(k)?"on":""}" data-k="${k}">${TN(k)}</button>`).join("");
  $("medC").innerHTML=S.meds.map(m=>`<button class="chip ${e.meds.includes(m)?"on":""}" data-k="${esc(m)}">${esc(m)}</button>`).join("")||`<span class="muted">${t("noMeds")}</span>`;
  $("notes").value=e.notes||"";
- $("streakTop").textContent=t("streak",{n:streak()});
+ $("streakTop").textContent=daysInARow(streak());
  $("saveBtn").textContent=S.e[cur]?t("update"):t("saveNew");$("clearDay").classList.toggle("hide",!S.e[cur]);
 }
 function segClick(ev,fn){const i=ev.target.closest(".info");if(i){explain(i.dataset.x);return}const b=ev.target.closest(".seg button");if(!b)return;fn(b.parentNode.dataset.k,+b.dataset.v);persist();renderToday()}
@@ -1098,15 +1099,16 @@ $("remOn").onclick=async()=>{if(S.remOn){S.remOn=false;persist();renderReminder(
  if(!notifOK()){renderReminder();return}
  await enableReminder($("remTime").value||"20:30")};
 let remTimer=null;
-function remDue(){const [h,mi]=(S.remT||"20:30").split(":").map(Number),d=new Date();d.setHours(h,mi,0,0);return d}
+function remDue(){const [h,mi]=(S.remT||"20:30").split(":").map(Number),d=now();d.setHours(h,mi,0,0);return d}
 async function fireReminder(){if(!S.remOn||S.e[today()]||S.remLast===today())return;if(!notifOK()||Notification.permission!=="granted")return;
  S.remLast=today();persist();
  try{const reg=await navigator.serviceWorker.ready;await reg.showNotification(t("nTitle"),{body:t("nBody"),tag:"peri-daily",icon:"icon-192.png",badge:"icon-192.png",lang:LANG,dir:LANG==="he"?"rtl":"ltr"})}catch(x){try{new Notification(t("nTitle"),{body:t("nBody")})}catch(y){}}}
-function checkReminderNow(){if(S.remOn&&new Date()>=remDue())fireReminder();scheduleReminder()}
-function scheduleReminder(){clearTimeout(remTimer);if(!S.remOn)return;let d=remDue();if(d<=new Date())d.setDate(d.getDate()+1);remTimer=setTimeout(()=>{fireReminder();scheduleReminder()},Math.min(d-new Date(),2147483000))}
+function checkReminderNow(){if(S.remOn&&now()>=remDue())fireReminder();scheduleReminder()}
+function scheduleReminder(){clearTimeout(remTimer);if(!S.remOn)return;let d=remDue();if(d<=now())d.setDate(d.getDate()+1);remTimer=setTimeout(()=>{fireReminder();scheduleReminder()},Math.min(d-now(),2147483000))}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.onb)checkReminderNow()});
 function downloadIcs(){const [h,mi]=(S.remT||$("remTime").value||"20:30").split(":"),d=today().replace(/-/g,""),hm=h.padStart(2,"0")+mi.padStart(2,"0")+"00";
  const url=location.href.split("#")[0].split("?")[0];
+ // DTSTART is floating local time (no Z and no TZID) on purpose: a daily reminder then follows the phone's own time zone instead of a fixed offset.
  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Prime Traker//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:peri-daily-"+Date.now()+"@peri-tracker","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z",
   "DTSTART:"+d+"T"+hm,"DURATION:PT5M","RRULE:FREQ=DAILY","SUMMARY:"+t("icsTitle"),"DESCRIPTION:"+t("icsDesc")+"\\n"+url,"URL:"+url,"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+t("icsTitle"),"TRIGGER:PT0M","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.download="peri-tracker-reminder.ics";document.body.appendChild(a);a.click();a.remove()};
@@ -1513,9 +1515,9 @@ function renderProg(){const v=$("v-today");if(!v)return;let p=$("prog");if(!p){c
  const e=S.e[cur]||{s:{}},list=showAll?SYMK:SYMK.slice(0,CORE),n=list.length+1,x=list.filter(k=>e.s&&e.s[k]!=null).length+(e.st!=null?1:0);
  if(e.saved&&cur===today()){const st=streak(),cols=["#f5cdbf","#e39a86","#a84a33","#d99a3d","#7d8f4e"];
   const cf=justDone?Array.from({length:14},(_,i)=>{const a=i/14*6.283,r=70+(i%3)*25;return `<i class="cf" style="background:${cols[i%5]};--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r*.6)}px;animation-delay:${(i%4)*40}ms"></i>`}).join(""):"";
-  p.innerHTML=`<div class="card donec${justDone?" pop":""}" role="status">${cf}<div class="ck" aria-hidden="true">✓</div><h2>${t("doneT")}</h2><p class="muted" style="margin:0">${t("doneSub")}</p><p class="stk">${st>1?t("streak",{n:st}):t("streak1")}</p><button class="btn block" id="doneSee">${t("doneSee")}</button></div>`;
+  p.innerHTML=`<div class="card donec${justDone?" pop":""}" role="status" dir="${LANG==='he'?'rtl':'ltr'}">${cf}<div class="ck" aria-hidden="true">✓</div><h2>${t("doneT")}</h2><p class="muted" style="margin:0">${t("doneSub")}</p><p class="stk">${st>1?daysInARow(st):t("streak1")}</p><button class="btn block" id="doneSee">${t("doneSee")}</button></div>`;
   $("doneSee").onclick=()=>show("insights");justDone=false;return}
- p.innerHTML=`<div class="pt"><span>${t("progN",{x,n})}</span>${x===n?`<span>${t("progAll")}</span>`:""}</div><div class="bar" role="progressbar" aria-label="${esc(t("progN",{x,n}))}" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${x}"><i style="width:${Math.round(x/n*100)}%"></i></div>`}
+ p.innerHTML=`<div class="pt" dir="${LANG==='he'?'rtl':'ltr'}"><span>${t("progN",{x,n})}</span>${x===n?`<span>${t("progAll")}</span>`:""}</div><div class="bar" role="progressbar" aria-label="${esc(t("progN",{x,n}))}" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${x}"><i style="width:${Math.round(x/n*100)}%"></i></div>`}
 {const _rtP=renderToday;renderToday=function(){const r=_rtP.apply(this,arguments);renderProg();return r}}
 {const _sb=$("saveBtn").onclick;$("saveBtn").onclick=ev=>{const isT=cur===today(),_to=toast;if(isT)toast=()=>{};try{_sb(ev)}finally{toast=_to}if(isT){justDone=true;show("today");window.scrollTo(0,0)}}}
 
@@ -1727,24 +1729,39 @@ $("letHmChk").onchange=e=>{S.letHm=e.target.checked;persist();renderLetter()};
 
 // ---------- reminder discovery offer + missed-today banner (Avi-approved, 13 Nov 2026)
 Object.assign(I18N.en,{
+ streakOne:"{n} day in a row",
  remOfferT:"Want a gentle reminder each evening?",
  remOfferIcs:"Add to my calendar instead",
  remOfferNo:"No thanks",
- remOfferNote:"On iPhone, reminders arrive reliably after you add the app to your Home Screen (iOS 16.4 or later).",
- missedT:"You haven't checked in today",
+ remOfferNote:"Reminders from this app only arrive while it's open or running in the background, and on iPhone they need iOS 16.4 or later with the app on your Home Screen. For a reminder that always arrives, add it to your calendar.",
+ missedT:"No check-in yet today",
  missedGo:"Check in now",
  missedX:"Dismiss for today"
 });
 Object.assign(I18N.he,{
+ streakOne:"יום אחד ברצף",
+ streakTwo:"יומיים ברצף",
+ doneT:"סיימת להיום ✓",
+ doneSub:"יופי שלקחת רגע לעצמך.",
+ doneSee:"לראות את הדפוסים שלך",
+ doneEdit:"לערוך את היום",
+ streak1:"יום 1. התחלה נהדרת.",
+ progN:"{x} מתוך {n} תועדו",
+ progAll:"הכול תועד. שמירה למטה.",
+ lgNone:"בכלל לא",
+ lgMild:"קל",
+ lgMod:"בינוני",
+ lgSev:"חזק",
  remOfferT:"רוצה תזכורת עדינה בכל ערב?",
  remOfferIcs:"להוסיף ליומן במקום",
  remOfferNo:"לא תודה",
- remOfferNote:"באייפון התזכורות מגיעות באופן אמין אחרי שמוסיפים את האפליקציה למסך הבית (iOS 16.4 ומעלה).",
- missedT:"עוד לא עשית צ'ק-אין היום",
+ remOfferNote:"תזכורות מהאפליקציה מגיעות רק כשהיא פתוחה או פועלת ברקע, ובאייפון צריך iOS 16.4 ומעלה והאפליקציה במסך הבית. לתזכורת שתמיד מגיעה, עדיף להוסיף אותה ליומן.",
+ missedT:"עוד אין צ'ק-אין היום",
  missedGo:"לצ'ק-אין עכשיו",
  missedX:"להסתרה להיום"
 });
-function remNow(){return typeof __remNow==="number"?new Date(__remNow):new Date()}
+function remNow(){return now()}
+function daysInARow(n){if(n===1)return t("streakOne",{n});if(LANG==="he"&&n===2)return t("streakTwo",{n});return t("streak",{n})}
 function remSavedDays(){return typeof realDays==="function"?realDays():Object.keys(S.e||{}).filter(d=>S.e[d]&&S.e[d].saved).sort()}
 function shouldShowRemOffer(){
  if(!S.onb||S.remOn||S.remOffer==="done")return false;
@@ -1770,8 +1787,7 @@ function renderRemOffer(){
   <div class="remOfferTime"><label for="remOfferTime">${esc(t("remAt"))}</label>
    <input type="time" id="remOfferTime" value="${esc(S.remT||"20:30")}"></div>
   <div class="ins g" id="remOfferNote">${note}</div>
-  ${canPush?`<button type="button" class="btn block" id="remOfferOn">${esc(t("remOnB"))}</button>`:""}
-  <button type="button" class="btn alt block" id="remOfferIcs">${esc(t("remOfferIcs"))}</button>
+  ${(()=>{const ios=isIOS(),on=canPush?`<button type="button" class="btn${ios?" alt":""} block" id="remOfferOn">${esc(t("remOnB"))}</button>`:"",ics=`<button type="button" class="btn${ios||!canPush?"":" alt"} block" id="remOfferIcs">${esc(t("remOfferIcs"))}</button>`;return (ios&&canPush?ics+on:on+ics)})()}
   <button type="button" class="btn ghost block" id="remOfferNo">${esc(t("remOfferNo"))}</button>
  </div>`;
  const anchor=$("prog")||v.querySelector(".datebar")||v.querySelector("h1")||v.firstElementChild;
@@ -1814,7 +1830,7 @@ function renderMissedBanner(){
  $("missedBanX").onclick=()=>{S.remBanDis=today();persist();renderMissedBanner()}}
 {const _rtR=renderToday;renderToday=function(){const r=_rtR.apply(this,arguments);try{renderRemOffer();renderMissedBanner()}catch(e){console.error(e)}return r}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.onb){try{renderMissedBanner();renderRemOffer()}catch(e){}}});
-if(location.hostname==="localhost"||location.hostname==="127.0.0.1"){window.__remOffer={shouldShowRemOffer,shouldShowMissedBanner,renderRemOffer,renderMissedBanner,enableReminder,downloadIcs,remNow}} // test hook, local only
+if(location.hostname==="localhost"||location.hostname==="127.0.0.1"){window.__remOffer={shouldShowRemOffer,shouldShowMissedBanner,renderRemOffer,renderMissedBanner,enableReminder,downloadIcs,remNow,now,today,daysInARow,isIOS}} // test hook, local only
 
 askPersist();
 boot();
