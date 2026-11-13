@@ -61,7 +61,7 @@ try:
     pg.wait_for_function("navigator.serviceWorker.getRegistration('/app/').then(r=>!!(r&&r.active))", timeout=15000)
     sc = pg.evaluate("navigator.serviceWorker.getRegistration('/app/').then(r=>new URL(r.scope).pathname)")
     ck(sc == "/app/", f"app SW scope {sc}")
-    ck("peri-v47" in pg.evaluate("caches.keys()"), "peri-v47 cache not created")
+    ck("peri-v48" in pg.evaluate("caches.keys()"), "peri-v48 cache not created")
     pg.reload(); pg.wait_for_timeout(800)
     ck(pg.evaluate("!!navigator.serviceWorker.controller"), "app not controlled by /app/ SW after reload")
     man = pg.evaluate("fetch('manifest.webmanifest').then(r=>r.json())")
@@ -69,7 +69,7 @@ try:
     # landing again while /app/ SW exists: still landing, and app cache survives
     pg.goto(BASE + "/"); pg.wait_for_timeout(800)
     ck(pg.locator("h1").count() == 1 and pg.evaluate("typeof S") == "undefined", "landing not shown after /app/ visit")
-    ck("peri-v47" in pg.evaluate("caches.keys()"), "landing cleanup deleted peri-v47")
+    ck("peri-v48" in pg.evaluate("caches.keys()"), "landing cleanup deleted peri-v48")
     # --- standalone / PWA launches of the old start_url ---
     pg.goto(BASE + "/?source=pwa"); pg.wait_for_url("**/app/**", timeout=5000)
     ck(pg.evaluate("Object.keys(S.e).length") == 3, "?source=pwa did not land in app with data")

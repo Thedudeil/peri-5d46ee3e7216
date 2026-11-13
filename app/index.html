@@ -120,6 +120,18 @@ input[type=time]{border:1.5px solid var(--sageL);border-radius:10px;padding:9px;
 .qpick .cq{display:flex;gap:6px;margin-top:6px}.qpick .x{border:0;background:none;color:var(--mute);font-size:18px;padding:0 4px}
 .qprint{margin:4px 0;padding-inline-start:0;list-style:none}.qprint li{padding:2px 0}
 .inst ol{padding-inline-start:20px;margin:8px 0}.inst li{margin:6px 0}
+
+/* Reminder discovery offer + missed-today banner (reminder-offer-1113) */
+#remOffer{margin:12px 0 16px;padding:16px 16px 14px}
+#remOffer h2{margin:0 0 8px;font-size:20px;font-weight:700;letter-spacing:-.02em}
+#remOffer .remOfferTime{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+#remOffer .remOfferTime input[type=time]{min-height:44px;padding:6px 8px;font-size:16px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+#remOffer .ins{font-size:13px;margin:10px 0 4px}
+#missedBan{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;padding:10px 6px 10px 14px;margin:8px 0 12px;box-shadow:none}
+[dir=rtl] #missedBan{padding:10px 14px 10px 6px}
+#missedBan p{margin:0;flex:1 1 auto;min-width:0;font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35}
+#missedBan .btn{width:auto;margin:0;flex:0 0 auto;white-space:nowrap;min-height:40px;padding:8px 12px}
+#missedBan .x{flex:0 0 auto;min-width:44px;min-height:44px;border:0;background:transparent;color:var(--mute);font-size:22px;cursor:pointer;border-radius:12px}
 </style>
 <style id="fonts">
 @font-face{font-family: 'Fraunces'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/fraunces-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
@@ -464,7 +476,7 @@ html[data-theme=dark] .emptyc .dots i.f{background:#d98a73;border-color:#f4b49b}
  <section id="v-today" class="view">
   <div class="top"><h1 data-t="checkin"></h1><span class="muted" id="streakTop"></span></div>
   <div class="datebar"><button id="prevD" aria-label="Previous day">‹</button><b id="dLabel"></b><button id="nextD" aria-label="Next day">›</button></div>
-  <div class="card"><h2 class="h3"><span data-t="symptoms"></span> <span class="muted" data-t="scale"></span></h2><div id="symList"></div>
+  <div class="card" id="checkInForm"><h2 class="h3"><span data-t="symptoms"></span> <span class="muted" data-t="scale"></span></h2><div id="symList"></div>
    <button class="btn ghost block" id="moreSym" style="padding:8px"></button></div>
   <div class="card"><h2 class="h3"><span data-t="stressT"></span> <span class="muted" data-t="scale"></span></h2><div id="stressRow"></div></div>
   <div class="card"><h2 class="h3" data-t="cntT"></h2><div id="cntRow"></div></div>
@@ -1072,16 +1084,19 @@ function instReady(){if(!S.fo){S.fo=today();persist()}const r=(typeof realDays==
 function maybeInst(){if(S.onb&&!S.instSeen&&!isStandalone()&&instReady())setTimeout(()=>{if($("modal").classList.contains("hide"))openInst()},1200)}
 
 // ---------- reminder
-const notifOK=()=>"Notification" in window&&"serviceWorker" in navigator;
+const notifOK=()=>{try{return typeof Notification==="function"&&"serviceWorker"in navigator}catch(x){return false}};
 function renderReminder(){if(!$("remOn"))return;$("remTime").value=S.remT||"20:30";
  $("remOn").textContent=S.remOn?t("remOffB"):t("remOnB");$("remOn").className="btn block "+(S.remOn?"alt":"");
  let st=S.remOn?t("remStOn",{t:S.remT||"20:30"}):t("remStOff");
  if(!notifOK())st=t("remUnsup");else if(Notification.permission==="denied")st=t("remDenied");$("remStatus").textContent=st}
 $("remTime").onchange=e=>{S.remT=e.target.value||"20:30";persist();renderReminder();scheduleReminder()};
+async function enableReminder(time){if(!notifOK()){renderReminder();return false}
+ let p=Notification.permission;try{if(p==="default")p=await Notification.requestPermission()}catch(x){}
+ if(p==="granted"){S.remOn=true;S.remT=time||($("remTime")&&$("remTime").value)||S.remT||"20:30";if($("remTime"))$("remTime").value=S.remT;persist();scheduleReminder()}
+ renderReminder();return!!S.remOn}
 $("remOn").onclick=async()=>{if(S.remOn){S.remOn=false;persist();renderReminder();return}
  if(!notifOK()){renderReminder();return}
- let p=Notification.permission;try{if(p==="default")p=await Notification.requestPermission()}catch(x){}
- if(p==="granted"){S.remOn=true;S.remT=$("remTime").value||"20:30";persist();scheduleReminder()}renderReminder()};
+ await enableReminder($("remTime").value||"20:30")};
 let remTimer=null;
 function remDue(){const [h,mi]=(S.remT||"20:30").split(":").map(Number),d=new Date();d.setHours(h,mi,0,0);return d}
 async function fireReminder(){if(!S.remOn||S.e[today()]||S.remLast===today())return;if(!notifOK()||Notification.permission!=="granted")return;
@@ -1090,11 +1105,12 @@ async function fireReminder(){if(!S.remOn||S.e[today()]||S.remLast===today())ret
 function checkReminderNow(){if(S.remOn&&new Date()>=remDue())fireReminder();scheduleReminder()}
 function scheduleReminder(){clearTimeout(remTimer);if(!S.remOn)return;let d=remDue();if(d<=new Date())d.setDate(d.getDate()+1);remTimer=setTimeout(()=>{fireReminder();scheduleReminder()},Math.min(d-new Date(),2147483000))}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.onb)checkReminderNow()});
-$("icsBtn").onclick=()=>{const [h,mi]=(S.remT||$("remTime").value||"20:30").split(":"),d=today().replace(/-/g,""),hm=h.padStart(2,"0")+mi.padStart(2,"0")+"00";
+function downloadIcs(){const [h,mi]=(S.remT||$("remTime").value||"20:30").split(":"),d=today().replace(/-/g,""),hm=h.padStart(2,"0")+mi.padStart(2,"0")+"00";
  const url=location.href.split("#")[0].split("?")[0];
  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Prime Traker//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:peri-daily-"+Date.now()+"@peri-tracker","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z",
   "DTSTART:"+d+"T"+hm,"DURATION:PT5M","RRULE:FREQ=DAILY","SUMMARY:"+t("icsTitle"),"DESCRIPTION:"+t("icsDesc")+"\\n"+url,"URL:"+url,"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+t("icsTitle"),"TRIGGER:PT0M","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"}));a.download="peri-tracker-reminder.ics";document.body.appendChild(a);a.click();a.remove()};
+$("icsBtn").onclick=downloadIcs;
 
 // ---------- CSV
 const COLS=["date",...SYMK,"stress","bleeding","triggers","meds","notes","hot_flash_count","sleep_hours","exercise_type","exercise_minutes","treatment_started","mrs_items"];
@@ -1707,6 +1723,98 @@ function letterHeatmapHTML(ds){const MAXD=180,use=ds.length>MAXD?ds.slice(-MAXD)
  svg+="</svg>";
  return `<p class="lnote">${t("L_hmNote",{n:use.length})}</p>${svg}`}
 $("letHmChk").onchange=e=>{S.letHm=e.target.checked;persist();renderLetter()};
+
+
+// ---------- reminder discovery offer + missed-today banner (Avi-approved, 13 Nov 2026)
+Object.assign(I18N.en,{
+ remOfferT:"Want a gentle reminder each evening?",
+ remOfferIcs:"Add to my calendar instead",
+ remOfferNo:"No thanks",
+ remOfferNote:"On iPhone, reminders arrive reliably after you add the app to your Home Screen (iOS 16.4 or later).",
+ missedT:"You haven't checked in today",
+ missedGo:"Check in now",
+ missedX:"Dismiss for today"
+});
+Object.assign(I18N.he,{
+ remOfferT:"רוצה תזכורת עדינה בכל ערב?",
+ remOfferIcs:"להוסיף ליומן במקום",
+ remOfferNo:"לא תודה",
+ remOfferNote:"באייפון התזכורות מגיעות באופן אמין אחרי שמוסיפים את האפליקציה למסך הבית (iOS 16.4 ומעלה).",
+ missedT:"עוד לא עשית צ'ק-אין היום",
+ missedGo:"לצ'ק-אין עכשיו",
+ missedX:"להסתרה להיום"
+});
+function remNow(){return typeof __remNow==="number"?new Date(__remNow):new Date()}
+function remSavedDays(){return typeof realDays==="function"?realDays():Object.keys(S.e||{}).filter(d=>S.e[d]&&S.e[d].saved).sort()}
+function shouldShowRemOffer(){
+ if(!S.onb||S.remOn||S.remOffer==="done")return false;
+ const n=remSavedDays().length;
+ if(n===1&&S.remOffer!=="later")return true; // first successful save; keep showing until she answers
+ if(n>=3&&S.remOffer==="later")return true; // at most one re-offer, from the 3rd check-in day
+ return false}
+function remOfferClose(why){S.remOffer=why;persist();renderRemOffer()}
+function remOfferNotifState(){
+ if(!notifOK())return"unsup";
+ try{if(Notification.permission==="denied")return"denied"}catch(x){}
+ return"ok"}
+function renderRemOffer(){
+ const v=$("v-today");if(!v)return;
+ const old=$("remOffer");if(old)old.remove();
+ if(!$("app")||$("app").classList.contains("hide"))return;
+ if(v.classList.contains("hide"))return;
+ if(!shouldShowRemOffer())return;
+ const st=remOfferNotifState(),note=st==="unsup"?t("remUnsup"):st==="denied"?t("remDenied"):t("remOfferNote");
+ const canPush=st==="ok";
+ const html=`<div class="card" id="remOffer" role="region" aria-labelledby="remOfferT">
+  <h2 id="remOfferT">${esc(t("remOfferT"))}</h2>
+  <div class="remOfferTime"><label for="remOfferTime">${esc(t("remAt"))}</label>
+   <input type="time" id="remOfferTime" value="${esc(S.remT||"20:30")}"></div>
+  <div class="ins g" id="remOfferNote">${note}</div>
+  ${canPush?`<button type="button" class="btn block" id="remOfferOn">${esc(t("remOnB"))}</button>`:""}
+  <button type="button" class="btn alt block" id="remOfferIcs">${esc(t("remOfferIcs"))}</button>
+  <button type="button" class="btn ghost block" id="remOfferNo">${esc(t("remOfferNo"))}</button>
+ </div>`;
+ const anchor=$("prog")||v.querySelector(".datebar")||v.querySelector("h1")||v.firstElementChild;
+ anchor.insertAdjacentHTML("afterend",html);
+ const time=$("remOfferTime");
+ if(time)time.onchange=e=>{S.remT=e.target.value||"20:30";if($("remTime"))$("remTime").value=S.remT;persist();if(S.remOn)scheduleReminder()};
+ const on=$("remOfferOn");
+ if(on)on.onclick=async()=>{const tm=($("remOfferTime")&&$("remOfferTime").value)||S.remT||"20:30";
+  const ok=await enableReminder(tm);
+  if(ok){remOfferClose("done");return}
+  renderRemOffer(); // denied: fall back to calendar-only with remDenied
+ };
+ $("remOfferIcs").onclick=()=>{const tm=($("remOfferTime")&&$("remOfferTime").value)||S.remT||"20:30";S.remT=tm;if($("remTime"))$("remTime").value=tm;persist();downloadIcs();remOfferClose("done")};
+ $("remOfferNo").onclick=()=>remOfferClose(S.remOffer==="later"||remSavedDays().length>=3?"done":"later")}
+function todayIsSaved(){const e=S.e[today()];return !!(e&&e.saved)}
+function missedThreshold(){
+ const d=remNow();
+ if(S.remOn){const [h,mi]=(S.remT||"20:30").split(":").map(Number);d.setHours(h||0,mi||0,0,0);return d}
+ d.setHours(18,0,0,0);return d}
+function shouldShowMissedBanner(){
+ if(!S.onb||todayIsSaved()||S.remBanDis===today())return false;
+ if(cur&&cur!==today())return false;
+ return remNow()>=missedThreshold()}
+function renderMissedBanner(){
+ const v=$("v-today");if(!v)return;
+ const old=$("missedBan");if(old)old.remove();
+ if(!$("app")||$("app").classList.contains("hide"))return;
+ if(v.classList.contains("hide"))return;
+ if(!shouldShowMissedBanner())return;
+ const html=`<div class="card" id="missedBan" role="status">
+  <p>${esc(t("missedT"))}</p>
+  <button type="button" class="btn" id="missedBanGo">${esc(t("missedGo"))}</button>
+  <button type="button" class="x" id="missedBanX" aria-label="${esc(t("missedX"))}">×</button>
+ </div>`;
+ const anchor=$("prog")||v.querySelector(".datebar")||v.querySelector("h1")||v.firstElementChild;
+ // keep the offer above the banner if both somehow appear (they shouldn't)
+ const off=$("remOffer");
+ (off||anchor).insertAdjacentHTML(off?"afterend":"afterend",html);
+ $("missedBanGo").onclick=()=>{const f=$("checkInForm")||$("symList")||$("saveBtn");if(f)f.scrollIntoView({behavior:"smooth",block:"start"})};
+ $("missedBanX").onclick=()=>{S.remBanDis=today();persist();renderMissedBanner()}}
+{const _rtR=renderToday;renderToday=function(){const r=_rtR.apply(this,arguments);try{renderRemOffer();renderMissedBanner()}catch(e){console.error(e)}return r}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&S.onb){try{renderMissedBanner();renderRemOffer()}catch(e){}}});
+if(location.hostname==="localhost"||location.hostname==="127.0.0.1"){window.__remOffer={shouldShowRemOffer,shouldShowMissedBanner,renderRemOffer,renderMissedBanner,enableReminder,downloadIcs,remNow}} // test hook, local only
 
 askPersist();
 boot();

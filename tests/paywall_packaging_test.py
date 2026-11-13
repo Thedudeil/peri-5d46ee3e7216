@@ -32,7 +32,7 @@ ck("Started HRT or a supplement? See your before and after." in land, "landing b
 ck(land.find("Started HRT or a supplement?") < land.find("Sound familiar?"), "landing before/after not after hero")
 ck("before-after.webp" in land, "landing missing before-after image")
 ck(os.path.isfile(os.path.join(DEPLOY, "img", "before-after.webp")), "before-after.webp file missing")
-ck("peri-v47" in open(os.path.join(DEPLOY, "app", "sw.js")).read().splitlines()[0], "cache not peri-v47")
+ck("peri-v48" in open(os.path.join(DEPLOY, "app", "sw.js")).read().splitlines()[0], "cache not peri-v48")
 with sync_playwright() as p:
     b = p.chromium.launch()
     pg = b.new_page(viewport={"width": 390, "height": 844}, reduced_motion="reduce")

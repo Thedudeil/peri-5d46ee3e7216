@@ -1,8 +1,8 @@
-// peri-v47: notranslate on public HTML (Avi approved stopping Chrome auto-translate). One above peri-v46 so returning users get a fresh cache.
+// peri-v48: reminder discovery offer after first check-in, and a missed-today banner (Avi-approved option 1). One above peri-v47 so returning users get a fresh cache.
 // OPT: files precached only if they exist. consent.js ships on this branch; a 404 inside
 // cache.addAll would fail the whole install, so each OPT file is cached on its own and a failure is skipped.
 const OPT=['../consent.js'];
-const C='peri-v47',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
+const C='peri-v48',A=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-512-maskable.png','icon-180.png','../privacy.html','../health-data.html','../terms.html','../accessibility.html','fonts/fraunces-latin.woff2','fonts/nunito-latin.woff2'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A).then(()=>Promise.all(OPT.map(u=>c.add(u).catch(()=>{}))))))});
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('peri-')&&x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
